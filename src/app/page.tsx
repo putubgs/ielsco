@@ -1,103 +1,89 @@
+import Header from "@/components/header";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div>
+      <Header />
+      <div className="flex flex-col w-full">
+        <div className="px-[125px] flex flex-col w-full gap-[100px] -mt-[120px] h-full bg-[url(/images/contents/general/indonesia_map.png)] bg-no-repeat bg-cover">
+          <div className="w-full flex pt-[200px]">
+            <div className="w-[25%]"></div>
+            <div className="w-[50%] flex justify-center">
+              <div className="text-[52px] text-white font-thin flex flex-col -space-y-6">
+                <p>
+                  From <span className="font-bold">Local Roots</span>
+                </p>
+                <p>
+                  To{" "}
+                  <span className="font-bold text-[#E56668]">Global Goals</span>
+                </p>
+              </div>
+            </div>
+            <div className="w-[25%] text-white text-[15px] mt-auto mb-4">
+              <p className="w-[85%]">
+                IELS bridges the gap between education and opportunity, starting
+                with you.
+              </p>
+            </div>
+          </div>
+          <div className="flex w-full h-[350px]">
+            <div className="flex flex-col w-[20%]">
+              <div className="flex h-full bg-[#1A2534] rounded-[20px]">
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+              </div>
+              <div className="h-full bg-[#E56668] rounded-[20px] flex items-center justify-center">
+                <Image
+                  src="/images/contents/general/laptop.png"
+                  alt="Chat Icon"
+                  width={99}
+                  height={99}
+                />
+              </div>
+            </div>
+            <div className="bg-[url('/images/contents/general/landing_page_1.png')] rounded-[20px] w-[35%] bg-cover"></div>
+            <div className="flex flex-col w-[15%]">
+              <div className="bg-[#E56668] rounded-[20px] h-full flex items-center justify-center">
+                <Image
+                  src="/images/contents/general/pencil.png"
+                  alt="Chat Icon"
+                  width={90}
+                  height={90}
+                />
+              </div>
+              <div className="bg-[#1A2534] rounded-[20px] h-full flex items-center justify-center">
+                <Image
+                  src="/images/contents/general/speaking.png"
+                  alt="Chat Icon"
+                  width={90}
+                  height={90}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col w-[15%]">
+              <div className="bg-[#D3D3D3] rounded-[20px] h-full flex items-center justify-center">
+                <Image
+                  src="/images/contents/general/globe.png"
+                  alt="Chat Icon"
+                  width={90}
+                  height={90}
+                />
+              </div>
+              <div className="bg-[#FFFFFF] rounded-[20px] h-full flex items-center justify-center">
+                <Image
+                  src="/images/contents/general/chat.png"
+                  alt="Chat Icon"
+                  width={90}
+                  height={90}
+                />
+              </div>
+            </div>
+            <div className="rounded-[20px] w-[20%] bg-[#1A2534] text-white px-12 items-center justify-start flex">
+              <p>Join a growing community where English meets <br /> purpose.</p>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
     </div>
   );
 }

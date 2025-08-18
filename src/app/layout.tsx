@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geologica.variable} ${inter.variable} antialiased bg-[#2F4157]`}
+        className={`${geologica.variable} ${inter.variable} antialiased bg-[#2F4157] font-inter`}
       >
         {children}
       </body>

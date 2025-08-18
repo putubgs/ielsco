@@ -1,11 +1,12 @@
 import Header from "@/components/header";
+import Footer from "@/components/footer";
 import Image from "next/image";
 
 export default function Home() {
   return (
     <div>
       <Header />
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full mb-12">
         <div className="px-[125px] flex flex-col w-full gap-[100px] -mt-[120px] h-full bg-[url(/images/contents/general/indonesia_map.png)] bg-no-repeat bg-cover">
           <div className="w-full flex pt-[200px]">
             <div className="w-[25%]"></div>
@@ -84,6 +85,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Image from "next/image";
 import CountUp from "react-countup";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -33,7 +34,14 @@ export default function Home() {
           </div>
           <div className="flex w-full h-[350px]">
             <div className="flex flex-col w-[20%]">
-              <div className="flex h-full bg-[#1A2534] rounded-[20px]"></div>
+              <div className="h-full bg-[#1A2534] rounded-[20px] flex items-center justify-center">
+                <Image
+                  src="/images/contents/general/welcoming.png"
+                  alt="Welcoming"
+                  width={165}
+                  height={150}
+                />
+              </div>
               <div className="h-full bg-[#E56668] rounded-[20px] flex items-center justify-center">
                 <Image
                   src="/images/contents/general/laptop.png"
@@ -144,6 +152,43 @@ export default function Home() {
               Join IELS to learn, connect, and grow <br /> together with a
               community that empowers <br /> your potential.
             </p>
+          </div>
+        </div>
+        <div className="flex px-[125px] rounded-[20px] items-center justify-center">
+          <div className="bg-white rounded-[20px] w-full flex py-[40px] items-center justify-center gap-[20px] px-[50px]">
+            <div className="max-w-[400px] p-12 flex flex-col text-[52px] leading-tight text-end">
+              <p>IELS</p>
+              <p className="font-bold">Lounge</p>
+            </div>
+            <Image
+              src="/images/contents/general/landing_page_3.png"
+              alt="Iels Lounge"
+              width={0}
+              height={0}
+              sizes="100vw"
+              className="w-full h-auto max-w-[350px]"
+            />
+            <div className="max-w-[400px] p-12 flex flex-col gap-6">
+              <p className="text-[32px] font-bold leading-tight">
+                You don&apos;t have to grow alone.
+              </p>
+              <p className="text-[15px]">
+                Be part of <span className="font-bold">IELS Lounge</span>, a
+                community where future global professionals support and uplift
+                each other, while mastering English that works in real life.
+              </p>
+              <Link
+                href=""
+                className="bg-[#E56668] text-white rounded-[20px] text-center w-fit px-[60px] py-2"
+              >
+                Register
+              </Link>
+            </div>
+          </div>
+        </div>
+        <div className="flex px-[125px] rounded-[20px] items-center justify-center ">
+          <div className="bg-[#D9D9D9] rounded-[20px] w-full flex">
+            d
           </div>
         </div>
       </div>

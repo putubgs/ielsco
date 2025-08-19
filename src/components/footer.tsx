@@ -4,7 +4,7 @@ import { Instagram, X, LinkedIn } from "@mui/icons-material";
 
 export default function Footer() {
   return (
-    <div className="bg-white flex w-full p-12">
+    <div className="bg-white flex w-full py-12 px-[125px]">
       <div className="flex flex-col w-[25%] gap-3">
         <Image
           src="/images/logos/iels_gray.png"

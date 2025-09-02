@@ -225,13 +225,14 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <div className="text-white flex flex-col gap-6 px-8 sm:px-16 lg:px-[200px] items-center lg:items-start justify-center pt-[50px] lg:pt-[100px] w-full mt-auto bg-[url(/images/contents/general/landing_page_2.png)] bg-cover bg-center h-[350px] lg:h-[500px] rounded-b-[30px]">
-            <p className="text-[24px] sm:text-[28px] lg:text-[32px] font-bold leading-tight text-center lg:text-left">
+          <div className="text-white flex flex-col gap-6 px-8 sm:px-16 lg:px-[200px] items-center lg:items-start justify-center pt-[50px] lg:pt-[100px] w-full mt-auto bg-[url(/images/contents/general/landing_page_2.png)] bg-cover bg-center h-[350px] lg:h-[500px] rounded-b-[30px] relative">
+            <div className="absolute inset-0 bg-black opacity-40 lg:opacity-0 rounded-b-[30px]"></div>
+            <p className="text-[24px] sm:text-[28px] lg:text-[32px] font-bold leading-tight text-center lg:text-left relative z-10">
               Unlock our potential.
               <br />
               Grow with IELS!
             </p>
-            <p className="text-[13px] lg:text-[15px] text-center lg:text-left">
+            <p className="text-[13px] lg:text-[15px] text-center lg:text-left relative z-10">
               Join IELS to learn, connect, and grow together with a community
               that empowers your potential.
             </p>

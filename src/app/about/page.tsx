@@ -384,7 +384,7 @@ export default function About() {
               </div>
             </div>
             <div className="text-center mt-3 text-white/60 text-sm">
-              💡 Swipe left/right to navigate
+              💡 Swipe content left/right to navigate
             </div>
           </div>
 

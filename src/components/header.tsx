@@ -26,7 +26,7 @@ export default function Header() {
   };
 
   return (
-    <div className="flex items-center justify-between py-6 lg:py-10 px-4 sm:px-8 lg:px-[125px] bg-transparent relative z-50">
+    <div className="flex items-center justify-between py-6 lg:py-10 px-4 sm:px-8 lg:px-[100px] bg-transparent relative z-50">
       {/* Logo Section */}
       <Link
         className="flex items-center font-geologica gap-3 lg:gap-[19px]"
@@ -38,7 +38,7 @@ export default function Header() {
           alt="IELS Logo White"
           width={60}
           height={60}
-          className="lg:w-[75px] lg:h-[75px]"
+          className="lg:w-[75px]"
         />
         <div className="flex flex-col text-white text-[14px] lg:text-[16px]">
           <p>Inclusive English</p>

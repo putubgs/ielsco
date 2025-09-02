@@ -4,7 +4,7 @@ import { Instagram, X, LinkedIn } from "@mui/icons-material";
 
 export default function Footer() {
   return (
-    <div className="bg-white flex flex-col lg:flex-row w-full py-8 lg:py-12 px-4 sm:px-8 lg:px-[125px] gap-8 lg:gap-0">
+    <div className="bg-white flex flex-col lg:flex-row w-full py-8 lg:py-12 px-4 sm:px-8 lg:px-[100px] gap-8 lg:gap-0">
       {/* Logo and Social Icons */}
       <div className="flex flex-col lg:w-[25%] gap-4 lg:gap-3 items-center lg:items-start">
         <Image

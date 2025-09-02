@@ -12,7 +12,7 @@ export default function Home() {
       <Header />
       <div className="flex flex-col w-full gap-[50px] lg:gap-[100px]">
         {/* Hero Section */}
-        <div className="px-4 sm:px-8 lg:px-[125px] flex flex-col w-full gap-[50px] lg:gap-[100px] -mt-[60px] lg:-mt-[120px] h-full bg-[url(/images/contents/general/indonesia_map.png)] bg-no-repeat bg-cover bg-center">
+        <div className="px-4 sm:px-8 lg:px-[100px] flex flex-col w-full gap-[50px] lg:gap-[100px] -mt-[60px] lg:-mt-[120px] h-full bg-[url(/images/contents/general/indonesia_map.png)] bg-no-repeat bg-cover bg-center">
           <div className="w-full flex pt-[120px] lg:pt-[200px]">
             <div className="hidden lg:block lg:w-[25%]"></div>
             <div className="w-full lg:w-[50%] flex justify-center">
@@ -182,7 +182,7 @@ export default function Home() {
         </div>
 
         {/* Stats and CTA Section */}
-        <div className="flex flex-col px-4 sm:px-8 lg:px-[125px]">
+        <div className="flex flex-col px-4 sm:px-8 lg:px-[100px]">
           <div className="bg-white flex flex-col lg:flex-row rounded-t-[30px] px-6 sm:px-8 lg:px-12 py-[40px] lg:py-[60px] w-full gap-8 lg:gap-12">
             <div className="flex flex-col w-full items-center gap-4">
               <div className="text-[24px] lg:text-[32px] items-center flex flex-col -space-y-2 lg:-space-y-3">
@@ -239,7 +239,7 @@ export default function Home() {
         </div>
 
         {/* IELS Lounge Section */}
-        <div className="flex px-4 sm:px-8 lg:px-[125px] rounded-[20px] items-center justify-center">
+        <div className="flex px-4 sm:px-8 lg:px-[100px] rounded-[20px] items-center justify-center">
           <div className="bg-white rounded-[20px] w-full flex flex-col lg:flex-row py-[30px] lg:py-[40px] items-center justify-center gap-[15px] lg:gap-[20px] px-6 lg:px-[50px]">
             <div className="max-w-[400px] p-6 lg:p-12 flex flex-col text-[36px] lg:text-[52px] leading-tight text-center lg:text-end">
               <p>IELS</p>
@@ -273,7 +273,7 @@ export default function Home() {
         </div>
 
         {/* Testimonials Section */}
-        <div className="flex px-4 sm:px-8 lg:px-[125px] rounded-[20px] items-center justify-center">
+        <div className="flex px-4 sm:px-8 lg:px-[100px] rounded-[20px] items-center justify-center">
           <div className="bg-[#D9D9D9] rounded-[20px] w-full flex flex-col px-6 lg:px-12 py-6 gap-5">
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
               <Image

@@ -282,7 +282,7 @@ export default function Home() {
                 alt="IELS Logo Blue"
                 width={60}
                 height={60}
-                className="lg:w-[90px] lg:h-[90px]"
+                className="lg:w-[90px] h-auto"
               />
               <p className="text-[28px] sm:text-[36px] lg:text-[52px] pt-0 lg:pt-6 text-center">
                 IELS <span className="font-bold">Testimonial</span>

@@ -376,8 +376,8 @@ export default function Home() {
               />
             </div>
             <div className="hidden lg:flex bg-white rounded-l-[20px] flex-col gap-4 py-8 pl-8 w-[20%]">
-              {[...Array(6)].map((_, i) => (
-                <hr key={i} className="h-px bg-gray-200 border-0" />
+              {[...Array(8)].map((_, i) => (
+                <hr key={i} className="h-px bg-black border-0" />
               ))}
             </div>
           </div>

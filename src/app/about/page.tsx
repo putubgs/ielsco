@@ -436,7 +436,7 @@ export default function About() {
           >
             {getContent()}
           </div>
-        </div>
+n        </div>
       </div>
       <Footer />
     </div>

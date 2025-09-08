@@ -264,7 +264,7 @@ export default function Home() {
                 each other, while mastering English that works in real life.
               </p>
               <Link
-                href=""
+                href="/iels-lounge"
                 className="bg-[#E56668] text-white rounded-[20px] text-center w-fit px-[40px] lg:px-[60px] py-2 mx-auto lg:mx-0"
               >
                 Register

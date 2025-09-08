@@ -314,20 +314,65 @@ export default function Home() {
         </div>
 
         {/* Media Partners Section */}
-        <div className="bg-[#1A2534] flex flex-col py-[75px] lg:py-[150px] gap-6">
+        <div className="relative bg-[#1A2534] flex flex-col gap-3">
+          <div className="text-[20px] lg:text-[32px] text-start text-white px-4 lg:px-[28vw] pt-[30px] leading-tight">
+            <p className="font-bold block lg:hidden">Global & National Company Partners</p>
+            <p className="font-bold hidden lg:block">Global & National</p>
+            <p className="hidden lg:block">Company Partners</p>
+          </div>
+          <div className="hidden lg:block">
+            <Image
+              src="/images/contents/general/bookmark_icon.png"
+              width={160}
+              height={160}
+              alt="bookmark"
+              className="absolute top-[3vw] left-[15vw] transform lg:scale-150"
+            />
+            <Image
+              src="/images/contents/general/pencil.png"
+              width={160}
+              height={160}
+              alt="bookmark"
+              className="absolute top-[18vw] left-[15vw] transform rotate-90"
+            />
+            <Image
+              src="/images/contents/general/chat.png"
+              width={160}
+              height={160}
+              alt="bookmark"
+              className="absolute bottom-[4vw] right-[15vw] transform"
+            />
+          </div>
           <div className="flex flex-col lg:flex-row w-full gap-6">
             <div className="hidden lg:flex bg-white rounded-r-[20px] flex-col gap-4 py-8 pr-8 w-[20%]">
-              {[...Array(6)].map((_, i) => (
-                <hr key={i} className="h-px bg-gray-200 border-0" />
+              {[...Array(8)].map((_, i) => (
+                <hr key={i} className="h-px bg-black border-0" />
               ))}
             </div>
+            <div className="w-full lg:w-[60%] bg-white rounded-[20px] flex items-center justify-center lg:p-0 min-h-[100px]">
+              <Image
+                src="/images/logos/media-partners/media_partners.png"
+                alt="Media Partner"
+                width={1000}
+                height={0}
+                className="w-full px-4 lg:px-[100px] py-6"
+              />
+            </div>
+            <div className="hidden lg:flex bg-white rounded-l-[20px] flex-col gap-4 py-8 pl-8 w-[20%]">
+              {[...Array(8)].map((_, i) => (
+                <hr key={i} className="h-px bg-black border-0" />
+              ))}
+            </div>
+          </div>
+          <div className="flex flex-col lg:flex-row w-full gap-6">
+            <div className="hidden lg:block bg-white rounded-r-[20px] w-[20%]"></div>
             <div className="w-full lg:w-[60%] bg-white rounded-[20px] flex items-center justify-center p-4 lg:p-0 min-h-[100px]">
               <Image
-                src="/images/logos/media-partners/180-degrees-its.png"
+                src="/images/logos/company/company_logos.png"
                 alt="Media Partner"
-                width={150}
+                width={1000}
                 height={80}
-                className="lg:w-auto lg:h-auto object-contain"
+                className="w-full object-contain md:p-12"
               />
             </div>
             <div className="hidden lg:flex bg-white rounded-l-[20px] flex-col gap-4 py-8 pl-8 w-[20%]">
@@ -336,22 +381,10 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row w-full gap-6">
-            <div className="hidden lg:block bg-white rounded-r-[20px] w-[20%]"></div>
-            <div className="w-full lg:w-[60%] bg-white rounded-[20px] flex items-center justify-center p-4 lg:p-0 min-h-[100px]">
-              <Image
-                src="/images/logos/media-partners/180-degrees-its.png"
-                alt="Media Partner"
-                width={150}
-                height={80}
-                className="lg:w-auto lg:h-auto object-contain"
-              />
-            </div>
-            <div className="hidden lg:flex bg-white rounded-l-[20px] flex-col gap-4 py-8 pl-8 w-[20%]">
-              {[...Array(6)].map((_, i) => (
-                <hr key={i} className="h-px bg-gray-200 border-0" />
-              ))}
-            </div>
+          <div className="text-[20px] lg:text-[32px] text-end text-white px-4 lg:px-[28vw] pb-[30px] leading-tight">
+            <p className="font-bold block lg:hidden">Media Partners</p>
+            <p className="font-bold hidden lg:block">Media</p>
+            <p className="hidden lg:block">Partners</p>
           </div>
         </div>
       </div>

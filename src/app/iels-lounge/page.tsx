@@ -306,7 +306,7 @@ export default function IelsLounge() {
                   <td className="w-full flex-1 px-2">
                     <Link
                       className="bg-[#6F7680] text-white rounded-[20px] w-full block text-center py-2"
-                      href="/iels-lounge"
+                      href="https://ielsco.myr.id/membership/iels-lounge-free"
                     >
                       Free Access
                     </Link>
@@ -314,13 +314,13 @@ export default function IelsLounge() {
                   <td className="w-full flex-1 pl-2">
                     <Link
                       className="bg-[#2F4157] text-white rounded-[20px] w-full block text-center py-2"
-                      href="/iels-lounge"
+                      href="https://ielsco.myr.id/membership/iels-lounge-premium"
                     >
                       Rp150.000/year
                     </Link>
                     <Link
                       className="bg-white text-[#2F4157] border border-[#2F4157] rounded-[20px] w-full block text-center py-2 mt-2"
-                      href="/iels-lounge/premium"
+                      href="https://ielsco.myr.id/membership/iels-lounge-premium"
                     >
                       Rp20.000/month
                     </Link>
@@ -440,7 +440,7 @@ export default function IelsLounge() {
 
                   <Link
                     className="bg-[#6F7680] text-white rounded-[15px] w-full block text-center py-4 text-[16px] font-bold hover:bg-[#5A6268] transition-colors"
-                    href="/iels-lounge"
+                    href="https://ielsco.myr.id/membership/iels-lounge-free"
                   >
                     Get Free Access
                   </Link>
@@ -563,13 +563,13 @@ export default function IelsLounge() {
                   <div className="space-y-3">
                     <Link
                       className="bg-white text-[#2F4157] rounded-[15px] w-full block text-center py-4 text-[16px] font-bold hover:bg-[#F8F9FA] transition-colors"
-                      href="/iels-lounge"
+                      href="https://ielsco.myr.id/membership/iels-lounge-premium"
                     >
                       Choose Yearly Plan - Rp150.000
                     </Link>
                     <Link
                       className="bg-transparent text-white border-2 border-white rounded-[15px] w-full block text-center py-4 text-[16px] font-bold hover:bg-white hover:text-[#2F4157] transition-colors"
-                      href="/iels-lounge/premium"
+                      href="https://ielsco.myr.id/membership/iels-lounge-premium"
                     >
                       Choose Monthly Plan - Rp20.000
                     </Link>

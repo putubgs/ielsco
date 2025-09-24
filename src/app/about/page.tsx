@@ -13,6 +13,7 @@ export default function About() {
     "right"
   );
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isButtonAnimating, setIsButtonAnimating] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
@@ -35,12 +36,21 @@ export default function About() {
       }
 
       setIsAnimating(true);
+      setIsButtonAnimating(true);
       setActiveSection(newSection);
 
-      setTimeout(() => setIsAnimating(false), 300);
+      setTimeout(() => {
+        setIsAnimating(false);
+        setIsButtonAnimating(false);
+      }, 300);
     } else {
       setActiveSection(newSection);
     }
+  };
+
+  const getActiveIndex = () => {
+    const sections: ActiveSection[] = ["vision", "curriculum", "impact"];
+    return sections.indexOf(activeSection);
   };
 
   const onTouchStart = (e: React.TouchEvent) => {
@@ -349,13 +359,24 @@ export default function About() {
         </div>
         <div className="w-full">
           <div className="block sm:hidden">
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-1">
-              <div className="grid grid-cols-3 gap-1">
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-1 relative">
+              {/* Animated Background */}
+              <div
+                className={`absolute top-1 bottom-1 bg-[#E56668] rounded-xl shadow-lg transition-transform duration-300 ease-in-out ${
+                  isButtonAnimating ? "opacity-80" : "opacity-100"
+                }`}
+                style={{
+                  width: "calc(33.333% - 2px)",
+                  transform: `translateX(${getActiveIndex() * 100}%)`,
+                }}
+              />
+
+              <div className="grid grid-cols-3 gap-1 relative z-10">
                 <button
                   onClick={() => handleSectionChange("vision")}
-                  className={`py-3 px-2 rounded-xl text-[14px] font-medium transition-all duration-300 ${
+                  className={`py-3 px-2 rounded-xl text-[14px] font-medium transition-colors duration-300 ${
                     activeSection === "vision"
-                      ? "bg-[#E56668] text-white shadow-lg"
+                      ? "text-white"
                       : "text-white/80 hover:text-white hover:bg-white/20"
                   }`}
                 >
@@ -363,9 +384,9 @@ export default function About() {
                 </button>
                 <button
                   onClick={() => handleSectionChange("curriculum")}
-                  className={`py-3 px-2 rounded-xl text-[14px] font-medium transition-all duration-300 ${
+                  className={`py-3 px-2 rounded-xl text-[14px] font-medium transition-colors duration-300 ${
                     activeSection === "curriculum"
-                      ? "bg-[#E56668] text-white shadow-lg"
+                      ? "text-white"
                       : "text-white/80 hover:text-white hover:bg-white/20"
                   }`}
                 >
@@ -373,9 +394,9 @@ export default function About() {
                 </button>
                 <button
                   onClick={() => handleSectionChange("impact")}
-                  className={`py-3 px-2 rounded-xl text-[14px] font-medium transition-all duration-300 ${
+                  className={`py-3 px-2 rounded-xl text-[14px] font-medium transition-colors duration-300 ${
                     activeSection === "impact"
-                      ? "bg-[#E56668] text-white shadow-lg"
+                      ? "text-white"
                       : "text-white/80 hover:text-white hover:bg-white/20"
                   }`}
                 >

@@ -9,8 +9,9 @@ import SearchIcon from "@mui/icons-material/Search";
 import CancelIcon from "@mui/icons-material/Cancel";
 import EventIcon from "@mui/icons-material/Event";
 import EventCard from "@/components/events/EventCard";
-import EventPagination from "@/components/events/EventPagination";
+import Pagination from "@/components/Pagination";
 import { eventsData } from "@/app/data/events";
+import { generateSlug } from "@/utils/slug";
 import { useState, useMemo } from "react";
 
 export default function Events() {
@@ -243,7 +244,7 @@ export default function Events() {
                     Register Now
                   </Link>
                   <Link
-                    href=""
+                    href={`/events/${generateSlug(upcomingEvent.title)}`}
                     className="border-2 border-white text-white rounded-[15px] px-6 py-3 text-center font-semibold"
                   >
                     Read More
@@ -306,7 +307,7 @@ export default function Events() {
                     </p>
                     <div className="flex gap-5 pt-6">
                       <Link
-                        href=""
+                        href={`/events/${generateSlug(upcomingEvent.title)}`}
                         className="border-1 border-white rounded-[20px] px-2 py-1"
                       >
                         Read More
@@ -397,7 +398,7 @@ export default function Events() {
                 ))}
               </div>
 
-              <EventPagination
+              <Pagination
                 pageCount={totalPages}
                 onPageChange={handlePageChange}
                 currentPage={currentPage}
@@ -419,7 +420,7 @@ export default function Events() {
                 ))}
               </div>
 
-              <EventPagination
+              <Pagination
                 pageCount={totalPages}
                 onPageChange={handlePageChange}
                 currentPage={currentPage}

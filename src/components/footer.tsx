@@ -73,19 +73,19 @@ export default function Footer() {
         </div>
         <div className="flex flex-col gap-2 lg:gap-3">
           <Link
-            href="#"
+            href="/about"
             className="hover:underline transition-all duration-200 text-sm lg:text-base"
           >
             About us
           </Link>
           <Link
-            href="#"
+            href="/stories"
             className="hover:underline transition-all duration-200 text-sm lg:text-base"
           >
-            Blog
+            Our Stories
           </Link>
           <Link
-            href="#"
+            href="/events"
             className="hover:underline transition-all duration-200 text-sm lg:text-base"
           >
             Events & Programs
@@ -108,8 +108,9 @@ export default function Footer() {
           <p className="text-sm lg:text-base">
             WhatsApp:{" "}
             <Link
-              href="#"
+              href="https://wa.me/6285190312426"
               className="underline hover:opacity-70 transition-opacity break-all"
+              target="_blank"
             >
               0851 9031 2426
             </Link>
@@ -117,7 +118,7 @@ export default function Footer() {
           <p className="text-sm lg:text-base">
             Gmail:{" "}
             <Link
-              href="#"
+              href="mailto:iels.community@gmail.com"
               className="underline hover:opacity-70 transition-opacity break-all"
             >
               iels.community@gmail.com

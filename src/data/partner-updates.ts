@@ -4,10 +4,7 @@ export interface PartnerUpdate {
   description: string;
   image: string;
   category: string;
-  author: {
-    name: string;
-    avatar: string;
-  };
+  link: string;
 }
 
 export const partnerUpdatesData: PartnerUpdate[] = [
@@ -18,10 +15,7 @@ export const partnerUpdatesData: PartnerUpdate[] = [
   //     "IELS proudly announces a strategic partnership with leading educational institutions worldwide, opening new opportunities for international learning experiences and cultural exchange programs.",
   //   image: "/images/contents/events/event-poster-1.png",
   //   category: "Strategic Partnership",
-  //   author: {
-  //     name: "IELS Partners",
-  //     avatar: "/images/contents/general/iels_circle.png",
-  //   },
+  //   link: "/partnerships/global-education-network",
   // },
   // {
   //   id: "2",
@@ -30,10 +24,7 @@ export const partnerUpdatesData: PartnerUpdate[] = [
   //     "Our corporate training programs are now available in 15+ countries, helping professionals worldwide enhance their English communication skills for career advancement and global opportunities.",
   //   image: "/images/contents/events/event-poster-2.png",
   //   category: "Corporate Expansion",
-  //   author: {
-  //     name: "IELS Partners",
-  //     avatar: "/images/contents/general/iels_circle.png",
-  //   },
+  //   link: "/programs/corporate-training-expansion",
   // },
   // {
   //   id: "3",
@@ -42,10 +33,7 @@ export const partnerUpdatesData: PartnerUpdate[] = [
   //     "Collaborating with Skilio to launch an innovative remote work bootcamp, preparing Indonesian youth for digital careers with comprehensive English communication training and job placement support.",
   //   image: "/images/contents/events/event-poster-1.png",
   //   category: "Collaboration",
-  //   author: {
-  //     name: "IELS Partners",
-  //     avatar: "/images/contents/general/iels_circle.png",
-  //   },
+  //   link: "/collaborations/iels-skilio-bootcamp",
   // },
   // {
   //   id: "4",
@@ -54,10 +42,7 @@ export const partnerUpdatesData: PartnerUpdate[] = [
   //     "IELS partners with top universities across Southeast Asia to provide English preparation programs for international students, ensuring smooth transitions to global academic environments.",
   //   image: "/images/contents/events/event-poster-2.png",
   //   category: "University Partnership",
-  //   author: {
-  //     name: "IELS Partners",
-  //     avatar: "/images/contents/general/iels_circle.png",
-  //   },
+  //   link: "/partnerships/university-program",
   // },
   // {
   //   id: "5",
@@ -66,10 +51,7 @@ export const partnerUpdatesData: PartnerUpdate[] = [
   //     "New partnerships with leading tech companies to provide specialized English training for software developers, data scientists, and digital professionals seeking global career opportunities.",
   //   image: "/images/contents/events/event-poster-1.png",
   //   category: "Industry Collaboration",
-  //   author: {
-  //     name: "IELS Partners",
-  //     avatar: "/images/contents/general/iels_circle.png",
-  //   },
+  //   link: "/collaborations/tech-industry-initiative",
   // },
   // {
   //   id: "6",
@@ -78,9 +60,6 @@ export const partnerUpdatesData: PartnerUpdate[] = [
   //     "Launching our Global Ambassador Program in partnership with international organizations, creating opportunities for IELS graduates to represent the program worldwide and mentor new learners.",
   //   image: "/images/contents/events/event-poster-2.png",
   //   category: "Ambassador Program",
-  //   author: {
-  //     name: "IELS Partners",
-  //     avatar: "/images/contents/general/iels_circle.png",
-  //   },
+  //   link: "/programs/global-ambassador",
   // },
 ];

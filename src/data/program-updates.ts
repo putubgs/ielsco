@@ -4,10 +4,7 @@ export interface ProgramUpdate {
   description: string;
   image: string;
   category: string;
-  author: {
-    name: string;
-    avatar: string;
-  };
+  link: string;
 }
 
 export const programUpdatesData: ProgramUpdate[] = [
@@ -18,10 +15,7 @@ export const programUpdatesData: ProgramUpdate[] = [
   //     "Introducing our enhanced monthly program with advanced learning modules, expert mentorship sessions, and collaborative projects designed to accelerate your English proficiency journey.",
   //   image: "/images/contents/events/event-poster-1.png",
   //   category: "Program Launch",
-  //   author: {
-  //     name: "IELS Team",
-  //     avatar: "/images/contents/general/iels_circle.png",
-  //   },
+  //   link: "/programs/iels-circle-monthly",
   // },
   // {
   //   id: "2",
@@ -30,10 +24,7 @@ export const programUpdatesData: ProgramUpdate[] = [
   //     "Join our comprehensive grammar workshop series featuring interactive lessons, real-world applications, and personalized feedback to master complex English structures.",
   //   image: "/images/contents/events/event-poster-2.png",
   //   category: "Workshop",
-  //   author: {
-  //     name: "IELS Team",
-  //     avatar: "/images/contents/general/iels_circle.png",
-  //   },
+  //   link: "/workshops/advanced-grammar-series",
   // },
   // {
   //   id: "3",
@@ -42,10 +33,7 @@ export const programUpdatesData: ProgramUpdate[] = [
   //     "Our flagship Step Up program now includes industry-specific modules, career coaching sessions, and direct connections with global employers seeking English-proficient talent.",
   //   image: "/images/contents/events/event-poster-1.png",
   //   category: "Curriculum Update",
-  //   author: {
-  //     name: "IELS Team",
-  //     avatar: "/images/contents/general/iels_circle.png",
-  //   },
+  //   link: "/programs/step-up-enhanced-curriculum",
   // },
   // {
   //   id: "4",
@@ -54,10 +42,7 @@ export const programUpdatesData: ProgramUpdate[] = [
   //     "Launching our intensive 4-week speaking confidence bootcamp designed to help participants overcome speaking anxiety and develop natural conversation skills through immersive practice.",
   //   image: "/images/contents/events/event-poster-2.png",
   //   category: "Bootcamp",
-  //   author: {
-  //     name: "IELS Team",
-  //     avatar: "/images/contents/general/iels_circle.png",
-  //   },
+  //   link: "/programs/speaking-confidence-bootcamp",
   // },
   // {
   //   id: "5",
@@ -66,10 +51,7 @@ export const programUpdatesData: ProgramUpdate[] = [
   //     "Experience our newly upgraded learning platform with AI-powered pronunciation feedback, personalized learning paths, and real-time progress tracking for optimal learning outcomes.",
   //   image: "/images/contents/events/event-poster-1.png",
   //   category: "Platform Update",
-  //   author: {
-  //     name: "IELS Team",
-  //     avatar: "/images/contents/general/iels_circle.png",
-  //   },
+  //   link: "/platform/digital-learning-upgrade",
   // },
   // {
   //   id: "6",
@@ -78,9 +60,6 @@ export const programUpdatesData: ProgramUpdate[] = [
   //     "Our mentorship program now connects learners with industry professionals worldwide, providing career guidance, networking opportunities, and real-world English application scenarios.",
   //   image: "/images/contents/events/event-poster-2.png",
   //   category: "Program Expansion",
-  //   author: {
-  //     name: "IELS Team",
-  //     avatar: "/images/contents/general/iels_circle.png",
-  //   },
+  //   link: "/programs/mentorship-expansion",
   // },
 ];

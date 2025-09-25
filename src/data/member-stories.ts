@@ -16,6 +16,8 @@ export interface MemberStory {
   };
 }
 
+// NOTE: The content MUST use HTML tags for formatting
+// use https://text-html.com/ for content formatting
 export const memberStoriesData: MemberStory[] = [
 //   {
 //     id: "1",

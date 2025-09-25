@@ -14,6 +14,8 @@ export interface EventData {
   };
 }
 
+// NOTE: The description MUST use HTML tags for formatting
+// use https://text-html.com/ for description formatting
 export const eventsData: EventData[] = [
 //   {
 //     id: "1",

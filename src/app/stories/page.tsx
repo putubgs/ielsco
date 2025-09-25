@@ -356,9 +356,11 @@ export default function News() {
                             : news.description}
                         </p>
                       </div>
-                      <button className="border-1 border-[#2F4157] cursor-pointer rounded-[15px] sm:rounded-[20px] px-2 sm:px-3 py-1 sm:py-1.5 w-fit mt-4 sm:mt-6 lg:mt-8 hover:bg-[#2F4157] hover:text-white transition-colors text-[#2F4157] text-sm sm:text-base">
-                        Read More
-                      </button>
+                      <Link href={news.link}>
+                        <button className="border-1 border-[#2F4157] cursor-pointer rounded-[15px] sm:rounded-[20px] px-2 sm:px-3 py-1 sm:py-1.5 w-fit mt-4 sm:mt-6 lg:mt-8 hover:bg-[#2F4157] hover:text-white transition-colors text-[#2F4157] text-sm sm:text-base">
+                          Read More
+                        </button>
+                      </Link>
                     </div>
                   )}
                 </div>

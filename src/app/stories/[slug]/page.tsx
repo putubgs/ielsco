@@ -6,6 +6,7 @@ import { partnerUpdatesData } from "@/data/partner-updates";
 import { memberStoriesData } from "@/data/member-stories";
 import { generateSlug } from "@/utils/slug";
 import { Metadata } from "next";
+import Link from "next/link";
 
 interface DetailStoriesPageProps {
   params: Promise<{ slug: string }>;
@@ -160,7 +161,7 @@ export default async function DetailStoriesPage({
                   {/* Category Label */}
                   <div className="flex flex-col gap-1 sm:gap-2">
                     <p className="text-red-500 font-bold text-xs uppercase tracking-wide">
-                      Program Updates
+                    {randomProgramUpdate.category}
                     </p>
                     <p className="font-bold text-lg sm:text-xl lg:text-[24px] text-[#2F4157] leading-tight">
                       {randomProgramUpdate.title}
@@ -174,9 +175,9 @@ export default async function DetailStoriesPage({
                         : randomProgramUpdate.description}
                     </p>
                   </div>
-                  <button className="border-1 border-[#2F4157] cursor-pointer rounded-[15px] px-2 py-1 w-fit mt-2 sm:mt-4 hover:bg-[#2F4157] hover:text-white transition-colors text-[#2F4157] text-sm">
+                  <Link href={randomProgramUpdate.link} className="border-1 border-[#2F4157] cursor-pointer rounded-[15px] px-2 py-1 w-fit mt-2 sm:mt-4 hover:bg-[#2F4157] hover:text-white transition-colors text-[#2F4157] text-sm">
                     Read More
-                  </button>
+                  </Link>
                 </div>
               )}
 
@@ -197,7 +198,7 @@ export default async function DetailStoriesPage({
                   {/* Category Label */}
                   <div className="flex flex-col gap-1 sm:gap-2">
                     <p className="text-red-500 font-bold text-xs uppercase tracking-wide">
-                      Partner Updates
+                    {randomPartnerUpdate.category}
                     </p>
                     <p className="font-bold text-lg sm:text-xl lg:text-[24px] text-[#2F4157] leading-tight">
                       {randomPartnerUpdate.title}
@@ -211,9 +212,9 @@ export default async function DetailStoriesPage({
                         : randomPartnerUpdate.description}
                     </p>
                   </div>
-                  <button className="border-1 border-[#2F4157] cursor-pointer rounded-[15px] px-2 py-1 w-fit mt-2 sm:mt-4 hover:bg-[#2F4157] hover:text-white transition-colors text-[#2F4157] text-sm">
+                  <Link href={randomPartnerUpdate.link} className="border-1 border-[#2F4157] cursor-pointer rounded-[15px] px-2 py-1 w-fit mt-2 sm:mt-4 hover:bg-[#2F4157] hover:text-white transition-colors text-[#2F4157] text-sm">
                     Read More
-                  </button>
+                  </Link>
                 </div>
               )}
 

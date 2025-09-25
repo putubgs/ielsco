@@ -289,11 +289,11 @@ export default function Home() {
               </p>
               <div className="hidden sm:block"></div>
             </div>
-            <div className="flex flex-col sm:flex-row overflow-x-auto gap-6 lg:gap-12 pb-8 lg:mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-12 pb-8">
               {[1, 2, 3].map((item) => (
                 <div
                   key={item}
-                  className="bg-white rounded-2xl p-6 shadow-lg min-w-[280px] sm:max-w-sm flex flex-col flex-shrink-0"
+                  className="bg-white rounded-2xl p-6 shadow-lg w-full flex flex-col"
                 >
                   <p className="text-gray-800 text-[14px] lg:text-[16px] leading-tight mb-6">
                     IELS taught me that learning English doesn&apos;t have to be

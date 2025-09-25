@@ -243,9 +243,7 @@ export default function Events() {
                 </div>
 
                 <p className="text-white/90 text-center mb-6 leading-relaxed">
-                  {upcomingEvent.description.length > 215
-                    ? `${upcomingEvent.description.substring(0, 215)}...`
-                    : upcomingEvent.description}
+                  {upcomingEvent.seo.meta_description}
                 </p>
 
                 <div className="flex flex-col gap-3">
@@ -314,9 +312,7 @@ export default function Events() {
                     <p>Upcoming Events</p>
                     <p className="text-[32px]">{upcomingEvent.title}</p>
                     <p className="w-[50vm]">
-                      {upcomingEvent.description.length > 215
-                        ? `${upcomingEvent.description.substring(0, 215)}...`
-                        : upcomingEvent.description}
+                      {upcomingEvent.seo.meta_description}
                     </p>
                     <div className="flex gap-5 pt-6">
                       <Link

@@ -5,9 +5,45 @@ import { programUpdatesData } from "@/data/program-updates";
 import { partnerUpdatesData } from "@/data/partner-updates";
 import { memberStoriesData } from "@/data/member-stories";
 import { generateSlug } from "@/utils/slug";
+import { Metadata } from "next";
 
 interface DetailStoriesPageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: DetailStoriesPageProps): Promise<Metadata> {
+  const { slug } = await params;
+
+  const memberStory = memberStoriesData.find(
+    (story) => generateSlug(story.title) === slug
+  );
+
+  if (!memberStory) {
+    return {
+      title: "Story Not Found - IELS",
+      description: "The requested story could not be found.",
+    };
+  }
+
+  return {
+    title: memberStory.seo.meta_title,
+    description: memberStory.seo.meta_description,
+    keywords: memberStory.seo.meta_keywords,
+    openGraph: {
+      title: memberStory.seo.meta_title,
+      description: memberStory.seo.meta_description,
+      images: [memberStory.bannerImage],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: memberStory.seo.meta_title,
+      description: memberStory.seo.meta_description,
+      images: [memberStory.bannerImage],
+    },
+  };
 }
 
 export default async function DetailStoriesPage({

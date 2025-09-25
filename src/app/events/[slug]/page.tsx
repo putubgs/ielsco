@@ -5,6 +5,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { eventsData } from "@/data/events";
 import { generateSlug } from "@/utils/slug";
+import { Metadata } from "next";
 
 // Function to find event by slug
 function findEventBySlug(slug: string) {
@@ -15,6 +16,39 @@ interface EventDetailPageProps {
   params: Promise<{
     slug: string;
   }>;
+}
+
+export async function generateMetadata({
+  params,
+}: EventDetailPageProps): Promise<Metadata> {
+  const { slug } = await params;
+
+  const event = findEventBySlug(slug);
+
+  if (!event) {
+    return {
+      title: "Event Not Found - IELS",
+      description: "The requested event could not be found.",
+    };
+  }
+
+  return {
+    title: event.seo.meta_title,
+    description: event.seo.meta_description,
+    keywords: event.seo.meta_keywords,
+    openGraph: {
+      title: event.seo.meta_title,
+      description: event.seo.meta_description,
+      images: [event.poster],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: event.seo.meta_title,
+      description: event.seo.meta_description,
+      images: [event.poster],
+    },
+  };
 }
 
 export default async function EventDetailPage({
@@ -88,9 +122,10 @@ export default async function EventDetailPage({
               </h1>
 
               {/* Event Description */}
-              <p className="text-lg text-[#2F4157] mb-8 leading-relaxed">
-                {event.description}
-              </p>
+              <div
+                className="w-full text-justify text-sm sm:text-base leading-relaxed [&_ul]:list-disc [&_ul]:ml-6 [&_ol]:list-decimal [&_ol]:ml-6 [&_li]:mb-1 pb-12"
+                dangerouslySetInnerHTML={{ __html: event.description }}
+              />
 
               {/* Action Buttons */}
               <div className="flex">

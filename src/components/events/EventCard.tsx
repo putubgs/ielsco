@@ -35,9 +35,7 @@ export default function EventCard({ event, onEventClick }: EventCardProps) {
           </p>
         </Link>
         <p className="text-[15px]">
-          {event.description.length > 215
-            ? `${event.description.substring(0, 215)}...`
-            : event.description}
+          {event.seo.meta_description}
         </p>
       </div>
       <Link

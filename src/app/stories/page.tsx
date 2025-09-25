@@ -313,7 +313,7 @@ export default function News() {
                             {news.title}
                           </h3>
                           <p className="text-sm sm:text-[15px] text-[#2F4157] leading-relaxed mb-3 sm:mb-4">
-                            {news.cardContent}
+                            {news.seo.meta_description}
                           </p>
                           <Link
                             href={`/stories/${generateSlug(news.title)}`}

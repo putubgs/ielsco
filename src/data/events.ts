@@ -163,7 +163,7 @@ export const eventsData: EventData[] = [
     poster: "/images/contents/events/step-up-event.jpeg",
     description:
       "Develop academic writing skills including essay structure, research methodology, citation formats, and critical analysis techniques. This workshop provides hands-on experience with argumentative essays, research papers, literature reviews, and thesis development while mastering APA, MLA, and Chicago citation styles for scholarly excellence.",
-    registrationLink: "/register/writing-workshop",
+    registrationLink: "https://bit.ly/StepUpVol2Regist",
     startDate: "2025-10-12",
     registrationTimeDeadline: "21:00",
     registrationDateDeadline: "2025-09-25",

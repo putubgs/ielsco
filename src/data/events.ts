@@ -19,161 +19,344 @@ export interface EventData {
 export const eventsData: EventData[] = [
   {
     id: "1",
-    title: "IELS Step Up x Skilio",
-    poster: "/images/contents/events/event-poster-1.png",
+    title: "Step Up! IELS x Skilio: Your Fast Track to International Careers!",
+    poster: "/images/contents/events/step-up! iels x skilio.png",
     description: `<div>
-<div><strong>Join a transformative 8-week journey with IELS Circle, a dynamic and inclusive English learning community that brings together passionate individuals eager to grow in their language skills.</strong></div>
-<div>&nbsp;</div>
-<div>Whether you're a beginner or looking to polish your English fluency, this program is designed to support your progress through consistent engagement, meaningful conversations, and collaborative activities.</div>
-<div>&nbsp;</div>
-<div><strong>What You'll Experience:</strong></div>
-<ul>
-<li>Interactive learning sessions with expert instructors</li>
-<li>Peer-to-peer collaboration and feedback</li>
-<li>Real-world conversation practice</li>
-<li>Personalized learning paths</li>
-<li>Cultural exchange opportunities</li>
-</ul>
-<div>&nbsp;</div>
-<div><strong>Program Highlights:</strong></div>
-<ol>
-<li>Weekly group sessions focusing on practical English usage</li>
-<li>One-on-one mentorship with experienced speakers</li>
-<li>Project-based learning with real-world applications</li>
-<li>Networking opportunities with global professionals</li>
-</ol>
-<div>&nbsp;</div>
-<div>This program is perfect for anyone looking to enhance their English communication skills in a supportive, international environment.</div>
-</div>`,
+  <div>📅 Program Timeline: 5 - 27 April 2025
+  <div>&nbsp;</div>
+  <div><strong>Join <em>Step Up! IELS x Skilio</em> — a focused 5-week English bootcamp series for professionals. Learn directly from industry experts, get one-on-one mentoring, and finish ready for real remote work opportunities.</strong></div>
+  <div>&nbsp;</div>
+  <div>This bootcamp is designed for working professionals who want fast, practical improvements: clearer communication, stronger interview skills, and a polished professional profile that opens doors to remote internships and international roles.</div>
+  <div>&nbsp;</div>
+  <div><strong>What You'll Experience:</strong></div>
+  <ul>
+    <li>Expert-led interactive sessions tailored for professional contexts</li>
+    <li>One-on-one mentoring to sharpen your speaking and career story</li>
+    <li>Practical CV and LinkedIn building workshops</li>
+    <li>Interview practice with feedback and real-case simulations</li>
+    <li>Project tasks that replicate workplace communication</li>
+  </ul>
+  <div>&nbsp;</div>
+  <div><strong>Program Highlights:</strong></div>
+  <ol>
+    <li>Five-week intensive format with clear weekly goals</li>
+    <li>Mentorship from experienced professionals and language coaches</li>
+    <li>Hands-on sessions focused on remote work communication and collaboration</li>
+    <li>Final assessment and interview preparation with direct feedback</li>
+  </ol>
+  <div>&nbsp;</div>
+  <div><strong>Graduation Outcome:</strong></div>
+  <div>Graduates receive priority consideration for remote internship opportunities offered by Skilio—real placements to apply your skills and start building global experience.</div>
+</div>
+  <div>&nbsp;</div>
+ <a href="https://www.instagram.com/p/DG5MJscBQ8W/?utm_source=ig_web_copy_link&igsh=MWtrZnI5M3BwbmRpYg==" target="_blank" 
+   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
+   Read More
+</a>`,
     registrationLink: "https://bit.ly/StepUp-R",
-    startDate: "2025-04-05",
+    startDate: "2025-03-05",
     registrationTimeDeadline: "23:59",
-    registrationDateDeadline: "2025-03-27",
+    registrationDateDeadline: "2025-04-5",
     seo: {
       meta_title:
-        "IELS Step Up x Skilio - Transformative English Learning Program",
+        "Step Up! IELS x Skilio - 5-Week English Bootcamp for Professionals",
       meta_description:
-        "Join a transformative 8-week journey with IELS Circle, a dynamic and inclusive English learning community that brings together passionate individuals eager to grow in their language skills.",
+        "Step Up! IELS x Skilio is a 5-week English bootcamp designed for professionals. Learn directly from experts, build your CV and LinkedIn, practice interviews, and graduate with opportunities for remote internships from Skilio.",
       meta_keywords:
-        "IELS, Step Up, Skilio, English learning, language skills, transformative journey, community learning",
+        "IELS, Step Up, Skilio, English bootcamp, professional English, career mentoring, CV building, LinkedIn profile, interview skills, remote internship, work abroad",
     },
   },
   {
     id: "2",
-    title: "IELS Circle: Community Learning Experience",
-    poster: "/images/contents/events/event-poster-2.png",
+    title: "IELS Circle: Transform Your English Skills in 8 Weeks",
+    poster: "/images/contents/events/iels-circle.webp",
     description: `<div>
-<div><strong>Join our vibrant community of English learners and enhance your language skills through interactive sessions, peer learning, and expert guidance in a supportive environment.</strong></div>
+  <div>📅 Program Timeline: 13 January - 8 March 2025</div>
+  <div>&nbsp;</div>
+  <div><strong><em>IELS Circle</em> — Transform Your English Skills in 8 Weeks. Join an active English community with daily activities, live Zoom sessions, and unlimited chances to practice in a safe, supportive space.</strong></div>
+  <div>&nbsp;</div>
+  <div>Whether you’re starting small or aiming big, IELS Circle gives you the environment you need: daily practice, peer support, and structured activities that help you stay consistent while having fun.</div>
+  <div>&nbsp;</div>
+  <div><strong>What You'll Experience:</strong></div>
+  <ul>
+    <li>Daily English practice activities within the community</li>
+    <li>Weekly Zoom sessions for interactive learning</li>
+    <li>A safe space to speak without fear of mistakes</li>
+    <li>Collaboration, peer feedback, and encouragement</li>
+    <li>Connection with 500+ English learners around the world</li>
+  </ul>
+  <div>&nbsp;</div>
+  <div><strong>Program Highlights:</strong></div>
+  <ol>
+    <li>8 weeks of community-driven structured learning</li>
+    <li>Consistent daily practice to build habits</li>
+    <li>Guided Zoom activities with mentors and peers</li>
+    <li>Access to 100+ curated English resources from IELS</li>
+  </ol>
+  <div>&nbsp;</div>
+  <div><strong>Community Impact:</strong></div>
+  <div>By joining IELS Circle, you don’t just study — you connect, grow, and elevate your confidence in using English for study, work, and global opportunities.</div>
+</div>
 <div>&nbsp;</div>
-<div>This immersive experience includes daily conversation practice, weekly themed discussions, monthly cultural exchange events, and personalized learning paths tailored to your specific goals and proficiency level.</div>
-<div>&nbsp;</div>
-<div><strong>Community Features:</strong></div>
-<ul>
-<li>Daily conversation practice sessions</li>
-<li>Weekly themed discussions on current topics</li>
-<li>Monthly cultural exchange events</li>
-<li>Personalized learning paths</li>
-<li>Expert guidance and feedback</li>
-</ul>
-<div>&nbsp;</div>
-<div><strong>Learning Structure:</strong></div>
-<ol>
-<li>Morning warm-up sessions (15 minutes daily)</li>
-<li>Interactive group discussions (1 hour, 3x per week)</li>
-<li>One-on-one practice sessions (30 minutes weekly)</li>
-<li>Cultural exchange events (monthly)</li>
-<li>Progress assessment and feedback (bi-weekly)</li>
-</ol>
-<div>&nbsp;</div>
-<div>Perfect for learners who want to improve their English in a supportive, community-driven environment with regular practice and expert guidance.</div>
-</div>`,
+<a href="https://www.instagram.com/p/DECV1UghuuL/?utm_source=ig_web_copy_link&igsh=N2ZwdzM1d2hnaGkw" target="_blank"
+   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
+   Read More
+</a>`,
     registrationLink: "#",
-    startDate: "2025-06-15",
+    startDate: "2025-01-01",
     registrationTimeDeadline: "18:00",
-    registrationDateDeadline: "2025-06-10",
+    registrationDateDeadline: "2025-01-13",
     seo: {
       meta_title:
-        "IELS Circle: Community Learning Experience - English Learning Program",
+        "IELS Circle - Transform Your English Skills in 8 Weeks",
       meta_description:
-        "Join our vibrant community of English learners and enhance your language skills through interactive sessions, peer learning, and expert guidance in a supportive environment.",
+        "IELS Circle is an 8-week English learning community where you can practice daily, join weekly Zoom sessions, connect with 500+ learners, and access 100+ English resources. Build confidence and improve your English in a safe, supportive space.",
       meta_keywords:
-        "IELS, Circle, community learning, English learners, interactive sessions, peer learning, expert guidance, language skills",
+        "IELS, IELS Circle, English learning, English community, daily English practice, Zoom sessions, English resources, learn English, practice English, study English, improve English skills",
     },
   },
   {
     id: "3",
-    title: "IELS Workshop: Business English Mastery",
+    title: "IELS Insight Series: Study Abroad, Grow Beyond – Global UGRAD",
     poster: "/images/contents/events/event-poster-1.png",
-    description:
-      "Master business English communication skills including presentations, negotiations, and professional writing. Perfect for career advancement and professional development. This intensive workshop covers advanced business vocabulary, cross-cultural communication strategies, email etiquette, meeting facilitation techniques, and executive-level presentation skills that will set you apart in the global marketplace.",
+    description: `<div>
+  <div>📅 Event Date: Saturday, 2 August 2025</div>
+  <div>⏰ Time: 09.00 – 12.00 GMT+7</div>
+  <div>&nbsp;</div>
+  <div><strong><em>IELS Insight Series: Study Abroad, Grow Beyond – Global UGRAD.</em> Discover how you can study in the U.S. for one semester with a fully funded scholarship.</strong></div>
+  <div>&nbsp;</div>
+  <div>Global UGRAD is a U.S. government-funded program that covers tuition, housing, and living costs — all without requiring a perfect GPA or pre-submitted TOEFL score. This could be your chance to experience world-class education abroad at zero cost.</div>
+  <div>&nbsp;</div>
+  <div><strong>Speakers:</strong></div>
+  <ul>
+    <li><strong>Nyiur Salsabila Frida</strong> — Global UGRAD 2024 Awardee at Southern Illinois University Edwardsville</li>
+    <li><strong>Muhammad Zaki Fazansyah</strong> — Global UGRAD 2024 Awardee at University of South Dakota</li>
+  </ul>
+  <div>&nbsp;</div>
+  <div><strong>What You'll Learn:</strong></div>
+  <ul>
+    <li>Step-by-step guidance on preparing your application</li>
+    <li>Insider tips directly from past Global UGRAD awardees</li>
+    <li>First-hand stories of studying and living in the U.S.</li>
+    <li>How to stand out even without a perfect GPA or TOEFL score</li>
+  </ul>
+  <div>&nbsp;</div>
+  <div><strong>Why Join:</strong></div>
+  <div>This session is your shortcut to understanding one of the most accessible yet underrated fully funded scholarships for Indonesian students. Learn directly from those who made it and start your journey to studying abroad.</div>
+</div>
+<div>&nbsp;</div>
+<a href="https://www.instagram.com/p/DMScTRIhOcw/?utm_source=ig_web_copy_link&igsh=MXRlbTQ4djBmYTYxNQ==" target="_blank"
+   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
+   Read More
+</a>`,
     registrationLink: "/register/business-english",
     startDate: "2025-07-10",
     registrationTimeDeadline: "17:00",
     registrationDateDeadline: "2025-07-05",
     seo: {
       meta_title:
-        "IELS Workshop: Business English Mastery - Professional Development",
+        "IELS Insight Series: Study Abroad, Grow Beyond – Global UGRAD",
       meta_description:
-        "Master business English communication skills including presentations, negotiations, and professional writing. Perfect for career advancement and professional development.",
+        "Learn how to apply for the Global UGRAD scholarship — a fully funded program that allows Indonesian students to study in the U.S. for one semester. Hear directly from 2024 awardees about applications, tips, and life abroad.",
       meta_keywords:
-        "IELS, business English, professional development, presentations, negotiations, professional writing, career advancement",
+        "IELS, IELS Insight Series, Global UGRAD, study abroad, fully funded scholarship, U.S. education, exchange program, Indonesian students, academic opportunities, international experience",
     },
   },
   {
     id: "4",
-    title: "IELS Speaking Club: Confidence Building",
+    title: "Dare to Dream: Take-Off to 3 Continents!",
     poster: "/images/contents/events/event-poster-2.png",
-    description:
-      "Build confidence in English speaking through structured practice sessions, public speaking exercises, and real-world conversation scenarios. Our proven methodology includes pronunciation coaching, fluency development, accent reduction techniques, and practical exercises that simulate real-world situations like job interviews, business meetings, and social interactions.",
+    description: `<div>
+  <div>📅 Event Dates: 23 August, 30 August, and 6 September 2025</div>
+  <div>⏰ Time: 09.00 GMT+7</div>
+  <div>&nbsp;</div>
+  <div><strong><em>Dare to Dream: Take-Off to 3 Continents!</em> Your complete guide to studying abroad with fully funded scholarships in Japan, Australia, Hungary, and Turkey.</strong></div>
+  <div>&nbsp;</div>
+  <div>Confused about how to study abroad? This series will walk you step-by-step through top scholarships that can take you across three continents — all fully funded.</div>
+  <div>&nbsp;</div>
+  <div><strong>Scholarship Focus:</strong></div>
+  <ul>
+    <div>Japan — MEXT</li>
+    <div>Australia — AAS & AIYEP</li>
+    <div>Hungary — Stipendium Hungaricum</li>
+    <div>Turkey — Türkiye Bursları</li>
+  </ul>
+  <div>&nbsp;</div>
+  <div><strong>What You'll Get:</strong></div>
+  <ul>
+    <li>📘 Free IELTS preparation e-book</li>
+    <li>🎓 Scholarship clinic & consultation with mentors</li>
+    <li>🎤 Mock interview practice sessions</li>
+    <li>📝 Essay proofreading by real mentors</li>
+  </ul>
+  <div>&nbsp;</div>
+  <div><strong>Event Schedule:</strong></div>
+  <ol>
+    <li><strong>23 August</strong> — Departure Day: Study Abroad 101</li>
+    <li><strong>30 August</strong> — Scholarship Clinics: Deep Dive into 4 Countries</li>
+    <li><strong>6 September</strong> — Arrival Day: Application Masterclass</li>
+  </ol>
+  <div>&nbsp;</div>
+  <div><strong>Why Join:</strong></div>
+  <div>This isn’t just theory — you’ll get practical guidance, real feedback, and tailored support to help you succeed in your scholarship applications and take off toward your global dreams.</div>
+</div>
+<div>&nbsp;</div>
+<a href="https://www.instagram.com/p/DM5BEqGBCZe/?utm_source=ig_web_copy_link&igsh=MXUzNnBpZnI5ODFxag==" target="_blank"
+   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
+   Read More
+</a>`,
     registrationLink: "/register/speaking-club",
     startDate: "2025-08-20",
     registrationTimeDeadline: "20:00",
     registrationDateDeadline: "2025-08-15",
     seo: {
       meta_title:
-        "IELS Speaking Club: Confidence Building - English Speaking Practice",
+        "Dare to Dream: Take-Off to 3 Continents | Fully Funded Scholarships",
       meta_description:
-        "Build confidence in English speaking through structured practice sessions, public speaking exercises, and real-world conversation scenarios.",
+        "Confused about studying abroad? Join Dare to Dream: Take-Off to 3 Continents and learn step-by-step guidance for fully funded scholarships to Japan (MEXT), Australia (AAS & AIYEP), Hungary (Stipendium Hungaricum), and Turkey (Türkiye Bursları). Includes IELTS prep e-book, clinics, mock interviews, and essay proofreading.",
       meta_keywords:
-        "IELS, speaking club, confidence building, English speaking, practice sessions, public speaking, conversation scenarios",
+        "IELS, Dare to Dream, study abroad, scholarships, MEXT, AAS, AIYEP, Stipendium Hungaricum, Türkiye Bursları, IELTS prep, essay proofreading, mock interview, scholarship consultation",
     },
   },
   {
     id: "5",
-    title: "IELS Grammar Intensive: Basic to Advanced in 2 Hours",
-    poster: "/images/contents/events/event-poster-1.png",
-    description:
-      "Deep dive into advanced English grammar structures, complex sentence patterns, and nuanced language usage for advanced learners. This comprehensive course explores subjunctive mood, conditional sentences, passive voice variations, reported speech complexities, and stylistic choices that distinguish native-level proficiency from intermediate understanding.",
+    title: "IELS Grammar: Basic to Advanced in 2 Hours",
+    poster: "/images/contents/events/iels-grammar.jpg",
+    description: `<div>
+  <div>📅 Event Date: 21 December 2024</div>
+  <div>⏰ Time: 09.30 - 11.30 GMT+7</div>
+  <div>&nbsp;</div>
+  <div><strong><em>IELS Grammar</em> — Basic to Advanced in 2 Hours. A comprehensive hands-on workshop to sharpen your grammar foundation and take it to the next level.</strong></div>
+  <div>&nbsp;</div>
+  <div>Led by <strong>Arbadza Rido</strong>, EFL & ESL Teacher in South East Asia, this session is designed to help you gain clarity in grammar rules, apply them in real communication, and feel confident in academic, professional, and everyday contexts.</div>
+  <div>&nbsp;</div>
+  <div><strong>What You'll Learn:</strong></div>
+  <ul>
+    <li>Clear understanding of grammar rules and common mistakes</li>
+    <li>Pro-level tips for applying grammar in writing and speaking</li>
+    <li>Confidence boost for academic, professional, and social settings</li>
+    <li>FREE session materials and cheat sheets</li>
+  </ul>
+  <div>&nbsp;</div>
+  <div><strong>Program Highlights:</strong></div>
+  <ol>
+    <li>2-hour intensive grammar-focused workshop</li>
+    <li>Practical exercises to apply grammar in real use</li>
+    <li>Guided session with expert explanations and live Q&A</li>
+    <li>Free downloadable resources to support your learning</li>
+  </ol>
+  <div>&nbsp;</div>
+  <div><strong>Why Join:</strong></div>
+  <div>This isn’t just another grammar lecture. You’ll leave with practical tools, renewed confidence, and the ability to write and speak with clarity and accuracy.</div>
+</div>
+<div>&nbsp;</div>
+<a href="https://www.instagram.com/p/DDjgyPmB0pt/?utm_source=ig_web_copy_link&igsh=MWd5bWFneHB3cDFkYQ==" target="_blank"
+   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
+   Read More
+</a>`,
     registrationLink: "/register/grammar-intensive",
-    startDate: "2025-09-05",
+    startDate: "2024-12-01",
     registrationTimeDeadline: "19:00",
-    registrationDateDeadline: "2025-08-30",
+    registrationDateDeadline: "2023-12-21",
     seo: {
       meta_title:
-        "IELS Grammar Intensive: Advanced Structures - English Grammar Course",
+        "IELS Grammar: Basic to Advanced in 2 Hours | English Workshop",
       meta_description:
-        "Deep dive into advanced English grammar structures, complex sentence patterns, and nuanced language usage for advanced learners.",
+        "Master English grammar in just 2 hours with IELS! 🚀 Join Arbadza Rido, EFL & ESL Teacher in South East Asia, for a hands-on workshop covering grammar rules, writing & speaking tips, and free learning materials.",
       meta_keywords:
-        "IELS, grammar intensive, advanced structures, English grammar, complex sentences, nuanced language, advanced learners",
+        "IELS, grammar workshop, English grammar, grammar rules, advanced grammar, English for academic purposes, English for professionals, writing skills, speaking skills, grammar practice, English event",
     },
   },
   {
     id: "6",
     title: "Step Up! Your Career, Borderless",
     poster: "/images/contents/events/step-up-event.jpeg",
-    description:
-      "Develop academic writing skills including essay structure, research methodology, citation formats, and critical analysis techniques. This workshop provides hands-on experience with argumentative essays, research papers, literature reviews, and thesis development while mastering APA, MLA, and Chicago citation styles for scholarly excellence.",
-    registrationLink: "https://bit.ly/StepUpVol2Regist",
-    startDate: "2025-10-12",
-    registrationTimeDeadline: "21:00",
-    registrationDateDeadline: "2025-09-25",
+    description: `<div>
+  <div>📅 Program Timeline: 11 October - 25 November 2025</div>
+  <div>&nbsp;</div>
+  <div><strong><em>Step Up! Vol. 2.0 — Your Career, Borderless.</em> A 3-week transformative career bootcamp to prepare you for global and remote opportunities.</strong></div>
+  <div>&nbsp;</div>
+  <div>Want to land remote internships and get paid up to <strong>300 SGD/month</strong>? This program gives you the skills, mentorship, and portfolio you need to stand out in today’s competitive job market.</div>
+  <div>&nbsp;</div>
+  <div><strong>What You'll Experience:</strong></div>
+  <ul>
+    <li>2 interactive webinars with expert mentors</li>
+    <li>1:1 mentorship sessions for personalized guidance</li>
+    <li>Final Project: Career Map, CV & LinkedIn, Elevator Pitch Video</li>
+    <li>Certificate of completion</li>
+    <li>Exclusive access to IELS Lounge Premium</li>
+  </ul>
+  <div>&nbsp;</div>
+  <div><strong>Program Highlights:</strong></div>
+  <ol>
+    <li>3-week intensive career readiness journey</li>
+    <li>Personalized feedback from experienced mentors</li>
+    <li>Hands-on projects to build a global-ready portfolio</li>
+    <li>Affordable packages starting from 30K</li>
+  </ol>
+  <div>&nbsp;</div>
+  <div><strong>Why Join:</strong></div>
+  <div>Step Up! Vol. 2.0 isn’t just training — it’s your gateway to borderless opportunities. Get career-ready, grow your network, and unlock your chance to work globally.</div>
+  <div>&nbsp;</div>
+  <div>🚨 Don’t wait — registration closes on <strong>10 October 2025 at 23.59 GMT+7</strong>.</div>
+</div>
+<div>&nbsp;</div>
+<a href="https://www.instagram.com/p/DO3HtnngaDn/?utm_source=ig_web_copy_link&igsh=dHJxZTRib2QyZnNw" target="_blank"
+   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
+   Read More
+</a>`,
+    registrationLink: "https://forms.gle/WzidhZoT8YfgsJwx7",
+    startDate: "2025-10-11",
+    registrationTimeDeadline: "23:59",
+    registrationDateDeadline: "2025-10-10",
     seo: {
       meta_title:
-        "IELS Writing Workshop: Academic Excellence - Academic Writing Course",
+        "Step Up! Vol. 2.0 - Your Career, Borderless | IELS Career Bootcamp",
       meta_description:
-        "Develop academic writing skills including essay structure, research methodology, citation formats, and critical analysis techniques.",
+        "Step Up! Vol. 2.0 is a 3-week career bootcamp by IELS designed to help you secure remote internships and global opportunities. Join webinars, mentorship, and hands-on projects to build your CV, LinkedIn, and elevator pitch. Affordable packages start from 30K!",
       meta_keywords:
-        "IELS, writing workshop, academic excellence, academic writing, essay structure, research methodology, citation formats",
+        "IELS, Step Up, career bootcamp, remote internship, mentorship, CV building, LinkedIn profile, elevator pitch, global opportunities, professional English",
+    },
+  },
+  {
+    id: "7",
+    title: "Beyond Borders: Youth Skills That Conquer the World",
+    poster: "/images/contents/events/beyond-borders.webp",
+    description: `<div>
+  <div>📅 Event Date: Saturday, 30 August 2025</div>
+  <div>⏰ Time: 19.00 – 21.00 GMT+7</div>
+  <div>&nbsp;</div>
+  <div><strong><em>Beyond Borders: Youth Skills That Conquer the World</em> — A special collaboration between IELS and LuarSekolah to prepare young people for global opportunities.</strong></div>
+  <div>&nbsp;</div>
+  <div>🌍 Do you dream of working internationally but don’t know where to start? This event is your chance to discover how to build the skills and mindset that employers worldwide are looking for.</div>
+  <div>&nbsp;</div>
+  <div><strong>What You'll Gain:</strong></div>
+  <ul>
+    <li>✅ Practical strategies to kickstart your global career</li>
+    <li>✅ Future-proof skills that top employers demand</li>
+    <li>✅ How to combine English + professional skills to stand out</li>
+    <li>✅ A growth mindset to collaborate, compete, and succeed internationally</li>
+  </ul>
+  <div>&nbsp;</div>
+  <div><strong>Why Join:</strong></div>
+  <div>This isn’t just a talk — it’s a roadmap to help you level up your skills, sharpen your competitive edge, and take the first step toward conquering the world stage.</div>
+</div>
+<div>&nbsp;</div>
+<a href="https://www.instagram.com/p/DNdH2drBTpp/?utm_source=ig_web_copy_link&igsh=MWtidXAwMHVoOWp5Mg==" target="_blank"
+   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
+   Read More
+</a>`,
+    registrationLink: "https://forms.gle/WzidhZoT8YfgsJwx7",
+    startDate: "2025-10-11",
+    registrationTimeDeadline: "23:59",
+    registrationDateDeadline: "2025-10-10",
+    seo: {
+      meta_title:
+        "Beyond Borders: Youth Skills That Conquer the World | IELS x LuarSekolah",
+      meta_description:
+        "Join Beyond Borders: Youth Skills That Conquer the World — a special IELS x LuarSekolah event on 30 August 2025. Learn practical strategies, future-proof skills, and the mindset to kickstart your global career",
+      meta_keywords:
+        "IELS, LuarSekolah, Beyond Borders, youth skills, global career, international work, future skills, English and career, professional skills, international opportunities, Zoom webinar 2025",
     },
   },
 ];

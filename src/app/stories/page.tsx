@@ -6,9 +6,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import Pagination from "@/components/Pagination";
+import LoadingOverlay from "@/components/LoadingOverlay";
 import { memberStoriesData, MemberStory } from "@/data/member-stories";
 import { programUpdatesData, ProgramUpdate } from "@/data/program-updates";
 import { partnerUpdatesData, PartnerUpdate } from "@/data/partner-updates";
+import { generateSlug } from "@/utils/slug";
 
 type NewsItem =
   | (MemberStory & { category: "member" })
@@ -37,6 +39,7 @@ export default function News() {
   >("member");
   const [currentPage, setCurrentPage] = useState(1);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const filteredNews = newsData.filter(
     (item) => item.category === activeFilter
@@ -63,9 +66,68 @@ export default function News() {
     return filters.indexOf(activeFilter);
   };
 
+  const handleReadMore = () => {
+    setIsLoading(true);
+    // Simulate loading time for navigation
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  };
+
+  // Empty state components
+  const EmptyState = ({ category }: { category: string }) => {
+    const getEmptyMessage = () => {
+      switch (category) {
+        case "member":
+          return {
+            title: "No Member Stories Yet",
+            message:
+              "We're working on gathering inspiring stories from our community members. Check back soon for amazing journeys and experiences!",
+            icon: "👥",
+          };
+        case "program":
+          return {
+            title: "No Program Updates Available",
+            message:
+              "We're preparing exciting program updates and announcements. Stay tuned for the latest developments in our educational offerings!",
+            icon: "📚",
+          };
+        case "partner":
+          return {
+            title: "No Partner Updates Yet",
+            message:
+              "We're building partnerships and collaborations that will bring you valuable opportunities. More updates coming soon!",
+            icon: "🤝",
+          };
+        default:
+          return {
+            title: "No Content Available",
+            message:
+              "We're working on bringing you fresh content. Please check back later!",
+            icon: "📝",
+          };
+      }
+    };
+
+    const { title, message, icon } = getEmptyMessage();
+
+    return (
+      <div className="flex flex-col items-center justify-center py-16 px-4">
+        <div className="text-6xl mb-4">{icon}</div>
+        <h3 className="text-2xl font-bold text-[#2F4157] mb-4 text-center">
+          {title}
+        </h3>
+        <p className="text-gray-600 text-center max-w-md leading-relaxed">
+          {message}
+        </p>
+      </div>
+    );
+  };
+
   return (
     <div className="">
       <Header />
+      <LoadingOverlay isLoading={isLoading} message="Loading story..." />
 
       {/* Hero Section */}
       <div className="px-4 sm:px-6 lg:px-[100px] pt-1 pb-8 sm:pb-12 lg:pb-16 bg-white text-[#2F4157]">
@@ -206,96 +268,107 @@ export default function News() {
           </div>
 
           {/* News Grid */}
-          <div
-            className={`grid grid-cols-1 gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-10 lg:mb-12 px-4 sm:px-0 ${
-              activeFilter === "member"
-                ? "sm:grid-cols-1 lg:grid-cols-2"
-                : "sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-            }`}
-          >
-            {currentNews.map((news) => (
-              <div key={news.id}>
-                {/* Member Stories - Original Layout */}
-                {news.category === "member" && (
-                  <div className="bg-white rounded-[15px] sm:rounded-[20px] overflow-hidden shadow-sm lg:shadow-none">
-                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 p-4 sm:p-6">
-                      {/* Author Avatar */}
-                      <div className="flex-shrink-0 mx-auto sm:mx-0">
-                        <div className="w-[100px] h-[100px] sm:w-[120px] sm:h-[120px] lg:w-[147px] lg:h-[147px] rounded-full bg-gray-200 overflow-hidden">
-                          <Image
-                            src={news.author.avatar}
-                            alt={news.author.name}
-                            width={147}
-                            height={147}
-                            className="w-full h-full object-cover"
-                          />
+          {currentNews.length === 0 ? (
+            <EmptyState category={activeFilter} />
+          ) : (
+            <div
+              className={`grid grid-cols-1 gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-10 lg:mb-12 px-4 sm:px-0 ${
+                activeFilter === "member"
+                  ? "sm:grid-cols-1 lg:grid-cols-2"
+                  : "sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+              }`}
+            >
+              {currentNews.map((news) => (
+                <div key={news.id}>
+                  {/* Member Stories - Original Layout */}
+                  {news.category === "member" && (
+                    <div className="bg-white rounded-[15px] sm:rounded-[20px] overflow-hidden shadow-sm lg:shadow-none">
+                      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 p-4 sm:p-6">
+                        {/* Author Avatar */}
+                        <div className="flex-shrink-0 mx-auto sm:mx-0">
+                          <div className="w-[100px] h-[100px] sm:w-[120px] sm:h-[120px] lg:w-[147px] lg:h-[147px] rounded-full bg-gray-200 overflow-hidden">
+                            <Image
+                              src={news.author.avatar}
+                              alt={news.author.name}
+                              width={147}
+                              height={147}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex-1 text-center sm:text-left">
+                          <h3 className="text-lg sm:text-xl font-bold text-[#2F4157] mb-2 sm:mb-3 leading-tight">
+                            {news.title}
+                          </h3>
+                          <p className="text-sm sm:text-[15px] text-[#2F4157] leading-relaxed mb-3 sm:mb-4">
+                            {news.description}
+                          </p>
+                          <Link
+                            href={`/stories/${generateSlug(news.title)}`}
+                            onClick={handleReadMore}
+                          >
+                            <button className="border border-[#2F4157] cursor-pointer text-[#2F4157] px-3 sm:px-4 py-1.5 sm:py-2 rounded-full hover:bg-gray-50 transition-colors text-sm sm:text-base">
+                              Read More
+                            </button>
+                          </Link>
                         </div>
                       </div>
+                    </div>
+                  )}
 
-                      {/* Content */}
-                      <div className="flex-1 text-center sm:text-left">
-                        <h3 className="text-lg sm:text-xl font-bold text-[#2F4157] mb-2 sm:mb-3 leading-tight">
-                          {news.title}
-                        </h3>
-                        <p className="text-sm sm:text-[15px] text-[#2F4157] leading-relaxed mb-3 sm:mb-4">
-                          {news.description}
-                        </p>
-                        <button className="border border-[#2F4157] cursor-pointer text-[#2F4157] px-3 sm:px-4 py-1.5 sm:py-2 rounded-full hover:bg-gray-50 transition-colors text-sm sm:text-base">
-                          Read More
-                        </button>
+                  {/* Program Updates & Partner Updates - Event Card Style */}
+                  {(news.category === "program" ||
+                    news.category === "partner") && (
+                    <div className="flex flex-col gap-3 sm:gap-4 w-full">
+                      {/* Image Container with 50% height crop */}
+                      <div className="relative w-full h-[200px] sm:h-[250px] lg:h-[300px] overflow-hidden rounded-[15px] sm:rounded-[20px]">
+                        <Image
+                          src={news.image!}
+                          alt={news.title}
+                          width={450}
+                          height={450}
+                          className="w-full h-full object-cover object-top"
+                        />
                       </div>
-                    </div>
-                  </div>
-                )}
 
-                {/* Program Updates & Partner Updates - Event Card Style */}
-                {(news.category === "program" ||
-                  news.category === "partner") && (
-                  <div className="flex flex-col gap-3 sm:gap-4 w-full">
-                    {/* Image Container with 50% height crop */}
-                    <div className="relative w-full h-[200px] sm:h-[250px] lg:h-[300px] overflow-hidden rounded-[15px] sm:rounded-[20px]">
-                      <Image
-                        src={news.image!}
-                        alt={news.title}
-                        width={450}
-                        height={450}
-                        className="w-full h-full object-cover object-top"
-                      />
+                      {/* Category Label */}
+                      <div className="flex flex-col gap-2">
+                        <p className="text-red-500 font-bold text-xs sm:text-sm uppercase tracking-wide">
+                          {news.category === "program"
+                            ? "Program Updates"
+                            : "Partner Updates"}
+                        </p>
+                        <p className="font-bold text-lg sm:text-xl lg:text-[24px] text-[#2F4157] leading-tight">
+                          {news.title}
+                        </p>
+                        <p className="text-sm sm:text-[15px] text-[#2F4157] leading-relaxed">
+                          {news.description.length > 215
+                            ? `${news.description.substring(0, 215)}...`
+                            : news.description}
+                        </p>
+                      </div>
+                      <button className="border-1 border-[#2F4157] cursor-pointer rounded-[15px] sm:rounded-[20px] px-2 sm:px-3 py-1 sm:py-1.5 w-fit mt-4 sm:mt-6 lg:mt-8 hover:bg-[#2F4157] hover:text-white transition-colors text-[#2F4157] text-sm sm:text-base">
+                        Read More
+                      </button>
                     </div>
-
-                    {/* Category Label */}
-                    <div className="flex flex-col gap-2">
-                      <p className="text-red-500 font-bold text-xs sm:text-sm uppercase tracking-wide">
-                        {news.category === "program"
-                          ? "Program Updates"
-                          : "Partner Updates"}
-                      </p>
-                      <p className="font-bold text-lg sm:text-xl lg:text-[24px] text-[#2F4157] leading-tight">
-                        {news.title}
-                      </p>
-                      <p className="text-sm sm:text-[15px] text-[#2F4157] leading-relaxed">
-                        {news.description.length > 215
-                          ? `${news.description.substring(0, 215)}...`
-                          : news.description}
-                      </p>
-                    </div>
-                    <button className="border-1 border-[#2F4157] cursor-pointer rounded-[15px] sm:rounded-[20px] px-2 sm:px-3 py-1 sm:py-1.5 w-fit mt-4 sm:mt-6 lg:mt-8 hover:bg-[#2F4157] hover:text-white transition-colors text-[#2F4157] text-sm sm:text-base">
-                      Read More
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Pagination */}
-          <Pagination
-            pageCount={totalPages}
-            onPageChange={(selectedItem) =>
-              setCurrentPage(selectedItem.selected + 1)
-            }
-            currentPage={currentPage - 1}
-          />
+          {currentNews.length > 0 && (
+            <Pagination
+              pageCount={totalPages}
+              onPageChange={(selectedItem) =>
+                setCurrentPage(selectedItem.selected + 1)
+              }
+              currentPage={currentPage - 1}
+            />
+          )}
 
           {/* Call to Action */}
           <div className="text-center pt-4 sm:pt-6 px-4">

@@ -3,8 +3,40 @@ import Footer from "@/components/footer";
 import Image from "next/image";
 import { programUpdatesData } from "@/data/program-updates";
 import { partnerUpdatesData } from "@/data/partner-updates";
+import { memberStoriesData } from "@/data/member-stories";
+import { generateSlug } from "@/utils/slug";
 
-export default function DetailNews() {
+interface DetailStoriesPageProps {
+  params: Promise<{ slug: string }>;
+}
+
+export default async function DetailStoriesPage({
+  params,
+}: DetailStoriesPageProps) {
+  const { slug } = await params;
+
+  // Find the member story by slug
+  const memberStory = memberStoriesData.find(
+    (story) => generateSlug(story.title) === slug
+  );
+
+  if (!memberStory) {
+    return (
+      <div>
+        <Header />
+        <div className="flex flex-col items-center justify-center min-h-[400px] bg-white">
+          <h1 className="text-2xl font-bold text-[#2F4157] mb-4">
+            Story Not Found
+          </h1>
+          <p className="text-gray-600">
+            The story you&apos;re looking for doesn&apos;t exist.
+          </p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   // Function to get random items from arrays
   const getRandomItems = <T,>(array: T[], count: number): T[] => {
     const shuffled = [...array].sort(() => 0.5 - Math.random());
@@ -20,8 +52,8 @@ export default function DetailNews() {
       <Header />
       <div className="flex flex-col bg-white md:gap-[65px] pb-12">
         <Image
-          src="/images/contents/stories/member-stories/banner/philippines-banner.png"
-          alt="Philippines"
+          src={memberStory.bannerImage}
+          alt={memberStory.title}
           width={1300}
           height={500}
           className="w-screen md:h-[335px] h-[150px] object-cover"
@@ -32,8 +64,8 @@ export default function DetailNews() {
               <div className="flex flex-col sm:flex-row items-start items-center gap-3 w-full sm:w-auto">
                 <div className="w-[120px] h-[120px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] lg:w-[147px] lg:h-[147px] rounded-full bg-gray-200 overflow-hidden flex-shrink-0">
                   <Image
-                    src="/images/contents/stories/member-stories/profile/member-stories.png"
-                    alt="Profile"
+                    src={memberStory.author.avatar}
+                    alt={memberStory.author.name}
                     width={147}
                     height={147}
                     className="w-full h-full object-cover"
@@ -41,74 +73,21 @@ export default function DetailNews() {
                 </div>
                 <div className="flex flex-col justify-between py-3 w-full sm:w-auto h-[100px] sm:h-[120px] lg:h-[147px]">
                   <p className="text-lg sm:text-xl lg:text-[24px] w-full sm:w-[340px] font-bold text-[#2F4157] leading-tight">
-                    Jo&apos;s Week Long Adventure at ISUFST, Philippines 🇵🇭
+                    {memberStory.title}
                   </p>
                   <p className="text-sm sm:text-[15px] text-[#2F4157] leading-relaxed flex">
-                    George Abraham (Jo)
+                    {memberStory.author.name}
                   </p>
                 </div>
               </div>
               <div className="self-start sm:self-end pb-3 text-sm sm:text-base font-bold md:font-normal">
-                Jakarta, May 25, 2025
+                {memberStory.location}, {memberStory.date}
               </div>
             </div>
-            <div className="flex w-full text-justify text-sm sm:text-base leading-relaxed">
-              A proud achievement has emerged from the International English
-              Language Society (IELS) as one of its outstanding alumni, Nadine
-              Aulia Ramadhani, has officially been accepted into the Google
-              Global Internship Program 2025. This highly competitive
-              international program selects only a small percentage of
-              applicants from across the globe, making Nadine&apos;s acceptance
-              a remarkable milestone. Nadine will join Google&apos;s Product
-              Marketing team for the Asia-Pacific region, based in their
-              Singapore office, for a 12-week internship starting this June. Her
-              role will include contributing to marketing strategies for
-              Google&apos;s regional products, conducting user research, and
-              working on cross-functional campaigns under the mentorship of
-              seasoned industry professionals. From Language Classes to Global
-              Opportunities Nadine completed IELS&apos;s English for Academic
-              and Professional Purposes (EAPP) program in 2023, a course
-              designed to build job-readiness and workplace communication
-              skills. Known for her active participation, leadership in group
-              activities, and sharp communication skills, Nadine stood out
-              throughout her time at IELS. &quot;What IELS gave me was more than
-              just language skills,&quot; Nadine shared. &quot;The training
-              helped me think critically, present confidently, and communicate
-              professionally—all of which were crucial during the interview and
-              case study rounds at Google.&quot; A Rigorous Selection Process
-              The selection process for Google&apos;s Global Internship Program
-              is known to be one of the most rigorous in the industry.
-              Candidates must pass multiple stages, including online
-              assessments, behavioral interviews, and a live case challenge.
-              During her case study round, Nadine was tasked with creating a
-              go-to-market strategy for a digital product targeted at Southeast
-              Asian youth—complete with budgeting, user personas, and outreach
-              plans. Nadine&apos;s proposal, which emphasized digital
-              inclusivity and community impact, caught the attention of
-              Google&apos;s recruitment panel. Her unique insights and
-              structured approach were noted as &quot;well-aligned with
-              Google&apos;s mission to make information universally accessible
-              and useful.&quot; Backed by the IELS Community The IELS community
-              celebrated Nadine&apos;s achievement with pride. Dr. Arman
-              Siregar, Director of Academic Programs at IELS, expressed his
-              appreciation: &quot;Nadine&apos;s success showcases what&apos;s
-              possible when language learning is contextualized to real-world
-              challenges. Our mission has always been to prepare students not
-              only to speak English—but to succeed in global environments.&quot;
-              He further emphasized the importance of experiential learning and
-              soft-skill development as key components of IELS&apos;s
-              curriculum, stating that the institute will continue to evolve in
-              line with industry needs. Inspiring Future Generations For Nadine,
-              this internship is more than just a career opportunity—it&apos;s a
-              stepping stone toward giving back. &quot;I want to prove that
-              Indonesian youth can thrive globally when given the right tools
-              and opportunities. I hope to use this experience to inspire others
-              and maybe someday mentor students just like me,&quot; she said.
-              After completing her internship, Nadine plans to continue working
-              on social-impact projects that bridge technology and community
-              empowerment—and perhaps return to Google in a full-time capacity
-              in the near future.
-            </div>
+            <div 
+              className="w-full text-justify text-sm sm:text-base leading-relaxed [&_ul]:list-disc [&_ul]:ml-6 [&_ol]:list-decimal [&_ol]:ml-6 [&_li]:mb-1"
+              dangerouslySetInnerHTML={{ __html: memberStory.content }}
+            />
           </div>
           <div className="flex flex-col lg:flex-row xl:flex-col gap-2 sm:gap-4 lg:gap-6 w-full lg:w-1/4">
             <Image

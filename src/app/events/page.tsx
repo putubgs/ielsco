@@ -10,6 +10,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import EventIcon from "@mui/icons-material/Event";
 import EventCard from "@/components/events/EventCard";
 import Pagination from "@/components/Pagination";
+import LoadingOverlay from "@/components/LoadingOverlay";
 import { eventsData } from "@/data/events";
 import { generateSlug } from "@/utils/slug";
 import { useState, useMemo } from "react";
@@ -19,6 +20,7 @@ export default function Events() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredEvents, setFilteredEvents] = useState<typeof eventsData>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const eventsPerPage = 3;
 
   // Check if eventsData is empty
@@ -129,6 +131,15 @@ export default function Events() {
     setCurrentPage(0);
   };
 
+  // Handle event click for loading
+  const handleEventClick = () => {
+    setIsLoading(true);
+    // Simulate loading time for navigation
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  };
+
   // Handle search icon click
   const handleSearchIconClick = () => {
     console.log("Search icon clicked, query:", searchQuery);
@@ -189,6 +200,7 @@ export default function Events() {
   return (
     <div>
       <Header />
+      <LoadingOverlay isLoading={isLoading} message="Loading event..." />
       <div className="flex flex-col bg-white lg:px-[100px] w-full py-12">
         <div>
           {/* Mobile Design - Completely Different Layout */}
@@ -245,6 +257,7 @@ export default function Events() {
                   </Link>
                   <Link
                     href={`/events/${generateSlug(upcomingEvent.title)}`}
+                    onClick={handleEventClick}
                     className="border-2 border-white text-white rounded-[15px] px-6 py-3 text-center font-semibold"
                   >
                     Read More
@@ -394,7 +407,11 @@ export default function Events() {
             <>
               <div className="pt-[50px] grid grid-cols-1 gap-6 p-6">
                 {currentEvents.map((event) => (
-                  <EventCard key={event.id} event={event} />
+                  <EventCard
+                    key={event.id}
+                    event={event}
+                    onEventClick={handleEventClick}
+                  />
                 ))}
               </div>
 
@@ -416,7 +433,11 @@ export default function Events() {
             <>
               <div className="pt-[100px] grid grid-cols-3 gap-8 p-12">
                 {currentEvents.map((event) => (
-                  <EventCard key={event.id} event={event} />
+                  <EventCard
+                    key={event.id}
+                    event={event}
+                    onEventClick={handleEventClick}
+                  />
                 ))}
               </div>
 

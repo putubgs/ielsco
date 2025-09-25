@@ -33,7 +33,7 @@ export default function Pagination({
         onPageChange={onPageChange}
         forcePage={currentPage}
         containerClassName="flex items-center gap-2 select-none"
-        pageClassName="px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer hover:bg-gray-100 select-none"
+        pageClassName="px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer  select-none"
         pageLinkClassName="select-none block w-full h-full"
         activeClassName="bg-gray-800 text-white hover:bg-gray-800 select-none"
         previousClassName="px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer hover:bg-gray-100 select-none"

@@ -140,7 +140,7 @@ export const eventsData: EventData[] = [
   },
   {
     id: "5",
-    title: "IELS Grammar Intensive: Advanced Structures",
+    title: "IELS Grammar Intensive: Basic to Advanced in 2 Hours",
     poster: "/images/contents/events/event-poster-1.png",
     description:
       "Deep dive into advanced English grammar structures, complex sentence patterns, and nuanced language usage for advanced learners. This comprehensive course explores subjunctive mood, conditional sentences, passive voice variations, reported speech complexities, and stylistic choices that distinguish native-level proficiency from intermediate understanding.",

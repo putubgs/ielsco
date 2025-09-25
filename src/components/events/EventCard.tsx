@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { EventData } from "@/app/data/events";
+import { EventData } from "@/data/events";
 import { generateSlug } from "@/utils/slug";
 
 interface EventCardProps {

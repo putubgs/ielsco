@@ -6,9 +6,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import Pagination from "@/components/Pagination";
-import { memberStoriesData, MemberStory } from "@/app/data/member-stories";
-import { programUpdatesData, ProgramUpdate } from "@/app/data/program-updates";
-import { partnerUpdatesData, PartnerUpdate } from "@/app/data/partner-updates";
+import { memberStoriesData, MemberStory } from "@/data/member-stories";
+import { programUpdatesData, ProgramUpdate } from "@/data/program-updates";
+import { partnerUpdatesData, PartnerUpdate } from "@/data/partner-updates";
 
 type NewsItem =
   | (MemberStory & { category: "member" })

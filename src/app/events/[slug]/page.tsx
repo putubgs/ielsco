@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import { eventsData } from "@/app/data/events";
+import { eventsData } from "@/data/events";
 import { generateSlug } from "@/utils/slug";
 
 // Function to find event by slug

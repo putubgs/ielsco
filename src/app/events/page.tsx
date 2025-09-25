@@ -10,7 +10,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import EventIcon from "@mui/icons-material/Event";
 import EventCard from "@/components/events/EventCard";
 import Pagination from "@/components/Pagination";
-import { eventsData } from "@/app/data/events";
+import { eventsData } from "@/data/events";
 import { generateSlug } from "@/utils/slug";
 import { useState, useMemo } from "react";
 

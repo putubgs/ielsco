@@ -43,9 +43,16 @@ export default async function DetailStoriesPage({
     return shuffled.slice(0, count);
   };
 
-  // Get 1 random program update and 1 random partner update
-  const randomProgramUpdate = getRandomItems(programUpdatesData, 1)[0];
-  const randomPartnerUpdate = getRandomItems(partnerUpdatesData, 1)[0];
+  // Get random updates only if data is available
+  const hasProgramUpdates = programUpdatesData.length > 0;
+  const hasPartnerUpdates = partnerUpdatesData.length > 0;
+
+  const randomProgramUpdate = hasProgramUpdates
+    ? getRandomItems(programUpdatesData, 1)[0]
+    : null;
+  const randomPartnerUpdate = hasPartnerUpdates
+    ? getRandomItems(partnerUpdatesData, 1)[0]
+    : null;
 
   return (
     <div>
@@ -84,7 +91,7 @@ export default async function DetailStoriesPage({
                 {memberStory.location}, {memberStory.date}
               </div>
             </div>
-            <div 
+            <div
               className="w-full text-justify text-sm sm:text-base leading-relaxed [&_ul]:list-disc [&_ul]:ml-6 [&_ol]:list-decimal [&_ol]:ml-6 [&_li]:mb-1"
               dangerouslySetInnerHTML={{ __html: memberStory.content }}
             />
@@ -100,75 +107,93 @@ export default async function DetailStoriesPage({
 
             {/* Cards Container - Responsive Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-2 sm:gap-4 lg:gap-6 w-full">
-              {/* Program Update Card */}
-              <div className="flex flex-col gap-2 sm:gap-3 w-full">
-                {/* Image Container with 50% height crop */}
-                <div className="relative w-full h-[200px] sm:h-[220px] lg:h-[241px] overflow-hidden rounded-[15px]">
-                  <Image
-                    src={randomProgramUpdate.image}
-                    alt={randomProgramUpdate.title}
-                    width={450}
-                    height={450}
-                    className="w-full h-full object-cover object-top"
-                  />
-                </div>
+              {/* Program Update Card - Only show if data exists */}
+              {hasProgramUpdates && randomProgramUpdate && (
+                <div className="flex flex-col gap-2 sm:gap-3 w-full">
+                  {/* Image Container with 50% height crop */}
+                  <div className="relative w-full h-[200px] sm:h-[220px] lg:h-[241px] overflow-hidden rounded-[15px]">
+                    <Image
+                      src={randomProgramUpdate.image}
+                      alt={randomProgramUpdate.title}
+                      width={450}
+                      height={450}
+                      className="w-full h-full object-cover object-top"
+                    />
+                  </div>
 
-                {/* Category Label */}
-                <div className="flex flex-col gap-1 sm:gap-2">
-                  <p className="text-red-500 font-bold text-xs uppercase tracking-wide">
-                    Program Updates
-                  </p>
-                  <p className="font-bold text-lg sm:text-xl lg:text-[24px] text-[#2F4157] leading-tight">
-                    {randomProgramUpdate.title}
-                  </p>
-                  <p className="text-sm text-[#2F4157] leading-relaxed">
-                    {randomProgramUpdate.description.length > 150
-                      ? `${randomProgramUpdate.description.substring(
-                          0,
-                          150
-                        )}...`
-                      : randomProgramUpdate.description}
-                  </p>
+                  {/* Category Label */}
+                  <div className="flex flex-col gap-1 sm:gap-2">
+                    <p className="text-red-500 font-bold text-xs uppercase tracking-wide">
+                      Program Updates
+                    </p>
+                    <p className="font-bold text-lg sm:text-xl lg:text-[24px] text-[#2F4157] leading-tight">
+                      {randomProgramUpdate.title}
+                    </p>
+                    <p className="text-sm text-[#2F4157] leading-relaxed">
+                      {randomProgramUpdate.description.length > 150
+                        ? `${randomProgramUpdate.description.substring(
+                            0,
+                            150
+                          )}...`
+                        : randomProgramUpdate.description}
+                    </p>
+                  </div>
+                  <button className="border-1 border-[#2F4157] cursor-pointer rounded-[15px] px-2 py-1 w-fit mt-2 sm:mt-4 hover:bg-[#2F4157] hover:text-white transition-colors text-[#2F4157] text-sm">
+                    Read More
+                  </button>
                 </div>
-                <button className="border-1 border-[#2F4157] cursor-pointer rounded-[15px] px-2 py-1 w-fit mt-2 sm:mt-4 hover:bg-[#2F4157] hover:text-white transition-colors text-[#2F4157] text-sm">
-                  Read More
-                </button>
-              </div>
+              )}
 
-              {/* Partner Update Card */}
-              <div className="flex flex-col gap-2 sm:gap-3 w-full">
-                {/* Image Container with 50% height crop */}
-                <div className="relative w-full h-[200px] sm:h-[220px] lg:h-[241px] overflow-hidden rounded-[15px]">
-                  <Image
-                    src={randomPartnerUpdate.image}
-                    alt={randomPartnerUpdate.title}
-                    width={450}
-                    height={450}
-                    className="w-full h-full object-cover object-top"
-                  />
-                </div>
+              {/* Partner Update Card - Only show if data exists */}
+              {hasPartnerUpdates && randomPartnerUpdate && (
+                <div className="flex flex-col gap-2 sm:gap-3 w-full">
+                  {/* Image Container with 50% height crop */}
+                  <div className="relative w-full h-[200px] sm:h-[220px] lg:h-[241px] overflow-hidden rounded-[15px]">
+                    <Image
+                      src={randomPartnerUpdate.image}
+                      alt={randomPartnerUpdate.title}
+                      width={450}
+                      height={450}
+                      className="w-full h-full object-cover object-top"
+                    />
+                  </div>
 
-                {/* Category Label */}
-                <div className="flex flex-col gap-1 sm:gap-2">
-                  <p className="text-red-500 font-bold text-xs uppercase tracking-wide">
-                    Partner Updates
-                  </p>
-                  <p className="font-bold text-lg sm:text-xl lg:text-[24px] text-[#2F4157] leading-tight">
-                    {randomPartnerUpdate.title}
-                  </p>
-                  <p className="text-sm text-[#2F4157] leading-relaxed">
-                    {randomPartnerUpdate.description.length > 150
-                      ? `${randomPartnerUpdate.description.substring(
-                          0,
-                          150
-                        )}...`
-                      : randomPartnerUpdate.description}
+                  {/* Category Label */}
+                  <div className="flex flex-col gap-1 sm:gap-2">
+                    <p className="text-red-500 font-bold text-xs uppercase tracking-wide">
+                      Partner Updates
+                    </p>
+                    <p className="font-bold text-lg sm:text-xl lg:text-[24px] text-[#2F4157] leading-tight">
+                      {randomPartnerUpdate.title}
+                    </p>
+                    <p className="text-sm text-[#2F4157] leading-relaxed">
+                      {randomPartnerUpdate.description.length > 150
+                        ? `${randomPartnerUpdate.description.substring(
+                            0,
+                            150
+                          )}...`
+                        : randomPartnerUpdate.description}
+                    </p>
+                  </div>
+                  <button className="border-1 border-[#2F4157] cursor-pointer rounded-[15px] px-2 py-1 w-fit mt-2 sm:mt-4 hover:bg-[#2F4157] hover:text-white transition-colors text-[#2F4157] text-sm">
+                    Read More
+                  </button>
+                </div>
+              )}
+
+              {/* Coming Soon Card - Show when no data is available */}
+              {!hasProgramUpdates && !hasPartnerUpdates && (
+                <div className="flex flex-col items-center justify-center py-8 px-4 bg-gray-50 rounded-[15px] border-2 border-dashed border-gray-300">
+                  <div className="text-4xl mb-3">📝</div>
+                  <h3 className="text-lg font-bold text-[#2F4157] mb-2 text-center">
+                    More Content Coming Soon
+                  </h3>
+                  <p className="text-gray-600 text-center text-sm leading-relaxed">
+                    We&apos;re working on bringing you fresh program updates and
+                    partner announcements. Check back soon for the latest news!
                   </p>
                 </div>
-                <button className="border-1 border-[#2F4157] cursor-pointer rounded-[15px] px-2 py-1 w-fit mt-2 sm:mt-4 hover:bg-[#2F4157] hover:text-white transition-colors text-[#2F4157] text-sm">
-                  Read More
-                </button>
-              </div>
+              )}
             </div>
           </div>
         </div>

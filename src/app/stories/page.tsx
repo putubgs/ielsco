@@ -13,23 +13,23 @@ import { partnerUpdatesData, PartnerUpdate } from "@/data/partner-updates";
 import { generateSlug } from "@/utils/slug";
 
 type NewsItem =
-  | (MemberStory & { category: "member" })
-  | (ProgramUpdate & { category: "program" })
-  | (PartnerUpdate & { category: "partner" });
+  | (MemberStory & { type: "member" })
+  | (ProgramUpdate & { type: "program" })
+  | (PartnerUpdate & { type: "partner" });
 
 // Combine all data into a single array
 const newsData: NewsItem[] = [
   ...memberStoriesData.map((item) => ({
     ...item,
-    category: "member" as const,
+    type: "member" as const,
   })),
   ...programUpdatesData.map((item) => ({
     ...item,
-    category: "program" as const,
+    type: "program" as const,
   })),
   ...partnerUpdatesData.map((item) => ({
     ...item,
-    category: "partner" as const,
+    type: "partner" as const,
   })),
 ];
 
@@ -41,15 +41,25 @@ export default function News() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const filteredNews = newsData.filter(
-    (item) => item.category === activeFilter
-  );
+  const filteredNews = newsData.filter((item) => item.type === activeFilter);
 
-  // Different items per page based on category
+  const sortedFilteredNews = filteredNews.sort((a, b) => {
+    if (a.type === "member" && b.type === "member") {
+      // Parse dates for comparison
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return dateB.getTime() - dateA.getTime();
+    }
+    return 0;
+  });
+
   const itemsPerPage = activeFilter === "member" ? 4 : 3;
-  const totalPages = Math.ceil(filteredNews.length / itemsPerPage);
+  const totalPages = Math.ceil(sortedFilteredNews.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentNews = filteredNews.slice(startIndex, startIndex + itemsPerPage);
+  const currentNews = sortedFilteredNews.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
   const handleFilterChange = (newFilter: "member" | "program" | "partner") => {
     if (newFilter === activeFilter) return;
@@ -281,7 +291,7 @@ export default function News() {
               {currentNews.map((news) => (
                 <div key={news.id}>
                   {/* Member Stories - Original Layout */}
-                  {news.category === "member" && (
+                  {news.type === "member" && (
                     <div className="bg-white rounded-[15px] sm:rounded-[20px] overflow-hidden shadow-sm lg:shadow-none">
                       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 p-4 sm:p-6">
                         {/* Author Avatar */}
@@ -303,7 +313,7 @@ export default function News() {
                             {news.title}
                           </h3>
                           <p className="text-sm sm:text-[15px] text-[#2F4157] leading-relaxed mb-3 sm:mb-4">
-                            {news.description}
+                            {news.cardContent}
                           </p>
                           <Link
                             href={`/stories/${generateSlug(news.title)}`}
@@ -319,8 +329,7 @@ export default function News() {
                   )}
 
                   {/* Program Updates & Partner Updates - Event Card Style */}
-                  {(news.category === "program" ||
-                    news.category === "partner") && (
+                  {(news.type === "program" || news.type === "partner") && (
                     <div className="flex flex-col gap-3 sm:gap-4 w-full">
                       {/* Image Container with 50% height crop */}
                       <div className="relative w-full h-[200px] sm:h-[250px] lg:h-[300px] overflow-hidden rounded-[15px] sm:rounded-[20px]">
@@ -336,9 +345,7 @@ export default function News() {
                       {/* Category Label */}
                       <div className="flex flex-col gap-2">
                         <p className="text-red-500 font-bold text-xs sm:text-sm uppercase tracking-wide">
-                          {news.category === "program"
-                            ? "Program Updates"
-                            : "Partner Updates"}
+                          {news.category}
                         </p>
                         <p className="font-bold text-lg sm:text-xl lg:text-[24px] text-[#2F4157] leading-tight">
                           {news.title}

@@ -49,7 +49,10 @@ export default function Header() {
       {/* Desktop Navigation */}
       <div className="hidden lg:flex items-center text-white gap-3">
         {navItems.map((item) => {
-          const isActive = pathname === item.path;
+          const isActive =
+            pathname === item.path ||
+            (item.path === "/stories" && pathname.startsWith("/stories")) ||
+            (item.path === "/events" && pathname.startsWith("/events"));
           return (
             <Link
               key={item.path}
@@ -135,7 +138,10 @@ export default function Header() {
         {/* Mobile Menu Items */}
         <nav className="flex flex-col p-6 space-y-4">
           {navItems.map((item) => {
-            const isActive = pathname === item.path;
+            const isActive =
+              pathname === item.path ||
+              (item.path === "/stories" && pathname.startsWith("/stories")) ||
+              (item.path === "/events" && pathname.startsWith("/events"));
             return (
               <Link
                 key={item.path}

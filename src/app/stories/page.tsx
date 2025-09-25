@@ -385,8 +385,9 @@ export default function News() {
               Got a story to tell?
             </p>
             <Link
-              href="/contact"
+              href="https://docs.google.com/forms/d/e/1FAIpQLSdpfik-xAviTLsauSN_h4yVI-Af19ydbRC6-nM0QGDmuPEWIA/viewform"
               className="text-red-500 hover:text-red-600 transition-colors underline text-sm sm:text-base"
+              target="_blank"
             >
               Share it with us here.
             </Link>

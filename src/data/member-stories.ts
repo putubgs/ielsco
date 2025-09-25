@@ -19,43 +19,43 @@ export interface MemberStory {
 // NOTE: The content MUST use HTML tags for formatting
 // use https://text-html.com/ for content formatting
 export const memberStoriesData: MemberStory[] = [
-//   {
-//     id: "1",
-//     title: "Jo's Week Long Adventure at ISUFST, Philipines 🇵🇭",
-//     content: `<div>
-// <div><strong>A proud achievement has emerged from the International English Language Society (IELS) as one of its outstanding alumni, Nadine Aulia Ramadhani, has officially been accepted into the Google Global Internship Program 2025. </strong></div>
-// <div>&nbsp;</div>
-// <div>This highly competitive international program selects only a small percentage of applicants from across the globe, making Nadine's acceptance a remarkable milestone. Nadine will join Google's Product Marketing team for the Asia-Pacific region, based in their Singapore office, for a 12-week internship starting this June. Her role will include contributing to marketing strategies for Google's regional products, conducting user research, and working on cross-functional campaigns under the mentorship of seasoned industry professionals.</div>
-// <div>&nbsp;</div>
-// <div>From Language Classes to Global Opportunities Nadine completed IELS's English for Academic and Professional Purposes (EAPP) program in 2023, a course designed to build job-readiness and workplace communication skills. Known for her active participation, leadership in group activities, and sharp communication skills, Nadine stood out throughout her time at IELS. "What IELS gave me was more than just language skills," Nadine shared. "The training helped me think critically, present confidently, and communicate professionally&mdash;all of which were crucial during the interview and case study rounds at Google." A Rigorous Selection Process The selection process for Google's Global Internship Program is known to be one of the most rigorous in the industry. Candidates must pass multiple stages, including online assessments, behavioral interviews, and a live case challenge. During her case study round, Nadine was tasked with creating a go-to-market strategy for a digital product targeted at Southeast Asian youth&mdash;complete with budgeting, user personas, and outreach plans.</div>
-// <div>&nbsp;</div>
-// <div>Nadine's proposal, which emphasized digital inclusivity and community impact, caught the attention of Google's recruitment panel. Her unique insights and structured approach were noted as "well-aligned with Google's mission to make information universally accessible and useful." Backed by the IELS Community The IELS community celebrated Nadine's achievement with pride. Dr. Arman Siregar, Director of Academic Programs at IELS, expressed his appreciation: "Nadine's success showcases what's possible when language learning is contextualized to real-world challenges. Our mission has always been to prepare students not only to speak English&mdash;but to succeed in global environments." He further emphasized the importance of experiential learning and soft-skill development as key components of IELS's curriculum, stating that the institute will continue to evolve in line with industry needs. Inspiring Future Generations For Nadine, this internship is more than just a career opportunity&mdash;it's a stepping stone toward giving back. "I want to prove that Indonesian youth can thrive globally when given the right tools and opportunities. I hope to use this experience to inspire others and maybe someday mentor students just like me," she said. After completing her internship, Nadine plans to continue working on social-impact projects that bridge technology and community empowerment&mdash;and perhaps return to Google in a full-time capacity in the near future.</div>
-// <div>&nbsp;</div>
-// <ol>
-// <li>test</li>
-// <li>test 2</li>
-// <li>test 3</li>
-// </ol>
-// </div>
-// <p>&nbsp;</p>`,
-//     bannerImage:
-//       "/images/contents/stories/member-stories/banner/philippines-banner.png",
-//     author: {
-//       name: "George Abraham (Jo)",
-//       avatar:
-//         "/images/contents/stories/member-stories/profile/member-stories.png",
-//     },
-//     date: "May 25, 2025",
-//     location: "Jakarta",
-//     seo: {
-//       meta_title:
-//         "Jo's Week Long Adventure at ISUFST, Philippines - IELS Member Story",
-//       meta_description:
-//         "From learning passive voice to pitching real-world projects, IELcoS mentees are breaking boundaries and making global moves.",
-//       meta_keywords:
-//         "IELS, member story, international exchange, Philippines, ISUFST, English learning, global opportunities",
-//     },
-//   },
+  {
+    id: "1",
+    title: "Jo's Week Long Adventure at ISUFST, Philipines 🇵🇭",
+    content: `<div>
+<div><strong>A proud achievement has emerged from the International English Language Society (IELS) as one of its outstanding alumni, Nadine Aulia Ramadhani, has officially been accepted into the Google Global Internship Program 2025. </strong></div>
+<div>&nbsp;</div>
+<div>This highly competitive international program selects only a small percentage of applicants from across the globe, making Nadine's acceptance a remarkable milestone. Nadine will join Google's Product Marketing team for the Asia-Pacific region, based in their Singapore office, for a 12-week internship starting this June. Her role will include contributing to marketing strategies for Google's regional products, conducting user research, and working on cross-functional campaigns under the mentorship of seasoned industry professionals.</div>
+<div>&nbsp;</div>
+<div>From Language Classes to Global Opportunities Nadine completed IELS's English for Academic and Professional Purposes (EAPP) program in 2023, a course designed to build job-readiness and workplace communication skills. Known for her active participation, leadership in group activities, and sharp communication skills, Nadine stood out throughout her time at IELS. "What IELS gave me was more than just language skills," Nadine shared. "The training helped me think critically, present confidently, and communicate professionally&mdash;all of which were crucial during the interview and case study rounds at Google." A Rigorous Selection Process The selection process for Google's Global Internship Program is known to be one of the most rigorous in the industry. Candidates must pass multiple stages, including online assessments, behavioral interviews, and a live case challenge. During her case study round, Nadine was tasked with creating a go-to-market strategy for a digital product targeted at Southeast Asian youth&mdash;complete with budgeting, user personas, and outreach plans.</div>
+<div>&nbsp;</div>
+<div>Nadine's proposal, which emphasized digital inclusivity and community impact, caught the attention of Google's recruitment panel. Her unique insights and structured approach were noted as "well-aligned with Google's mission to make information universally accessible and useful." Backed by the IELS Community The IELS community celebrated Nadine's achievement with pride. Dr. Arman Siregar, Director of Academic Programs at IELS, expressed his appreciation: "Nadine's success showcases what's possible when language learning is contextualized to real-world challenges. Our mission has always been to prepare students not only to speak English&mdash;but to succeed in global environments." He further emphasized the importance of experiential learning and soft-skill development as key components of IELS's curriculum, stating that the institute will continue to evolve in line with industry needs. Inspiring Future Generations For Nadine, this internship is more than just a career opportunity&mdash;it's a stepping stone toward giving back. "I want to prove that Indonesian youth can thrive globally when given the right tools and opportunities. I hope to use this experience to inspire others and maybe someday mentor students just like me," she said. After completing her internship, Nadine plans to continue working on social-impact projects that bridge technology and community empowerment&mdash;and perhaps return to Google in a full-time capacity in the near future.</div>
+<div>&nbsp;</div>
+<ol>
+<li>test</li>
+<li>test 2</li>
+<li>test 3</li>
+</ol>
+</div>
+<p>&nbsp;</p>`,
+    bannerImage:
+      "/images/contents/stories/member-stories/banner/philippines-banner.png",
+    author: {
+      name: "George Abraham (Jo)",
+      avatar:
+        "/images/contents/stories/member-stories/profile/member-stories.png",
+    },
+    date: "May 25, 2025",
+    location: "Jakarta",
+    seo: {
+      meta_title:
+        "Jo's Week Long Adventure at ISUFST, Philippines - IELS Member Story",
+      meta_description:
+        "From learning passive voice to pitching real-world projects, IELcoS mentees are breaking boundaries and making global moves.",
+      meta_keywords:
+        "IELS, member story, international exchange, Philippines, ISUFST, English learning, global opportunities",
+    },
+  },
 //   {
 //     id: "2",
 //     title: "Sarah's Journey from Beginner to Fluent Speaker",

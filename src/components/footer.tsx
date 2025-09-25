@@ -34,34 +34,39 @@ export default function Footer() {
         </div>
         <div className="flex flex-col gap-2 lg:gap-3">
           <Link
-            href="#"
+            href="https://www.instagram.com/iels_co"
             className="hover:underline transition-all duration-200 text-sm lg:text-base"
+            target="_blank"
           >
             Instagram
           </Link>
           <Link
-            href="#"
+            href="https://www.linkedin.com/company/iels-co"
             className="hover:underline transition-all duration-200 text-sm lg:text-base"
+            target="_blank"
           >
-            Threads
+            LinkedIn
           </Link>
           <Link
-            href="#"
+            href="https://www.tiktok.com/@iels_co"
             className="hover:underline transition-all duration-200 text-sm lg:text-base"
+            target="_blank"
           >
             Tiktok
           </Link>
           <Link
-            href="#"
+            href="https://www.threads.com/@iels_co"
             className="hover:underline transition-all duration-200 text-sm lg:text-base"
+            target="_blank"
           >
-            X
+            Threads
           </Link>
           <Link
-            href="#"
+            href="https://x.com/ielsforall"
             className="hover:underline transition-all duration-200 text-sm lg:text-base"
+            target="_blank"
           >
-            LinkedIn
+            X
           </Link>
         </div>
       </div>
@@ -108,20 +113,20 @@ export default function Footer() {
           <p className="text-sm lg:text-base">
             WhatsApp:{" "}
             <Link
-              href="https://wa.me/6285190312426"
+              href="https://wa.me/6285770024261"
               className="underline hover:opacity-70 transition-opacity break-all"
               target="_blank"
             >
-              0851 9031 2426
+              085770024261
             </Link>
           </p>
           <p className="text-sm lg:text-base">
             Gmail:{" "}
             <Link
-              href="mailto:iels.community@gmail.com"
+              href="mailto:hello@iels.com"
               className="underline hover:opacity-70 transition-opacity break-all"
             >
-              iels.community@gmail.com
+              hello@iels.com
             </Link>
           </p>
         </div>

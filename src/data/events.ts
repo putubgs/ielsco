@@ -160,7 +160,7 @@ export const eventsData: EventData[] = [
   {
     id: "6",
     title: "Step Up! Your Career, Borderless",
-    poster: "/images/contents/events/event-poster-2.png",
+    poster: "/images/contents/events/step-up-event.jpeg",
     description:
       "Develop academic writing skills including essay structure, research methodology, citation formats, and critical analysis techniques. This workshop provides hands-on experience with argumentative essays, research papers, literature reviews, and thesis development while mastering APA, MLA, and Chicago citation styles for scholarly excellence.",
     registrationLink: "/register/writing-workshop",

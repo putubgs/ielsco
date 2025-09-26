@@ -19,65 +19,88 @@ export interface MemberStory {
 // NOTE: The content MUST use HTML tags for formatting
 // use https://text-html.com/ for content formatting
 export const memberStoriesData: MemberStory[] = [
-//   {
-//     id: "1",
-//     title: "Jo's Week Long Adventure at ISUFST, Philipines 🇵🇭",
-//     content: `<div>
-// <div><strong>A proud achievement has emerged from the International English Language Society (IELS) as one of its outstanding alumni, Nadine Aulia Ramadhani, has officially been accepted into the Google Global Internship Program 2025. </strong></div>
-// <div>&nbsp;</div>
-// <div>This highly competitive international program selects only a small percentage of applicants from across the globe, making Nadine's acceptance a remarkable milestone. Nadine will join Google's Product Marketing team for the Asia-Pacific region, based in their Singapore office, for a 12-week internship starting this June. Her role will include contributing to marketing strategies for Google's regional products, conducting user research, and working on cross-functional campaigns under the mentorship of seasoned industry professionals.</div>
-// <div>&nbsp;</div>
-// <div>From Language Classes to Global Opportunities Nadine completed IELS's English for Academic and Professional Purposes (EAPP) program in 2023, a course designed to build job-readiness and workplace communication skills. Known for her active participation, leadership in group activities, and sharp communication skills, Nadine stood out throughout her time at IELS. "What IELS gave me was more than just language skills," Nadine shared. "The training helped me think critically, present confidently, and communicate professionally&mdash;all of which were crucial during the interview and case study rounds at Google." A Rigorous Selection Process The selection process for Google's Global Internship Program is known to be one of the most rigorous in the industry. Candidates must pass multiple stages, including online assessments, behavioral interviews, and a live case challenge. During her case study round, Nadine was tasked with creating a go-to-market strategy for a digital product targeted at Southeast Asian youth&mdash;complete with budgeting, user personas, and outreach plans.</div>
-// <div>&nbsp;</div>
-// <div>Nadine's proposal, which emphasized digital inclusivity and community impact, caught the attention of Google's recruitment panel. Her unique insights and structured approach were noted as "well-aligned with Google's mission to make information universally accessible and useful." Backed by the IELS Community The IELS community celebrated Nadine's achievement with pride. Dr. Arman Siregar, Director of Academic Programs at IELS, expressed his appreciation: "Nadine's success showcases what's possible when language learning is contextualized to real-world challenges. Our mission has always been to prepare students not only to speak English&mdash;but to succeed in global environments." He further emphasized the importance of experiential learning and soft-skill development as key components of IELS's curriculum, stating that the institute will continue to evolve in line with industry needs. Inspiring Future Generations For Nadine, this internship is more than just a career opportunity&mdash;it's a stepping stone toward giving back. "I want to prove that Indonesian youth can thrive globally when given the right tools and opportunities. I hope to use this experience to inspire others and maybe someday mentor students just like me," she said. After completing her internship, Nadine plans to continue working on social-impact projects that bridge technology and community empowerment&mdash;and perhaps return to Google in a full-time capacity in the near future.</div>
-// <div>&nbsp;</div>
-// <ol>
-// <li>test</li>
-// <li>test 2</li>
-// <li>test 3</li>
-// </ol>
-// </div>
-// <p>&nbsp;</p>`,
-//     bannerImage:
-//       "/images/contents/stories/member-stories/banner/philippines-banner.png",
-//     author: {
-//       name: "George Abraham (Jo)",
-//       avatar:
-//         "/images/contents/stories/member-stories/profile/member-stories.png",
-//     },
-//     date: "May 25, 2025",
-//     location: "Jakarta",
-//     seo: {
-//       meta_title:
-//         "Jo's Week Long Adventure at ISUFST, Philippines - IELS Member Story",
-//       meta_description:
-//         "From learning passive voice to pitching real-world projects, IELcoS mentees are breaking boundaries and making global moves.",
-//       meta_keywords:
-//         "IELS, member story, international exchange, Philippines, ISUFST, English learning, global opportunities",
-//     },
-//   },
-//   {
-//     id: "2",
-//     title: "Sarah's Journey from Beginner to Fluent Speaker",
-//     content: `Sarah's transformation from a shy, hesitant English learner to a confident international speaker is nothing short of remarkable. When she first joined IELS, Sarah struggled with basic conversations and felt overwhelmed by the prospect of speaking English in professional settings. Through IELS's structured programs and supportive community, Sarah gradually built her confidence and skills. Today, she presents at international conferences and mentors other learners on their English journey. Her story demonstrates the power of consistent practice, community support, and the right learning environment in achieving language mastery.`,
-//     bannerImage:
-//       "/images/contents/stories/member-stories/banner/philippines-banner.png",
-//     author: {
-//       name: "Sarah",
-//       avatar:
-//         "/images/contents/stories/member-stories/profile/member-stories.png",
-//     },
-//     date: "April 15, 2025",
-//     location: "Jakarta",
-//     seo: {
-//       meta_title:
-//         "Sarah's Journey from Beginner to Fluent Speaker - IELS Success Story",
-//       meta_description:
-//         "Discover how Sarah transformed her English skills through IELS programs, from struggling with basic conversations to confidently presenting at international conferences.",
-//       meta_keywords:
-//         "IELS, success story, English learning, beginner to fluent, language transformation, international conferences",
-//     },
-//   },
+    {
+     id: "1",
+     title: "Jo's Week Long Adventure at ISUFST, Philipines 🇵🇭",
+     content: `<div>
+<div><strong>From Malang to the Philippines, George Abraham—better known as Jo—brought the spirit of IELS across borders. As a Project Leader at IELS and a Computer Science student from Universitas Brawijaya, Jo spent a week on a cultural and academic exchange program at Iloilo State University of Fisheries Science and Technology (ISUFST).</strong></div>
+<div>&nbsp;</div>
+<div>During his stay, Jo had the chance to explore <strong>five different campuses</strong>, join IT-focused short courses, and engage with both faculty and students. The experience wasn’t only about academics—it was about immersion. From joining local tours and exploring the city, to enjoying the beaches of Iloilo, Jo embraced the warmth of Filipino culture with excitement and curiosity.</div>
+<div>&nbsp;</div>
+<div><strong>“What made the journey even more special was how English became my bridge,”</strong> Jo shared. Conversations with fellow students and lecturers flowed naturally, even when he stumbled or made small mistakes. <em>“As long as you have the confidence to speak, you’ll be fine. People aren’t that scary—especially when they know you’re still learning too.”</em></div>
+<div>&nbsp;</div>
+<div>For Jo, his time at ISUFST wasn’t just an academic trip; it was proof of how language can unlock global experiences. Being part of the IELS community gave him the courage and practice to communicate confidently in real-world settings. <strong>From English Lounge discussions to teamwork inside IELS projects, he felt prepared to step outside Indonesia and connect internationally.</strong></div>
+<div>&nbsp;</div>
+<div>Jo’s story is a reminder that opportunities often come to those who dare to try. By stepping into new environments, embracing mistakes, and trusting the skills he built with IELS, he showed that Indonesian students can thrive on the global stage.</div>
+<div>&nbsp;</div>
+<div><em>“I hope more students realize that English isn’t just a subject—it’s a passport. If you have the willingness to learn and the courage to use it, the world becomes a lot closer.”</em></div>
+<div>&nbsp;</div>
+</div>
+<h4>✍️ Content Written <strong>by Najlaa Thufailah Shafut</strong><br data-start="343" data-end="346" /> 🎨 Design <strong>by Muhammad Athallah Khairi</strong></h4>
+<p>&nbsp;</p>
+<a href="https://www.instagram.com/iels_co" target="_blank"
+   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
+   Read More
+</a>`,
+     bannerImage:
+       "/images/contents/stories/member-stories/banner/philippines-banner.png",
+     author: {
+       name: "George Abraham - IELS Internal Team",
+       avatar:
+         "/images/contents/stories/member-stories/profile/jo.png",
+     },
+     date: "September 29, 2025",
+     location: "Malang",
+     seo: {
+       meta_title:
+         "Jo's Week Long Adventure at ISUFST, Philippines - IELS Member Story",
+       meta_description:
+         "Follow George Abraham (Jo), a Project Leader at IELS and Computer Science student from Universitas Brawijaya, as he joins a cultural and academic exchange at ISUFST in the Philippines. Discover how English confidence opened doors to global opportunities.",
+       meta_keywords:
+         "IELS, member story, George Abraham, Jo, ISUFST, Philippines exchange, Universitas Brawijaya, student leadership, English confidence, global opportunities, academic exchange",
+     },
+   },
+   {
+     id: "2",
+     title: "Shania's Journey: UNSIKA's Delegate Goes to Malaysia",
+     content: `<div>
+<div><strong>Shania Rizky Henanto—one of IELS’s Project Leaders and a proud student of Universitas Singaperbangsa Karawang (UNSIKA)—stepped onto the international stage as Indonesia’s representative at the prestigious ASEAN Classroom 2025 program.</strong></div>
+<div>&nbsp;</div>
+<div>Supported by her faculty and backed by her active journey with IELS, Shania joined the ASEAN Classroom alongside students from top universities across the region. For a week, she took part in <strong>international forums, cross-cultural discussions, and collaborative projects</strong> designed to strengthen regional cooperation among Southeast Asian youth.</div>
+<div>&nbsp;</div>
+<div>Being <strong>chosen as a delegate for UNSIKA</strong> was no small feat. It reflected years of her consistent participation in academic and organizational activities, and her passion for representing Indonesia in global platforms. From working with international peers to sharing perspectives on youth leadership, Shania carried both her identity and her country’s pride with confidence.</div>
+<div>&nbsp;</div>
+<div><strong>“English was the key that unlocked it all,”</strong> Shania shared. <em>“I use English every single day at IELS, and that practice built my confidence. In international settings, people don’t judge you like grammar police—they value your ideas and your courage to speak up.”</em></div>
+<div>&nbsp;</div>
+<div>Through IELS, Shania found a space to sharpen her communication, collaborate with peers, and grow into a leader ready for the global stage. <strong>Her journey in Malaysia proves that when language meets opportunity, Indonesian students can shine brightly among the best in Southeast Asia.</strong></div>
+<div>&nbsp;</div>
+<div><em>“I want others to know that English isn’t about perfection—it’s about connection. The more you practice, the more confident you become. And with confidence, the world opens its doors to you.”</em></div>
+<div>&nbsp;</div>
+</div>
+<h4>✍️ Content Written <strong>by Najlaa Thufailah Shafut</strong><br data-start="343" data-end="346" /> 🎨 Design <strong>by Muhammad Athallah Khairi</strong></h4>
+<p>&nbsp;</p>
+<a href="https://www.instagram.com/iels_co" target="_blank"
+   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
+   Read More
+</a>`,
+     bannerImage:
+       "/images/contents/stories/member-stories/banner/malaysia-banner.png",
+     author: {
+       name: "Shania Rizky Henanto - IELS Internal Team",
+       avatar:
+         "/images/contents/stories/member-stories/profile/shania.png",
+     },
+     date: "September 29, 2025",
+     location: "Jakarta",
+     seo: {
+       meta_title:
+         "Shania’s ASEAN Classroom 2025 Journey in Malaysia - IELS Member Story",
+       meta_description:
+         "Discover Shania Rizky Henanto’s journey as a Project Leader at IELS and delegate from Universitas Singaperbangsa Karawang (UNSIKA) at the ASEAN Classroom 2025 in Malaysia. Learn how English and IELS shaped her confidence in international collaboration.",
+       meta_keywords:
+         "IELS, member story, Shania Rizky Henanto, ASEAN Classroom 2025, Malaysia, Universitas Singaperbangsa Karawang, UNSIKA, student delegate, international collaboration, English learning, global opportunities",
+     },
+   },
 //   {
 //     id: "3",
 //     title: "Ahmad's Success Story: From Local to Global",

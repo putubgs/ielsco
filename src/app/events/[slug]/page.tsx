@@ -133,6 +133,7 @@ export default async function EventDetailPage({
                   <Link
                     href={event.registrationLink}
                     className="inline-flex items-center justify-center bg-[#2F4157] text-white px-8 py-4 rounded-[20px] font-semibold text-lg hover:bg-[#4B5B6E] transition-colors shadow-lg"
+                    target="_blank"
                   >
                     Register Now
                   </Link>

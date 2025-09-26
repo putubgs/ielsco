@@ -15,13 +15,13 @@ export default function Footer() {
           className="md:w-[75px]"
         />
         <div className="flex gap-4 lg:gap-3">
-          <Link href="#" className="hover:opacity-70 transition-opacity">
+          <Link href="https://x.com/ielsforall" className="hover:opacity-70 transition-opacity" target="_blank">
             <X style={{ fontSize: 24 }} className="lg:text-[25px]" />
           </Link>
-          <Link href="#" className="hover:opacity-70 transition-opacity">
+          <Link href="https://www.instagram.com/iels_co" className="hover:opacity-70 transition-opacity" target="_blank">
             <Instagram style={{ fontSize: 24 }} className="lg:text-[25px]" />
           </Link>
-          <Link href="#" className="hover:opacity-70 transition-opacity">
+          <Link href="https://www.linkedin.com/company/iels-co" className="hover:opacity-70 transition-opacity" target="_blank">
             <LinkedIn style={{ fontSize: 24 }} className="lg:text-[25px]" />
           </Link>
         </div>
@@ -123,10 +123,10 @@ export default function Footer() {
           <p className="text-sm lg:text-base">
             Gmail:{" "}
             <Link
-              href="mailto:hello@iels.com"
+              href="mailto:hello@ielsco.com"
               className="underline hover:opacity-70 transition-opacity break-all"
             >
-              hello@iels.com
+              hello@ielsco.com
             </Link>
           </p>
         </div>

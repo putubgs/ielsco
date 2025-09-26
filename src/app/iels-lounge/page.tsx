@@ -17,17 +17,16 @@ export default function IelsLounge() {
             </div>
             <div className="w-full lg:w-3/4 text-[14px] sm:text-[15px] flex flex-col gap-3">
               <p>
-                IELS Lounge is a community space designed to support growth,
-                connection, and collaboration among curious learners, passionate
-                creators, and emerging professionals. It&apos;s a place where
-                people come together to share, ask questions, exchange ideas,
-                and grow—side by side.
+                 IELS Lounge is your daily English practice space—a safe and friendly
+                 community where you can speak, make mistakes, and grow without
+                 pressure. Here, every night is an opportunity to practice, connect,
+                 and build confidence alongside people who are learning just like you.
               </p>
               <p>
-                Whether you&apos;re here to explore, learn something new, or
-                connect with mentors and like-minded peers, IELS Lounge offers a
-                welcoming ecosystem for you to thrive. You can choose the
-                experience that best fits your journey—start small or go all in.
+                 Whether you want to start with small conversations or dive deeper
+                 into challenges, IELS Lounge gives you the space to practice English,
+                 ask questions, and feel supported—so you can finally overcome the
+                 struggles you&apos;ve faced while learning English and make progress every day.
               </p>
             </div>
           </div>
@@ -49,6 +48,7 @@ export default function IelsLounge() {
             <div className="flex w-full lg:w-3/4">
               {/* Desktop Table */}
               <table className="hidden lg:table w-full items-center">
+                <thead></thead>
                 <tr className="flex items-center justify-between w-full py-4 text-[24px] text-[#2F4157]">
                   <th className="flex-[1.5] text-center font-medium">
                     <p className="text-shadow-md">Benefits &</p>
@@ -102,6 +102,44 @@ export default function IelsLounge() {
                       className="w-[50px] h-auto"
                     />
                   </td>
+                </tr>
+                <tr className="flex items-center justify-between w-full bg-[#D9D9D9] rounded-l-[20px] text-[15px]">
+                  <tr className="flex-[1.5] text-center">
+                    <td className="pl-5">
+                      <div className="bg-[#2F4157] rounded-[11px] p-2 w-[50px] h-[50px] flex justify-center items-center">
+                        <Image
+                          src="/images/contents/general/white_discord_icon.png"
+                          alt="Iels Lounge Free"
+                          width={100}
+                          height={0}
+                          className="w-[60px] h-auto"
+                        />
+                      </div>
+                    </td>
+                    <td className="pl-4">
+                      <p className="text-start">Daily Nightly Speaking Club</p>
+                    </td>
+                  </tr>
+                  <td className="flex-1 flex justify-center items-center bg-[#6F7680] py-4">
+                    <Image
+                      src="/images/contents/general/red_cross_icon.png"
+                      alt="Iels Lounge Free"
+                      width={0}
+                      height={0}
+                      sizes="100vw"
+                      className="w-[50px] h-auto"
+                    />
+                  </td>
+                  <td className="flex-1 flex justify-center items-center bg-[#7C8896] py-4">
+                    <Image
+                      src="/images/contents/general/blue_tick_icon.png"
+                      alt="Iels Lounge Premium"
+                      width={0}
+                      height={0}
+                      sizes="100vw"
+                      className="w-[50px] h-auto"
+                    />
+                    </td>
                 </tr>
                 <tr className="flex items-center justify-between w-full bg-[#D9D9D9] rounded-l-[20px] text-[15px]">
                   <tr className="flex-[1.5] text-center">
@@ -305,27 +343,30 @@ export default function IelsLounge() {
                   <td className="w-full flex-[1.5]"></td>
                   <td className="w-full flex-1 px-2">
                     <Link
+                      href="https://forms.gle/E9KbHVZEmaw8B9nh6"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="bg-[#6F7680] text-white rounded-[20px] w-full block text-center py-2"
-                      // href="https://ielsco.myr.id/membership/iels-lounge-free"
-                      href="#"
                     >
-                      Free Access
+                       Free Access
                     </Link>
                   </td>
                   <td className="w-full flex-1 pl-2">
                     <Link
+                      href="https://ielsco.myr.id/membership/iels-lounge-premium"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="bg-[#2F4157] text-white rounded-[20px] w-full block text-center py-2"
-                      // href="https://ielsco.myr.id/membership/iels-lounge-premium"
-                      href="#"
                     >
-                      Rp150.000/year
+                      Rp200.000/year 
                     </Link>
                     <Link
+                      href="https://ielsco.myr.id/membership/iels-lounge-premium"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="bg-white text-[#2F4157] border border-[#2F4157] rounded-[20px] w-full block text-center py-2 mt-2"
-                      // href="https://ielsco.myr.id/membership/iels-lounge-premium"
-                      href="#"
                     >
-                      Rp20.000/month
+                      Rp25.000/month
                     </Link>
                   </td>
                 </tr>
@@ -474,13 +515,13 @@ export default function IelsLounge() {
                     </h3>
                     <div className="mb-4">
                       <p className="text-[24px] font-bold text-white">
-                        Rp150.000
+                        Rp200.000
                       </p>
                       <p className="text-[14px] text-[#B8C5D1]">per year</p>
                     </div>
                     <div className="mb-4">
                       <p className="text-[18px] font-bold text-white">
-                        or Rp20.000
+                        or Rp25.000
                       </p>
                       <p className="text-[14px] text-[#B8C5D1]">per month</p>
                     </div>
@@ -570,14 +611,14 @@ export default function IelsLounge() {
                       // href="https://ielsco.myr.id/membership/iels-lounge-premium"
                       href="#"
                     >
-                      Choose Yearly Plan - Rp150.000
+                      Choose Yearly Plan - Rp200.000
                     </Link>
                     <Link
                       className="bg-transparent text-white border-2 border-white rounded-[15px] w-full block text-center py-4 text-[16px] font-bold hover:bg-white hover:text-[#2F4157] transition-colors"
                       // href="https://ielsco.myr.id/membership/iels-lounge-premium"
                       href="#"
                     >
-                      Choose Monthly Plan - Rp20.000
+                      Choose Monthly Plan - Rp25.000
                     </Link>
                   </div>
                 </div>

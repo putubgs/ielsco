@@ -347,9 +347,9 @@ export const eventsData: EventData[] = [
    Read More
 </a>`,
     registrationLink: "https://forms.gle/WzidhZoT8YfgsJwx7",
-    startDate: "2025-10-11",
+    startDate: "2025-8-30",
     registrationTimeDeadline: "23:59",
-    registrationDateDeadline: "2025-10-10",
+    registrationDateDeadline: "2025-8-30",
     seo: {
       meta_title:
         "Beyond Borders: Youth Skills That Conquer the World | IELS x LuarSekolah",

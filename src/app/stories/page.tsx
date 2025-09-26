@@ -43,12 +43,60 @@ export default function News() {
 
   const filteredNews = newsData.filter((item) => item.type === activeFilter);
 
+  // Month name to number mapping (English Only)
+  const monthMap: { [key: string]: number } = {
+    january: 1,
+    jan: 1,
+    february: 2,
+    feb: 2,
+    march: 3,
+    mar: 3,
+    april: 4,
+    apr: 4,
+    may: 5,
+    june: 6,
+    jun: 6,
+    july: 7,
+    jul: 7,
+    august: 8,
+    aug: 8,
+    september: 9,
+    sep: 9,
+    sept: 9,
+    october: 10,
+    oct: 10,
+    november: 11,
+    nov: 11,
+    december: 12,
+    dec: 12,
+  };
+
+  // Function to parse date string and convert to sortable format
+  const parseDateString = (dateStr: string): Date => {
+    const parts = dateStr.split(" ");
+    if (parts.length !== 3) return new Date(); // fallback
+
+    const monthName = parts[0].toLowerCase();
+    const day = parseInt(parts[1].replace(",", ""));
+    const year = parseInt(parts[2]);
+
+    const monthNumber = monthMap[monthName] || 1; // fallback to January
+
+    return new Date(year, monthNumber - 1, day);
+  };
+
   const sortedFilteredNews = filteredNews.sort((a, b) => {
     if (a.type === "member" && b.type === "member") {
-      // Parse dates for comparison
-      const dateA = new Date(a.date);
-      const dateB = new Date(b.date);
+      // Sort member stories by date (newest to oldest)
+      const dateA = parseDateString(a.date);
+      const dateB = parseDateString(b.date);
       return dateB.getTime() - dateA.getTime();
+    } else if (a.type === "program" && b.type === "program") {
+      // Sort program updates by ID (highest to lowest)
+      return parseInt(b.id) - parseInt(a.id);
+    } else if (a.type === "partner" && b.type === "partner") {
+      // Sort partner updates by ID (highest to lowest)
+      return parseInt(b.id) - parseInt(a.id);
     }
     return 0;
   });

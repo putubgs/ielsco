@@ -21,14 +21,15 @@ export default function Events() {
   const [filteredEvents, setFilteredEvents] = useState<typeof eventsData>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const eventsPerPage = 3;
 
   // Check if eventsData is empty
   const isEmpty = eventsData.length === 0;
 
-  // Find the event with the closest registration deadline
-  const upcomingEvent = useMemo(() => {
-    if (isEmpty) return null;
+  // Find all upcoming events (not just the closest one)
+  const upcomingEvents = useMemo(() => {
+    if (isEmpty) return [];
 
     const now = new Date();
 
@@ -49,42 +50,29 @@ export default function Events() {
       return deadlineUTC > now;
     });
 
-    if (validEvents.length === 0) return null;
-
-    return validEvents.reduce((closest, current) => {
-      const [closestYear, closestMonth, closestDay] =
-        closest.registrationDateDeadline.split("-").map(Number);
-      const [closestHours, closestMinutes] = closest.registrationTimeDeadline
+    // Sort by deadline date (closest first)
+    return validEvents.sort((a, b) => {
+      const [aYear, aMonth, aDay] = a.registrationDateDeadline
+        .split("-")
+        .map(Number);
+      const [aHours, aMinutes] = a.registrationTimeDeadline
         .split(":")
         .map(Number);
-      const closestDeadlineUTC = new Date(
-        Date.UTC(
-          closestYear,
-          closestMonth - 1,
-          closestDay,
-          closestHours - 7,
-          closestMinutes,
-          0
-        )
+      const aDeadlineUTC = new Date(
+        Date.UTC(aYear, aMonth - 1, aDay, aHours - 7, aMinutes, 0)
       );
 
-      const [currentYear, currentMonth, currentDay] =
-        current.registrationDateDeadline.split("-").map(Number);
-      const [currentHours, currentMinutes] = current.registrationTimeDeadline
+      const [bYear, bMonth, bDay] = b.registrationDateDeadline
+        .split("-")
+        .map(Number);
+      const [bHours, bMinutes] = b.registrationTimeDeadline
         .split(":")
         .map(Number);
-      const currentDeadlineUTC = new Date(
-        Date.UTC(
-          currentYear,
-          currentMonth - 1,
-          currentDay,
-          currentHours - 7,
-          currentMinutes,
-          0
-        )
+      const bDeadlineUTC = new Date(
+        Date.UTC(bYear, bMonth - 1, bDay, bHours - 7, bMinutes, 0)
       );
 
-      return currentDeadlineUTC < closestDeadlineUTC ? current : closest;
+      return aDeadlineUTC.getTime() - bDeadlineUTC.getTime();
     });
   }, [isEmpty]);
 
@@ -148,8 +136,19 @@ export default function Events() {
     }
   };
 
+  // Sort events by start date (newest to oldest)
+  const sortEventsByDate = (events: typeof eventsData) => {
+    return events.sort((a, b) => {
+      const dateA = new Date(a.startDate);
+      const dateB = new Date(b.startDate);
+      return dateB.getTime() - dateA.getTime(); // Newest first
+    });
+  };
+
   // Calculate pagination for desktop
-  const eventsToShow = isSearching ? filteredEvents : eventsData;
+  const eventsToShow = isSearching
+    ? sortEventsByDate(filteredEvents)
+    : sortEventsByDate(eventsData);
   const totalPages = Math.ceil(eventsToShow.length / eventsPerPage);
   const startIndex = currentPage * eventsPerPage;
   const endIndex = startIndex + eventsPerPage;
@@ -205,61 +204,149 @@ export default function Events() {
         <div>
           {/* Mobile Design - Completely Different Layout */}
           <div className="block lg:hidden">
-            {/* Mobile Header Card - Only show if there's an upcoming event */}
-            {upcomingEvent && (
-              <div className="bg-gradient-to-br from-[#2F4157] to-[#4B5B6E] rounded-[20px] p-6 mb-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="bg-white/20 rounded-full px-3 py-1">
-                    <p className="text-white text-sm">Upcoming Events</p>
+            {/* Mobile Upcoming Events Slider */}
+            {upcomingEvents.length > 0 && (
+              <div className="mb-6">
+                <div className="bg-gradient-to-br from-[#2F4157] to-[#4B5B6E] rounded-[20px] p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="bg-white/20 rounded-full px-3 py-1">
+                      <p className="text-white text-sm">Upcoming Events</p>
+                    </div>
+                    {upcomingEvents.length > 1 && (
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() =>
+                            setCurrentSlide(Math.max(0, currentSlide - 1))
+                          }
+                          className="bg-white/20 rounded-full p-2 disabled:opacity-50"
+                          disabled={currentSlide === 0}
+                        >
+                          <svg
+                            className="w-4 h-4 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M15 19l-7-7 7-7"
+                            />
+                          </svg>
+                        </button>
+                        <span className="text-white text-sm">
+                          {currentSlide + 1} / {upcomingEvents.length}
+                        </span>
+                        <button
+                          onClick={() =>
+                            setCurrentSlide(
+                              Math.min(
+                                upcomingEvents.length - 1,
+                                currentSlide + 1
+                              )
+                            )
+                          }
+                          className="bg-white/20 rounded-full p-2 disabled:opacity-50"
+                          disabled={currentSlide === upcomingEvents.length - 1}
+                        >
+                          <svg
+                            className="w-4 h-4 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    )}
                   </div>
-                  <div className="flex items-center gap-2 bg-white/20 rounded-full px-3 py-1">
-                    <Image
-                      src="/images/contents/general/calendar_icon.png"
-                      alt="Calendar"
-                      width={20}
-                      height={20}
-                      className="w-5 h-5"
-                    />
-                    <span className="text-white text-sm font-bold">
-                      {formatEventDate(upcomingEvent.startDate).month}{" "}
-                      {formatEventDate(upcomingEvent.startDate).day},{" "}
-                      {formatEventDate(upcomingEvent.startDate).year}
-                    </span>
+
+                  <div className="relative overflow-hidden">
+                    <div
+                      className="flex transition-transform duration-300 ease-in-out"
+                      style={{
+                        transform: `translateX(-${currentSlide * 100}%)`,
+                      }}
+                    >
+                      {upcomingEvents.map((event) => (
+                        <div key={event.id} className="w-full flex-shrink-0">
+                          <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center gap-2 bg-white/20 rounded-full px-3 py-1">
+                              <Image
+                                src="/images/contents/general/calendar_icon.png"
+                                alt="Calendar"
+                                width={20}
+                                height={20}
+                                className="w-5 h-5"
+                              />
+                              <span className="text-white text-sm font-bold">
+                                {formatEventDate(event.startDate).month}{" "}
+                                {formatEventDate(event.startDate).day},{" "}
+                                {formatEventDate(event.startDate).year}
+                              </span>
+                            </div>
+                          </div>
+
+                          <h1 className="text-white text-3xl font-bold mb-4 text-center">
+                            {event.title}
+                          </h1>
+
+                          <div className="relative mb-6 flex justify-center">
+                            <Image
+                              src={event.poster}
+                              width={280}
+                              height={350}
+                              alt={event.title}
+                              className="w-[280px] h-[350px] rounded-[15px] object-cover"
+                            />
+                          </div>
+
+                          <p className="text-white/90 text-center mb-6 leading-relaxed">
+                            {event.seo.meta_description}
+                          </p>
+
+                          <div className="flex flex-col gap-3">
+                            <Link
+                              href={event.registrationLink}
+                              className="bg-white text-[#2F4157] rounded-[15px] px-6 py-3 text-center font-semibold"
+                              target="_blank"
+                            >
+                              Register Now
+                            </Link>
+                            <Link
+                              href={`/events/${generateSlug(event.title)}`}
+                              onClick={handleEventClick}
+                              className="border-2 border-white text-white rounded-[15px] px-6 py-3 text-center font-semibold"
+                            >
+                              Read More
+                            </Link>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
 
-                <h1 className="text-white text-3xl font-bold mb-4 text-center">
-                  {upcomingEvent.title}
-                </h1>
-
-                <div className="relative mb-6 flex justify-center">
-                  <Image
-                    src={upcomingEvent.poster}
-                    width={280}
-                    height={350}
-                    alt={upcomingEvent.title}
-                    className="w-[280px] h-[350px] rounded-[15px] object-cover"
-                  />
-                </div>
-
-                <p className="text-white/90 text-center mb-6 leading-relaxed">
-                  {upcomingEvent.seo.meta_description}
-                </p>
-
-                <div className="flex flex-col gap-3">
-                  <Link
-                    href={upcomingEvent.registrationLink}
-                    className="bg-white text-[#2F4157] rounded-[15px] px-6 py-3 text-center font-semibold"
-                  >
-                    Register Now
-                  </Link>
-                  <Link
-                    href={`/events/${generateSlug(upcomingEvent.title)}`}
-                    onClick={handleEventClick}
-                    className="border-2 border-white text-white rounded-[15px] px-6 py-3 text-center font-semibold"
-                  >
-                    Read More
-                  </Link>
+                  {/* Dots indicator */}
+                  {upcomingEvents.length > 1 && (
+                    <div className="flex justify-center gap-2 mt-4">
+                      {upcomingEvents.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setCurrentSlide(index)}
+                          className={`w-2 h-2 rounded-full transition-colors ${
+                            index === currentSlide ? "bg-white" : "bg-white/50"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -296,34 +383,39 @@ export default function Events() {
 
           {/* Desktop Design - Original Layout */}
           <div className="hidden lg:block">
-            {upcomingEvent && (
-              <div className="flex bg-[#4B5B6E] rounded-[20px] h-[800px] sm:h-[700px] md:h-[600px] lg:h-[500px] xl:h-[496px] items-stretch">
+            {upcomingEvents.length > 0 && (
+              <div className="flex bg-[#4B5B6E] rounded-[20px] h-[500px] items-stretch">
                 <div className="relative w-full flex bg-[#2F4157] rounded-[20px] items-stretch p-12">
                   <div className="relative w-[450px]">
                     <Image
-                      src={upcomingEvent.poster}
+                      src={upcomingEvents[currentSlide].poster}
                       width={450}
                       height={450}
-                      alt={upcomingEvent.title}
+                      alt={upcomingEvents[currentSlide].title}
                       className="absolute top-0 left-0 w-[450px] h-auto rounded-[10px]"
                     />
                   </div>
                   <div className="w-[30vw] pl-6 text-white py-12 flex flex-col gap-4 text-[15px] justify-center">
                     <p>Upcoming Events</p>
-                    <p className="text-[32px]">{upcomingEvent.title}</p>
-                    <p className="w-[50vm]">
-                      {upcomingEvent.seo.meta_description}
+                    <p className="text-[32px]">
+                      {upcomingEvents[currentSlide].title}
+                    </p>
+                    <p className="w-[30vw]">
+                      {upcomingEvents[currentSlide].seo.meta_description}
                     </p>
                     <div className="flex gap-5 pt-6">
                       <Link
-                        href={`/events/${generateSlug(upcomingEvent.title)}`}
+                        href={`/events/${generateSlug(
+                          upcomingEvents[currentSlide].title
+                        )}`}
                         className="border-1 border-white rounded-[20px] px-2 py-1"
                       >
                         Read More
                       </Link>
                       <Link
-                        href={upcomingEvent.registrationLink}
+                        href={upcomingEvents[currentSlide].registrationLink}
                         className="border-1 border-white rounded-[20px] px-2 py-1"
+                        target="_blank"
                       >
                         Register
                       </Link>
@@ -341,16 +433,79 @@ export default function Events() {
                   <div className="flex flex-col">
                     <p className="text-white text-[15px] text-end">
                       <span className="font-bold">
-                        {formatEventDate(upcomingEvent.startDate).month}{" "}
-                        {formatEventDate(upcomingEvent.startDate).day}
+                        {
+                          formatEventDate(
+                            upcomingEvents[currentSlide].startDate
+                          ).month
+                        }{" "}
+                        {
+                          formatEventDate(
+                            upcomingEvents[currentSlide].startDate
+                          ).day
+                        }
                       </span>{" "}
                       <br />
-                      {formatEventDate(upcomingEvent.startDate).year}
+                      {
+                        formatEventDate(upcomingEvents[currentSlide].startDate)
+                          .year
+                      }
                     </p>
                   </div>
                 </div>
               </div>
             )}
+
+            {/* Desktop Navigation - Only show if multiple events */}
+            {upcomingEvents.length > 1 && (
+              <div className="flex justify-end gap-4 mt-6 mb-[50px]">
+                <button
+                  onClick={() => setCurrentSlide(Math.max(0, currentSlide - 1))}
+                  className="bg-[#2F4157] text-white rounded-full p-3 disabled:opacity-50 hover:bg-[#4B5B6E] transition-colors cursor-pointer"
+                  disabled={currentSlide === 0}
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                </button>
+                <span className="text-[#2F4157] text-lg font-semibold flex items-center">
+                  {currentSlide + 1} / {upcomingEvents.length}
+                </span>
+                <button
+                  onClick={() =>
+                    setCurrentSlide(
+                      Math.min(upcomingEvents.length - 1, currentSlide + 1)
+                    )
+                  }
+                  className="bg-[#2F4157] text-white rounded-full p-3 disabled:opacity-50 hover:bg-[#4B5B6E] transition-colors cursor-pointer"
+                  disabled={currentSlide === upcomingEvents.length - 1}
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </button>
+              </div>
+            )}
+
             <div className="w-full flex pt-4 pl-12 justify-between">
               <div className="w-[450px]"></div>
               <div className="w-[45vw] flex rounded-[20px] bg-[#D3D3D3] items-end p-3 ml-[1.5vw]">
@@ -427,7 +582,7 @@ export default function Events() {
             <EmptyState isSearch={isSearching} />
           ) : (
             <>
-              <div className="pt-[100px] grid grid-cols-3 gap-8 p-12">
+              <div className="pt-[50px] grid grid-cols-3 gap-8 p-12">
                 {currentEvents.map((event) => (
                   <EventCard
                     key={event.id}

@@ -359,4 +359,49 @@ export const eventsData: EventData[] = [
         "IELS, LuarSekolah, Beyond Borders, youth skills, global career, international work, future skills, English and career, professional skills, international opportunities, Zoom webinar 2025",
     },
   },
+  {
+    id: "8",
+    title: "Free TOEIC Try Out — by EStudyMe",
+    poster: "/images/contents/events/free-toeic.png",
+    description: `<div>
+  <div>📅 Test Period: 26 September – 5 October 2025</div>
+  <div>⏰ Duration: ~2 Hours (Timed Test)</div>
+  <div>&nbsp;</div>
+  <div><strong><em>Free TOEIC Try Out</em> — A collaboration between IELS and EStudyMe to give you the closest experience to the official TOEIC exam.</strong></div>
+  <div>&nbsp;</div>
+  <div>The TOEIC Try Out is designed to simulate real exam conditions, with authentic question formats, strict timing, and a full set of 200 questions to measure your English proficiency in listening and reading.</div>
+  <div>&nbsp;</div>
+  <div><strong>🎯 What You Will Experience:</strong></div>
+  <ul>
+    <li>✅ Full-length TOEIC simulation: 200 questions (100 Listening + 100 Reading)</li>
+    <li>✅ Timed test under official TOEIC conditions</li>
+    <li>✅ Authentic question types that mirror the real exam</li>
+    <li>✅ Practice your time management and accuracy</li>
+  </ul>
+  <div>&nbsp;</div>
+  <div><strong>📝 Test Details:</strong></div>
+  <ul>
+    <li><strong>Format:</strong> Online – Computer-Based / Internet-Based Test</li>
+    <li><strong>Questions:</strong> 200 (100 Listening + 100 Reading)</li>
+    <li><strong>Duration:</strong> ~2 hours</li>
+    <li><strong>Fee:</strong> Free — designed by EStudyMe, fully facilitated by IELS</li>
+    <li><strong>Eligibility:</strong> Open for all learners who want to measure their English proficiency</li>
+  </ul>
+  <div>&nbsp;</div>
+  <div><strong>Why Join:</strong></div>
+  <div>This free try out is your chance to practice with real TOEIC exam standards, identify your strengths and weaknesses, and boost your confidence before taking the official test.</div>
+</div>`,
+    registrationLink: "https://estudyme.com/study/simulation-test/toeic-testpro/test-1-62b69492bbc57b27fe10f7ac/",
+    startDate: "2025-10-26",
+    registrationTimeDeadline: "23:59",
+    registrationDateDeadline: "2025-11-05",
+    seo: {
+      meta_title:
+        "Free TOEIC Try Out Online",
+      meta_description:
+        "Join the Free TOEIC Try Out by EStudyMe (26 Sept – 5 Oct 2025). Experience a full-length, timed TOEIC simulation with 200 questions, authentic format, and realistic difficulty. Perfect practice for official TOEIC exam takers.",
+      meta_keywords:
+        "TOEIC try out, free TOEIC test, TOEIC online simulation, TOEIC practice test, TOEIC preparation, TOEIC listening, TOEIC reading, IELS TOEIC, TOEIC",
+    },
+  },
 ];

@@ -5,8 +5,12 @@ import Footer from "@/components/footer";
 import Image from "next/image";
 import CountUp from "react-countup";
 import Link from "next/link";
+import { testimonialsData } from "@/data/testimonials";
+import { useState } from "react";
 
 export default function Home() {
+  const [showAllTestimonials, setShowAllTestimonials] = useState(false);
+
   return (
     <div>
       <Header />
@@ -180,12 +184,11 @@ export default function Home() {
             </div>
           </div>
         </div>
-
         {/* Stats and CTA Section */}
         <div className="flex flex-col px-4 sm:px-8 lg:px-[100px]">
           <div className="bg-white flex flex-col lg:flex-row rounded-t-[30px] px-6 sm:px-8 lg:px-12 py-[40px] lg:py-[60px] w-full gap-8 lg:gap-12">
-            <div className="flex flex-col w-full items-center gap-4">
-              <div className="text-[24px] lg:text-[32px] items-center flex flex-col -space-y-2 lg:-space-y-3">
+            <div className="flex w-full items-center gap-4 h-full justify-center">
+              <div className="text-[24px] lg:text-[32px] items-center justify-center flex flex-col -space-y-2 lg:-space-y-3">
                 <p className="font-bold">
                   <CountUp
                     end={3000}
@@ -197,9 +200,6 @@ export default function Home() {
                 </p>
                 <p>MEMBERS</p>
               </div>
-              <p className="text-[14px] lg:text-[18px] text-center leading-tight">
-                Have joined our online programs and workshops.
-              </p>
             </div>
             <div className="flex flex-col w-full items-center gap-4">
               <div className="text-[24px] lg:text-[32px] items-center flex flex-col -space-y-2 lg:-space-y-3">
@@ -238,7 +238,6 @@ export default function Home() {
             </p>
           </div>
         </div>
-
         {/* IELS Lounge Section */}
         <div className="flex px-4 sm:px-8 lg:px-[100px] rounded-[20px] items-center justify-center">
           <div className="bg-white rounded-[20px] w-full flex flex-col lg:flex-row py-[30px] lg:py-[40px] items-center justify-center gap-[15px] lg:gap-[20px] px-6 lg:px-[50px]">
@@ -272,8 +271,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-        {/* Testimonials Section */}
         <div className="flex px-4 sm:px-8 lg:px-[100px] rounded-[20px] items-center justify-center">
           <div className="bg-[#D9D9D9] rounded-[20px] w-full flex flex-col px-6 lg:px-12 py-6 gap-5">
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
@@ -289,34 +286,71 @@ export default function Home() {
               </p>
               <div className="hidden sm:block"></div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-12 pb-8">
-              {[1, 2, 3].map((item) => (
+            <div className="flex flex-wrap justify-center gap-6 lg:gap-12 pb-8">
+              {testimonialsData.map((testimonial, index) => (
                 <div
-                  key={item}
-                  className="bg-white rounded-2xl p-6 shadow-lg w-full flex flex-col"
+                  key={testimonial.id}
+                  className={`bg-white rounded-2xl p-6 shadow-lg w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-32px)] flex flex-col justify-between ${
+                    index >= 3 && !showAllTestimonials ? "hidden lg:flex" : ""
+                  }`}
                 >
-                  <p className="text-gray-800 text-[14px] lg:text-[16px] leading-tight mb-6">
-                    IELS taught me that learning English doesn&apos;t have to be
-                    stressful. Every session is interactive and insightful. It
-                    keeps me motivated to grow and improve.
-                  </p>
-                  <div className="flex items-center gap-3">
-                    <div className="w-[33px] h-[33px] rounded-full bg-[#D9D9D9]"></div>
-                    <div className="flex flex-col text-[12px] lg:text-[13px] -space-y-1">
-                      <p className="font-bold">Zainufri Aziz</p>
-                      <p>Universitas Padjajaran</p>
+                  <div
+                    className="text-gray-800 text-[14px] lg:text-[16px] leading-tight"
+                    dangerouslySetInnerHTML={{ __html: testimonial.content }}
+                  />
+                  <div className="flex items-center gap-3 mt-auto pt-6">
+                    <div className="w-[33px] h-[33px] rounded-full overflow-hidden">
+                      <Image
+                        src={testimonial.author.avatar}
+                        alt={testimonial.author.name}
+                        width={33}
+                        height={33}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="w-3/4 flex flex-col text-[12px] lg:text-[13px] -space-y-1">
+                      <p className="font-bold">{testimonial.author.name}</p>
+                      <p>{testimonial.author.university}</p>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
+
+            {/* Show More/Less Button - Only on mobile */}
+            {testimonialsData.length > 3 && (
+              <div className="flex justify-center items-center lg:hidden">
+                <button
+                  onClick={() => setShowAllTestimonials(!showAllTestimonials)}
+                  className="flex items-center gap-2 text-[#2F4157] font-medium hover:text-[#4B5B6E] transition-colors"
+                >
+                  <svg
+                    className={`w-4 h-4 transition-transform ${
+                      showAllTestimonials ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                  {showAllTestimonials ? "Show Less" : "Show More"}
+                </button>
+              </div>
+            )}
           </div>
         </div>
-
         {/* Media Partners Section */}
         <div className="relative bg-[#1A2534] flex flex-col gap-3">
           <div className="text-[20px] lg:text-[32px] text-start text-white px-4 lg:px-[28vw] pt-[30px] leading-tight">
-            <p className="font-bold block lg:hidden">Global & National Company Partners</p>
+            <p className="font-bold block lg:hidden">
+              Global & National Company Partners
+            </p>
             <p className="font-bold hidden lg:block">Global & National</p>
             <p className="hidden lg:block">Company Partners</p>
           </div>

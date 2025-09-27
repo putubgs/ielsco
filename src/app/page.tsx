@@ -255,18 +255,16 @@ export default function Home() {
             />
             <div className="max-w-[400px] p-6 lg:p-12 flex flex-col gap-6 text-center lg:text-left">
               <p className="text-[24px] lg:text-[32px] font-bold leading-tight">
-                You don&apos;t have to grow alone.
+                We speak English Every Night!
               </p>
               <p className="text-[13px] lg:text-[15px]">
-                Be part of <span className="font-bold">IELS Lounge</span>, a
-                community where future global professionals support and uplift
-                each other, while mastering English that works in real life.
+              Join IELS Lounge, a supportive community where you practice English in real conversations, build confidence, and unlock opportunities. <br /> <br /> Start with small daily habits, speak without fear of mistakes, and learn together—here, no one dominates; everyone grows side by side.
               </p>
               <Link
                 href="/iels-lounge"
-                className="bg-[#E56668] text-white rounded-[20px] text-center w-fit px-[40px] lg:px-[60px] py-2 mx-auto lg:mx-0"
+                className="bg-[#E56668] font-bold text-white rounded-[20px] text-center w-fit px-[40px] lg:px-[60px] py-2 mx-auto lg:mx-0"
               >
-                Register
+                Join the Community
               </Link>
             </div>
           </div>

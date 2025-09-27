@@ -189,7 +189,7 @@ export default function Home() {
           <div className="bg-white text-[#2F4157] flex flex-col lg:flex-row rounded-t-[30px] px-6 sm:px-8 lg:px-12 py-[40px] lg:py-[60px] w-full gap-8 lg:gap-12">
             <div className="flex w-full items-center gap-4 h-full justify-center">
               <div className="text-[24px] lg:text-[32px] items-center justify-center flex flex-col -space-y-2 lg:-space-y-3">
-                <p className="font-bold text-[48px]">
+                <p className="font-bold text-[36px] md:text-[48px]">
                   <CountUp
                     end={3000}
                     duration={2.5}
@@ -203,40 +203,40 @@ export default function Home() {
             </div>
             <div className="flex flex-col w-full items-center gap-4">
               <div className="flex text-[24px] lg:text-[32px] items-center flex gap-4">
-                <p className="font-bold text-[48px]">
+                <p className="font-bold text-[36px] md:text-[48px]">
                   <CountUp end={92} duration={2.5} enableScrollSpy />%
                 </p>
-                <p className="text-[28px] leading-tight">
+                <p className="text-[20px] md:text-[28px] leading-tight">
                   WINNING <br /> STORIES
                 </p>
               </div>
-              <p className="text-[16px] lg:text-[18px] text-center leading-tight">
+              <p className="text-[14px] lg:text-[18px] text-center leading-tight">
                 member stories of national & international achievements
               </p>
             </div>
             <div className="flex flex-col w-full items-center gap-4">
               <div className="flex text-[24px] lg:text-[32px] items-center flex gap-4">
-                <p className="font-bold text-[48px]">
+                <p className="font-bold text-[36px] md:text-[48px]">
                   <CountUp end={25} duration={2.5} enableScrollSpy />+
                 </p>
-                <p className="text-[28px] leading-tight">
+                <p className="text-[20px] md:text-[28px] leading-tight">
                   GLOBAL <br /> CAREERS
                 </p>
               </div>
-              <p className="text-[16px] lg:text-[18px] text-center leading-tight">
+              <p className="text-[14px] lg:text-[18px] text-center leading-tight">
                 member stories of remote work & internships abroad
               </p>
             </div>
             <div className="flex flex-col w-full items-center gap-4">
               <div className="flex text-[24px] lg:text-[32px] items-center flex gap-4">
-                <p className="font-bold text-[48px]">
+                <p className="font-bold text-[36px] md:text-[48px]">
                   <CountUp end={13} duration={2.5} enableScrollSpy />+
                 </p>
-                <p className="text-[28px] leading-tight">
+                <p className="text-[20px] md:text-[28px] leading-tight">
                   STUDY <br /> ABROAD
                 </p>
               </div>
-              <p className="text-[16px] lg:text-[18px] text-center leading-tight">
+              <p className="text-[14px] lg:text-[18px] text-center leading-tight">
                 member stories of international study journeys
               </p>
             </div>

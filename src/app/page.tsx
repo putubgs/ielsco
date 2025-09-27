@@ -186,10 +186,10 @@ export default function Home() {
         </div>
         {/* Stats and CTA Section */}
         <div className="flex flex-col px-4 sm:px-8 lg:px-[100px]">
-          <div className="bg-white flex flex-col lg:flex-row rounded-t-[30px] px-6 sm:px-8 lg:px-12 py-[40px] lg:py-[60px] w-full gap-8 lg:gap-12">
+          <div className="bg-white text-[#2F4157] flex flex-col lg:flex-row rounded-t-[30px] px-6 sm:px-8 lg:px-12 py-[40px] lg:py-[60px] w-full gap-8 lg:gap-12">
             <div className="flex w-full items-center gap-4 h-full justify-center">
               <div className="text-[24px] lg:text-[32px] items-center justify-center flex flex-col -space-y-2 lg:-space-y-3">
-                <p className="font-bold">
+                <p className="font-bold text-[48px]">
                   <CountUp
                     end={3000}
                     duration={2.5}
@@ -198,44 +198,59 @@ export default function Home() {
                   />
                   +
                 </p>
-                <p>MEMBERS</p>
+                <p className="text-[24px] lg:text-[32px]">MEMBERS</p>
               </div>
             </div>
             <div className="flex flex-col w-full items-center gap-4">
-              <div className="text-[24px] lg:text-[32px] items-center flex flex-col -space-y-2 lg:-space-y-3">
-                <p className="font-bold">
+              <div className="flex text-[24px] lg:text-[32px] items-center flex gap-4">
+                <p className="font-bold text-[48px]">
                   <CountUp end={92} duration={2.5} enableScrollSpy />%
                 </p>
-                <p>OF MENTEES</p>
+                <p className="text-[28px] leading-tight">
+                  WINNING <br /> STORIES
+                </p>
               </div>
-              <p className="text-[14px] lg:text-[18px] text-center leading-tight">
-                Reported increased confidence in using English for academic and
-                professional needs.
+              <p className="text-[16px] lg:text-[18px] text-center leading-tight">
+                member stories of national & international achievements
               </p>
             </div>
             <div className="flex flex-col w-full items-center gap-4">
-              <div className="text-[24px] lg:text-[32px] items-center flex flex-col -space-y-2 lg:-space-y-3">
-                <p className="font-bold">
+              <div className="flex text-[24px] lg:text-[32px] items-center flex gap-4">
+                <p className="font-bold text-[48px]">
                   <CountUp end={25} duration={2.5} enableScrollSpy />+
                 </p>
-                <p>MENTORS</p>
+                <p className="text-[28px] leading-tight">
+                  GLOBAL <br /> CAREERS
+                </p>
               </div>
-              <p className="text-[14px] lg:text-[18px] text-center leading-tight">
-                From top universities and international institutions.
+              <p className="text-[16px] lg:text-[18px] text-center leading-tight">
+                member stories of remote work & internships abroad
+              </p>
+            </div>
+            <div className="flex flex-col w-full items-center gap-4">
+              <div className="flex text-[24px] lg:text-[32px] items-center flex gap-4">
+                <p className="font-bold text-[48px]">
+                  <CountUp end={13} duration={2.5} enableScrollSpy />+
+                </p>
+                <p className="text-[28px] leading-tight">
+                  STUDY <br /> ABROAD
+                </p>
+              </div>
+              <p className="text-[16px] lg:text-[18px] text-center leading-tight">
+                member stories of international study journeys
               </p>
             </div>
           </div>
           <div className="text-white flex flex-col gap-6 px-8 sm:px-16 lg:px-[200px] items-center lg:items-start justify-center pt-[50px] lg:pt-[100px] w-full mt-auto bg-[url(/images/contents/general/landing_page_2.png)] bg-cover bg-center h-[350px] lg:h-[500px] rounded-b-[30px] relative">
             <div className="absolute inset-0 bg-black opacity-40 lg:opacity-0 rounded-b-[30px]"></div>
-            <p className="text-[24px] sm:text-[28px] lg:text-[32px] font-bold leading-tight text-center lg:text-left relative z-10">
-              Unlock our potential.
+            <p className="text-[24px] sm:text-[28px] lg:text-[32px] font-extrabold leading-tight text-center lg:text-left relative z-10">
+              Create your own story of
               <br />
-              Grow with IELS!
+              global success with IELS!
             </p>
-            <p className="text-[13px] lg:text-[15px] text-center lg:text-left relative z-10">
-              Join IELS to learn, connect, and grow together with a community
-              that empowers your potential.
-            </p>
+            <Link href="/stories" className="text-[13px] lg:text-[15px] text-center lg:text-left relative z-10 bg-[#E56668] text-white rounded-full px-12 md:py-2 py-3 font-bold">
+              Discover More Member Stories
+            </Link>
           </div>
         </div>
         {/* IELS Lounge Section */}
@@ -258,7 +273,11 @@ export default function Home() {
                 We speak English Every Night!
               </p>
               <p className="text-[13px] lg:text-[15px]">
-              Join IELS Lounge, a supportive community where you practice English in real conversations, build confidence, and unlock opportunities. <br /> <br /> Start with small daily habits, speak without fear of mistakes, and learn together—here, no one dominates; everyone grows side by side.
+                Join IELS Lounge, a supportive community where you practice
+                English in real conversations, build confidence, and unlock
+                opportunities. <br /> <br /> Start with small daily habits,
+                speak without fear of mistakes, and learn together—here, no one
+                dominates; everyone grows side by side.
               </p>
               <Link
                 href="/iels-lounge"

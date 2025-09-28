@@ -326,7 +326,7 @@ case "team":
           {/* Principal 2 */}
           <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
             <img src="/images/contents/about/dhila.png" alt="Fadhila Qurrotul Aini" className="w-40 h-40 rounded-full object-cover mb-4"/>
-            <h4 className="font-bold text-lg sm:text-xl text-center">Fadhila Qurrotul Aini</h4>
+            <h4 className="font-bold text-lg sm:text-xl text-center">Fadhila Qurotul Aini</h4>
             <p className="text-sm sm:text-base text-gray-600 text-center">Principal of Growth</p>
           </div>
         </div>
@@ -406,7 +406,7 @@ case "team":
                 alt="Fadhila Qurrotul Aini"
                 className="w-40 h-40 lg:w-50 lg:h-50 rounded-full object-cover mb-4"
               />
-              <h4 className="font-bold text-lg sm:text-xl">Fadhila Qurrotul Aini</h4>
+              <h4 className="font-bold text-lg sm:text-xl">Fadhila Qurotul Aini</h4>
               <p className="text-sm sm:text-base text-gray-600">Principal of Growth</p>
             </div>
           </div>

@@ -302,16 +302,91 @@ export default function About() {
             </div>
           </div>
         );
-      case "team":
-        return (
-      <div className="space-y-10 sm:space-y-12">
-        <h2 className="font-bold text-2xl sm:text-3xl">Organizational Team</h2>
-        <p className="text-[15px] sm:text-base text-justify leading-relaxed">
-          Behind every initiative of IELS is a strong and passionate team. 
-          Together, we are committed to building a platform that connects 
-          Indonesian students with global opportunities.
-        </p>
+case "team":
+  return (
+    <div className="space-y-10 sm:space-y-12">
+      <h2 className="font-bold text-2xl sm:text-3xl">Organizational Team</h2>
+      <p className="text-[15px] sm:text-base text-justify leading-relaxed">
+        Behind every initiative of IELS is a strong and passionate team. 
+        Together, we are committed to building a platform that connects 
+        Indonesian students with global opportunities.
+      </p>
 
+      {/* ===== MOBILE VIEW ===== */}
+      <div className="md:hidden space-y-8">
+        {/* Principals */}
+        <h3 className="font-semibold text-xl sm:text-2xl mb-4 text-center">Principals</h3>
+        <div className="grid grid-cols-1 gap-6">
+          {/* Principal 1 */}
+          <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
+            <img src="/images/contents/about/arba.png" alt="Arbadza Rido Adzariyat" className="w-40 h-40 rounded-full object-cover mb-4"/>
+            <h4 className="font-bold text-lg sm:text-xl text-center">Arbadza Rido Adzariyat</h4>
+            <p className="text-sm sm:text-base text-gray-600 text-center">Principal of Operations</p>
+          </div>
+          {/* Principal 2 */}
+          <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
+            <img src="/images/contents/about/dhila.png" alt="Fadhila Qurrotul Aini" className="w-40 h-40 rounded-full object-cover mb-4"/>
+            <h4 className="font-bold text-lg sm:text-xl text-center">Fadhila Qurrotul Aini</h4>
+            <p className="text-sm sm:text-base text-gray-600 text-center">Principal of Growth</p>
+          </div>
+        </div>
+
+        {/* Managers of Operations */}
+        <h3 className="font-semibold text-xl sm:text-2xl mt-8 mb-4 text-center">Managers of Operations</h3>
+        <div className="grid grid-cols-1 gap-6">
+          {/* Ops Managers */}
+          <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
+            <img src="/images/contents/about/farrel.png" className="w-35 h-35 rounded-full object-cover mb-4"/>
+            <h4 className="font-bold text-lg sm:text-xl text-center">Muhammad Farrel Alrezky</h4>
+            <p className="text-sm sm:text-base text-gray-600 text-center">Business Manager</p>
+          </div>
+          <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
+            <img src="/images/contents/about/bintang.png" className="w-35 h-35 rounded-full object-cover mb-4"/>
+            <h4 className="font-bold text-lg sm:text-xl text-center">Bintang Mahardika</h4>
+            <p className="text-sm sm:text-base text-gray-600 text-center">Product Manager</p>
+          </div>
+          <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
+            <img src="/images/contents/about/tamira.png" className="w-35 h-35 rounded-full object-cover mb-4"/>
+            <h4 className="font-bold text-lg sm:text-xl text-center">Tamira Wijdani Khalisa</h4>
+            <p className="text-sm sm:text-base text-gray-600 text-center">Project Manager</p>
+          </div>
+          <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
+            <img src="/images/contents/about/safira.png" className="w-35 h-35 rounded-full object-cover mb-4"/>
+            <h4 className="font-bold text-lg sm:text-xl text-center">Safira Salsabila</h4>
+            <p className="text-sm sm:text-base text-gray-600 text-center">Community Manager</p>
+          </div>
+        </div>
+
+        {/* Managers of Growth */}
+        <h3 className="font-semibold text-xl sm:text-2xl mt-8 mb-4 text-center">Managers of Growth</h3>
+        <div className="grid grid-cols-1 gap-6">
+          {/* Growth Managers */}
+          <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
+            <img src="/images/contents/about/angga.png" className="w-35 h-35 rounded-full object-cover mb-4"/>
+            <h4 className="font-bold text-lg sm:text-xl text-center">Laurensius Erlangga Putra Aksami</h4>
+            <p className="text-sm sm:text-base text-gray-600 text-center">Marketing Manager</p>
+          </div>
+          <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
+            <img src="/images/contents/about/didi.png" className="w-35 h-35 rounded-full object-cover mb-4"/>
+            <h4 className="font-bold text-lg sm:text-xl text-center">Haydi Aprilia</h4>
+            <p className="text-sm sm:text-base text-gray-600 text-center">Vice Marketing Manager</p>
+          </div>
+          <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
+            <img src="/images/contents/about/zain.png" className="w-35 h-35 rounded-full object-cover mb-4"/>
+            <h4 className="font-bold text-lg sm:text-xl text-center">Zainufri Aziz</h4>
+            <p className="text-sm sm:text-base text-gray-600 text-center">Creative Manager</p>
+          </div>
+          <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
+            <img src="/images/contents/about/zayyina.png" className="w-35 h-35 rounded-full object-cover mb-4"/>
+            <h4 className="font-bold text-lg sm:text-xl text-center">Zayyina Musyarrofa</h4>
+            <p className="text-sm sm:text-base text-gray-600 text-center">Creator Manager</p>
+          </div>
+        </div>
+      </div>
+
+      {/* ===== DESKTOP VIEW ===== */}
+      <div className="hidden md:block">
+        <div className="hidden md:grid grid-cols-4 gap-8 text-center"></div>
         {/* Principals */}
         <div>
           <h3 className="font-semibold text-xl sm:text-2xl mb-6 text-center">Principals</h3>
@@ -408,6 +483,7 @@ export default function About() {
           </div>
         </div>
       </div>
+      </div>
 
         );
 
@@ -470,25 +546,27 @@ export default function About() {
           <div className="block sm:hidden">
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-1 relative">
               {/* Animated Background */}
-              <div
-                className={`absolute top-1 bottom-1 bg-[#E56668] rounded-xl shadow-lg transition-transform duration-300 ease-in-out ${
-                  isButtonAnimating ? "opacity-80" : "opacity-100"
-                }`}
-                style={{
-                  width: "calc(33.333% - 2px)",
-                  transform: `translateX(${getActiveIndex() * 100}%)`,
-                }}
-              />
+<div className="relative">
+  <div
+    className={`absolute top-1 bottom-1 bg-[#E56668] rounded-xl shadow-lg transition-transform duration-300 ease-in-out ${
+      isButtonAnimating ? "opacity-80" : "opacity-100"
+    }`}
+    style={{
+      width: "25%", // 4 buttons = 25% each
+      transform: `translateX(${getActiveIndex() * 100}%)`,
+    }}
+  />
 
-              <div className="grid grid-cols-3 gap-1 relative z-10">
-                <button
-                  onClick={() => handleSectionChange("vision")}
-                  className={`py-3 px-2 rounded-xl text-[14px] font-medium transition-colors duration-300 ${
-                    activeSection === "vision"
-                      ? "text-white"
-                      : "text-white/80 hover:text-white hover:bg-white/20"
-                  }`}
-                >
+  {/* Navigation Buttons */}
+  <div className="grid grid-cols-4 gap-1 relative z-10">
+    <button
+      onClick={() => handleSectionChange("vision")}
+      className={`py-3 px-2 rounded-xl text-[14px] font-medium transition-colors duration-300 ${
+        activeSection === "vision"
+          ? "text-white"
+          : "text-white/80 hover:text-white hover:bg-white/20"
+      }`}
+    >
                   Vision & Mission
                 </button>
                 <button
@@ -511,9 +589,6 @@ export default function About() {
                 >
                   Impact & Value
                 </button>
-              </div>
-            </div>
-            <div className="text-center mt-3 text-white/60 text-sm">
                <button
                  onClick={() => handleSectionChange("team")}
                  className={`py-3 px-2 rounded-xl text-[14px] font-medium transition-colors duration-300 ${
@@ -522,13 +597,17 @@ export default function About() {
                      : "text-white/80 hover:text-white hover:bg-white/20"
                   }`}
                 >
-                 Organizational Team
+                  Team
                 </button>
-
-            
-              💡 Swipe content left/right to navigate
+              </div>
             </div>
-          </div>
+            </div>
+
+            {/* Swipe Hint */}
+            <div className="text-center mt-3 text-white/60 text-sm">
+              💡 Swipe content left/right to navigate
+              </div>
+            </div>
 
           <div className="hidden sm:flex gap-5 justify-center md:justify-start">
             <button
@@ -593,5 +672,6 @@ export default function About() {
       </div>
       <Footer />
     </div>
+
   );
 }

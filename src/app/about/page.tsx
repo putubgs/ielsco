@@ -5,7 +5,7 @@ import Header from "@/components/header";
 import Image from "next/image";
 import { useState } from "react";
 
-type ActiveSection = "vision" | "curriculum" | "impact";
+type ActiveSection = "vision" | "curriculum" | "impact" | "team";
 
 export default function About() {
   const [activeSection, setActiveSection] = useState<ActiveSection>("vision");
@@ -25,7 +25,7 @@ export default function About() {
     if (isMobile) {
       if (isAnimating) return;
 
-      const sections: ActiveSection[] = ["vision", "curriculum", "impact"];
+      const sections: ActiveSection[] = ["vision", "curriculum", "impact", "team"];
       const currentIndex = sections.indexOf(activeSection);
       const newIndex = sections.indexOf(newSection);
 
@@ -49,7 +49,7 @@ export default function About() {
   };
 
   const getActiveIndex = () => {
-    const sections: ActiveSection[] = ["vision", "curriculum", "impact"];
+    const sections: ActiveSection[] = ["vision", "curriculum", "impact", "team"];
     return sections.indexOf(activeSection);
   };
 
@@ -70,7 +70,7 @@ export default function About() {
     const isRightSwipe = distance < -50;
 
     if (isLeftSwipe || isRightSwipe) {
-      const sections: ActiveSection[] = ["vision", "curriculum", "impact"];
+      const sections: ActiveSection[] = ["vision", "curriculum", "impact", "team"];
       const currentIndex = sections.indexOf(activeSection);
 
       if (isLeftSwipe && currentIndex < sections.length - 1) {
@@ -302,6 +302,115 @@ export default function About() {
             </div>
           </div>
         );
+      case "team":
+        return (
+      <div className="space-y-10 sm:space-y-12">
+        <h2 className="font-bold text-2xl sm:text-3xl">Organizational Team</h2>
+        <p className="text-[15px] sm:text-base text-justify leading-relaxed">
+          Behind every initiative of IELS is a strong and passionate team. 
+          Together, we are committed to building a platform that connects 
+          Indonesian students with global opportunities.
+        </p>
+
+        {/* Principals */}
+        <div>
+          <h3 className="font-semibold text-xl sm:text-2xl mb-6 text-center">Principals</h3>
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
+              <img
+                src="/images/contents/about/arba.png"
+                alt="Arbadza Rido Adzariyat"
+                className="w-40 h-40 lg:w-50 lg:h-50 rounded-full object-cover mb-4"
+              />
+              <h4 className="font-bold text-lg sm:text-xl">Arbadza Rido Adzariyat</h4>
+              <p className="text-sm sm:text-base text-gray-600">Principal of Operations</p>
+            </div>
+            <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
+              <img
+                src="/images/contents/about/dhila.png"
+                alt="Fadhila Qurrotul Aini"
+                className="w-40 h-40 lg:w-50 lg:h-50 rounded-full object-cover mb-4"
+              />
+              <h4 className="font-bold text-lg sm:text-xl">Fadhila Qurrotul Aini</h4>
+              <p className="text-sm sm:text-base text-gray-600">Principal of Growth</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Managers of Operations */}
+              <div>
+                <div className="grid grid-cols-4 gap-8 text-center">
+                {/* Heading kiri */}
+                <div className="col-span-2">
+                  <h3 className="font-semibold text-xl sm:text-2xl mb-6">
+                    Managers of Operations
+                  </h3>
+                </div>
+
+                {/* Heading kanan */}
+                <div className="col-span-2">
+                  <h3 className="font-semibold text-xl sm:text-2xl mb-6">
+                    Managers of Growth
+                  </h3>
+                </div>
+
+            </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/*Operation Managers Row 1*/}
+            <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
+              <img src="/images/contents/about/farrel.png" className="w-35 h-35 lg:w-40 lg:h-40 rounded-full object-cover mb-4"/>
+              <h4 className="font-bold text-lg sm:text-xl text-center">Muhammad Farrel Alrezky</h4>
+              <p className="text-sm sm:text-base text-gray-600 text-center">Business Manager</p>
+            </div>
+            <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
+              <img src="/images/contents/about/bintang.png" className="w-35 h-35 lg:w-40 lg:h-40 rounded-full object-cover mb-4"/>
+              <h4 className="font-bold text-lg sm:text-xl text-center">Bintang Mahardika</h4>
+              <p className="text-sm sm:text-base text-gray-600 text-center">Product Manager</p>
+            </div>
+           {/*Growth Managers Row 1*/}
+            <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
+              <img src="/images/contents/about/angga.png" className="w-35 h-35 lg:w-40 lg:h-40 rounded-full object-cover mb-4"/>
+              <h4 className="font-bold text-lg sm:text-xl text-center">Laurensius Erlangga Putra Aksami</h4>
+              <p className="text-sm sm:text-base text-gray-600 text-center">Marketing Manager</p>
+            </div>
+            <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
+              <img src="/images/contents/about/didi.png" className="w-35 h-35 lg:w-40 lg:h-40 rounded-full object-cover mb-4"/>
+              <h4 className="font-bold text-lg sm:text-xl text-center">Haydi Aprilia</h4>
+              <p className="text-sm sm:text-base text-gray-600 text-center">Vice Marketing Manager</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+         {/*Operation Managers Row 2*/}
+            <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
+              <img src="/images/contents/about/tamira.png" className="w-35 h-35 lg:w-40 lg:h-40 rounded-full object-cover mb-4"/>
+              <h4 className="font-bold text-lg sm:text-xl text-center">Tamira Wijdani Khalisa</h4>
+              <p className="text-sm sm:text-base text-gray-600 text-center">Project Manager</p>
+            </div>
+            <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
+              <img src="/images/contents/about/safira.png" className="w-35 h-35 lg:w-40 lg:h-40 rounded-full object-cover mb-4"/>
+              <h4 className="font-bold text-lg sm:text-xl text-center">Safira Salsabila</h4>
+              <p className="text-sm sm:text-base text-gray-600 text-center">Community Manager</p>
+            </div>
+        {/*Growth Managers Row 2*/}
+            <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
+              <img src="/images/contents/about/zain.png" className="w-35 h-35 lg:w-40 lg:h-40 rounded-full object-cover mb-4"/>
+              <h4 className="font-bold text-lg sm:text-xl text-center">Zainufri Aziz</h4>
+              <p className="text-sm sm:text-base text-gray-600 text-center">Creative Manager</p>
+            </div>
+            <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
+              <img src="/images/contents/about/zayyina.png" className="w-35 h-35 lg:w-40 lg:h-40 rounded-full object-cover mb-4"/>
+              <h4 className="font-bold text-lg sm:text-xl text-center">Zayyina Musyarrofa</h4>
+              <p className="text-sm sm:text-base text-gray-600 text-center">Creator Manager</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        );
+
       default:
         return null;
     }
@@ -405,6 +514,18 @@ export default function About() {
               </div>
             </div>
             <div className="text-center mt-3 text-white/60 text-sm">
+               <button
+                 onClick={() => handleSectionChange("team")}
+                 className={`py-3 px-2 rounded-xl text-[14px] font-medium transition-colors duration-300 ${
+                   activeSection === "team"
+                     ? "text-white"
+                     : "text-white/80 hover:text-white hover:bg-white/20"
+                  }`}
+                >
+                 Organizational Team
+                </button>
+
+            
               💡 Swipe content left/right to navigate
             </div>
           </div>
@@ -440,6 +561,16 @@ export default function About() {
             >
               Impact & Value
             </button>
+            <button
+              onClick={() => handleSectionChange("team")}
+              className={`rounded-full px-7 py-2 text-[20px] cursor-pointer transition-all duration-200 font-medium ${
+                activeSection === "team"
+                  ? "bg-[#E56668] text-white shadow-lg"
+                  : "border-2 border-white text-white hover:bg-white hover:text-[#2F4157] hover:shadow-md"
+              }`}
+            >
+              Team
+            </button>
           </div>
         </div>
         <div className="bg-white w-full rounded-[20px] sm:rounded-[30px] p-6 sm:p-8 lg:p-12 lg:px-[50px] text-[#2F4157] shadow-lg overflow-hidden">
@@ -451,10 +582,11 @@ export default function About() {
                   : "-translate-x-full opacity-0 sm:translate-x-0 sm:opacity-100"
                 : "translate-x-0 opacity-100"
             }`}
+
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
-          >
+            >
             {getContent()}
           </div>
         </div>

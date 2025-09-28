@@ -30,19 +30,17 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="hidden lg:block lg:w-[25%] text-white text-[15px] mt-auto mb-4">
+            <div className="hidden lg:block lg:w-[25%] text-white text-[23px] mt-auto mb-4">
               <p className="w-[85%]">
-                IELS bridges the gap between education and opportunity, starting
-                with you.
+                Your English Journey Starts Here <br /> —Learn, Speak, Grow.
               </p>
             </div>
           </div>
 
           {/* Mobile tagline */}
-          <div className="lg:hidden text-white text-center text-sm px-4">
+          <div className="lg:hidden text-white text-center text-sm px-6">
             <p>
-              IELS bridges the gap between education and opportunity, starting
-              with you.
+              Your English Journey Starts Here <br /> —Learn, Speak, Grow.
             </p>
           </div>
 
@@ -191,7 +189,7 @@ export default function Home() {
               <div className="text-[24px] lg:text-[32px] items-center justify-center flex flex-col -space-y-2 lg:-space-y-3">
                 <p className="font-bold text-[36px] md:text-[48px]">
                   <CountUp
-                    end={3000}
+                    end={2000}
                     duration={2.5}
                     separator=","
                     enableScrollSpy
@@ -204,14 +202,14 @@ export default function Home() {
             <div className="flex flex-col w-full items-center gap-4">
               <div className="flex text-[24px] lg:text-[32px] items-center flex gap-4">
                 <p className="font-bold text-[36px] md:text-[48px]">
-                  <CountUp end={92} duration={2.5} enableScrollSpy />%
+                  <CountUp end={100} duration={2.5} enableScrollSpy />+
                 </p>
                 <p className="text-[20px] md:text-[28px] leading-tight">
                   WINNING <br /> STORIES
                 </p>
               </div>
               <p className="text-[14px] lg:text-[18px] text-center leading-tight">
-                member stories of national & international achievements
+                member stories of national <br /> & international achievements
               </p>
             </div>
             <div className="flex flex-col w-full items-center gap-4">
@@ -224,7 +222,7 @@ export default function Home() {
                 </p>
               </div>
               <p className="text-[14px] lg:text-[18px] text-center leading-tight">
-                member stories of remote work & internships abroad
+                member stories of remote <br /> work & internships abroad
               </p>
             </div>
             <div className="flex flex-col w-full items-center gap-4">
@@ -237,7 +235,7 @@ export default function Home() {
                 </p>
               </div>
               <p className="text-[14px] lg:text-[18px] text-center leading-tight">
-                member stories of international study journeys
+                member stories of <br /> international study journeys
               </p>
             </div>
           </div>

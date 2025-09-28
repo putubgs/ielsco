@@ -38,7 +38,7 @@ export const memberStoriesData: MemberStory[] = [
 </div>
 <h4>✍️ Content Written <strong>by Najlaa Thufailah Shafut</strong><br data-start="343" data-end="346" /> 🎨 Design <strong>by Muhammad Athallah Khairi</strong></h4>
 <p>&nbsp;</p>
-<a href="https://www.instagram.com/iels_co" target="_blank"
+<a href="https://www.instagram.com/p/DPJJ3zcgcJ5/?utm_source=ig_web_copy_link&igsh=MWhucW82a2dtMGhoYg==" target="_blank"
    style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
    Read More
 </a>`,
@@ -79,7 +79,7 @@ export const memberStoriesData: MemberStory[] = [
 </div>
 <h4>✍️ Content Written <strong>by Najlaa Thufailah Shafut</strong><br data-start="343" data-end="346" /> 🎨 Design <strong>by Muhammad Athallah Khairi</strong></h4>
 <p>&nbsp;</p>
-<a href="https://www.instagram.com/iels_co" target="_blank"
+<a href="https://www.instagram.com/p/DPJJ3zcgcJ5/?utm_source=ig_web_copy_link&igsh=MWhucW82a2dtMGhoYg==" target="_blank"
    style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
    Read More
 </a>`,

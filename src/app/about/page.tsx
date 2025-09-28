@@ -337,7 +337,7 @@ case "team":
           {/* Ops Managers */}
           <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
             <img src="/images/contents/about/farrel.png" className="w-35 h-35 rounded-full object-cover mb-4"/>
-            <h4 className="font-bold text-lg sm:text-xl text-center">Muhammad Farrel Alrezky</h4>
+            <h4 className="font-bold text-lg sm:text-xl text-center">M Farrel Alrezky</h4>
             <p className="text-sm sm:text-base text-gray-600 text-center">Business Manager</p>
           </div>
           <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
@@ -363,7 +363,7 @@ case "team":
           {/* Growth Managers */}
           <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
             <img src="/images/contents/about/angga.png" className="w-35 h-35 rounded-full object-cover mb-4"/>
-            <h4 className="font-bold text-lg sm:text-xl text-center">Laurensius Erlangga Putra Aksami</h4>
+            <h4 className="font-bold text-lg sm:text-xl text-center">Laurensius Erlangga</h4>
             <p className="text-sm sm:text-base text-gray-600 text-center">Marketing Manager</p>
           </div>
           <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
@@ -434,7 +434,7 @@ case "team":
           {/*Operation Managers Row 1*/}
             <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
               <img src="/images/contents/about/farrel.png" className="w-35 h-35 lg:w-40 lg:h-40 rounded-full object-cover mb-4"/>
-              <h4 className="font-bold text-lg sm:text-xl text-center">Muhammad Farrel Alrezky</h4>
+              <h4 className="font-bold text-lg sm:text-xl text-center">M Farrel Alrezky</h4>
               <p className="text-sm sm:text-base text-gray-600 text-center">Business Manager</p>
             </div>
             <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
@@ -445,7 +445,7 @@ case "team":
            {/*Growth Managers Row 1*/}
             <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
               <img src="/images/contents/about/angga.png" className="w-35 h-35 lg:w-40 lg:h-40 rounded-full object-cover mb-4"/>
-              <h4 className="font-bold text-lg sm:text-xl text-center">Laurensius Erlangga Putra Aksami</h4>
+              <h4 className="font-bold text-lg sm:text-xl text-center">Laurensius Erlangga</h4>
               <p className="text-sm sm:text-base text-gray-600 text-center">Marketing Manager</p>
             </div>
             <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">

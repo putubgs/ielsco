@@ -430,7 +430,7 @@ case "team":
                 </div>
 
             </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-4 lg:grid-cols-4 gap-6">
           {/*Operation Managers Row 1*/}
             <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
               <img src="/images/contents/about/farrel.png" className="w-35 h-35 lg:w-40 lg:h-40 rounded-full object-cover mb-4"/>
@@ -457,7 +457,7 @@ case "team":
         </div>
 
         <div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-4 lg:grid-cols-4 gap-6">
          {/*Operation Managers Row 2*/}
             <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
               <img src="/images/contents/about/tamira.png" className="w-35 h-35 lg:w-40 lg:h-40 rounded-full object-cover mb-4"/>

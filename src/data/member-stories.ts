@@ -1,10 +1,3 @@
-export interface NewsItem {
-  id: number;
-  title: string;
-  content: string;
-  category: "member" | "program" | "partner";
-  subcategory?: "internals" | "lounge" | "speakers" | "inspires";
-}
 export interface MemberStory {
   id: string;
   title: string;
@@ -21,7 +14,7 @@ export interface MemberStory {
     meta_description: string;
     meta_keywords: string;
   };
-   subcategory: "internals" | "lounge" | "speakers" | "inspires";
+   subcategory: "Internals" | "Lounge" | "Speakers" | "Inspires";
 }
 
 // NOTE: The content MUST use HTML tags for formatting
@@ -30,7 +23,7 @@ export const memberStoriesData: MemberStory[] = [
     {
      id: "1",
      title: "Jo's Week Long Adventure at ISUFST, Philipines 🇵🇭",
-     subcategory: "internals",
+     subcategory: "Internals",
      content: `<div>
 <div><strong>From Malang to the Philippines, George Abraham—better known as Jo—brought the spirit of IELS across borders. As a Project Leader at IELS and a Computer Science student from Universitas Brawijaya, Jo spent a week on a cultural and academic exchange program at Iloilo State University of Fisheries Science and Technology (ISUFST).</strong></div>
 <div>&nbsp;</div>
@@ -72,7 +65,7 @@ export const memberStoriesData: MemberStory[] = [
    {
      id: "2",
      title: "Shania's Journey: UNSIKA's Delegate Goes to Malaysia",
-     subcategory: "internals",
+     subcategory: "Internals",
      content: `<div>
 <div><strong>Shania Rizky Henanto—one of IELS’s Project Leaders and a proud student of Universitas Singaperbangsa Karawang (UNSIKA)—stepped onto the international stage as Indonesia’s representative at the prestigious ASEAN Classroom 2025 program.</strong></div>
 <div>&nbsp;</div>
@@ -111,91 +104,84 @@ export const memberStoriesData: MemberStory[] = [
          "IELS, member story, Shania Rizky Henanto, ASEAN Classroom 2025, Malaysia, Universitas Singaperbangsa Karawang, UNSIKA, student delegate, international collaboration, English learning, global opportunities",
      },
    },
-//   {
-//     id: "3",
-//     title: "Ahmad's Success Story: From Local to Global",
-//     content: `Ahmad's journey from local opportunities to global success showcases the transformative power of English proficiency in today's connected world. Starting with limited English skills, Ahmad dedicated himself to IELS programs, focusing on professional communication and business English. His hard work paid off when he secured a remote position with a multinational company, allowing him to work with international teams and expand his career horizons. Ahmad's story proves that with determination and the right support, language barriers can be overcome to achieve global success.`,
-//     bannerImage:
-//       "/images/contents/stories/member-stories/banner/philippines-banner.png",
-//     author: {
-//       name: "Ahmad",
-//       avatar:
-//         "/images/contents/stories/member-stories/profile/member-stories.png",
-//     },
-//     date: "October 27, 2025",
-//     location: "Jakarta",
-//     seo: {
-//       meta_title:
-//         "Ahmad's Success Story: From Local to Global - IELS Member Story",
-//       meta_description:
-//         "Ahmad shares his inspiring journey of how IELS helped him secure a remote job with a multinational company, proving that determination and the right support can change everything.",
-//       meta_keywords:
-//         "IELS, member story, remote work, multinational company, global opportunities, career success, English skills",
-//     },
-//   },
-//   {
-//     id: "4",
-//     title: "Maria's Cultural Exchange Experience",
-//     content: `Maria's participation in IELS cultural exchange programs opened doors to new friendships, perspectives, and opportunities she never imagined. Through these programs, Maria connected with learners from different countries, sharing experiences and learning about diverse cultures while improving her English. The cultural exchange not only enhanced her language skills but also broadened her worldview and built lasting international friendships. Maria's experience demonstrates how language learning can be a gateway to cultural understanding and global connections.`,
-//     bannerImage:
-//       "/images/contents/stories/member-stories/banner/philippines-banner.png",
-//     author: {
-//       name: "Maria",
-//       avatar:
-//         "/images/contents/stories/member-stories/profile/member-stories.png",
-//     },
-//     date: "February 10, 2025",
-//     location: "Jakarta",
-//     seo: {
-//       meta_title: "Maria's Cultural Exchange Experience - IELS Member Story",
-//       meta_description:
-//         "Maria reflects on her transformative experience participating in IELS cultural exchange programs, building lasting friendships and expanding her worldview through language learning.",
-//       meta_keywords:
-//         "IELS, member story, cultural exchange, international friendships, worldview expansion, language learning, transformative experience",
-//     },
-//   },
-//   {
-//     id: "5",
-//     title: "David's Remote Work Success with IELS Support",
-//     content: `David's success in remote software development is a testament to how strong English communication skills can open doors to global opportunities. Through IELS programs, David developed the professional communication skills necessary to work effectively with international clients and teams. His ability to clearly articulate technical concepts and collaborate across cultures has made him a valuable asset in the global tech industry. David's story shows how language proficiency can be a key differentiator in competitive remote work environments.`,
-//     bannerImage:
-//       "/images/contents/stories/member-stories/banner/philippines-banner.png",
-//     author: {
-//       name: "David",
-//       avatar:
-//         "/images/contents/stories/member-stories/profile/member-stories.png",
-//     },
-//     date: "January 5, 2025",
-//     location: "Jakarta",
-//     seo: {
-//       meta_title:
-//         "David's Remote Work Success with IELS Support - Member Story",
-//       meta_description:
-//         "David credits IELS for helping him develop the communication skills needed to thrive in his remote software development role, connecting with clients worldwide.",
-//       meta_keywords:
-//         "IELS, member story, remote work, software development, communication skills, global clients, professional development",
-//     },
-//   },
-//   {
-//     id: "6",
-//     title: "Lisa's Academic Achievement Through English Mastery",
-//     content: `Lisa's academic journey demonstrates how English proficiency can unlock prestigious international opportunities. Through IELS programs, Lisa developed the advanced English skills needed for academic writing, research, and international scholarship applications. Her improved English opened doors to prestigious international scholarships and academic programs that were previously out of reach. Lisa's story illustrates how language mastery can be a key factor in accessing world-class educational opportunities and advancing academic careers.`,
-//     bannerImage:
-//       "/images/contents/stories/member-stories/banner/philippines-banner.png",
-//     author: {
-//       name: "Lisa",
-//       avatar:
-//         "/images/contents/stories/member-stories/profile/member-stories.png",
-//     },
-//     date: "December 15, 2024",
-//     location: "Jakarta",
-//     seo: {
-//       meta_title:
-//         "Lisa's Academic Achievement Through English Mastery - IELS Member Story",
-//       meta_description:
-//         "Lisa shares how improving her English through IELS programs opened doors to prestigious international scholarships and academic opportunities she never thought possible.",
-//       meta_keywords:
-//         "IELS, member story, academic achievement, international scholarships, English mastery, academic opportunities, educational success",
-//     },
-//   },
+{
+  id: "3",
+  title: "From Dreams to Reality: Sarah’s Internship Journey in Singapore",
+  subcategory: "Lounge",
+  content: `<div>
+<div><strong>Sarah Meuthya Zahwa—one of IELS’s active community members—turned her long-time dream into reality by securing an internship at <em>Innovate Marketing Studio</em>, a digital marketing agency based in Singapore.</strong></div>
+<div>&nbsp;</div>
+<div>“Singapore has always been one of my dream countries,” Sarah shared. Earlier this year, she discovered IELS’s <strong>Step Up! program</strong> and immediately joined, hoping to gain mentorship on <strong>international internships and career preparation</strong>. “That’s why I was interested in a mentorship focused on internships abroad—I wanted to gain experience working in a Singaporean setting,” she said. <em>“And Step Up! exceeded my expectations!”</em></div>
+<div>&nbsp;</div>
+<div>Through Step Up!, Sarah learned that <strong>being skilled isn’t enough—we also need to communicate our value effectively</strong>. The mentorship provided her with practical insight on personal branding and international communication, laying the foundation for her career breakthrough.</div>
+<div>&nbsp;</div>
+<div>Now interning abroad, Sarah is thriving in a <strong>fast-paced global environment</strong>. She embraces new experiences, adapts to diverse work cultures, and applies the lessons from Step Up! in her daily work. “Even now, I’m still using the communication tips I learned—from writing professional emails to maintaining active communication at work. These skills helped me build confidence and prepared me to face the career world.”</div>
+<div>&nbsp;</div>
+<div><em>“For me, Step Up! isn’t just a program—it’s a long-term career investment. If you’re looking for a practical learning experience to go international, don’t hesitate to join Step Up! Vol. 2.”</em></div>
+<div>&nbsp;</div>
+</div>
+<h4>✍️ Content Written <strong>by Valerine Aubrey Surjadi</strong><br data-start="343" data-end="346" /> 🎨 Design <strong>by Zainufri Aziz</strong></h4>
+<p>&nbsp;</p>
+<a href="https://www.instagram.com/p/DPOLpNwkUAR/?img_index=1" target="_blank"
+   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
+   Read More
+</a>`,
+  bannerImage:
+    "/images/contents/stories/member-stories/banner/singapore-banner.png",
+  author: {
+    name: "Sarah Meuthya Zahwa - IELS Community Member",
+    avatar:
+      "/images/contents/stories/member-stories/profile/sarah.png",
+  },
+  date: "October 1, 2025",
+  location: "Jakarta",
+  seo: {
+    meta_title:
+      "Sarah’s Internship Journey in Singapore with IELS Step Up! - Member Story",
+    meta_description:
+      "Read how Sarah Meuthya Zahwa, an IELS community member, transformed her dream into reality through the Step Up! program, leading to her internship at a Singaporean digital marketing agency.",
+    meta_keywords:
+      "IELS, member story, Sarah Meuthya Zahwa, Step Up! program, Singapore internship, Innovate Marketing Studio, international career, personal branding, communication skills, global opportunities",
+     },
+    },
+    {
+  id: "4",
+  title: "Hitting Career Marks: Rafi’s Internship Journey in Singapore",
+  subcategory: "Lounge",
+  content: `<div>
+<div><strong>Muhammad Rafi Al Azhim—an aspiring tech talent and former Software Engineer Intern at <em>Bamboo System Technology</em>, a Singapore-based tech company—achieved his career milestone through international internship experience.</strong></div>
+<div>&nbsp;</div>
+<div>From the very beginning, Rafi had set his sights on <strong>international internships</strong>. The relevant insights and skills offered in IELS’s <strong>Step Up! program</strong> became his biggest motivation to join. “Step Up! went beyond my hopes,” he recalled. <em>“I learned everything from how to introduce myself to create a strong impression to how to compete in the current global career landscape.”</em></div>
+<div>&nbsp;</div>
+<div>With the knowledge and confidence gained from Step Up!, Rafi felt <strong>more prepared to apply abroad</strong>. The mentorship gave him not only soft skills but also practical tools such as CV reviews and pitching sessions. “What was really useful to me was the CV review and pitching sessions. They helped me create more professional CVs and understand how to present myself in job applications.”</div>
+<div>&nbsp;</div>
+<div>His internship in Singapore proved to be a <strong>precious professional experience</strong>. “I learned firsthand about working in an international company, especially about their professional culture and expectations,” Rafi shared. There were certainly challenges, but they became opportunities for growth and resilience in a fast-paced industry.</div>
+<div>&nbsp;</div>
+<div><em>“I would definitely recommend joining Step Up! Vol. 2. It’s a wonderful chance to upgrade your skills in preparation for global challenges, and even to chase international career opportunities.”</em></div>
+<div>&nbsp;</div>
+</div>
+<h4>✍️ Content Written <strong>by Valerine Aubrey Surjadi</strong><br data-start="343" data-end="346" /> 🎨 Design <strong>by Zainufri Aziz</strong></h4>
+<p>&nbsp;</p>
+<a href="https://www.instagram.com/p/DPOLpNwkUAR/?img_index=1" target="_blank"
+   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
+   Read More
+</a>`,
+  bannerImage:
+    "/images/contents/stories/member-stories/banner/singapore-banner.png",
+  author: {
+    name: "Muhammad Rafi Al Azhim - IELS Community Member",
+    avatar:
+      "/images/contents/stories/member-stories/profile/rafi.png",
+  },
+  date: "October 1, 2025",
+  location: "Jakarta",
+  seo: {
+    meta_title:
+      "Rafi’s Internship Journey in Singapore with IELS Step Up! - Member Story",
+    meta_description:
+      "Discover how Muhammad Rafi Al Azhim, an IELS community member, prepared for and succeeded in his international internship at Bamboo System Technology in Singapore through the Step Up! program.",
+    meta_keywords:
+      "IELS, member story, Muhammad Rafi Al Azhim, Step Up! program, Singapore internship, Bamboo System Technology, software engineer, CV review, pitching, international career, global opportunities",
+  },
+}
 ];

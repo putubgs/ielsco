@@ -13,7 +13,7 @@ import { partnerUpdatesData, PartnerUpdate } from "@/data/partner-updates";
 import { generateSlug } from "@/utils/slug";
 
 type NewsItem =
-  | (MemberStory & { type: "member"; subcategory?: "internals" | "lounge" | "speakers" | "inspires" })
+  | (MemberStory & { type: "member"; subcategory?: "All" | "Internals" | "Lounge" | "Speakers" | "Inspires" })
   | (ProgramUpdate & { type: "program" })
   | (PartnerUpdate & { type: "partner" });
 
@@ -41,16 +41,21 @@ export default function News() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const filteredNews = newsData.filter((item) => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [activeSubFilter, setActiveSubFilter] = useState<
+  "All" | "Internals" | "Lounge" | "Speakers" | "Inspires"
+>("All");
+
+const filteredNews = newsData.filter((item) => {
   if (item.type !== activeFilter) return false;
-
-  if (activeFilter === "member" && activeSubFilter !== "all") {
-  const memberItem = item as MemberStory & { type: "member" };
-  return memberItem.subcategory === activeSubFilter;
-
+    if (activeFilter === "member") {
+      if (activeSubFilter === "All") return true; // ✅ tampilkan semua subkategori
+    const memberItem = item as MemberStory & { type: "member" };
+    return memberItem.subcategory === activeSubFilter;
   }
-  return true;
+  return true; // untuk partner & program
 });
+
 
   // Month name to number mapping (English Only)
   const monthMap: { [key: string]: number } = {
@@ -132,9 +137,6 @@ export default function News() {
     const filters = ["member", "program", "partner"];
     return filters.indexOf(activeFilter);
   };
-  const [activeSubFilter, setActiveSubFilter] = useState<
-  "all" | "internals" | "lounge" | "speakers" | "inspires"
->("all");
 
   const handleReadMore = () => {
     setIsLoading(true);
@@ -242,23 +244,40 @@ export default function News() {
           </div>
 
           {/* Filter Buttons */}
-          <div className="mb-8 sm:mb-10 lg:mb-12 px-4">
+<div className="mb-8 sm:mb-10 lg:mb-12 px-4">
+  <div className="flex flex-wrap gap-2 sm:gap-4 justify-center">
+  
 
-            {/* Desktop Version - Keep Original Design */}
-            <div className="flex-wrap gap-2 sm:gap-4 justify-center">
-{activeFilter == "member" && (
-  <div className="relative inline-block text-left">
-    <div>
+{/* Member Stories Dropdown */}
+  
+    <div className="relative inline-block">
       <button
         type="button"
-        className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-        id="menu-button"
-        aria-expanded="true"
+        onClick={() => {
+          // switch ke member dan toggle dropdown
+          setActiveFilter("member");
+          setIsDropdownOpen((prev) => !prev);
+          setCurrentPage(1);
+        }}
+        className={`px-3 sm:px-4 lg:px-5 py-1 sm:py-1.5 rounded-full font-semibold transition-colors flex items-center gap-2 ${
+          activeFilter === "member"
+            ? "bg-[#E56668] text-white"
+            : "bg-white border border-[#2F4157] text-[#2F4157] hover:bg-gray-50"
+        }`}
         aria-haspopup="true"
+        aria-expanded={isDropdownOpen}
       >
-        Member Story
+      
+              <span>
+          {activeSubFilter === "All"
+            ? "Member Stories"
+            : `Member · ${activeSubFilter[0].toUpperCase() + activeSubFilter.slice(1)}`}
+        </span>
+  
         <svg
-          className="-mr-1 h-5 w-5 text-gray-400"
+          className={`h-4 w-4 text-current transition-transform duration-200 ${
+            isDropdownOpen ? "rotate-180" : ""
+          }`}
           viewBox="0 0 20 20"
           fill="currentColor"
           aria-hidden="true"
@@ -270,71 +289,99 @@ export default function News() {
           />
         </svg>
       </button>
-    </div>
 
     {/* Dropdown panel */}
-    <div
-      className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-      role="menu"
-      aria-orientation="vertical"
-      aria-labelledby="menu-button"
-    >
-      <div className="py-1">
-        <button
-          onClick={() => setActiveSubFilter("internals")}
-          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+      {isDropdownOpen && activeFilter === "member" && (
+        <div
+          className="absolute left-0 z-50 mt-2 w-56 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="menu-button"
         >
-          IELS Internals
-        </button>
-        <button
-          onClick={() => setActiveSubFilter("lounge")}
-          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-        >
-          IELS Lounge Members
-        </button>
-        <button
-          onClick={() => setActiveSubFilter("speakers")}
-          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-        >
-          IELS Speakers
-        </button>
-        <button
-          onClick={() => setActiveSubFilter("inspires")}
-          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-        >
-          IELS Inspires
-        </button>
-      </div>
+          <div className="py-1">
+            <button
+              onClick={() => {
+                setActiveSubFilter("All");
+                setIsDropdownOpen(false);
+              }}
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+            >
+              All Members
+            </button>
+            <button
+              onClick={() => {
+                setActiveSubFilter("Internals");
+                setIsDropdownOpen(false);
+              }}
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+            >
+              IELS Internals
+            </button>
+            <button
+              onClick={() => {
+                setActiveSubFilter("Lounge");
+                setIsDropdownOpen(false);
+              }}
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+            >
+              IELS Lounge Members
+            </button>
+            <button
+              onClick={() => {
+                setActiveSubFilter("Speakers");
+                setIsDropdownOpen(false);
+              }}
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+            >
+              IELS Speakers
+            </button>
+            <button
+              onClick={() => {
+                setActiveSubFilter("Inspires");
+                setIsDropdownOpen(false);
+              }}
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+            >
+              IELS Inspires
+            </button>
+          </div>
+        </div>
+      )}
     </div>
-  </div>
-)}
+    
+     {/* Program Updates */}
+    <button
+      onClick={() => {
+        setActiveFilter("program");
+        setCurrentPage(1);
+        setIsDropdownOpen(false);
+        setActiveSubFilter("All");
+      }}
+      className={`px-3 sm:px-4 lg:px-5 py-1 sm:py-1.5 rounded-full font-semibold transition-colors cursor-pointer text-sm sm:text-base ${
+        activeFilter === "program"
+          ? "bg-[#E56668] text-white"
+          : "bg-white border border-[#2F4157] text-[#2F4157] hover:bg-gray-50"
+      }`}
+    >
+      Program Updates
+    </button>
 
-              <button
-                onClick={() => {
-                  setActiveFilter("program");
-                  setCurrentPage(1);
-                }}
-                className={`px-3 sm:px-4 lg:px-5 py-1 sm:py-1.5 rounded-full font-semibold transition-colors cursor-pointer text-sm sm:text-base ${
-                  activeFilter === "program"
-                    ? "bg-[#E56668] text-white"
-                    : "bg-white border border-[#2F4157] text-[#2F4157] hover:bg-gray-50"
-                }`}
-              >
-                Program Updates
-              </button>
-              <button
-                onClick={() => {
-                  setActiveFilter("partner");
-                  setCurrentPage(1);
-                }}
-                className={`px-3 sm:px-4 lg:px-5 py-1 sm:py-1.5 rounded-full font-semibold transition-colors cursor-pointer text-sm sm:text-base ${
-                  activeFilter === "partner"
-                    ? "bg-[#E56668] text-white"
-                    : "bg-white border border-[#2F4157] text-[#2F4157] hover:bg-gray-50"
-                }`}
-              >
-                Partner Updates
-              </button>
+    {/* Partner Updates */}
+    <button
+      onClick={() => {
+        setActiveFilter("partner");
+        setCurrentPage(1);
+        setIsDropdownOpen(false);
+        setActiveSubFilter("All");
+      }}
+      className={`px-3 sm:px-4 lg:px-5 py-1 sm:py-1.5 rounded-full font-semibold transition-colors cursor-pointer text-sm sm:text-base ${
+        activeFilter === "partner"
+          ? "bg-[#E56668] text-white"
+          : "bg-white border border-[#2F4157] text-[#2F4157] hover:bg-gray-50"
+      }`}
+    >
+      Partner Updates
+    </button>
             </div>
             <div>
           </div>

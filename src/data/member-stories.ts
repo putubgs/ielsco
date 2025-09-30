@@ -1,3 +1,10 @@
+export interface NewsItem {
+  id: number;
+  title: string;
+  content: string;
+  category: "member" | "program" | "partner";
+  subcategory?: "internals" | "lounge" | "speakers" | "inspires";
+}
 export interface MemberStory {
   id: string;
   title: string;
@@ -14,6 +21,7 @@ export interface MemberStory {
     meta_description: string;
     meta_keywords: string;
   };
+   subcategory: "internals" | "lounge" | "speakers" | "inspires";
 }
 
 // NOTE: The content MUST use HTML tags for formatting
@@ -22,6 +30,7 @@ export const memberStoriesData: MemberStory[] = [
     {
      id: "1",
      title: "Jo's Week Long Adventure at ISUFST, Philipines 🇵🇭",
+     subcategory: "internals",
      content: `<div>
 <div><strong>From Malang to the Philippines, George Abraham—better known as Jo—brought the spirit of IELS across borders. As a Project Leader at IELS and a Computer Science student from Universitas Brawijaya, Jo spent a week on a cultural and academic exchange program at Iloilo State University of Fisheries Science and Technology (ISUFST).</strong></div>
 <div>&nbsp;</div>
@@ -63,6 +72,7 @@ export const memberStoriesData: MemberStory[] = [
    {
      id: "2",
      title: "Shania's Journey: UNSIKA's Delegate Goes to Malaysia",
+     subcategory: "internals",
      content: `<div>
 <div><strong>Shania Rizky Henanto—one of IELS’s Project Leaders and a proud student of Universitas Singaperbangsa Karawang (UNSIKA)—stepped onto the international stage as Indonesia’s representative at the prestigious ASEAN Classroom 2025 program.</strong></div>
 <div>&nbsp;</div>

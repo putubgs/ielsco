@@ -13,9 +13,10 @@ import { partnerUpdatesData, PartnerUpdate } from "@/data/partner-updates";
 import { generateSlug } from "@/utils/slug";
 
 type NewsItem =
-  | (MemberStory & { type: "member" })
+  | (MemberStory & { type: "member"; subcategory?: "internals" | "lounge" | "speakers" | "inspires" })
   | (ProgramUpdate & { type: "program" })
   | (PartnerUpdate & { type: "partner" });
+
 
 // Combine all data into a single array
 const newsData: NewsItem[] = [
@@ -40,8 +41,16 @@ export default function News() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const filteredNews = newsData.filter((item) => {
+  if (item.type !== activeFilter) return false;
 
-  const filteredNews = newsData.filter((item) => item.type === activeFilter);
+  if (activeFilter === "member" && activeSubFilter !== "all") {
+  const memberItem = item as MemberStory & { type: "member" };
+  return memberItem.subcategory === activeSubFilter;
+
+  }
+  return true;
+});
 
   // Month name to number mapping (English Only)
   const monthMap: { [key: string]: number } = {
@@ -123,6 +132,9 @@ export default function News() {
     const filters = ["member", "program", "partner"];
     return filters.indexOf(activeFilter);
   };
+  const [activeSubFilter, setActiveSubFilter] = useState<
+  "all" | "internals" | "lounge" | "speakers" | "inspires"
+>("all");
 
   const handleReadMore = () => {
     setIsLoading(true);
@@ -186,7 +198,6 @@ export default function News() {
     <div className="">
       <Header />
       <LoadingOverlay isLoading={isLoading} message="Loading story..." />
-
       {/* Hero Section */}
       <div className="px-4 sm:px-6 lg:px-[100px] pt-1 pb-8 sm:pb-12 lg:pb-16 bg-white text-[#2F4157]">
         <div className="max-w-7xl mx-auto">
@@ -232,70 +243,72 @@ export default function News() {
 
           {/* Filter Buttons */}
           <div className="mb-8 sm:mb-10 lg:mb-12 px-4">
-            {/* Mobile Version - Similar to About Page */}
-            <div className="block sm:hidden">
-              <div className="bg-gray-100 rounded-2xl p-1 relative">
-                {/* Animated Background */}
-                <div
-                  className={`absolute top-1 bottom-1 bg-[#E56668] rounded-xl shadow-lg transition-transform duration-300 ease-in-out ${
-                    isAnimating ? "opacity-80" : "opacity-100"
-                  }`}
-                  style={{
-                    width: "calc(33.333% - 2px)",
-                    transform: `translateX(${getActiveIndex() * 100}%)`,
-                  }}
-                />
-
-                <div className="grid grid-cols-3 gap-1 relative z-10">
-                  <button
-                    onClick={() => handleFilterChange("member")}
-                    className={`py-3 px-2 rounded-xl text-[14px] font-medium transition-colors duration-300 ${
-                      activeFilter === "member"
-                        ? "text-white"
-                        : "text-[#2F4157] hover:text-[#2F4157] hover:bg-white/50"
-                    }`}
-                  >
-                    Member Stories
-                  </button>
-                  <button
-                    onClick={() => handleFilterChange("program")}
-                    className={`py-3 px-2 rounded-xl text-[14px] font-medium transition-colors duration-300 ${
-                      activeFilter === "program"
-                        ? "text-white"
-                        : "text-[#2F4157] hover:text-[#2F4157] hover:bg-white/50"
-                    }`}
-                  >
-                    Program Updates
-                  </button>
-                  <button
-                    onClick={() => handleFilterChange("partner")}
-                    className={`py-3 px-2 rounded-xl text-[14px] font-medium transition-colors duration-300 ${
-                      activeFilter === "partner"
-                        ? "text-white"
-                        : "text-[#2F4157] hover:text-[#2F4157] hover:bg-white/50"
-                    }`}
-                  >
-                    Partner Updates
-                  </button>
-                </div>
-              </div>
-            </div>
 
             {/* Desktop Version - Keep Original Design */}
-            <div className="hidden sm:flex flex-wrap gap-2 sm:gap-4 justify-center">
-              <button
-                onClick={() => {
-                  setActiveFilter("member");
-                  setCurrentPage(1);
-                }}
-                className={`px-3 sm:px-4 lg:px-5 py-1 sm:py-1.5 rounded-full font-semibold transition-colors cursor-pointer text-sm sm:text-base ${
-                  activeFilter === "member"
-                    ? "bg-[#E56668] text-white"
-                    : "bg-white border border-[#2F4157] text-[#2F4157] hover:bg-gray-50"
-                }`}
-              >
-                Member Stories
-              </button>
+            <div className="flex-wrap gap-2 sm:gap-4 justify-center">
+{activeFilter == "member" && (
+  <div className="relative inline-block text-left">
+    <div>
+      <button
+        type="button"
+        className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+        id="menu-button"
+        aria-expanded="true"
+        aria-haspopup="true"
+      >
+        Member Story
+        <svg
+          className="-mr-1 h-5 w-5 text-gray-400"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            fillRule="evenodd"
+            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </button>
+    </div>
+
+    {/* Dropdown panel */}
+    <div
+      className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+      role="menu"
+      aria-orientation="vertical"
+      aria-labelledby="menu-button"
+    >
+      <div className="py-1">
+        <button
+          onClick={() => setActiveSubFilter("internals")}
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+        >
+          IELS Internals
+        </button>
+        <button
+          onClick={() => setActiveSubFilter("lounge")}
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+        >
+          IELS Lounge Members
+        </button>
+        <button
+          onClick={() => setActiveSubFilter("speakers")}
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+        >
+          IELS Speakers
+        </button>
+        <button
+          onClick={() => setActiveSubFilter("inspires")}
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+        >
+          IELS Inspires
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
               <button
                 onClick={() => {
                   setActiveFilter("program");
@@ -323,6 +336,7 @@ export default function News() {
                 Partner Updates
               </button>
             </div>
+            <div>
           </div>
 
           {/* News Grid */}
@@ -442,8 +456,7 @@ export default function News() {
           </div>
         </div>
       </div>
-
+</div>
       <Footer />
-    </div>
-  );
-}
+      </div> 
+      )}

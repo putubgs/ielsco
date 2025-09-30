@@ -183,5 +183,85 @@ export const memberStoriesData: MemberStory[] = [
     meta_keywords:
       "IELS, member story, Muhammad Rafi Al Azhim, Step Up! program, Singapore internship, Bamboo System Technology, software engineer, CV review, pitching, international career, global opportunities",
   },
+},
+{
+  id: "5",
+  title: "Living the Dream: Nyiur’s Semester in the U.S. with Global UGRAD",
+  subcategory: "Speakers",
+  content: `<div>
+<div><strong>Nyiur Salsabila Frida, a student from Universitas Islam Negeri Maulana Malik Ibrahim Malang, turned her dream into reality when she was selected as an awardee of the <em>Global Undergraduate Exchange Program (Global UGRAD)</em> and studied for one semester at <em>Southern Illinois University Edwardsville</em> in the United States.</strong></div>
+<div>&nbsp;</div>
+<div>Believe it or not, she first learned about <strong>Global UGRAD</strong> only <strong>two weeks before the application deadline</strong>. With very limited time but strong motivation, she applied. “It honestly felt like I was living in a dream… something I’ve always wished for,” Nyiur recalled.</div>
+<div>&nbsp;</div>
+<div>The process wasn’t easy. “Besides the essay, the interview was the hardest part for me,” she admitted. It was more than understanding her essay—it required <strong>thinking and responding in English spontaneously</strong>. Yet, she found her key insight through authenticity: <em>“Embrace your true self! If you truly know yourself, you’ll understand what you wrote in your essay, and you can easily answer any question in the interview.”</em></div>
+<div>&nbsp;</div>
+<div>For Nyiur, every application is a <strong>learning process</strong>. From writing her very first essay to strengthening her English skills, the journey became a training ground for growth. “Unless we dare to try, the lessons remain unlearned, and true readiness, forever out of reach.”</div>
+<div>&nbsp;</div>
+<div>Through Global UGRAD, Nyiur not only experienced academic life in the U.S. but also learned confidence, perseverance, and the importance of authenticity—insights she later shared as a <strong>speaker in the IELS Insight Series</strong>, inspiring other Indonesian students to believe in their potential.</div>
+<div>&nbsp;</div>
+</div>
+<h4>✍️ Content Written <strong>by Najlaa Thufailah Shafut</strong><br data-start="343" data-end="346" /> 🎨 Design <strong>by Queen Rahma</strong></h4>
+<p>&nbsp;</p>
+<a href="https://www.instagram.com/p/DMhz-j3h4ly/?img_index=2" target="_blank"
+   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
+   Read More
+</a>`,
+  bannerImage:
+    "/images/contents/stories/member-stories/banner/usa-banner.png",
+  author: {
+    name: "Nyiur Salsabila Frida - IELS Speaker",
+    avatar:
+      "/images/contents/stories/member-stories/profile/nyiur.png",
+  },
+  date: "July 20, 2025",
+  location: "Edwardsville, U.S.",
+  seo: {
+    meta_title:
+      "Nyiur’s Semester in the U.S. with Global UGRAD - Member Story",
+    meta_description:
+      "Discover how Nyiur Salsabila Frida from Universitas Islam Negeri Maulana Malik Ibrahim Malang joined the Global UGRAD program and studied a semester at Southern Illinois University Edwardsville in the U.S. Her story of courage, authenticity, and growth will inspire you.",
+    meta_keywords:
+      "IELS, member story, Nyiur Salsabila Frida, Global UGRAD, Southern Illinois University Edwardsville, U.S. exchange, student experience, English confidence, scholarship journey, global opportunities",
+  },
+},
+{
+  id: "6",
+  title: "Making Dreams of Studying in the U.S. a Reality: Zaki’s Global UGRAD Journey",
+  subcategory: "Speakers",
+  content: `<div>
+<div><strong>Muhammad Zaki Fazansyah, a Biomedical Engineering student at ITB and Vice President of IEEE ITB SB (2024-2025), turned his aspiration of studying abroad into reality through the <em>Global Undergraduate Exchange Program (Global UGRAD)</em>.</strong></div>
+<div>&nbsp;</div>
+<div>Fresh out of high school, Zaki made it his goal to study abroad. Inspired by his relatives, he wanted firsthand experience of education and culture in other countries. In August 2023, he applied for Global UGRAD, and in 2024, he departed to the U.S. to spend a semester at the <strong>University of South Dakota</strong>.</div>
+<div>&nbsp;</div>
+<div>For Zaki, the program was much more than an academic opportunity. “Even though the topics were similar,” he explained, “it was insightful to see how technological advancements shaped education there. It definitely broadened my academic knowledge.”</div>
+<div>&nbsp;</div>
+<div>Beyond academics, Zaki immersed himself in the social scene of a multicultural environment. “It was truly a cultural experience,” he said. Meeting people from around the world deepened his appreciation for diversity, while also strengthening his pride in Indonesian heritage. “I was eager to introduce my own culture to the people there.”</div>
+<div>&nbsp;</div>
+<div>Through his journey with Global UGRAD, Zaki not only gained academic insight but also developed a broader worldview. His experience became a powerful chapter in his personal and academic growth, one he later shared as a <strong>speaker in the IELS Insight Series</strong> to inspire other students dreaming of global opportunities.</div>
+<div>&nbsp;</div>
+</div>
+<h4>✍️ Content Written <strong>by Valerine Aubrey Surjadi</strong><br data-start="343" data-end="346" /> 🎨 Design <strong>by Zainufri Aziz</strong></h4>
+<p>&nbsp;</p>
+<a href="https://www.instagram.com/p/DMkQwjbhqrT/?img_index=1" target="_blank"
+   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
+   Read More
+</a>`,
+  bannerImage:
+    "/images/contents/stories/member-stories/banner/usa-banner.png",
+  author: {
+    name: "Muhammad Zaki Fazansyah - IELS Speaker",
+    avatar:
+      "/images/contents/stories/member-stories/profile/zaki.png",
+  },
+  date: "July 26, 2025",
+  location: "South Dakota, U.S.",
+  seo: {
+    meta_title:
+      "Zaki’s Global UGRAD Journey at University of South Dakota - IELS Speaker Story",
+    meta_description:
+      "Read how Muhammad Zaki Fazansyah, a Biomedical Engineering student at ITB, fulfilled his dream of studying in the U.S. through the Global UGRAD program, and how this experience shaped his academic and cultural perspective.",
+    meta_keywords:
+      "IELS, speaker story, Muhammad Zaki Fazansyah, Global UGRAD, University of South Dakota, biomedical engineering, international exchange, scholarship journey, cultural exchange, academic growth",
+  },
 }
 ];

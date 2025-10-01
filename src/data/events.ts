@@ -390,7 +390,12 @@ export const eventsData: EventData[] = [
   <div>&nbsp;</div>
   <div><strong>Why Join:</strong></div>
   <div>This free try out is your chance to practice with real TOEIC exam standards, identify your strengths and weaknesses, and boost your confidence before taking the official test.</div>
-</div>`,
+</div>
+<div>&nbsp;</div>
+<a href="https://www.instagram.com/p/DNdH2drBTpp/?utm_source=ig_web_copy_link&igsh=MWtidXAwMHVoOWp5Mg==" target="_blank"
+   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
+   Read More
+</a>`,
     registrationLink: "https://estudyme.com/study/simulation-test/toeic-testpro/test-1-62b69492bbc57b27fe10f7ac/",
     startDate: "2025-10-26",
     registrationTimeDeadline: "23:59",
@@ -404,4 +409,44 @@ export const eventsData: EventData[] = [
         "TOEIC try out, free TOEIC test, TOEIC online simulation, TOEIC practice test, TOEIC preparation, TOEIC listening, TOEIC reading, IELS TOEIC, TOEIC",
     },
   },
+{
+  id: "9",
+  title: "IELS Lounge Premium — October 2025: Speak to Connect",
+  poster: "/images/contents/events/lounge-october.png",
+  description: `<div>
+  <div><strong>📅 Period: October 11 – October 31, 2025</strong></div>
+  <div>⏰ Daily Activities + Exclusive Sessions</div>
+  <div>&nbsp;</div>
+  <div><strong><em>IELS Lounge Premium</em> this October brings you daily practice sessions designed to boost your storytelling, teamwork, and project planning skills — all in English.</strong></div>
+  <div>&nbsp;</div>
+  <div><strong>🎯 What You Will Experience:</strong></div>
+  <ul>
+    <li>✅ <strong>Speaking Club Every Night (8 PM)</strong> — daily practice with friends through stories, discussions, and fun activities</li>
+    <li>✅ <strong>Weekly Themes</strong>:<br/>
+        - Week 1: Sharing Experiences <br/>
+        - Week 2: Group Work & Collaboration <br/>
+        - Week 3: Agreeing & Disagreeing <br/>
+        - Week 4: Planning Future Projects</li>
+    <li>✅ <strong>Exclusive Events for Premium Members:</strong><br/>
+        - Week 2: Group Work Challenge – Build the Best Team Strategy <br/>
+        - Week 4: Future Project Pitch – Shaping Ideas Together</li>
+    <li>✅ Bi-weekly Zoom activities (roleplays, games, teamwork challenges)</li>
+    <li>✅ Daily content on Discord & WhatsApp (vocabulary, idioms, grammar tips, quizzes, reflection)</li>
+  </ul>
+  <div>&nbsp;</div>
+  <div><strong>Why Join:</strong></div>
+  <div>In IELS Lounge, English becomes part of your daily rhythm. You’ll gain vocabulary for real-life use, build confidence in speaking, and grow teamwork skills through projects and shared stories. Learning here feels closer, lighter, and way more fun.</div>
+</div>`,
+  registrationLink: "https://ielsco.com/iels-lounge",
+  startDate: "2025-10-11",
+  registrationTimeDeadline: "23:59",
+  registrationDateDeadline: "2025-10-31",
+  seo: {
+    meta_title: "IELS Lounge Premium October 2025 — Speak to Connect",
+    meta_description:
+      "Join IELS Lounge Premium this October (11–31 Oct 2025). Daily speaking practice + exclusive events to grow your storytelling, teamwork, and project planning skills in English. Only 25k/month.",
+    meta_keywords:
+      "IELS Lounge Premium, English speaking club, daily English practice, storytelling in English, teamwork skills, project planning English, IELS October program",
+  },
+},
 ];

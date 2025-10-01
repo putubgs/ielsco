@@ -241,7 +241,7 @@ export default function Home() {
           </div>
           <div className="text-white flex flex-col gap-6 px-8 sm:px-16 lg:px-[200px] items-center lg:items-start justify-center pt-[50px] lg:pt-[100px] w-full mt-auto bg-[url(/images/contents/general/landing_page_2.png)] bg-cover bg-center h-[350px] lg:h-[500px] rounded-b-[30px] relative">
             <div className="absolute inset-0 bg-black opacity-40 lg:opacity-0 rounded-b-[30px]"></div>
-            <p className="text-[24px] sm:text-[28px] lg:text-[32px] font-extrabold leading-tight text-center lg:text-left relative z-10">
+            <p className="text-[21px] sm:text-[25px] lg:text-[28px] font-extrabold leading-tight text-center lg:text-left relative z-10">
               Create your own story of
               <br />
               global success with IELS!

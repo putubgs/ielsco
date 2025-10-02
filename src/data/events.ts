@@ -390,14 +390,9 @@ export const eventsData: EventData[] = [
   <div>&nbsp;</div>
   <div><strong>Why Join:</strong></div>
   <div>This free try out is your chance to practice with real TOEIC exam standards, identify your strengths and weaknesses, and boost your confidence before taking the official test.</div>
-</div>
-<div>&nbsp;</div>
-<a href="https://www.instagram.com/p/DNdH2drBTpp/?utm_source=ig_web_copy_link&igsh=MWtidXAwMHVoOWp5Mg==" target="_blank"
-   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
-   Read More
-</a>`,
+</div>`,
     registrationLink: "https://estudyme.com/study/simulation-test/toeic-testpro/test-1-62b69492bbc57b27fe10f7ac/",
-    startDate: "2025-10-26",
+    startDate: "2025-10-5",
     registrationTimeDeadline: "23:59",
     registrationDateDeadline: "2025-11-05",
     seo: {
@@ -436,7 +431,12 @@ export const eventsData: EventData[] = [
   <div>&nbsp;</div>
   <div><strong>Why Join:</strong></div>
   <div>In IELS Lounge, English becomes part of your daily rhythm. You’ll gain vocabulary for real-life use, build confidence in speaking, and grow teamwork skills through projects and shared stories. Learning here feels closer, lighter, and way more fun.</div>
-</div>`,
+</div>
+<div>&nbsp;</div>
+<a href="https://www.instagram.com/p/DPQ3B_DgflP/?igsh=MWw5enkwNXZrMWdldg==" target="_blank"
+   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
+   Read More
+</a>`,
   registrationLink: "https://ielsco.com/iels-lounge",
   startDate: "2025-10-11",
   registrationTimeDeadline: "23:59",

@@ -14,8 +14,8 @@ export const testimonialsData: Testimonial[] = [
     content:
       "Joining IELS Lounge has been such a fun experience! In just one month, there were already so many activities to join 🤭 Totally worth it, especially since the membership price is very affordable. <br/><br/>Oh, and the members are all super kind and friendly! That’s definitely a big plus, everyone is here to learn English (including me hahaa) and the vibe is always supportive, no judgment even for beginners 🙌<br/> <br/> I really hope IELS keeps growing, and hopefully the membership price stays the same too 🙏",
     author: {
-      name: "Micheline",
-      university: "Institute of Economic Science Student - Managemet",
+      name: "Michelle Elizabeth Dualim",
+      university: "Institute of Economic Science Student - Management",
       avatar: "/images/contents/testimonials/micheline.png",
     },
   },
@@ -44,7 +44,7 @@ export const testimonialsData: Testimonial[] = [
     content:
       "After joining IELS for about 2 weeks, I honestly feel more confident when speaking, even though my grammar is still not perfect. <br/><br/> I’ve also met many people whose speaking is better than mine, which motivates me to keep improving. It really feels like I’ve found the right place because the environment is so supportive.",
     author: {
-      name: "Rizko",
+      name: "Fathurrizqo",
       university: "UNNES Student - Computer Science",
       avatar: "/images/contents/testimonials/rizko.png",
     },
@@ -54,8 +54,8 @@ export const testimonialsData: Testimonial[] = [
     content:
       "For me, IELS is not just a community that gathers people, but also the right place to grow our communication skills in English.<br/><br/> In Speaking Club, we don’t just practice English, we also build confidence while speaking, and that has helped me a lot.",
     author: {
-      name: "Elma",
-      university: "Dumplupınar üniversitesi Student - Business administration",
+      name: "Elmayra Ratri",
+      university: "Dumplupınar üniversitesi Student - Business Administration",
       avatar: "/images/contents/testimonials/elma.png",
     },
   },

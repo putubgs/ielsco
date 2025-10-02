@@ -36,7 +36,7 @@ export default function RootLayout({
         <Header />
 
         {/* Wrapper untuk konten halaman */}
-        <main className="pt-34">{children}</main>
+        <main className="pt-32">{children}</main>
 
         {/* Global Footer (opsional) */}
         {/* <Footer /> */}

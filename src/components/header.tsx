@@ -32,9 +32,7 @@ export default function Header() {
   };
 
   return (
-    <div
-      className="fixed top-0 left-0 w-full bg-[#2F4157] flex items-center justify-between py-6 lg:py-10 px-4 sm:px-8 lg:px-[100px] z-50 shadow-md"
-    >
+    <div className="fixed top-0 left-0 w-full bg-[#2F4157] flex items-center justify-between py-6 lg:py-10 px-4 sm:px-8 lg:px-[100px] z-50 shadow-md">
       {/* Logo Section */}
       <Link
         className="flex items-center font-geologica gap-3 lg:gap-[19px]"
@@ -65,15 +63,17 @@ export default function Header() {
           if (item.children) {
             return (
               <div key={item.name} className="relative group">
-                <button
+                <div
                   className={`flex items-center gap-1 px-3 py-1 rounded-full transition-all cursor-pointer ${
                     isActive
                       ? "bg-white text-[#2F4157]"
                       : "hover:bg-white/20 text-white"
                   }`}
                 >
-                  {item.name}
-                  {/* Arrow */}
+                  {/* Link utama tetap bisa diklik */}
+                  <Link href={item.path}>{item.name}</Link>
+
+                  {/* Arrow hanya untuk indikasi dropdown */}
                   <svg
                     className="w-4 h-4 transform transition-transform duration-300 group-hover:rotate-180"
                     fill="none"
@@ -83,7 +83,7 @@ export default function Header() {
                   >
                     <path d="M19 9l-7 7-7-7" />
                   </svg>
-                </button>
+                </div>
 
                 {/* Dropdown Menu */}
                 <div className="absolute left-0 mt-2 w-48 rounded-2xl shadow-lg bg-white text-[#2F4157] opacity-0 group-hover:opacity-100 group-hover:translate-y-1 transition-all duration-200">
@@ -196,27 +196,40 @@ export default function Header() {
             if (item.children) {
               return (
                 <div key={item.name}>
-                  <button
-                    onClick={() => setOpenDropdown(isOpen ? null : item.name)}
-                    className={`w-full flex items-center justify-between text-lg font-medium py-2 px-3 rounded-lg transition-colors ${
-                      isActive
-                        ? "bg-white text-[#2F4157]"
-                        : "text-white hover:bg-white/20"
-                    }`}
-                  >
-                    {item.name}
-                    <svg
-                      className={`w-4 h-4 transform transition-transform duration-300 ${
-                        isOpen ? "rotate-180" : ""
+                  <div className="flex items-center justify-between">
+                    {/* Link utama tetap bisa diklik */}
+                    <Link
+                      href={item.path}
+                      onClick={closeMobileMenu}
+                      className={`flex-1 text-lg font-medium py-2 px-3 rounded-lg ${
+                        isActive
+                          ? "bg-white text-[#2F4157]"
+                          : "text-white hover:bg-white/20"
                       }`}
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
                     >
-                      <path d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
+                      {item.name}
+                    </Link>
+
+                    {/* Arrow toggle dropdown */}
+                    <button
+                      onClick={() =>
+                        setOpenDropdown(isOpen ? null : item.name)
+                      }
+                      className="px-2 text-white"
+                    >
+                      <svg
+                        className={`w-4 h-4 transform transition-transform duration-300 ${
+                          isOpen ? "rotate-180" : ""
+                        }`}
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                  </div>
 
                   {isOpen && (
                     <div className="ml-4 mt-2 space-y-2">

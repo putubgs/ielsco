@@ -61,7 +61,7 @@ export const careersData: Career[] = [
     `,
     benefits: `
     <ul>
-      <li>Quarterly profit-sharing based on company performance.</li>
+      <li>Quarterly profit-sharing based on organization performance.</li>
       <li>Direct mentorship from experienced professionals in the edtech &amp; startup industry.</li>
       <li>Access to exclusive global networking opportunities across Asia-Pacific.</li>
       <li>Support for international career advancement and collaborations with partner companies.</li>
@@ -115,7 +115,7 @@ export const careersData: Career[] = [
     `,
     benefits: `
       <ul>
-        <li>Quarterly profit-sharing based on company performance.</li>
+        <li>Quarterly profit-sharing based on organization performance.</li>
         <li>Direct mentorship from experienced professionals in the edtech & startup industry.</li>
         <li>Access to exclusive global networking opportunities across Asia-Pacific.</li>
         <li>Support for international career advancement and collaborations with partner companies.</li>
@@ -169,7 +169,7 @@ export const careersData: Career[] = [
   `,
   benefits: `
     <ul>
-      <li>Quarterly profit-sharing based on company performance.</li>
+      <li>Quarterly profit-sharing based on organization performance.</li>
       <li>Direct mentorship from experienced professionals in the edtech & startup industry.</li>
       <li>Access to exclusive global networking opportunities across Asia-Pacific.</li>
       <li>Support for international career advancement and collaborations with partner companies.</li>
@@ -223,7 +223,7 @@ export const careersData: Career[] = [
   `,
   benefits: `
     <ul>
-      <li>Quarterly profit-sharing based on company performance.</li>
+      <li>Quarterly profit-sharing based on organization performance.</li>
       <li>Direct mentorship from experienced professionals in the edtech & startup industry.</li>
       <li>Access to exclusive global networking opportunities across Asia-Pacific.</li>
       <li>Support for international career advancement and collaborations with partner companies.</li>
@@ -277,7 +277,7 @@ export const careersData: Career[] = [
   `,
   benefits: `
     <ul>
-      <li>Quarterly profit-sharing based on company performance.</li>
+      <li>Quarterly profit-sharing based on organization performance.</li>
       <li>Direct mentorship from experienced professionals in the edtech & startup industry.</li>
       <li>Access to exclusive global networking opportunities across Asia-Pacific.</li>
       <li>Support for international career advancement and collaborations with partner companies.</li>
@@ -331,7 +331,7 @@ export const careersData: Career[] = [
   `,
   benefits: `
     <ul>
-      <li>Quarterly profit-sharing based on company performance.</li>
+      <li>Quarterly profit-sharing based on organization performance.</li>
       <li>Direct mentorship from experienced professionals in the edtech & startup industry.</li>
       <li>Access to exclusive global networking opportunities across Asia-Pacific.</li>
       <li>Support for international career advancement and collaborations with partner companies.</li>
@@ -385,7 +385,7 @@ export const careersData: Career[] = [
   `,
   benefits: `
     <ul>
-      <li>Quarterly profit-sharing based on company performance.</li>
+      <li>Quarterly profit-sharing based on organization performance.</li>
       <li>Direct mentorship from experienced professionals in the edtech & startup industry.</li>
       <li>Access to exclusive global networking opportunities across Asia-Pacific.</li>
       <li>Support for international career advancement and collaborations with partner companies.</li>

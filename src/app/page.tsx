@@ -30,7 +30,7 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="hidden lg:block lg:w-[25%] text-white text-[23px] mt-auto mb-4">
+            <div className="hidden lg:block lg:w-[25%] text-white text-[20px] mt-auto mb-4">
               <p className="w-[85%]">
                 Your English Journey Starts Here <br /> —Learn, Speak, Grow.
               </p>

@@ -148,13 +148,14 @@ export default function CareersPage() {
             className="appearance-none bg-white px-4 py-2 rounded-full border pr-8"
           >
             <option value="All">All Divisions</option>
-            <option value="Project Management">Project</option>
-            <option value="Business Development">Business</option>
+            <option value="Project">Project</option>  
+            <option value="Business">Business</option>
             <option value="Community">Community</option>
             <option value="Product">Product</option>
             <option value="Tech">Tech</option>
             <option value="Creative">Creative</option>
             <option value="Marketing">Marketing</option>
+
           </select>
           {/* custom arrow */}
           <span
@@ -254,7 +255,7 @@ export default function CareersPage() {
                 </a>
               <Link
                 href={`/careers/${generateSlug(career.title)}`}
-                
+
                 className="flex-1 bg-[#f5f5f5] hover:bg-gray-200 text-center rounded-full px-4 py-2 text-sm font-semibold"
               >
                 Read More

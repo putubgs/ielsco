@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Geologica } from "next/font/google";
 import "./globals.css";
 
-// Import komponen Header (dan Footer kalau ada)
+// Import komponen Header 
 import Header from "@/components/header";
-// import Footer from "./Footer"; // optional
 
 const inter = Inter({
   variable: "--font-inter",
@@ -35,11 +34,7 @@ export default function RootLayout({
         {/* Global Header */}
         <Header />
 
-        {/* Wrapper untuk konten halaman */}
         <main className="pt-32">{children}</main>
-
-        {/* Global Footer (opsional) */}
-        {/* <Footer /> */}
       </body>
     </html>
   );

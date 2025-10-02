@@ -297,7 +297,7 @@ export default function Home() {
                 className="lg:w-[90px] h-auto"
               />
               <p className="text-[28px] sm:text-[36px] lg:text-[52px] pt-0 lg:pt-6 text-center">
-                IELS <span className="font-bold">Testimonial</span>
+                Voices from the <span className="font-bold">Community</span>
               </p>
               <div className="hidden sm:block"></div>
             </div>

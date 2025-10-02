@@ -392,7 +392,7 @@ export const eventsData: EventData[] = [
   <div>This free try out is your chance to practice with real TOEIC exam standards, identify your strengths and weaknesses, and boost your confidence before taking the official test.</div>
 </div>`,
     registrationLink: "https://estudyme.com/study/simulation-test/toeic-testpro/test-1-62b69492bbc57b27fe10f7ac/",
-    startDate: "2025-10-5",
+    startDate: "2025-10-05",
     registrationTimeDeadline: "23:59",
     registrationDateDeadline: "2025-11-05",
     seo: {

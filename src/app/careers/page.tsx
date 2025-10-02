@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 import Image from "next/image";
+import { useState } from "react";
 import Link from "next/link";
 import Pagination from "@/components/Pagination";
 
@@ -150,10 +152,12 @@ export default function CareersPage() {
   );
 
   return (
+    <div>
+    <Header />
     <div className="min-h-screen bg-[#3a4b60] text-white">
       {/* Hero */}
       <section className="text-center py-16 px-4">
-        <h1 className="text-4xl font-bold mb-4">🧳 Join Our Team at IELS</h1>
+        <h1 className="text-4xl font-bold mb-4">💼 Join Our Team at IELS</h1>
         <p className="max-w-2xl mx-auto text-lg text-gray-200">
           We’re a student-led organization empowering youths for global
           opportunities. Explore open positions and be part of our journey.
@@ -161,7 +165,7 @@ export default function CareersPage() {
         {/* Dummy Image */}
         <div className="mt-8 flex justify-center">
           <Image
-            src="/images/contents/general/iels_gathering.png"
+            src="/images/contents/general/iels_team.png"
             alt="IELS Team"
             width={800}
             height={300}
@@ -335,6 +339,8 @@ export default function CareersPage() {
           </a>
         </p>
       </div>
+      </div>
+      <Footer />
     </div>
   );
 }

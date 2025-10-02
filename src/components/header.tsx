@@ -8,13 +8,19 @@ import { useState } from "react";
 export default function Header() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   const navItems = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
     { name: "Stories", path: "/stories" },
-    { name: "Events", path: "/events" },
+    {
+      name: "Events",
+      path: "/events",
+      children: [{ name: "Join Our Community", path: "/iels-lounge" }],
+    },
     { name: "Gallery", path: "/gallery" },
+    { name: "Careers", path: "/careers" },
   ];
 
   const toggleMobileMenu = () => {
@@ -26,7 +32,9 @@ export default function Header() {
   };
 
   return (
-    <div className="flex items-center justify-between py-6 lg:py-10 px-4 sm:px-8 lg:px-[100px] bg-transparent relative z-50">
+    <div
+      className="fixed top-0 left-0 w-full bg-[#2F4157] flex items-center justify-between py-6 lg:py-10 px-4 sm:px-8 lg:px-[100px] z-50 shadow-md"
+    >
       {/* Logo Section */}
       <Link
         className="flex items-center font-geologica gap-3 lg:gap-[19px]"
@@ -53,6 +61,46 @@ export default function Header() {
             pathname === item.path ||
             (item.path === "/stories" && pathname.startsWith("/stories")) ||
             (item.path === "/events" && pathname.startsWith("/events"));
+
+          if (item.children) {
+            return (
+              <div key={item.name} className="relative group">
+                <button
+                  className={`flex items-center gap-1 px-3 py-1 rounded-full transition-all cursor-pointer ${
+                    isActive
+                      ? "bg-white text-[#2F4157]"
+                      : "hover:bg-white/20 text-white"
+                  }`}
+                >
+                  {item.name}
+                  {/* Arrow */}
+                  <svg
+                    className="w-4 h-4 transform transition-transform duration-300 group-hover:rotate-180"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                {/* Dropdown Menu */}
+                <div className="absolute left-0 mt-2 w-48 rounded-2xl shadow-lg bg-white text-[#2F4157] opacity-0 group-hover:opacity-100 group-hover:translate-y-1 transition-all duration-200">
+                  {item.children.map((child) => (
+                    <Link
+                      key={child.path}
+                      href={child.path}
+                      className="block px-4 py-2 rounded-2xl hover:bg-gray-100"
+                    >
+                      {child.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            );
+          }
+
           return (
             <Link
               key={item.path}
@@ -142,6 +190,52 @@ export default function Header() {
               pathname === item.path ||
               (item.path === "/stories" && pathname.startsWith("/stories")) ||
               (item.path === "/events" && pathname.startsWith("/events"));
+
+            const isOpen = openDropdown === item.name;
+
+            if (item.children) {
+              return (
+                <div key={item.name}>
+                  <button
+                    onClick={() => setOpenDropdown(isOpen ? null : item.name)}
+                    className={`w-full flex items-center justify-between text-lg font-medium py-2 px-3 rounded-lg transition-colors ${
+                      isActive
+                        ? "bg-white text-[#2F4157]"
+                        : "text-white hover:bg-white/20"
+                    }`}
+                  >
+                    {item.name}
+                    <svg
+                      className={`w-4 h-4 transform transition-transform duration-300 ${
+                        isOpen ? "rotate-180" : ""
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+
+                  {isOpen && (
+                    <div className="ml-4 mt-2 space-y-2">
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.path}
+                          href={child.path}
+                          onClick={closeMobileMenu}
+                          className="block text-sm text-white hover:underline"
+                        >
+                          {child.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            }
+
             return (
               <Link
                 key={item.path}

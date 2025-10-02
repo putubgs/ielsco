@@ -17,19 +17,17 @@ export default function Header() {
     {
       name: "Events",
       path: "/events",
-      children: [{ name: "Join Our Community", path: "/iels-lounge" }],
+      children: [
+        { name: "All Events", path: "/events" }, // 👈 khusus tablet
+        { name: "Join Our Community", path: "/iels-lounge" },
+      ],
     },
     { name: "Gallery", path: "/gallery" },
     { name: "Careers", path: "/careers" },
   ];
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
-  };
+  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   return (
     <div className="fixed top-0 left-0 w-full bg-[#2F4157] flex items-center justify-between py-6 lg:py-10 px-4 sm:px-8 lg:px-[100px] z-50 shadow-md">
@@ -52,6 +50,74 @@ export default function Header() {
         </div>
       </Link>
 
+      {/* ================= TABLET NAVIGATION ================= */}
+      <div className="hidden md:flex lg:hidden items-center gap-3 text-white">
+        {navItems.map((item) => {
+          const isActive =
+            pathname === item.path ||
+            (item.path === "/stories" && pathname.startsWith("/stories")) ||
+            (item.path === "/events" && pathname.startsWith("/events"));
+
+          if (item.children) {
+            const isOpen = openDropdown === item.name;
+            return (
+              <div key={item.name} className="relative">
+                <button
+                  onClick={() => setOpenDropdown(isOpen ? null : item.name)}
+                  className={`flex items-center gap-1 px-3 py-1 rounded-full transition-all ${
+                    isActive
+                      ? "bg-white text-[#2F4157]"
+                      : "hover:bg-white/20 text-white"
+                  }`}
+                >
+                  {item.name}
+                  <svg
+                    className={`w-4 h-4 transform transition-transform duration-300 ${
+                      isOpen ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                {/* Tablet Dropdown */}
+                {isOpen && (
+                  <div className="absolute left-0 mt-2 w-48 rounded-2xl shadow-lg bg-white text-[#2F4157]">
+                    {item.children.map((child) => (
+                      <Link
+                        key={child.path}
+                        href={child.path}
+                        className="block px-4 py-2 rounded-2xl hover:bg-gray-100"
+                      >
+                        {child.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          }
+
+          return (
+            <Link
+              key={item.path}
+              href={item.path}
+              className={`rounded-full px-3 py-1 transition-colors cursor-pointer ${
+                isActive
+                  ? "bg-white text-[#2F4157]"
+                  : "hover:bg-white/20 text-white"
+              }`}
+            >
+              {item.name}
+            </Link>
+          );
+        })}
+      </div>
+      
       {/* Desktop Navigation */}
       <div className="hidden lg:flex items-center text-white gap-3">
         {navItems.map((item) => {

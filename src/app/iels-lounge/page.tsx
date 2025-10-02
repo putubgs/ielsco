@@ -51,7 +51,8 @@ export default function IelsLounge() {
               {/* Desktop Table */}
               <table className="hidden lg:table w-full items-center">
                 <thead></thead>
-                <tr className="flex items-center justify-between w-full py-4 text-[24px] text-[#2F4157]">
+                <tr
+                className="flex items-center justify-between w-full py-4 text-[24px] text-[#2F4157]">
                   <th className="flex-[1.5] text-center font-medium">
                     <p className="text-shadow-md">Benefits &</p>
                     <p className="text-shadow-md">Features</p>

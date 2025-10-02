@@ -6,6 +6,8 @@ import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
 import Pagination from "@/components/Pagination";
+import { careersData } from "@/data/careers-data";
+import { generateSlug } from "@/utils/slug";
 
 type CareerItem = {
   id: string;
@@ -17,97 +19,6 @@ type CareerItem = {
   applyLink: string;
   mode: "Onsite" | "Hybrid" | "Remote";
 };
-
-const careersData: CareerItem[] = [
-  {
-    id: "1",
-    title: "Tech Manager",
-    division: "Tech",
-    level: "Manager",
-    description:
-      "Lead the overall technology development at IELS, ensuring smooth product delivery and long-term scalability. You will manage both frontend and backend teams while aligning technical priorities with organizational goals. This role requires strong leadership, problem-solving, and the ability to translate vision into execution.",
-    deadline: "25 Oct 2025",
-    applyLink: "https://forms.gle/example",
-    mode: "Remote",
-  },
-  {
-    id: "2",
-    title: "Frontend Associate",
-    division: "Tech",
-    level: "Associate",
-    description:
-      "Work closely with the product and design teams to build user-friendly, responsive web experiences for the IELS community. You will translate UI/UX designs into clean and efficient code. This role offers hands-on experience in delivering impactful features for thousands of learners.",
-    deadline: "25 Oct 2025",
-    applyLink: "https://forms.gle/example",
-    mode: "Remote",
-  },
-  {
-    id: "3",
-    title: "Backend Associate",
-    division: "Tech",
-    level: "Associate",
-    description:
-      "Support the development of scalable backend systems that power IELS platforms. You will be responsible for database management, API integrations, and ensuring system reliability. This role is perfect for those who want to strengthen their technical foundation while contributing to a real-world product.",
-    deadline: "25 Oct 2025",
-    applyLink: "https://forms.gle/example",
-    mode: "Remote",
-  },
-  {
-    id: "4",
-    title: "UI/UX Associate",
-    division: "Tech",
-    level: "Associate",
-    description:
-      "Help design intuitive, accessible, and visually engaging interfaces for IELS products. You will conduct user research, create wireframes, and collaborate with developers to ensure seamless implementation. This role allows you to shape how learners interact with IELS’ ecosystem daily.",
-    deadline: "25 Oct 2025",
-    applyLink: "https://forms.gle/example",
-    mode: "Remote",
-  },
-  {
-    id: "5",
-    title: "SEO Writer Associate",
-    division: "Marketing",
-    level: "Associate",
-    description:
-      "Create compelling, SEO-optimized content that increases IELS’ visibility across digital platforms. You will conduct keyword research, write blogs or web copies, and track performance through analytics. This role helps you sharpen your content strategy skills while driving measurable impact for community growth.",
-    deadline: "30 Oct 2025",
-    applyLink: "https://forms.gle/example",
-    mode: "Remote",
-  },
-  {
-    id: "6",
-    title: "Creator Associate",
-    division: "Marketing",
-    level: "Associate",
-    description:
-      "Develop engaging multimedia content such as graphics, videos, and social media posts to inspire learners. You will work closely with the marketing team to deliver campaigns that resonate with IELS’ audience. This role encourages creativity while building a professional creative portfolio.",
-    deadline: "30 Oct 2025",
-    applyLink: "https://forms.gle/example",
-    mode: "Remote",
-  },
-  {
-    id: "7",
-    title: "Community Experience Associate",
-    division: "Community",
-    level: "Associate",
-    description:
-      "Ensure that every member of the IELS Lounge feels welcomed, supported, and engaged. You will organize activities, moderate discussions, and collect feedback to improve member satisfaction. This role is ideal for those passionate about creating meaningful experiences in online communities.",
-    deadline: "30 Oct 2025",
-    applyLink: "https://forms.gle/example",
-    mode: "Remote",
-  },
-  {
-    id: "8",
-    title: "Community Growth Associate",
-    division: "Community",
-    level: "Associate",
-    description:
-      "Help expand IELS’ community through outreach, partnerships, and activation programs. You will identify opportunities to bring new members onboard while ensuring existing members remain active. This role combines strategy, communication, and creativity to scale IELS’ impact.",
-    deadline: "30 Oct 2025",
-    applyLink: "https://forms.gle/example",
-    mode: "Hybrid",
-  },
-];
 
 
 export default function CareersPage() {
@@ -123,6 +34,22 @@ export default function CareersPage() {
   const [openMode, setOpenMode] = useState(false);
 
   const itemsPerPage = 6;
+
+  const images = [
+    "/images/contents/careers/iels_team_0.png",
+    "/images/contents/careers/iels_team_1.png",
+    "/images/contents/careers/iels_team_2.png",
+    "/images/contents/careers/iels_team_3.png",
+    "/images/contents/careers/iels_team_4.png",
+  ];
+  const [currentImage, setCurrentImage] = useState(0);
+
+  const nextSlide = () => {
+    setCurrentImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+  const prevSlide = () => {
+    setCurrentImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
 
 // Sort by deadline
   const sortedCareers = [...careersData].sort((a, b) => {
@@ -158,21 +85,55 @@ export default function CareersPage() {
       {/* Hero */}
       <section className="text-center py-16 px-4">
         <h1 className="text-4xl font-bold mb-4">💼 Join Our Team at IELS</h1>
-        <p className="max-w-2xl mx-auto text-lg text-gray-200">
+        <p className="max-w-2xl mx-auto text-base text-gray-200">
           We’re a student-led organization empowering youths for global
           opportunities. Explore open positions and be part of our journey.
         </p>
-        {/* Dummy Image */}
-        <div className="mt-8 flex justify-center">
-          <Image
-            src="/images/contents/general/iels_team.png"
-            alt="IELS Team"
-            width={800}
-            height={300}
-            className="rounded-2xl shadow-md"
-          />
-        </div>
-      </section>
+{/* Carousel */}
+<div className="relative mt-8 flex justify-center">
+  <div className="relative w-[800px] h-[400px] overflow-hidden rounded-2xl shadow-md">
+    {images.map((src, index) => (
+      <Image
+        key={index}
+        src={src}
+        alt={`IELS Image ${index + 1}`}
+        fill
+        className={`object-cover transition-opacity duration-700 ease-in-out absolute top-0 left-0
+          ${currentImage === index ? "opacity-100" : "opacity-0"}`}
+      />
+    ))}
+
+      {/* Left Arrow */}
+      <button
+        onClick={prevSlide}
+        className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/60 rounded-full w-6 h-6 flex items-center justify-center shadow-md hover:bg-white transition"
+      >
+        <span className="text-2xl leading-none text-gray-800">‹</span>
+      </button>
+
+      {/* Right Arrow */}
+      <button
+        onClick={nextSlide}
+        className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/60 rounded-full w-6 h-6 flex items-center justify-center shadow-md hover:bg-white transition"
+      >
+        <span className="text-2xl leading-none text-gray-800">›</span>
+      </button>
+  </div>
+</div>
+
+{/* Dots */}
+<div className="flex justify-center mt-4 gap-2">
+  {images.map((_, index) => (
+    <button
+      key={index}
+      onClick={() => setCurrentImage(index)}
+      className={`w-2 h-2 rounded-full transition ${
+        currentImage === index ? "bg-white" : "bg-gray-400"
+      }`}
+    />
+  ))}
+</div>
+        </section>
 
   {/* Filters */}
       <section className="flex flex-wrap justify-center gap-4 px-4 py-6 bg-[#f5f5f5] text-black">
@@ -291,12 +252,14 @@ export default function CareersPage() {
                 >
                   Apply Now
                 </a>
-                <Link
-                  href={`/careers/${career.id}`}
-                  className="flex-1 bg-[#f5f5f5] hover:bg-gray-200 text-center rounded-full px-4 py-2 text-sm font-semibold"
-                >
-                  Read More
-                </Link>
+              <Link
+                href={`/careers/${generateSlug(career.title)}`}
+                
+                className="flex-1 bg-[#f5f5f5] hover:bg-gray-200 text-center rounded-full px-4 py-2 text-sm font-semibold"
+              >
+                Read More
+              </Link>
+
               </div>
             </div>
           ))

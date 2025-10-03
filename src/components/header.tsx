@@ -186,7 +186,7 @@ export default function Header() {
       {/* Mobile Hamburger/Cross Button */}
       <button
         onClick={toggleMobileMenu}
-        className="lg:hidden flex flex-col items-center justify-center w-8 h-8 relative z-50"
+        className="md:hidden flex flex-col items-center justify-center w-8 h-8 relative z-50"
         aria-label="Toggle menu"
       >
         {/* Hamburger Icon */}
@@ -214,14 +214,14 @@ export default function Header() {
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+          className="md:hidden fixed inset-0 bg-black/50 z-40"
           onClick={closeMobileMenu}
         />
       )}
 
       {/* Mobile Navigation Menu */}
       <div
-        className={`lg:hidden fixed top-0 right-0 h-full w-64 bg-[#2F4157] transform transition-transform duration-300 ease-in-out z-50 ${
+        className={`md:hidden fixed top-0 right-0 h-full w-64 bg-[#2F4157] transform transition-transform duration-300 ease-in-out z-50 ${
           isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >

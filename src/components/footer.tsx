@@ -96,7 +96,7 @@ export default function Footer() {
             Events & Programs
           </Link>
           <Link
-            href="#"
+            href="/careers"
             className="hover:underline transition-all duration-200 text-sm lg:text-base"
           >
             Career in IELS

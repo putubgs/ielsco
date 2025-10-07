@@ -20,6 +20,7 @@ export default function Header() {
       children: [
         { name: "All Events", path: "/events" }, // 👈 khusus tablet
         { name: "Join Our Community", path: "/iels-lounge" },
+        { name: "Explore Your Global Path", path: "/quiz" },
       ],
     },
     { name: "Gallery", path: "/gallery" },

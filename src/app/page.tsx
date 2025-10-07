@@ -7,10 +7,20 @@ import CountUp from "react-countup";
 import Link from "next/link";
 import { testimonialsData } from "@/data/testimonials";
 import { useState } from "react";
+export default function TestimonialsCarousel() {
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-export default function Home() {
-  const [showAllTestimonials, setShowAllTestimonials] = useState(false);
+  const nextSlide = () => {
+    setCurrentIndex((prev) =>
+      prev === testimonialsData.length - 1 ? 0 : prev + 1
+    );
+  };
 
+  const prevSlide = () => {
+    setCurrentIndex((prev) =>
+      prev === 0 ? testimonialsData.length - 1 : prev - 1
+    );
+  };
   return (
     <div>
       <Header />
@@ -286,80 +296,88 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="flex px-4 sm:px-8 lg:px-[100px] rounded-[20px] items-center justify-center">
-          <div className="bg-[#D9D9D9] rounded-[20px] w-full flex flex-col px-6 lg:px-12 py-6 gap-5">
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-              <Image
-                src="/images/logos/iels_blue.png"
-                alt="IELS Logo Blue"
-                width={60}
-                height={60}
-                className="lg:w-[90px] h-auto"
-              />
-              <p className="text-[28px] sm:text-[36px] lg:text-[52px] pt-0 lg:pt-6 text-center">
-                Voices from the <span className="font-bold">Community</span>
-              </p>
-              <div className="hidden sm:block"></div>
-            </div>
-            <div className="flex flex-wrap justify-center gap-6 lg:gap-12 pb-8">
-              {testimonialsData.map((testimonial, index) => (
+ 
+    <div className="flex px-4 sm:px-8 lg:px-[100px] rounded-[20px] items-center justify-center">
+      <div className="bg-[#D9D9D9] rounded-[20px] w-full flex flex-col px-6 lg:px-12 py-6 gap-5">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+          <Image
+            src="/images/logos/iels_blue.png"
+            alt="IELS Logo Blue"
+            width={60}
+            height={60}
+            className="lg:w-[90px] h-auto"
+          />
+          <p className="text-[28px] sm:text-[36px] lg:text-[52px] pt-0 lg:pt-6 text-center">
+            Voices from the <span className="font-bold">Community</span>
+          </p>
+          <div className="hidden sm:block"></div>
+        </div>
+
+        {/* === CAROUSEL === */}
+        <div className="relative mt-8 flex justify-center">
+          <div className="relative w-full max-w-[800px] h-auto min-h-[280px] overflow-hidden rounded-2xl shadow-md bg-white p-6">
+            {testimonialsData.map((testimonial, index) => (
+              <div
+                key={testimonial.id}
+                className={`absolute top-0 left-0 w-full transition-opacity duration-700 ease-in-out ${
+                  currentIndex === index ? "opacity-100" : "opacity-0"
+                }`}
+              >
                 <div
-                  key={testimonial.id}
-                  className={`bg-white rounded-2xl p-6 shadow-lg w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-32px)] flex flex-col justify-between ${
-                    index >= 3 && !showAllTestimonials ? "hidden lg:flex" : ""
-                  }`}
-                >
-                  <div
-                    className="text-gray-800 text-[14px] lg:text-[16px] leading-tight"
-                    dangerouslySetInnerHTML={{ __html: testimonial.content }}
-                  />
-                  <div className="flex items-center gap-3 mt-auto pt-6">
-                    <div className="w-[33px] h-[33px] rounded-full overflow-hidden">
-                      <Image
-                        src={testimonial.author.avatar}
-                        alt={testimonial.author.name}
-                        width={33}
-                        height={33}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="w-3/4 flex flex-col text-[12px] lg:text-[13px] -space-y-1">
-                      <p className="font-bold">{testimonial.author.name}</p>
-                      <p>{testimonial.author.university}</p>
-                    </div>
+                  className="text-gray-800 text-[14px] lg:text-[16px] leading-tight mb-6"
+                  dangerouslySetInnerHTML={{ __html: testimonial.content }}
+                />
+                <div className="flex items-center gap-3">
+                  <div className="w-[40px] h-[40px] rounded-full overflow-hidden">
+                    <Image
+                      src={testimonial.author.avatar}
+                      alt={testimonial.author.name}
+                      width={40}
+                      height={40}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="flex flex-col text-[12px] lg:text-[13px] -space-y-1">
+                    <p className="font-bold">{testimonial.author.name}</p>
+                    <p>{testimonial.author.university}</p>
                   </div>
                 </div>
-              ))}
-            </div>
-
-            {/* Show More/Less Button - Only on mobile */}
-            {testimonialsData.length > 3 && (
-              <div className="flex justify-center items-center lg:hidden">
-                <button
-                  onClick={() => setShowAllTestimonials(!showAllTestimonials)}
-                  className="flex items-center gap-2 text-[#2F4157] font-medium hover:text-[#4B5B6E] transition-colors"
-                >
-                  <svg
-                    className={`w-4 h-4 transition-transform ${
-                      showAllTestimonials ? "rotate-180" : ""
-                    }`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                  {showAllTestimonials ? "Show Less" : "Show More"}
-                </button>
               </div>
-            )}
+            ))}
+
+            {/* Left Arrow */}
+            <button
+              onClick={prevSlide}
+              className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/70 rounded-full w-7 h-7 flex items-center justify-center shadow-md hover:bg-white transition"
+            >
+              <span className="text-2xl leading-none text-gray-800">‹</span>
+            </button>
+
+            {/* Right Arrow */}
+            <button
+              onClick={nextSlide}
+              className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/70 rounded-full w-7 h-7 flex items-center justify-center shadow-md hover:bg-white transition"
+            >
+              <span className="text-2xl leading-none text-gray-800">›</span>
+            </button>
           </div>
         </div>
+
+        {/* Dots */}
+        <div className="flex justify-center mt-4 gap-2">
+          {testimonialsData.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`w-2 h-2 rounded-full transition ${
+                currentIndex === index ? "bg-[#2F4157]" : "bg-gray-400"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
         {/* Media Partners Section */}
         <div className="relative bg-[#1A2534] flex flex-col gap-3">
           <div className="text-[20px] lg:text-[32px] text-start text-white px-4 lg:px-[28vw] pt-[30px] leading-tight">

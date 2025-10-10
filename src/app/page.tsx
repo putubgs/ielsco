@@ -12,18 +12,29 @@ export default function Home() {
       <Header />
 <div className="flex flex-col w-full gap-[50px] lg:gap-[100px] bg-white">
   {/* Hero Section */}
-  <div className="relative px-4 sm:px-8 lg:px-[100px] flex flex-col lg:flex-row items-center justify-center w-full gap-[40px] lg:gap-[80px] -mt-[60px] lg:-mt-[120px] min-h-[90vh] bg-[url(/images/contents/general/indonesia_map.png)] bg-no-repeat bg-cover bg-center overflow-hidden">
-    
-    {/* === Mascot (Top on Mobile, Left on Desktop) === */}
-    <div className="order-1 lg:order-none flex justify-center items-center w-full lg:w-1/2 z-10">
-      <Image
-        src="/images/contents/general/Hi!.svg"
-        alt="IELS Mascot"
-        width={500}
-        height={500}
-        className="w-[540px] sm:w-[500px] lg:w-[700px] h-auto object-contain mx-auto"
-      />
-    </div>
+<div
+  className="
+    relative
+    px-4 sm:px-8 lg:px-[100px]
+    flex flex-col lg:flex-row
+    items-center justify-center
+    w-full gap-[40px] lg:gap-[80px]
+    mt-[20px] sm:mt-[40px] lg:-mt-[120px]  // ✅ adjust margin by breakpoint
+    min-h-[70vh] sm:min-h-[80vh] lg:min-h-[90vh]  // ✅ responsive height
+    bg-[url(/images/contents/general/indonesia_map.png)]
+    bg-no-repeat bg-cover bg-center overflow-hidden
+  "
+>
+  {/* === Mascot (Top on Mobile, Left on Desktop) === */}
+  <div className="order-1 lg:order-none flex justify-center items-center w-full lg:w-1/2 z-10 mt-[-10px] sm:mt-0 lg:mt-0">
+    <Image
+      src="/images/contents/general/Hi!.svg"
+      alt="IELS Mascot"
+      width={500}
+      height={500}
+      className="w-[320px] sm:w-[450px] md:w-[500px] lg:w-[700px] h-auto object-contain mx-auto"
+    />
+  </div>
 
     {/* === Text Section === */}
     <div className="order-2 lg:order-none flex flex-col justify-center items-center lg:items-start text-center lg:text-left w-full lg:w-1/2 space-y-6 py-12 lg:py-0 z-10">

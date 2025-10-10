@@ -119,7 +119,7 @@ export default function ResultPage() {
                 className="bg-[#E56668] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#d25558] transition"
                 disabled
               >
-                Download Result Card (Coming Soon)
+                See Courses
               </button>
               <Link
                 href="/"

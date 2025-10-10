@@ -4,7 +4,6 @@
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { useEffect, useMemo, useRef, useState } from "react";
-import IntroPage from "./IntroPage";
 import QuizStep from "./QuizStep";
 import ResultCard from "./ResultCard";
 import { SCENES, PERSONAS, type PersonaId, getPersona } from "@/data/personas";
@@ -110,7 +109,7 @@ export default function QuizPage() {
           {phase === "intro" && (
             <div className="bg-white text-[#2F4157] rounded-2xl shadow-lg overflow-hidden">
               {/* Banner */}
-              <div className="w-full h-48 md:h-64 relative">
+              <div className="w-full h-34 md:h-54 relative">
                 <img
                   src="/images/contents/quiz/banner.png"
                   alt="Quiz Banner"
@@ -119,8 +118,8 @@ export default function QuizPage() {
               </div>
 
               {/* Intro Content */}
-              <div className="px-6 py-1 text-center">
-                <p className="mt-3 text-gray-600 max-w-2xl mx-auto">
+              <div className="px-6 py-1 text-center space-y-2">
+                <p className="mt-2 text-gray-600 text-left max-w-2xl mx-auto">
                   Discover what type of <strong>global dreamer</strong> you are,
                   and let IELS guide you from setting your dream to achieving it.
                 </p>
@@ -138,10 +137,11 @@ export default function QuizPage() {
                   </p>
                   <p>✨ Share your result card with friends on Instagram or LinkedIn!</p>
                 </div>
+                
 
                 <button
                   onClick={() => setPhase("quiz")}
-                  className="mt-8 mb-6 rounded-full bg-[#e56668] text-white text-lg px-8 py-3 hover:opacity-90 transition"
+                  className="mt-8 mb-6 rounded-full bg-[#e56668] text-white text-lg pcd cdx-8 px-6 py-3 hover:opacity-90 transition"
                 >
                   Start Test →
                 </button>

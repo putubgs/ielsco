@@ -24,7 +24,6 @@ export default function Header() {
       ],
     },
     { name: "Gallery", path: "/gallery" },
-    { name: "Careers", path: "/careers" },
   ];
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);

@@ -5,56 +5,69 @@ import Footer from "@/components/footer";
 import Image from "next/image";
 import CountUp from "react-countup";
 import Link from "next/link";
-import { testimonialsData } from "@/data/testimonials";
-import { useState } from "react";
-export default function TestimonialsCarousel() {
-  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const nextSlide = () => {
-    setCurrentIndex((prev) =>
-      prev === testimonialsData.length - 1 ? 0 : prev + 1
-    );
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? testimonialsData.length - 1 : prev - 1
-    );
-  };
+export default function Home() {
   return (
-    <div>
+    <>
       <Header />
-      <div className="flex flex-col w-full gap-[50px] lg:gap-[100px]">
-        {/* Hero Section */}
-        <div className="px-4 sm:px-8 lg:px-[100px] flex flex-col w-full gap-[50px] lg:gap-[100px] -mt-[60px] lg:-mt-[120px] h-full bg-[url(/images/contents/general/indonesia_map.png)] bg-no-repeat bg-cover bg-center">
-          <div className="w-full flex pt-[120px] lg:pt-[200px]">
-            <div className="hidden lg:block lg:w-[25%]"></div>
-            <div className="w-full lg:w-[50%] flex justify-center">
-              <div className="text-[28px] sm:text-[36px] lg:text-[52px] text-white font-thin flex flex-col -space-y-2 lg:-space-y-6 text-center lg:text-left">
-                <p>
-                  From <span className="font-bold">Local Roots</span>
-                </p>
-                <p>
-                  To{" "}
-                  <span className="font-bold text-[#E56668]">Global Goals</span>
-                </p>
-              </div>
-            </div>
-            <div className="hidden lg:block lg:w-[25%] text-white text-[20px] mt-auto mb-4">
-              <p className="w-[85%]">
-                Your English Journey Starts Here <br /> —Learn, Speak, Grow.
-              </p>
-            </div>
-          </div>
+<div className="flex flex-col w-full gap-[50px] lg:gap-[100px] bg-white">
+  {/* Hero Section */}
+  <div className="relative px-4 sm:px-8 lg:px-[100px] flex flex-col lg:flex-row items-center justify-center w-full gap-[40px] lg:gap-[80px] -mt-[60px] lg:-mt-[120px] min-h-[90vh] bg-[url(/images/contents/general/indonesia_map.png)] bg-no-repeat bg-cover bg-center overflow-hidden">
+    
+    {/* === Mascot (Top on Mobile, Left on Desktop) === */}
+    <div className="order-1 lg:order-none flex justify-center items-center w-full lg:w-1/2 z-10">
+      <Image
+        src="/images/contents/general/Hi!.svg"
+        alt="IELS Mascot"
+        width={500}
+        height={500}
+        className="w-[540px] sm:w-[500px] lg:w-[700px] h-auto object-contain mx-auto"
+      />
+    </div>
 
-          {/* Mobile tagline */}
-          <div className="lg:hidden text-white text-center text-sm px-6">
-            <p>
-              Your English Journey Starts Here <br /> —Learn, Speak, Grow.
-            </p>
-          </div>
+    {/* === Text Section === */}
+    <div className="order-2 lg:order-none flex flex-col justify-center items-center lg:items-start text-center lg:text-left w-full lg:w-1/2 space-y-6 py-12 lg:py-0 z-10">
+      {/* Headline */}
+      <div className="text-[28px] sm:text-[36px] lg:text-[52px] text-[#2F4157] font-light leading-tight">
+        <p>
+          <span className="font-extrabold">A fun, structured, and </span>
+        </p>
+        <p>
+          <span className="font-extrabold text-[#E56668]">
+            global way to learn English.
+          </span>
+        </p>
+      </div>
+
+      {/* Subtitle */}
+      <p className="text-base sm:text-lg lg:text-xl text-[#2F4157]/80 max-w-2xl leading-relaxed">
+        At IELS, you don’t just study grammar — you join a vibrant community
+        that helps you <strong>learn, speak, and grow</strong> toward your global goals.
+      </p>
+
+      {/* CTA Button */}
+      <div className="flex justify-center lg:justify-start pt-2">
+        <Link
+          href="/start"
+          className="rounded-full bg-[#E56668] text-white px-8 py-3 font-semibold text-lg border border-transparent hover:bg-[#2F4157] transition-colors duration-300"
+        >
+          Start Now 🚀
+        </Link>
+      </div>
+    </div>
+
+    {/* optional: subtle background overlay for clarity */}
+    <div className="absolute inset-0 bg-gradient-to-b from-white/0 to-white/10 lg:to-transparent"></div>
+  </div>
+
+
 
           {/* Image Grid */}
+          <div className="flex flex-col w-full gap-[50px] lg:gap-[100px] bg-white">
+        {/* Hero Section */}
+        <div className="px-4 sm:px-8 lg:px-[100px] flex flex-col w-full gap-[10px] lg:gap-[20px] -mt-[60px] lg:-mt-[120px] h-full bg-[url(/images/contents/general/indonesia_map.png)] bg-no-repeat bg-cover bg-center">
+ 
+
           <div className="flex flex-col lg:flex-row w-full gap-4 h-auto lg:h-[350px]">
             {/* Mobile: 2x3 Grid Layout */}
             <div className="lg:hidden grid grid-cols-2 gap-4 w-full">
@@ -106,7 +119,7 @@ export default function TestimonialsCarousel() {
                   height={60}
                 />
               </div>
-              <div className="h-[120px] bg-[#FFFFFF] rounded-[15px] flex items-center justify-center">
+              <div className="h-[120px] bg-[#E56668] rounded-[15px] flex items-center justify-center">
                 <Image
                   src="/images/contents/general/chat.png"
                   alt="Chat"
@@ -126,7 +139,7 @@ export default function TestimonialsCarousel() {
             {/* Desktop: Original Layout */}
             <div className="hidden lg:flex lg:flex-row w-full gap-4 h-[350px]">
               <div className="flex flex-col gap-4 w-[20%]">
-                <div className="h-full bg-[#1A2534] rounded-[20px] flex items-center justify-center">
+                <div className="h-full bg-[#2F4157] rounded-[20px] flex items-center justify-center">
                   <Image
                     src="/images/contents/general/welcoming.png"
                     alt="Welcoming"
@@ -155,7 +168,7 @@ export default function TestimonialsCarousel() {
                     height={90}
                   />
                 </div>
-                <div className="bg-[#1A2534] rounded-[20px] h-full flex items-center justify-center">
+                <div className="bg-[#2F4157] rounded-[20px] h-full flex items-center justify-center">
                   <Image
                     src="/images/contents/general/speaking.png"
                     alt="Speaking"
@@ -174,7 +187,7 @@ export default function TestimonialsCarousel() {
                     height={90}
                   />
                 </div>
-                <div className="bg-[#FFFFFF] rounded-[20px] h-full flex items-center justify-center">
+                <div className="bg-[#E56668] rounded-[20px] h-full flex items-center justify-center">
                   <Image
                     src="/images/contents/general/chat.png"
                     alt="Chat"
@@ -184,278 +197,321 @@ export default function TestimonialsCarousel() {
                 </div>
               </div>
 
-              <div className="rounded-[20px] w-[20%] bg-[#1A2534] text-white px-12 items-center justify-center flex">
+              <div className="rounded-[20px] w-[20%] bg-[#2F4157] text-white px-12 items-center justify-center flex">
                 <p className="text-left">
                   Join a growing community where English meets purpose.
                 </p>
               </div>
-            </div>
-          </div>
+            </div></div></div>
         </div>
         {/* Stats and CTA Section */}
         <div className="flex flex-col px-4 sm:px-8 lg:px-[100px]">
-          <div className="bg-white text-[#2F4157] flex flex-col lg:flex-row rounded-t-[30px] px-6 sm:px-8 lg:px-12 py-[40px] lg:py-[60px] w-full gap-8 lg:gap-12">
+          <div className="bg-[#2F4157] flex flex-col lg:flex-row rounded-t-[30px] px-6 sm:px-8 lg:px-12 py-[40px] lg:py-[60px] w-full gap-8 lg:gap-12">
             <div className="flex w-full items-center gap-4 h-full justify-center">
-              <div className="text-[24px] lg:text-[32px] items-center justify-center flex flex-col -space-y-2 lg:-space-y-3">
+              <div className="text-white text-[24px] lg:text-[32px] items-center justify-center flex flex-col -space-y-2 lg:-space-y-3">
                 <p className="font-bold text-[36px] md:text-[48px]">
-                  <CountUp
-                    end={2000}
-                    duration={2.5}
-                    separator=","
-                    enableScrollSpy
-                  />
-                  +
+                  <CountUp end={2000} duration={2.5} separator="," enableScrollSpy />+
                 </p>
                 <p className="text-[24px] lg:text-[32px]">MEMBERS</p>
               </div>
             </div>
             <div className="flex flex-col w-full items-center gap-4">
-              <div className="flex text-[24px] lg:text-[32px] items-center flex gap-4">
+              <div className="text-white flex text-[24px] lg:text-[32px] items-center flex gap-4">
                 <p className="font-bold text-[36px] md:text-[48px]">
                   <CountUp end={100} duration={2.5} enableScrollSpy />+
                 </p>
-                <p className="text-[20px] md:text-[28px] leading-tight">
+                <p className="text-white text-[20px] md:text-[28px] leading-tight">
                   WINNING <br /> STORIES
                 </p>
               </div>
-              <p className="text-[14px] lg:text-[18px] text-center leading-tight">
+              <p className="text-white text-[14px] lg:text-[18px] text-center leading-tight">
                 member stories of national <br /> & international achievements
               </p>
             </div>
             <div className="flex flex-col w-full items-center gap-4">
-              <div className="flex text-[24px] lg:text-[32px] items-center flex gap-4">
+              <div className="text-white flex text-[24px] lg:text-[32px] items-center flex gap-4">
                 <p className="font-bold text-[36px] md:text-[48px]">
                   <CountUp end={25} duration={2.5} enableScrollSpy />+
                 </p>
-                <p className="text-[20px] md:text-[28px] leading-tight">
+                <p className="text-white text-[20px] md:text-[28px] leading-tight">
                   GLOBAL <br /> CAREERS
                 </p>
               </div>
-              <p className="text-[14px] lg:text-[18px] text-center leading-tight">
+              <p className="text-white text-[14px] lg:text-[18px] text-center leading-tight">
                 member stories of remote <br /> work & internships abroad
               </p>
             </div>
             <div className="flex flex-col w-full items-center gap-4">
-              <div className="flex text-[24px] lg:text-[32px] items-center flex gap-4">
+              <div className="text-white flex text-[24px] lg:text-[32px] items-center flex gap-4">
                 <p className="font-bold text-[36px] md:text-[48px]">
                   <CountUp end={13} duration={2.5} enableScrollSpy />+
                 </p>
-                <p className="text-[20px] md:text-[28px] leading-tight">
+                <p className="text-white text-[20px] md:text-[28px] leading-tight">
                   STUDY <br /> ABROAD
                 </p>
               </div>
-              <p className="text-[14px] lg:text-[18px] text-center leading-tight">
+              <p className="text-white text-[14px] lg:text-[18px] text-center leading-tight">
                 member stories of <br /> international study journeys
               </p>
             </div>
+    
           </div>
-          <div className="text-white flex flex-col gap-6 px-8 sm:px-16 lg:px-[200px] items-center lg:items-start justify-center pt-[50px] lg:pt-[100px] w-full mt-auto bg-[url(/images/contents/general/landing_page_2.png)] bg-cover bg-center h-[350px] lg:h-[500px] rounded-b-[30px] relative">
-            <div className="absolute inset-0 bg-black opacity-40 lg:opacity-0 rounded-b-[30px]"></div>
-            <p className="text-[21px] sm:text-[25px] lg:text-[28px] font-extrabold leading-tight text-center lg:text-left relative z-10">
-              Create your own story of
-              <br />
-              global success with IELS!
-            </p>
-            <Link href="/stories" className="text-[13px] lg:text-[15px] text-center lg:text-left relative z-10 bg-[#E56668] text-white rounded-full px-12 md:py-2 py-3 font-bold">
-              Discover More Member Stories
-            </Link>
-          </div>
-        </div>
-        {/* IELS Lounge Section */}
-        <div className="flex px-4 sm:px-8 lg:px-[100px] rounded-[20px] items-center justify-center">
-          <div className="bg-white rounded-[20px] w-full flex flex-col lg:flex-row py-[30px] lg:py-[40px] items-center justify-center gap-[15px] lg:gap-[20px] px-6 lg:px-[50px]">
-            <div className="max-w-[400px] p-6 lg:p-12 flex flex-col text-[36px] lg:text-[52px] leading-tight text-center lg:text-end">
-              <p>IELS</p>
-              <p className="font-bold">Lounge</p>
-            </div>
-            <Image
-              src="/images/contents/general/landing_page_3.png"
-              alt="Iels Lounge"
-              width={0}
-              height={0}
-              sizes="100vw"
-              className="w-full h-auto max-w-[280px] lg:max-w-[350px]"
-            />
-            <div className="max-w-[400px] p-6 lg:p-12 flex flex-col gap-6 text-center lg:text-left">
-              <p className="text-[24px] lg:text-[32px] font-bold leading-tight">
-                We speak English Every Night!
-              </p>
-              <p className="text-[13px] lg:text-[15px]">
-                Join IELS Lounge, a supportive community where you practice
-                English in real conversations, build confidence, and unlock
-                opportunities. <br /> <br /> Start with small daily habits,
-                speak without fear of mistakes, and learn together—here, no one
-                dominates; everyone grows side by side.
-              </p>
-              <Link
-                href="/iels-lounge"
-                className="bg-[#E56668] font-bold text-white rounded-[20px] text-center w-fit px-[40px] lg:px-[60px] py-2 mx-auto lg:mx-0"
-              >
-                Join the Community
-              </Link>
-            </div>
-          </div>
-        </div>
+ <div className="relative w-full mt-auto rounded-b-[30px] overflow-hidden">
+  {/* Background + Overlay */}
+  <div className="relative bg-[url(/images/contents/general/landing_page_2.png)] bg-cover bg-center h-[350px] lg:h-[500px] flex flex-col items-center lg:items-start justify-center gap-6 px-8 sm:px-16 lg:px-[200px] text-white">
+    {/* ✅ overlay yang aman di semua viewport */}
+    <div className="absolute inset-0 bg-black/40 lg:bg-transparent"></div>
+
+    {/* ✅ konten di atas overlay */}
+    <div className="relative z-10 text-center lg:text-left">
+      <p className="text-[21px] sm:text-[25px] lg:text-[28px] font-extrabold leading-tight mb-4">
+        Create your own story of
+        <br />
+        global success with IELS!
+      </p>
+      <Link
+        href="/stories"
+        className="inline-block rounded-full bg-[#E56668] text-white px-6 sm:px-8 py-3 text-base sm:text-lg font-semibold border border-transparent hover:bg-[#2F4157] hover:text-white transition-colors duration-300"
+      >
+        Discover More Member Stories
+      </Link>
+    </div>
+  </div>
+</div>
+</div>
+{/* IELS Lounge Section (FINAL FIXED VERSION) */}
+<div className="w-full overflow-hidden px-4 sm:px-8 lg:px-[100px]">
+  <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16 py-16">
+
+    {/* Left Text (Title) */}
+    <div className="text-center lg:text-right w-full lg:w-1/3">
+      <h2 className="text-[32px] sm:text-[40px] lg:text-[52px] font-extrabold text-[#2F4157] leading-tight">
+        IELS <br />
+        <span className="font-bold">Lounge</span>
+      </h2>
+
+      {/* Desktop Button */}
+      <div className="hidden lg:block mt-6">
+        <br/><Link
+          href="/iels-lounge"
+          className="rounded-full bg-[#E56668] text-white px-8 py-3 font-semibold text-lg hover:bg-[#2F4157] transition-colors duration-300"
+        >
+          Join the Community
+        </Link>
+      </div>
+    </div>
+
+    {/* Middle Image */}
+    <div className="flex justify-center w-full lg:w-1/3">
+      <Image
+        src="/images/contents/general/landing_page_3.png"
+        alt="IELS Lounge"
+        width={400}
+        height={400}
+        className="w-[80%] sm:w-[300px] lg:w-[350px] h-auto object-contain"
+      />
+    </div>
+
+    {/* Right Text + Mobile Button */}
+    <div className="text-center lg:text-left w-full lg:w-1/3 flex flex-col gap-5">
+      <p className="text-[20px] sm:text-[24px] lg:text-[28px] font-bold leading-tight text-[#2F4157]">
+        We speak English Every Night!
+      </p>
+      <p className="text-[14px] sm:text-[16px] text-[#2F4157]/80 leading-relaxed">
+        Join IELS Lounge, a supportive community where you practice English in real conversations, build confidence, and unlock opportunities.
+        <br /><br />
+        Start with small daily habits, speak without fear of mistakes, and learn together — here, no one dominates; everyone grows side by side.
+      </p>
+
+      {/* Mobile Button */}
+      <div className="block lg:hidden mt-4">
+        <Link
+          href="/iels-lounge"
+          className="rounded-full bg-[#E56668] text-white px-8 py-3 font-semibold text-lg hover:bg-[#2F4157] transition-colors duration-300"
+        >
+          Join the Community
+        </Link>
+      </div>
+    </div>
+  </div>
+</div>
+ {/* ===== IELS English Test ===== */}
+<section className="py-20 px-6 sm:px-10 lg:px-[100px]">
+  <div className="max-w-6xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-10">
+    <div className="flex-1 text-center lg:text-left">
+      <h2 className="text-[28px] sm:text-[36px] lg:text-[52px] font-extrabold mb-4">
+        IELS <span className="text-[#E56668]">English Test</span> 
+      </h2>
+      <p className="text-80 text-lg mb-6">
+        Hey IELScout! Ever wondered how ready your English really is for the world?  
+        The <strong className="text-[#E56668]">IELS English Test</strong> helps you measure your real communication skills, not just grammar — so you know exactly where to grow.
+      </p>
+      <p className="text-sm italic text-60 mb-8">
+        Coming soon: online test dashboard & score insights.
+      </p>
+      <br/><Link
+        href="/test"
+        className="rounded-full bg-[#E56668] text-white px-8 py-3 font-semibold text-lg border border-transparent hover:bg-[#2F4157] transition-colors duration-300"
+      >
+        Take the Test
+      </Link>
+    </div>
+    <div className="flex-1 flex justify-center">
+      <img
+        src="/images/contents/general/ielstest.svg"
+        alt="IELS English Test"
+        className="w-[440px] sm:w-[500px] lg:w-[600px] h-auto object-contain mx-auto"
+      />
+    </div>
+  </div>
+</section>
+
+{/* ===== IELS for Schools ===== */}
+<section className="py-20 px-6 sm:px-10 lg:px-[100px]">
+  <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-10">
+    <div className="flex-1 flex justify-center">
+      <img
+        src="/images/contents/general/ielsschool.svg"
+        alt="IELS for Schools"
+        className="w-[440px] sm:w-[500px] lg:w-[600px] h-auto object-contain mx-auto"
+      />
+    </div>
+    <div className="flex-1 text-center lg:text-left">
+      <h2 className="text-[28px] sm:text-[36px] lg:text-[52px] font-extrabold mb-4">
+        IELS for Schools <span className="text-[#E56668]"></span>
+      </h2>
+      <p className="text-80 text-lg mb-6">
+        Hi, teachers! Let’s bring global English learning right into your classrooms.  
+        <strong className="text-[#E56668]"> IELS for Schools</strong> is a year-long structured program packed with challenges, mentorship, and cultural immersion designed for real student growth.
+      </p>
+      <br/><Link
+        href="/for-schools"
+        className="rounded-full bg-[#E56668] text-white px-8 py-3 font-semibold text-lg border border-transparent hover:bg-[#2F4157] transition-colors duration-300"
+      >
+        Explore the Program
+      </Link>
+    </div>
+  </div>
+</section>
+
+{/* ===== IELS Events ===== */}
+<section className="py-20 px-6 sm:px-10 lg:px-[100px]">
+  <div className="max-w-6xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-10">
+    <div className="flex-1 text-center lg:text-left">
+      <h2 className="text-[28px] sm:text-[36px] lg:text-[52px] font-extrabold mb-4">
+        Join <span className="text-[#E56668]">Global Learning</span> Experiences 
+      </h2>
+      <p className="text-80 text-lg mb-6">
+        Step out of the textbook — and into real conversations.  
+        <strong className="text-[#E56668]"> IELS Events</strong> let you join speaking clubs, bootcamps, and workshops guided by global mentors.  
+        Learn English by living it.
+      </p>
+      <br/>
+      <Link
+        href="/events"
+        className="rounded-full bg-[#E56668] text-white px-8 py-3 font-semibold text-lg border border-transparent hover:bg-[#2F4157] transition-colors duration-300"
+      >
+        See What’s On
+      <br/></Link>
+    </div>
+    <div className="flex-1 flex justify-center">
+      <img
+        src="/images/contents/general/ielsevents.svg"
+        alt="IELS Events"
+        className="w-[440px] sm:w-[500px] lg:w-[600px] h-auto object-contain mx-auto"
+      />
+    </div>
+  </div>
+</section>
+
+{/* ===== Free Resources ===== */}
+<section className="py-20 px-6 sm:px-10 lg:px-[100px]">
+  <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-10">
+    <div className="flex-1 flex justify-center">
+      <img
+        src="/images/contents/general/ielsresources.svg"
+        alt="Free Resources"
+        className="w-[440px] sm:w-[500px] lg:w-[600px] h-auto object-contain mx-auto"
+      />
+    </div>
+    <div className="flex-1 text-center lg:text-left">
+      <h2 className="text-[28px] sm:text-[36px] lg:text-[52px] font-extrabold mb-4">
+        Learn Anytime, 
+       <p> Anywhere — <span className="text-[#E56668]">for Free</span>
+        
+        </p>
+      </h2>
+      <p className="text-80 text-lg mb-6">
+        Access <strong className="text-[#E56668]">IELS Free Resources</strong> — e-books, grammar guides, and study materials built for curious learners like you.  
+        Learn anywhere, anytime, at your own pace.
+      </p>
+      <br/><Link
+        href="/resources"
+        className="rounded-full bg-[#E56668] text-white px-8 py-3 font-semibold text-lg border border-transparent hover:bg-[#2F4157] transition-colors duration-300"
+      >
+        Access Library
+      </Link>
+    </div>
+  </div>
+</section>
+
+{/* ===== Partner with IELS ===== */}
+<section className="py-20 px-6 sm:px-10 lg:px-[100px]">
+  <div className="max-w-6xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-10">
+    <div className="flex-1 text-center lg:text-left">
+      <h2 className="text-[28px] sm:text-[36px] lg:text-[52px] font-extrabold mb-4">
+        <span className="text-[#E56668]">Partners </span> with Us 
+      </h2>
+      <p className="text-80 text-lg mb-6">
+        Whether you’re a school, company, or organization — let’s work together  
+        to make English education more accessible and meaningful.  
+        <strong className="text-[#E56668]">Partner with IELS</strong> to co-create programs, support learners, and shape the future of education.
+      </p>
+      <br/><Link
+        href="/partners"
+        className="rounded-full bg-[#E56668] text-white px-8 py-3 font-semibold text-lg border border-transparent hover:bg-[#2F4157] transition-colors duration-300"
+      >
+        Become a Partner
+      </Link>
+    </div>
+    <div className="flex-1 flex justify-center">
+      <img
+        src="/images/contents/general/ielspartner.svg"
+        alt="Partner with IELS"
+        className="w-[440px] sm:w-[500px] lg:w-[600px] h-auto object-contain mx-auto"
+      />
+    </div>
+  </div>
+</section>
+{/* Final CTA Section with Transition Banner */}
+<section className="w-full bg-white text-center text-[#1A2534] pt-5 pb-0 px-5 sm:px-5 lg:px-[100px] overflow-hidden">
+  <div className="max-w-5xl mx-auto flex flex-col items-center justify-center gap-6">
+    <h2 className="text-[36px] sm:text-[48px] lg:text-[64px] font-extrabold leading-tight">
+      Learn English <br/> With <span className="text-[#E56668]">IELS!</span>
+    </h2>
+    <Link
+      href="/start"
+      className="rounded-full bg-[#E56668] text-white px-8 py-3 font-semibold text-lg border border-transparent hover:bg-[#2F4157] transition-colors duration-300"
+    >
+      Start Now 🚀
+    </Link>
+  </div>
+</section>
  
-    <div className="flex px-4 sm:px-8 lg:px-[100px] rounded-[20px] items-center justify-center">
-      <div className="bg-[#D9D9D9] rounded-[20px] w-full flex flex-col px-6 lg:px-12 py-6 gap-5">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-          <Image
-            src="/images/logos/iels_blue.png"
-            alt="IELS Logo Blue"
-            width={60}
-            height={60}
-            className="lg:w-[90px] h-auto"
-          />
-          <p className="text-[28px] sm:text-[36px] lg:text-[52px] pt-0 lg:pt-6 text-center">
-            Voices from the <span className="font-bold">Community</span>
-          </p>
-          <div className="hidden sm:block"></div>
+{/* 🌊 Responsive Footer Wave Section */}
+<div className="relative w-full overflow-hidden">
+  {/* Wave container: tinggi menyesuaikan device */}
+  <div className="w-full h-[220px] sm:h-[280px] md:h-[350px] lg:h-[350px] relative">
+    <img
+      src="/images/contents/general/footer_wave.svg"
+      alt="Footer Wave"
+      className="absolute left-1/2 top-0 -translate-x-1/2 w-[160%] sm:w-[140%] md:w-screen h-full object-cover pointer-events-none select-none"
+    />
+  </div>
+</div>
         </div>
-
-        {/* === CAROUSEL === */}
-        <div className="relative mt-8 flex justify-center">
-          <div className="relative w-full max-w-[800px] h-auto min-h-[280px] overflow-hidden rounded-2xl shadow-md bg-white p-6">
-            {testimonialsData.map((testimonial, index) => (
-              <div
-                key={testimonial.id}
-                className={`absolute top-0 left-0 w-full transition-opacity duration-700 ease-in-out ${
-                  currentIndex === index ? "opacity-100" : "opacity-0"
-                }`}
-              >
-                <div
-                  className="text-gray-800 text-[14px] lg:text-[16px] leading-tight mb-6"
-                  dangerouslySetInnerHTML={{ __html: testimonial.content }}
-                />
-                <div className="flex items-center gap-3">
-                  <div className="w-[40px] h-[40px] rounded-full overflow-hidden">
-                    <Image
-                      src={testimonial.author.avatar}
-                      alt={testimonial.author.name}
-                      width={40}
-                      height={40}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex flex-col text-[12px] lg:text-[13px] -space-y-1">
-                    <p className="font-bold">{testimonial.author.name}</p>
-                    <p>{testimonial.author.university}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-
-            {/* Left Arrow */}
-            <button
-              onClick={prevSlide}
-              className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/70 rounded-full w-7 h-7 flex items-center justify-center shadow-md hover:bg-white transition"
-            >
-              <span className="text-2xl leading-none text-gray-800">‹</span>
-            </button>
-
-            {/* Right Arrow */}
-            <button
-              onClick={nextSlide}
-              className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/70 rounded-full w-7 h-7 flex items-center justify-center shadow-md hover:bg-white transition"
-            >
-              <span className="text-2xl leading-none text-gray-800">›</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Dots */}
-        <div className="flex justify-center mt-4 gap-2">
-          {testimonialsData.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className={`w-2 h-2 rounded-full transition ${
-                currentIndex === index ? "bg-[#2F4157]" : "bg-gray-400"
-              }`}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
-        {/* Media Partners Section */}
-        <div className="relative bg-[#1A2534] flex flex-col gap-3">
-          <div className="text-[20px] lg:text-[32px] text-start text-white px-4 lg:px-[28vw] pt-[30px] leading-tight">
-            <p className="font-bold block lg:hidden">
-              Global & National Company Partners
-            </p>
-            <p className="font-bold hidden lg:block">Global & National</p>
-            <p className="hidden lg:block">Company Partners</p>
-          </div>
-          <div className="hidden lg:block">
-            <Image
-              src="/images/contents/general/bookmark_icon.png"
-              width={160}
-              height={160}
-              alt="bookmark"
-              className="absolute top-[3vw] left-[15vw] transform lg:scale-150"
-            />
-            <Image
-              src="/images/contents/general/pencil.png"
-              width={160}
-              height={160}
-              alt="bookmark"
-              className="absolute top-[18vw] left-[15vw] transform rotate-90"
-            />
-            <Image
-              src="/images/contents/general/chat.png"
-              width={160}
-              height={160}
-              alt="bookmark"
-              className="absolute bottom-[4vw] right-[15vw] transform"
-            />
-          </div>
-          <div className="flex flex-col lg:flex-row w-full gap-6">
-            <div className="hidden lg:flex bg-white rounded-r-[20px] flex-col gap-4 py-8 pr-8 w-[20%]">
-              {[...Array(8)].map((_, i) => (
-                <hr key={i} className="h-px bg-black border-0" />
-              ))}
-            </div>
-            <div className="w-full lg:w-[60%] bg-white rounded-[20px] flex items-center justify-center lg:p-0 min-h-[100px]">
-              <Image
-                src="/images/logos/media-partners/media_partners.png"
-                alt="Media Partner"
-                width={1000}
-                height={0}
-                className="w-full px-4 lg:px-[100px] py-6"
-              />
-            </div>
-            <div className="hidden lg:flex bg-white rounded-l-[20px] flex-col gap-4 py-8 pl-8 w-[20%]">
-              {[...Array(8)].map((_, i) => (
-                <hr key={i} className="h-px bg-black border-0" />
-              ))}
-            </div>
-          </div>
-          <div className="flex flex-col lg:flex-row w-full gap-6">
-            <div className="hidden lg:block bg-white rounded-r-[20px] w-[20%]"></div>
-            <div className="w-full lg:w-[60%] bg-white rounded-[20px] flex items-center justify-center p-4 lg:p-0 min-h-[100px]">
-              <Image
-                src="/images/logos/company/company_logos.png"
-                alt="Media Partner"
-                width={1000}
-                height={80}
-                className="w-full object-contain md:p-12"
-              />
-            </div>
-            <div className="hidden lg:flex bg-white rounded-l-[20px] flex-col gap-4 py-8 pl-8 w-[20%]">
-              {[...Array(8)].map((_, i) => (
-                <hr key={i} className="h-px bg-black border-0" />
-              ))}
-            </div>
-          </div>
-          <div className="text-[20px] lg:text-[32px] text-end text-white px-4 lg:px-[28vw] pb-[30px] leading-tight">
-            <p className="font-bold block lg:hidden">Media Partners</p>
-            <p className="font-bold hidden lg:block">Media</p>
-            <p className="hidden lg:block">Partners</p>
-          </div>
-        </div>
-      </div>
       <Footer />
-    </div>
+
+    </>
   );
 }

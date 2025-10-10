@@ -16,7 +16,7 @@ const geologica = Geologica({
 });
 
 export const metadata: Metadata = {
-  title: "IELS (Inclusive English Learning Space)",
+  title: "IELS | English Community",
   description:
     "Empowering youths for global success through a supportive community and mentorship. Join our Community",
 };

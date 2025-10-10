@@ -80,10 +80,10 @@ export default function OnboardingQuiz() {
       </motion.div>
 
       <div className="flex gap-3 justify-center">
-        <button onClick={onBack} className="px-5 py-2 rounded-full bg-white/10 text-white border hover:bg-white/20" disabled={step === 0}>
+        <button onClick={onBack} className="px-5 py-2 rounded-full bg-[#294155] text-white border hover:opacity-75" disabled={step === 0}>
           Back
         </button>
-        <button onClick={onNext} className="px-6 py-2 rounded-full bg-[#e56668] text-white font-semibold hover:opacity-95">
+        <button onClick={onNext} className="px-6 py-2 rounded-full bg-[#e56668] text-white font-semibold hover:opacity-75">
           {step === total - 1 ? "Finish" : "Next"}
         </button>
       </div>

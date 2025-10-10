@@ -1,59 +1,135 @@
-// src/app/result/page.tsx
 "use client";
+import { useEffect, useState } from "react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Link from "next/link";
 import { PERSONAS } from "@/data/quizdata";
 import Image from "next/image";
 
+type Persona = {
+  title: string;
+  description: string;
+  image?: string;
+  classes: string[];
+};
+
 export default function ResultPage() {
-  // read localStorage result
-  let payload: any = null;
-  if (typeof window !== "undefined") {
-    const raw = localStorage.getItem("iels_onboarding");
-    try { payload = raw ? JSON.parse(raw) : null; } catch (e) { payload = null; }
+  const [persona, setPersona] = useState<Persona | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // ✅ Ambil data hasil quiz dari localStorage (client only)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const raw = localStorage.getItem("iels_onboarding");
+      if (raw) {
+        try {
+          const payload = JSON.parse(raw);
+          const winner = payload?.winner ?? "dreamer";
+          const found = PERSONAS[winner] ?? PERSONAS["dreamer"];
+          setPersona(found);
+        } catch {
+          setPersona(PERSONAS["dreamer"]);
+        }
+      } else {
+        setPersona(PERSONAS["dreamer"]);
+      }
+      setLoading(false);
+    }
+  }, []);
+
+  if (loading) {
+    return (
+      <main className="min-h-screen flex items-center justify-center bg-white text-[#2F4157]">
+        <p className="text-lg animate-pulse font-medium">Loading your result...</p>
+      </main>
+    );
   }
-  const winner = payload?.winner ?? "dreamer";
-  const persona = PERSONAS[winner] ?? PERSONAS["dreamer"];
+
+  if (!persona) {
+    return (
+      <>
+        <Header />
+        <main className="min-h-screen bg-white flex flex-col items-center justify-center px-6 text-[#2F4157]">
+          <h1 className="text-2xl font-bold mb-3">No Result Found 😕</h1>
+          <p className="text-gray-600 text-center max-w-md mb-6">
+            It looks like you haven’t finished the quiz yet. Please complete it to see your personalized result.
+          </p>
+          <Link
+            href="/start"
+            className="bg-[#E56668] hover:bg-[#d25558] px-6 py-3 rounded-full text-white font-semibold transition"
+          >
+            Take the Quiz Again
+          </Link>
+        </main>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gradient-to-br from-[#2F4157] to-[#294055] text-white py-20 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl p-6 md:p-10 text-[#2F4157] shadow-lg">
-            <div className="flex flex-col md:flex-row items-center gap-6">
-              <div className="w-40 h-40 relative">
-                <Image src={persona.image ?? "/images/illustrations/personas/dreamer.png"} alt={persona.title} fill className="object-contain" />
-              </div>
+      <main className="bg-white text-[#2F4157] py-20 px-6">
+        <section className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+          {/* Image */}
+          <div className="relative w-full max-w-[350px] h-[350px] mx-auto lg:mx-0">
+            <Image
+              src={persona.image ?? "/images/illustrations/personas/dreamer.png"}
+              alt={persona.title}
+              fill
+              className="object-contain"
+            />
+          </div>
 
-              <div className="flex-1">
-                <h1 className="text-2xl font-extrabold">{persona.title}</h1>
-                <p className="mt-3 text-gray-700">{persona.description}</p>
+          {/* Text */}
+          <div className="flex-1 text-center lg:text-left">
+            <h1 className="text-3xl sm:text-4xl font-extrabold mb-4">
+              You are: <span className="text-[#E56668]">{persona.title}</span>
+            </h1>
+            <p className="text-gray-700 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0 mb-8">
+              {persona.description}
+            </p>
 
-                <div className="mt-4 flex gap-3">
-                  <Link href="/iels-lounge" className="bg-[#e56668] px-4 py-2 rounded-full text-white">Join IELS Community (Free)</Link>
-                  <Link href="/pricing" className="bg-white px-4 py-2 rounded-full text-[#2F4157]">Start 7-Day Premium Trial</Link>
-                </div>
-              </div>
+            <div className="flex flex-wrap justify-center lg:justify-start gap-4 mb-12">
+              <Link
+                href="/iels-lounge"
+                className="bg-[#E56668] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#d25558] transition"
+              >
+                Join IELS Community (Free)
+              </Link>
+              <Link
+                href="/pricing"
+                className="bg-[#2F4157] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#3e566b] hover:text-white transition"
+              >
+                Start 7-Day Premium Trial
+              </Link>
             </div>
 
-            <div className="mt-8">
-              <h3 className="font-bold mb-2">Recommended classes</h3>
-              <ul className="list-disc ml-6 text-gray-700">
-                {persona.classes.map((c: string) => (<li key={c}>{c}</li>))}
+            <div>
+              <h3 className="text-xl font-bold mb-2">Recommended Classes</h3>
+              <ul className="list-disc ml-6 text-gray-700 space-y-1">
+                {persona.classes?.map((cls, i) => (
+                  <li key={i}>{cls}</li>
+                ))}
               </ul>
             </div>
 
-            <div className="mt-6">
-              <p className="text-sm text-gray-600">If you want to keep or share your result, use the buttons below (or screenshot):</p>
-              <div className="mt-3 flex gap-3">
-                <button className="bg-white text-[#2F4157] px-4 py-2 rounded-full">Download Card (coming soon)</button>
-                <Link href="/" className="bg-white/10 px-4 py-2 rounded-full text-white">Back to Home</Link>
-              </div>
+            <div className="mt-10 flex flex-wrap justify-center lg:justify-start gap-3">
+              <button
+                className="bg-[#E56668] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#d25558] transition"
+                disabled
+              >
+                Download Result Card (Coming Soon)
+              </button>
+              <Link
+                href="/"
+                className="bg-[#2F4157] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#3e566b] hover:text-white transition"
+              >
+                Back to Home
+              </Link>
             </div>
           </div>
-        </div>
+        </section>
       </main>
       <Footer />
     </>

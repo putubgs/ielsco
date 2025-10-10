@@ -1,4 +1,3 @@
-// src/components/QuestionCard.tsx
 "use client";
 import { motion } from "framer-motion";
 import React from "react";
@@ -18,35 +17,54 @@ type Props = {
   onSelect: (index: number) => void;
 };
 
-export default function QuestionCard({ image, title, prompt, options, selectedIndex, onSelect }: Props) {
+export default function QuestionCard({
+  image,
+  title,
+  prompt,
+  options,
+  selectedIndex,
+  onSelect,
+}: Props) {
   return (
-    <div className="bg-white rounded-2xl p-6 md:p-8 text-[#2F4157] shadow-lg max-w-3xl mx-auto">
+    <div className="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 transition-all duration-300 hover:shadow-2xl">
       {image && (
-        <div className="w-full h-40 mb-4 overflow-hidden rounded-lg">
-          <img src={image} alt={title} className="w-full h-full object-cover" />
+        <div className="w-full h-48 mb-6 overflow-hidden rounded-2xl">
+          <img
+            src={image}
+            alt={title}
+            className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+          />
         </div>
       )}
-      <h3 className="text-xl font-bold mb-1">{title}</h3>
-      <p className="text-sm text-gray-600 mb-4">{prompt}</p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <h3 className="text-2xl font-bold mb-3 text-[#2F4157]">{title}</h3>
+      <p className="text-base text-gray-600 mb-6 leading-relaxed">{prompt}</p>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {options.map((opt, i) => {
           const isSelected = selectedIndex === i;
           return (
             <motion.button
               key={opt.id}
-              whileTap={{ scale: 0.98 }}
+              whileTap={{ scale: 0.97 }}
               whileHover={{ scale: 1.02 }}
               onClick={() => onSelect(i)}
-              className={`flex items-center gap-3 p-3 rounded-xl border transition
-                ${isSelected ? "bg-[#e56668] text-white border-transparent shadow" : "bg-white text-[#2F4157] border-gray-200 hover:shadow-sm"}`}
+              className={`flex items-center gap-4 p-4 rounded-2xl border-2 transition-all duration-300 ${
+                isSelected
+                  ? "bg-[#E56668] border-[#E56668] text-white shadow-md"
+                  : "bg-white border-gray-200 text-[#2F4157] hover:border-[#E56668]/60 hover:bg-[#fff7f7]"
+              }`}
             >
-              <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-lg ${isSelected ? "bg-white/20" : "bg-gray-100"}`}>
+              <div
+                className={`w-12 h-12 flex items-center justify-center text-2xl rounded-xl ${
+                  isSelected ? "bg-white/20" : "bg-gray-100"
+                }`}
+              >
                 {opt.emoji ?? "✨"}
               </div>
-              <div className="text-left">
-                <div className="font-medium">{opt.label}</div>
-              </div>
+              <span className="font-medium text-left text-base leading-snug">
+                {opt.label}
+              </span>
             </motion.button>
           );
         })}

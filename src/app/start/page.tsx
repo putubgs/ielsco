@@ -1,4 +1,3 @@
-// src/app/start/page.tsx
 "use client";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -8,16 +7,26 @@ export default function StartPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-[#3a4b60] text-white py-20 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white/5 rounded-2xl p-6 mb-6 text-center">
-            <h2 className="text-2xl font-bold mb-2">Let’s find your English journey!</h2>
-            <p className="text-sm text-white/80">6 friendly questions — takes about 2 minutes. Your result is personal and actionable.</p>
-          </div>
 
-          <OnboardingQuiz />
+      {/* MAIN SECTION */}
+      <main className="min-h-screen flex flex-col justify-center items-center bg-white text-[#2F4157] px-6 pt-[120px] pb-20">
+        <div className="w-full max-w-3xl text-center">
+          {/* Heading */}
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-4 leading-tight">
+            Let’s Find Your <span className="text-[#E56668]">English Journey!</span>
+          </h1>
+          <p className="text-base sm:text-lg text-gray-600 mb-12 max-w-2xl mx-auto">
+            Answer 6 friendly questions — it only takes 2 minutes.  
+            Your result will be <strong>personalized and actionable</strong> to guide your English learning path.
+          </p>
+
+          {/* QUIZ SECTION */}
+          <div className="w-full">
+            <OnboardingQuiz />
+          </div>
         </div>
       </main>
+
       <Footer />
     </>
   );

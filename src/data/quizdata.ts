@@ -58,7 +58,7 @@ export const QUESTIONS: Question[] = [
     prompt: "Pick the style that helps you stay consistent.",
     options: [
       { id: "solo", label: "By myself (independent)", emoji: "📚", points: { remote: 1, scholar: 1 } },
-      { id: "mentor", label: "With a mentor/tutor", emoji: "🧑‍🏫", points: { climber: 2, scholar: 1 } },
+      { id: "mentor", label: "With a mentor/tutor", emoji: "🧑", points: { climber: 2, scholar: 1 } },
       { id: "group", label: "In a group / club", emoji: "🫂", points: { networker: 2, explorer: 1 } },
       { id: "game", label: "Challenges / games", emoji: "🎯", points: { starter: 1, dreamer: 1 } },
     ],

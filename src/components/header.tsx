@@ -15,15 +15,17 @@ export default function Header() {
     { name: "About", path: "/about" },
     { name: "Stories", path: "/stories" },
     {
-      name: "Events",
-      path: "/events",
+      name: "Products",
+      path: "/products",
       children: [
-        { name: "All Events", path: "/events" }, // 👈 khusus tablet
-        { name: "Join Our Community", path: "/iels-lounge" },
-        { name: "Explore Your Global Path", path: "/quiz" },
+        { name: "IELS Lounge", path: "/iels-lounge" },
+        { name: "IELS Courses", path: "/courses" },
+        { name: "IELS English Test", path: "/test" },
+        { name: "IELS for Schools", path: "/schools" },
+        { name: "E-books & Recordings", path: "/resources" },
       ],
     },
-    { name: "Gallery", path: "/gallery" },
+    { name: "Events", path: "/events" }
   ];
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);

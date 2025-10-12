@@ -396,7 +396,7 @@ export default function Home() {
         <strong className="text-[#E56668]"> IELS for Schools</strong> is a year-long structured program packed with challenges, mentorship, and cultural immersion designed for real student growth.
       </p>
       <br/><Link
-        href="/for-schools"
+        href="/schools"
         className="rounded-full bg-[#E56668] text-white px-8 py-3 font-semibold text-lg border border-transparent hover:bg-[#2F4157] transition-colors duration-300"
       >
         Explore the Program

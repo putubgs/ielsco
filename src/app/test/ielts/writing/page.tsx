@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Timer from "@/components/Timer";
 
-export default function WritingPage() {
+function WritingContent() {
   const router = useRouter();
   const params = useSearchParams();
   const access = params.get("access") ?? "";
@@ -17,16 +17,13 @@ export default function WritingPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
-  // === HANDLE SUBMIT ALL SECTIONS ===
   const submitAll = async () => {
     setIsSubmitting(true);
     setMessage(null);
 
     try {
-      // Ambil jawaban existing di localStorage
-      const existingAnswers = JSON.parse(localStorage.getItem("ieltsAnswers") || "{}");
+      const existingAnswers = JSON.parse(localStorage.getItem("ielts_answers") || "{}");
 
-      // Gabungkan semua data
       const payload = {
         access,
         name,
@@ -37,14 +34,12 @@ export default function WritingPage() {
         },
       };
 
-      // Simpan ke localStorage juga (optional)
-      localStorage.setItem("ieltsAnswers", JSON.stringify(payload.answers));
+      localStorage.setItem("ielts_answers", JSON.stringify(payload.answers));
 
-      // === SEND TO API ===
       const res = await fetch("/api/submit", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json", // wajib pakai capital C
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
       });
@@ -58,7 +53,6 @@ export default function WritingPage() {
 
       const json = await res.json();
       if (json.ok) {
-        console.log("✅ Submission success:", json);
         router.push(`/test/ielts/result?access=${encodeURIComponent(access)}`);
       } else {
         setMessage(json.message || "Server error during submission.");
@@ -71,20 +65,12 @@ export default function WritingPage() {
     }
   };
 
-  // === UI ===
   return (
     <main className="min-h-screen bg-gradient-to-b from-white to-[#FFF8E5] text-[#173E8C] p-6">
       <div className="max-w-3xl mx-auto">
-        {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">Writing Section ✍️</h1>
-          <Timer
-            minutes={60}
-            onFinish={() => {
-              console.log("⏱️ Timer finished — auto submitting");
-              submitAll();
-            }}
-          />
+          <Timer minutes={60} onFinish={submitAll} />
         </div>
 
         {/* Task 1 */}
@@ -134,12 +120,8 @@ export default function WritingPage() {
           />
         </div>
 
-        {/* Error Message */}
-        {message && (
-          <p className="text-red-600 font-medium mb-4 text-center">{message}</p>
-        )}
+        {message && <p className="text-red-600 font-medium mb-4 text-center">{message}</p>}
 
-        {/* Submit Button */}
         <div className="flex justify-end">
           <button
             onClick={submitAll}
@@ -153,5 +135,13 @@ export default function WritingPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function WritingPage() {
+  return (
+    <Suspense fallback={<div className="p-6 text-[#173E8C]">Loading writing section...</div>}>
+      <WritingContent />
+    </Suspense>
   );
 }

@@ -110,7 +110,7 @@ export default function AccessPage() {
   return (
     <div>
       <Header/>
-    <main className="min-h-screen bg-gradient-to-b from-white to-[#f7f9f8] flex items-center justify-center text-[#294154] px-6 font-inter relative">
+    <main className="min-h-screen bg-gradient-to-b from-white to-[#f7f9f8] flex items-center justify-center text-[#294154] px-6 font-geologica relative">
       <div className="w-full max-w-lg bg-white shadow-xl rounded-2xl border border-[#294154]/10 p-8">
         <h1 className="text-3xl font-bold text-center mb-3">Access Your Test</h1>
         <p className="text-center text-gray-600 text-sm mb-8">

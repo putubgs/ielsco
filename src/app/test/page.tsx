@@ -20,7 +20,7 @@ export default function TestSelectionPage() {
   return (
     <div>
     <Header />
-    <main className="min-h-screen bg-gradient-to-b from-white to-[#f7f9f8] text-[#294154] font-inter">
+    <main className="min-h-screen bg-gradient-to-b from-white to-[#f7f9f8] text-[#294154] font-geologica">
       <div className="max-w-6xl mx-auto px-6 py-16 space-y-20">
 
         {/* ================= HERO ================= */}

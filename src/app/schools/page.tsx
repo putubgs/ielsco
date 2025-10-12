@@ -1,6 +1,7 @@
 "use client";
 
-// src/app/schools/page.tsx
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -120,7 +121,8 @@ export default function SchoolsPage() {
   };
 
   return (
-    <main className="min-h-screen bg-white text-[#294154] font-inter">
+    <main className="min-h-screen bg-white text-[#294154] font-geologica">
+      <Header />
       <div className="max-w-7xl mx-auto px-6 py-16 space-y-20">
 
         {/* HERO */}
@@ -503,7 +505,7 @@ export default function SchoolsPage() {
               </div>
             </div>
           </div>
-      
+      <Footer />
     </main>
   );
 }

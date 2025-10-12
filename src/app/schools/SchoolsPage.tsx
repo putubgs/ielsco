@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function SchoolsPage() {
   return (
-    <main className="min-h-screen bg-white text-[#294154] px-6 py-20 flex flex-col items-center justify-center text-center font-inter">
+    <main className="min-h-screen bg-white text-[#294154] px-6 py-20 flex flex-col items-center justify-center text-center font-geologica">
       <div className="max-w-3xl space-y-6">
         <h1 className="text-4xl font-extrabold leading-tight">
           IELS for Schools 🏫

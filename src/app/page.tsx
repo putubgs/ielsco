@@ -476,7 +476,7 @@ export default function Home() {
       <p className="text-80 text-lg mb-6">
         Whether you’re a school, company, or organization — let’s work together  
         to make English education more accessible and meaningful.  
-        <strong className="text-[#E56668]">Partner with IELS</strong> to co-create programs, support learners, and shape the future of education.
+        <strong className="text-[#E56668]"> Partner with IELS</strong> to co-create programs, support learners, and shape the future of education.
       </p>
       <br/><Link
         href="/partners"

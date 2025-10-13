@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function TestSelectionPage() {
   const googleFormLink = "https://forms.gle/yFCdzbeR8uMBzM5X8";
-  const guidePdfLink = "/docs/iels-test-guide.pdf";
+  const guidePdfLink = "/test/guide";
 
   const tests = [
     { title: "IELTS Mock Test", emoji: "🎓", active: true },
@@ -52,7 +52,7 @@ export default function TestSelectionPage() {
             <div className="flex flex-col sm:flex-row gap-4 mt-6">
               <a
                 href={guidePdfLink}
-                target="_blank"
+                target="/test/guide"
                 rel="noopener noreferrer"
                 className="inline-flex justify-center items-center px-6 py-3 rounded-full bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition-colors duration-300 shadow-sm"
               >
@@ -124,7 +124,7 @@ export default function TestSelectionPage() {
                     <div className="flex gap-3">
                       <a
                         href={guidePdfLink}
-                        target="_blank"
+                        target="/test/guide"
                         rel="noopener noreferrer"
                         className="flex-1 text-center rounded-full border border-[#294154] text-[#294154] py-2 font-semibold hover:bg-[#294154] hover:text-white transition-colors duration-300"
                       >
@@ -132,7 +132,7 @@ export default function TestSelectionPage() {
                       </a>
                       <a
                         href={googleFormLink}
-                        target="_blank"
+                        target="https://forms.gle/yFCdzbeR8uMBzM5X8"
                         rel="noopener noreferrer"
                         className="flex-1 text-center rounded-full bg-[#E56668] text-white py-2 font-semibold hover:bg-[#C04C4E] transition-colors duration-300"
                       >

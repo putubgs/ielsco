@@ -1,908 +1,389 @@
-import Footer from "@/components/footer";
-import Header from "@/components/header";
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import { useState } from "react";
+import { testimonialsData } from "@/data/testimonials";
+import type { Testimonial } from "@/data/testimonials";
 
-export default function IelsLounge() {
+export default function LoungePage() {
+  const [index, setIndex] = useState(0);
+  const next = () => setIndex((index + 1) % testimonialsData.length);
+  const prev = () => setIndex((index - 1 + testimonialsData.length) % testimonialsData.length);
+
+  const testimonial: Testimonial = testimonialsData[index];
+  
+  const images = [
+    "/images/contents/careers/iels_team_0.png",
+    "/images/contents/careers/iels_team_1.png",
+    "/images/contents/careers/iels_team_2.png",
+    "/images/contents/careers/iels_team_3.png",
+    "/images/contents/careers/iels_team_4.png",
+  ];
+  const [currentImage, setCurrentImage] = useState(0);
+
+  const nextSlide = () => {
+    setCurrentImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+  const prevSlide = () => {
+    setCurrentImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+
   return (
-    <div>
+    <div className="bg-white via-[#f8fbfc] to-[#fff6f6] text-[#294154]">
       <Header />
-      <div className="flex w-full px-4 sm:px-8 lg:px-[100px] pb-[70px]">
-        <div className="flex flex-col gap-8 lg:gap-12 bg-white rounded-[20px] lg:rounded-[30px] w-full px-4 sm:px-6 lg:px-[75px] py-6 sm:py-8 lg:py-[50px]">
-          {/* Header Section */}
-          <div className="flex flex-col lg:flex-row w-full gap-6 lg:gap-12">
-            <div className="w-full lg:w-1/4 text-center lg:text-end text-[28px] sm:text-[36px] lg:text-[52px] flex flex-col -space-y-1 sm:-space-y-2 lg:-space-y-6">
-              <p>IELS</p>
-              <p className="font-bold">Lounge</p>
-            </div>
-            <div className="w-full lg:w-3/4 text-[14px] sm:text-[15px] flex flex-col gap-3">
-              <p>
-                IELS Lounge is your daily English practice space—a safe and
-                friendly community where you can speak, make mistakes, and grow
-                without pressure. Here, every night is an opportunity to
-                practice, connect, and build confidence alongside people who are
-                learning just like you.
-              </p>
-              <p>
-                Whether you want to start with small conversations or dive
-                deeper into challenges, IELS Lounge gives you the space to
-                practice English, ask questions, and feel supported—so you can
-                finally overcome the struggles you&apos;ve faced while learning
-                English and make progress every day.
-              </p>
+
+      <main>
+       {/* ===== HERO ===== */}
+        <section className="px-6 py-15 max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-12">
+          {/* Left text */}
+          <div className="flex-1 text-center lg:text-left">
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 leading-snug">
+              Practice English Every Night at{" "}
+              <span className="text-[#e56668]">IELS Lounge Premium</span>
+            </h1>
+            <p className="text-gray-700 text-lg mb-8 leading-relaxed">
+              <strong>Special This October:</strong> <br />From Sharing Stories to Shaping Ideas 🌍
+              <br />
+              Daily practice sessions that grow your storytelling, teamwork, and project planning skills.
+            </p>
+
+            <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
+              <Link
+                href="/iels-lounge/pricing"
+                className="bg-[#e56668] text-white px-8 py-4 rounded-2xl font-semibold hover:bg-[#cc4f54] hover:scale-[1.02] transition"
+              >
+                Start from Rp25.000 / Month →
+              </Link>
             </div>
           </div>
-          {/* Main Content Section */}
-          <div className="flex flex-col lg:flex-row w-full gap-6 lg:gap-12">
-            {/* Image Section - Hidden on mobile, shown on desktop */}
-            <div className="hidden lg:flex w-1/4 flex-col justify-center pt-[100px]">
+
+          {/* Right Image */}
+          <div className="flex-1 flex justify-center lg:justify-end">
+            <Image
+              src="/images/contents/general/iels_lounge.png"
+              alt="IELS Lounge Speaking Club"
+              width={500}
+              height={400}
+              className="rounded-3xl shadow-lg object-cover"
+            />
+          </div>
+        </section>
+        {/* ===== SPEAKING CLUB STORY ===== */}
+        <section className="py-24 px-6 text-center max-w-5xl mx-auto">
+          <h2 className="text-3xl font-bold mb-6">
+            What’s IELS Lounge Speaking Club All About?
+          </h2>
+          <p className="text-gray-700 text-lg mb-8 leading-relaxed">
+            Speaking Club isn’t just about practicing English every night at{" "}
+            <strong>8 PM</strong>. It’s where you share stories, discuss, and
+            laugh with friends who are learning just like you. From nightly
+            sessions to bi-weekly Zoom events like roleplays and games, to
+            monthly events that connect you globally — IELS Lounge helps you
+            <strong> build confidence step by step.</strong>
+          </p>
+
+         <div className="grid grid-cols-1 sm:grid-cols-1 gap-6 text-left mt-10">{/* Carousel */}
+          <div className="relative mt-8 flex justify-center">
+            <div className="relative w-[800px] h-[400px] overflow-hidden rounded-2xl shadow-md">
+              {images.map((src, index) => (
+                <Image
+                  key={index}
+                  src={src}
+                  alt={`IELS Image ${index + 1}`}
+                  fill
+                  className={`object-cover transition-opacity duration-700 ease-in-out absolute top-0 left-0
+                    ${currentImage === index ? "opacity-100" : "opacity-0"}`}
+                />
+              ))}
+          
+                {/* Left Arrow */}
+                <button
+                  onClick={prevSlide}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/60 rounded-full w-6 h-6 flex items-center justify-center shadow-md hover:bg-white transition"
+                >
+                  <span className="text-2xl leading-none text-gray-800">‹</span>
+                </button>
+          
+                {/* Right Arrow */}
+                <button
+                  onClick={nextSlide}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/60 rounded-full w-6 h-6 flex items-center justify-center shadow-md hover:bg-white transition"
+                >
+                  <span className="text-2xl leading-none text-gray-800">›</span>
+                </button>
+            </div>
+          </div>
+          
+          {/* Dots */}
+          <div className="flex justify-center mt-4 gap-2">
+            {images.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentImage(index)}
+                className={`w-2 h-2 rounded-full transition ${
+                  currentImage === index ? "bg-black" : "bg-gray-400"
+                }`}
+              />
+            ))}
+          </div>
+          </div>
+      </section>
+        {/* ===== EXCLUSIVE EVENTS ===== */}
+        <section className="py-15 px-5">
+          <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-10">
+            {/* Poster */}
+            <div className="w-full lg:w-1/2">
               <Image
-                src="/images/contents/general/iels_lounge.png"
-                alt="Iels Lounge"
-                width={0}
-                height={0}
-                sizes="100vw"
-                className="w-full h-auto"
+                src="/images/contents/events/talkroom.png"
+                alt="Speak to Connect Poster"
+                width={600}
+                height={600}
+                className="rounded-2xl shadow-lg object-cover"
               />
             </div>
 
-            {/* Comparison Table */}
-            <div className="flex w-full lg:w-3/4">
-              {/* Desktop Table */}
-              <table className="hidden lg:table w-full items-center">
-                <thead></thead>
-                <tr
-                className="flex items-center justify-between w-full py-4 text-[24px] text-[#2F4157]">
-                  <th className="flex-[1.5] text-center font-medium">
-                    <p className="text-shadow-md">Benefits &</p>
-                    <p className="text-shadow-md">Features</p>
-                  </th>
-                  <th className="flex-1 text-center font-medium text-[#6F7680]">
-                    <p className="font-bold text-shadow-md">IELS Lounge</p>
-                    <p className="text-shadow-md">Free</p>
-                  </th>
-                  <th className="flex-1 text-center font-medium">
-                    <p className="font-bold text-shadow-md">IELS Lounge</p>
-                    <p className="text-shadow-md">Premium</p>
-                  </th>
-                  <th className="flex-1 text-center font-medium">
-                    <p className="font-bold text-shadow-md">IELS Lounge</p>
-                    <p className="text-shadow-md">Exclusive</p>
-                  </th>
-                </tr>
-                <tr className="flex items-center justify-between w-full bg-[#D9D9D9] rounded-l-[20px] text-[15px] rounded-tr-[20px]">
-                  <tr className="flex-[1.5] text-center">
-                    <td className="pl-5">
-                      <div className="bg-[#2F4157] rounded-[11px] p-2 w-[50px] h-[50px]">
-                        <Image
-                          src="/images/contents/general/white_discord_icon.png"
-                          alt="Iels Lounge Free"
-                          width={100}
-                          height={0}
-                          className="w-[60px] h-auto"
-                        />
-                      </div>
-                    </td>
-                    <td className="pl-4">
-                      <p className="text-start">
-                        Access to all community events
-                      </p>
-                    </td>
-                  </tr>
-                  <td className="flex-1 flex justify-center items-center bg-[#BBBEC2] py-4">
-                    <Image
-                      src="/images/contents/general/blue_tick_icon.png"
-                      alt="Iels Lounge Free"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                  <td className="flex-1 flex justify-center items-center bg-[#C1C6CD] py-4">
-                    <Image
-                      src="/images/contents/general/blue_tick_icon.png"
-                      alt="Iels Lounge Premium"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                  <td className="flex-1 flex justify-center items-center bg-[#9CA3AF] py-4 rounded-tr-[20px]">
-                    <Image
-                      src="/images/contents/general/blue_tick_icon.png"
-                      alt="Iels Lounge Exclusive"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                </tr>
-                <tr className="flex items-center justify-between w-full bg-[#D9D9D9] rounded-l-[20px] text-[15px]">
-                  <tr className="flex-[1.5] text-center">
-                    <td className="pl-5">
-                      <div className="bg-[#2F4157] rounded-[11px] p-2 w-[50px] h-[50px] flex justify-center items-center">
-                        <Image
-                          src="/images/contents/general/white_discord_icon.png"
-                          alt="Iels Lounge Free"
-                          width={100}
-                          height={0}
-                          className="w-[60px] h-auto"
-                        />
-                      </div>
-                    </td>
-                    <td className="pl-4">
-                      <p className="text-start">Daily Nightly Speaking Club</p>
-                    </td>
-                  </tr>
-                  <td className="flex-1 flex justify-center items-center bg-[#6F7680] py-4">
-                    <Image
-                      src="/images/contents/general/red_cross_icon.png"
-                      alt="Iels Lounge Free"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                  <td className="flex-1 flex justify-center items-center bg-[#7C8896] py-4">
-                    <Image
-                      src="/images/contents/general/blue_tick_icon.png"
-                      alt="Iels Lounge Premium"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                  <td className="flex-1 flex justify-center items-center bg-[#6B7280] py-4">
-                    <Image
-                      src="/images/contents/general/blue_tick_icon.png"
-                      alt="Iels Lounge Exclusive"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                </tr>
-                <tr className="flex items-center justify-between w-full bg-[#D9D9D9] rounded-l-[20px] text-[15px]">
-                  <tr className="flex-[1.5] text-center">
-                    <td className="pl-5">
-                      <div className="bg-[#2F4157] rounded-[11px] p-2 w-[50px] h-[50px] flex justify-center items-center">
-                        <Image
-                          src="/images/contents/general/white_recording_icon.png"
-                          alt="Iels Lounge Free"
-                          width={100}
-                          height={0}
-                          className="w-[60px] h-auto"
-                        />
-                      </div>
-                    </td>
-                    <td className="pl-4">
-                      <p className="text-start">2x Zoom Classes every month</p>
-                    </td>
-                  </tr>
-                  <td className="flex-1 flex justify-center items-center bg-[#BBBEC2] py-4">
-                    <Image
-                      src="/images/contents/general/red_cross_icon.png"
-                      alt="Iels Lounge Free"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                  <td className="flex-1 flex justify-center items-center bg-[#C1C6CD] py-4">
-                    <Image
-                      src="/images/contents/general/blue_tick_icon.png"
-                      alt="Iels Lounge Premium"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                  <td className="flex-1 flex justify-center items-center bg-[#9CA3AF] py-4">
-                    <Image
-                      src="/images/contents/general/blue_tick_icon.png"
-                      alt="Iels Lounge Exclusive"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                </tr>
-                <tr className="flex items-center justify-between w-full bg-[#D9D9D9] rounded-l-[20px] text-[15px]">
-                  <tr className="flex-[1.5] text-center">
-                    <td className="pl-5">
-                      <div className="bg-[#2F4157] rounded-[11px] p-2 w-[50px] h-[50px]">
-                        <Image
-                          src="/images/contents/general/white_discord_icon.png"
-                          alt="Iels Lounge Free"
-                          width={100}
-                          height={0}
-                          className="w-[60px] h-auto"
-                        />
-                      </div>
-                    </td>
-                    <td className="pl-4">
-                      <p className="text-start">
-                        Premium-only Discord & WhatsApp channels
-                      </p>
-                    </td>
-                  </tr>
-                  <td className="flex-1 flex justify-center items-center bg-[#6F7680] py-4">
-                    <Image
-                      src="/images/contents/general/red_cross_icon.png"
-                      alt="Iels Lounge Free"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                  <td className="flex-1 flex justify-center items-center bg-[#7C8896] py-4">
-                    <Image
-                      src="/images/contents/general/blue_tick_icon.png"
-                      alt="Iels Lounge Premium"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                  <td className="flex-1 flex justify-center items-center bg-[#6B7280] py-4">
-                    <Image
-                      src="/images/contents/general/blue_tick_icon.png"
-                      alt="Iels Lounge Exclusive"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                </tr>
-                <tr className="flex items-center justify-between w-full bg-[#D9D9D9] rounded-l-[20px] text-[15px]">
-                  <tr className="flex-[1.5] text-center">
-                    <td className="pl-5">
-                      <div className="bg-[#2F4157] rounded-[11px] p-2 w-[50px] h-[50px]">
-                        <Image
-                          src="/images/contents/general/white_globe_icon.png"
-                          alt="Iels Lounge Free"
-                          width={100}
-                          height={0}
-                          className="w-[60px] h-auto"
-                        />
-                      </div>
-                    </td>
-                    <td className="pl-4">
-                      <p className="text-start">
-                        Updates from our global industry partners
-                      </p>
-                    </td>
-                  </tr>
-                  <td className="flex-1 flex justify-center items-center bg-[#BBBEC2] py-4">
-                    <Image
-                      src="/images/contents/general/red_cross_icon.png"
-                      alt="Iels Lounge Free"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                  <td className="flex-1 flex justify-center items-center bg-[#C1C6CD] py-4">
-                    <Image
-                      src="/images/contents/general/blue_tick_icon.png"
-                      alt="Iels Lounge Premium"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                  <td className="flex-1 flex justify-center items-center bg-[#9CA3AF] py-4">
-                    <Image
-                      src="/images/contents/general/blue_tick_icon.png"
-                      alt="Iels Lounge Exclusive"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                </tr>
-                <tr className="flex items-center justify-between w-full bg-[#D9D9D9] rounded-l-[20px] text-[15px]">
-                  <tr className="flex-[1.5] text-center">
-                    <td className="pl-5">
-                      <div className="bg-[#2F4157] rounded-[11px] p-2 w-[50px] h-[50px] flex justify-center items-center">
-                        <Image
-                          src="/images/logos/iels_white.png"
-                          alt="Iels Lounge Free"
-                          width={100}
-                          height={0}
-                          className="w-[60px] h-auto"
-                        />
-                      </div>
-                    </td>
-                    <td className="pl-4">
-                      <p className="text-start">
-                        Early access to IELS program + 10% OFF
-                      </p>
-                    </td>
-                  </tr>
-                  <td className="flex-1 flex justify-center items-center bg-[#6F7680] py-4">
-                    <Image
-                      src="/images/contents/general/red_cross_icon.png"
-                      alt="Iels Lounge Free"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                  <td className="flex-1 flex justify-center items-center bg-[#7C8896] py-4">
-                    <Image
-                      src="/images/contents/general/blue_tick_icon.png"
-                      alt="Iels Lounge Premium"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                  <td className="flex-1 flex justify-center items-center bg-[#6B7280] py-4">
-                    <Image
-                      src="/images/contents/general/blue_tick_icon.png"
-                      alt="Iels Lounge Exclusive"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                </tr>
-                <tr className="flex items-center justify-between w-full bg-[#D9D9D9] rounded-l-[20px] text-[15px] rounded-br-[20px]">
-                  <tr className="flex-[1.5] text-center">
-                    <td className="pl-5">
-                      <div className="bg-[#2F4157] rounded-[11px] p-2 w-[50px] h-[50px] flex justify-center items-center">
-                        <Image
-                          src="/images/logos/iels_white.png"
-                          alt="Iels Lounge Free"
-                          width={100}
-                          height={0}
-                          className="w-[60px] h-auto"
-                        />
-                      </div>
-                    </td>
-                    <td className="pl-4">
-                      <p className="text-start">
-                        IELS Member ID for faster event access
-                      </p>
-                    </td>
-                  </tr>
-                  <td className="flex-1 flex justify-center items-center bg-[#BBBEC2] py-4">
-                    <Image
-                      src="/images/contents/general/red_cross_icon.png"
-                      alt="Iels Lounge Free"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                  <td className="flex-1 flex justify-center items-center bg-[#C1C6CD] py-4">
-                    <Image
-                      src="/images/contents/general/blue_tick_icon.png"
-                      alt="Iels Lounge Premium"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                  <td className="flex-1 flex justify-center items-center bg-[#9CA3AF] py-4">
-                    <Image
-                      src="/images/contents/general/blue_tick_icon.png"
-                      alt="Iels Lounge Exclusive"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                </tr>
-                <tr className="flex items-center justify-between w-full bg-[#D9D9D9] rounded-l-[20px] text-[15px]">
-                  <tr className="flex-[1.5] text-center">
-                    <td className="pl-5">
-                      <div className="bg-[#2F4157] rounded-[11px] p-2 w-[50px] h-[50px] flex justify-center items-center">
-                        <Image
-                          src="/images/logos/iels_white.png"
-                          alt="Iels Lounge Exclusive"
-                          width={100}
-                          height={0}
-                          className="w-[60px] h-auto"
-                        />
-                      </div>
-                    </td>
-                    <td className="pl-4">
-                      <p className="text-start font-bold">
-                        Lifetime Access to IELS Lounge
-                      </p>
-                    </td>
-                  </tr>
-                  <td className="flex-1 flex justify-center items-center bg-[#6F7680] py-4">
-                    <Image
-                      src="/images/contents/general/red_cross_icon.png"
-                      alt="Iels Lounge Free"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                  <td className="flex-1 flex justify-center items-center bg-[#7C8896] py-4">
-                    <Image
-                      src="/images/contents/general/red_cross_icon.png"
-                      alt="Iels Lounge Premium"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                  <td className="flex-1 flex justify-center items-center bg-[#6B7280] py-4">
-                    <Image
-                      src="/images/contents/general/blue_tick_icon.png"
-                      alt="Iels Lounge Exclusive"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                </tr>
-                <tr className="flex items-center justify-between w-full bg-[#D9D9D9] rounded-l-[20px] text-[15px] rounded-br-[20px]">
-                  <tr className="flex-[1.5] text-center">
-                    <td className="pl-5">
-                      <div className="bg-[#2F4157] rounded-[11px] p-2 w-[50px] h-[50px] flex justify-center items-center">
-                        <Image
-                          src="/images/logos/iels_white.png"
-                          alt="Iels Lounge Exclusive"
-                          width={100}
-                          height={0}
-                          className="w-[60px] h-auto"
-                        />
-                      </div>
-                    </td>
-                    <td className="pl-4">
-                      <p className="text-start font-bold">
-                        Private Mentoring with Founders
-                      </p>
-                    </td>
-                  </tr>
-                  <td className="flex-1 flex justify-center items-center bg-[#BBBEC2] py-4">
-                    <Image
-                      src="/images/contents/general/red_cross_icon.png"
-                      alt="Iels Lounge Free"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                  <td className="flex-1 flex justify-center items-center bg-[#C1C6CD] py-4">
-                    <Image
-                      src="/images/contents/general/red_cross_icon.png"
-                      alt="Iels Lounge Premium"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                  <td className="flex-1 flex justify-center items-center bg-[#9CA3AF] py-4 rounded-br-[20px]">
-                    <Image
-                      src="/images/contents/general/blue_tick_icon.png"
-                      alt="Iels Lounge Exclusive"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="w-[50px] h-auto"
-                    />
-                  </td>
-                </tr>
-                <tr className="flex justify-between w-full py-4">
-                  <td className="w-full flex-[1.5]"></td>
-                  <td className="w-full flex-1 px-2">
-                    <Link
-                      href="https://forms.gle/E9KbHVZEmaw8B9nh6"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-[#6F7680] text-white rounded-[20px] w-full block text-center py-2"
-                    >
-                      Free Access
-                    </Link>
-                  </td>
-                  <td className="w-full flex-1 pl-2">
-                    <Link
-                      href="https://ielsco.myr.id/membership/iels-lounge-premium"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-[#2F4157] text-white rounded-[20px] w-full block text-center py-2"
-                    >
-                      Rp200.000/year
-                    </Link>
-                    <Link
-                      href="https://ielsco.myr.id/membership/iels-lounge-premium"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-white text-[#2F4157] border border-[#2F4157] rounded-[20px] w-full block text-center py-2 mt-2"
-                    >
-                      Rp25.000/month
-                    </Link>
-                  </td>
-                  <td className="w-full flex-1 pl-2">
-                    <Link
-                      href="https://ielsco.myr.id/membership/iels-lounge-premium"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-[#2F4157] text-white rounded-[20px] w-full block text-center py-2 font-bold"
-                    >
-                      Rp500.000
-                    </Link>
-                    <p className="text-center text-[12px] text-gray-600 mt-1">
-                      Lifetime Access
-                    </p>
-                  </td>
-                </tr>
-              </table>
+            {/* Text */}
+            <div className="flex-1 text-center lg:text-left space-y-6">
+              <h2 className="text-3xl font-bold">
+                IELS Lounge TalkRoom: <span className="text-[#e56668]">Speak to Connect</span>
+              </h2>
+              <p className="text-gray-700 leading-relaxed">
+                <strong>For IELS Premium Members</strong> — This month, take part
+                in two collaborative challenges designed to help you speak,
+                think, and create ideas in English.
+              </p>
 
-              {/* Mobile Comparison - Clear Offer Structure */}
-              <div className="lg:hidden w-full space-y-6">
-                {/* Mobile Header */}
-                <div className="text-center">
-                  <h2 className="text-[24px] font-bold text-[#2F4157] mb-2">
-                    Choose Your Plan
-                  </h2>
-                  <p className="text-[16px] text-[#6F7680]">
-                    Select the experience that fits your journey
-                  </p>
-                </div>
+              <ul className="space-y-3 text-gray-700">
+                <li>
+                  <strong>Week 2:</strong> Group Work Challenge — Build team strategy together.
+                </li>
+                <li>
+                  <strong>Week 4:</strong> Future Project Pitch — Practice project presentation in English.
+                </li>
+              </ul>
 
-                {/* Free Plan Card */}
-                <div className="bg-gradient-to-br from-[#F8F9FA] to-[#E9ECEF] rounded-[20px] p-6 border-2 border-[#DEE2E6]">
-                  <div className="text-center mb-6">
-                    <div className="bg-[#6F7680] rounded-[15px] p-4 w-fit mx-auto mb-4">
-                      <Image
-                        src="/images/contents/general/white_discord_icon.png"
-                        alt="Free Plan"
-                        width={32}
-                        height={32}
-                        className="w-8 h-8"
-                      />
-                    </div>
-                    <h3 className="text-[20px] font-bold text-[#6F7680] mb-2">
-                      IELS Lounge Free
-                    </h3>
-                    <p className="text-[18px] font-bold text-[#6F7680] mb-4">
-                      Completely Free
-                    </p>
-                    <p className="text-[14px] text-[#6F7680] mb-6">
-                      Perfect for getting started and exploring our community
-                    </p>
-                  </div>
-
-                  <div className="space-y-4 mb-6">
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src="/images/contents/general/blue_tick_icon.png"
-                        alt="Included"
-                        width={20}
-                        height={20}
-                        className="w-5 h-5"
-                      />
-                      <span className="text-[14px] text-[#2F4157]">
-                        Access to all community events
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src="/images/contents/general/red_cross_icon.png"
-                        alt="Not included"
-                        width={20}
-                        height={20}
-                        className="w-5 h-5"
-                      />
-                      <span className="text-[14px] text-[#9CA3AF]">
-                        2x Zoom Classes every month
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src="/images/contents/general/red_cross_icon.png"
-                        alt="Not included"
-                        width={20}
-                        height={20}
-                        className="w-5 h-5"
-                      />
-                      <span className="text-[14px] text-[#9CA3AF]">
-                        Premium-only Discord & WhatsApp channels
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src="/images/contents/general/red_cross_icon.png"
-                        alt="Not included"
-                        width={20}
-                        height={20}
-                        className="w-5 h-5"
-                      />
-                      <span className="text-[14px] text-[#9CA3AF]">
-                        Updates from global industry partners
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src="/images/contents/general/red_cross_icon.png"
-                        alt="Not included"
-                        width={20}
-                        height={20}
-                        className="w-5 h-5"
-                      />
-                      <span className="text-[14px] text-[#9CA3AF]">
-                        Early access to IELS program + 10% OFF
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src="/images/contents/general/red_cross_icon.png"
-                        alt="Not included"
-                        width={20}
-                        height={20}
-                        className="w-5 h-5"
-                      />
-                      <span className="text-[14px] text-[#9CA3AF]">
-                        IELS Member ID for faster event access
-                      </span>
-                    </div>
-                  </div>
-
-                  <Link
-                    className="bg-[#6F7680] text-white rounded-[15px] w-full block text-center py-4 text-[16px] font-bold hover:bg-[#5A6268] transition-colors"
-                    href="https://forms.gle/E9KbHVZEmaw8B9nh6"
-                    target="_blank"
-                  >
-                    Get Free Access
-                  </Link>
-                </div>
-
-                {/* Premium Plan Card */}
-                <div className="bg-gradient-to-br from-[#2F4157] to-[#1A252F] rounded-[20px] p-6 border-2 border-[#2F4157] relative">
-                  {/* Popular Badge */}
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <div className="bg-[#FF6B35] text-white px-4 py-1 rounded-full text-[12px] font-bold">
-                      MOST POPULAR
-                    </div>
-                  </div>
-
-                  <div className="text-center mb-6 mt-4">
-                    <div className="bg-white rounded-[15px] h-[64px] p-3 w-fit mx-auto mb-4 flex items-center justify-center">
-                      <Image
-                        src="/images/logos/iels_blue.png"
-                        alt="Premium Plan"
-                        width={32}
-                        height={32}
-                        className="w-10 h-auto"
-                      />
-                    </div>
-                    <h3 className="text-[20px] font-bold text-white mb-2">
-                      IELS Lounge Premium
-                    </h3>
-                    <div className="mb-4">
-                      <p className="text-[24px] font-bold text-white">
-                        Rp200.000
-                      </p>
-                      <p className="text-[14px] text-[#B8C5D1]">per year</p>
-                    </div>
-                    <div className="mb-4">
-                      <p className="text-[18px] font-bold text-white">
-                        or Rp25.000
-                      </p>
-                      <p className="text-[14px] text-[#B8C5D1]">per month</p>
-                    </div>
-                    <p className="text-[14px] text-[#B8C5D1] mb-6">
-                      Unlock the full IELS experience with exclusive benefits
-                    </p>
-                  </div>
-
-                  <div className="space-y-4 mb-6">
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src="/images/contents/general/white_tick_icon.png"
-                        alt="Included"
-                        width={20}
-                        height={20}
-                        className="w-5 h-5"
-                      />
-                      <span className="text-[14px] text-white">
-                        Access to all community events
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src="/images/contents/general/white_tick_icon.png"
-                        alt="Included"
-                        width={20}
-                        height={20}
-                        className="w-5 h-5"
-                      />
-                      <span className="text-[14px] text-white">
-                        2x Zoom Classes every month
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src="/images/contents/general/white_tick_icon.png"
-                        alt="Included"
-                        width={20}
-                        height={20}
-                        className="w-5 h-5"
-                      />
-                      <span className="text-[14px] text-white">
-                        Premium-only Discord & WhatsApp channels
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src="/images/contents/general/white_tick_icon.png"
-                        alt="Included"
-                        width={20}
-                        height={20}
-                        className="w-5 h-5"
-                      />
-                      <span className="text-[14px] text-white">
-                        Updates from global industry partners
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src="/images/contents/general/white_tick_icon.png"
-                        alt="Included"
-                        width={20}
-                        height={20}
-                        className="w-5 h-5"
-                      />
-                      <span className="text-[14px] text-white">
-                        Early access to IELS program + 10% OFF
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src="/images/contents/general/white_tick_icon.png"
-                        alt="Included"
-                        width={20}
-                        height={20}
-                        className="w-5 h-5"
-                      />
-                      <span className="text-[14px] text-white">
-                        IELS Member ID for faster event access
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <Link
-                      className="bg-white text-[#2F4157] rounded-[15px] w-full block text-center py-4 text-[16px] font-bold hover:bg-[#F8F9FA] transition-colors"
-                      href="https://ielsco.myr.id/membership/iels-lounge-premium"
-                      target="_blank"
-                    >
-                      Choose Yearly Plan - Rp200.000
-                    </Link>
-                    <Link
-                      className="bg-transparent text-white border-2 border-white rounded-[15px] w-full block text-center py-4 text-[16px] font-bold hover:bg-white hover:text-[#2F4157] transition-colors"
-                      href="https://ielsco.myr.id/membership/iels-lounge-premium"
-                      target="_blank"
-                    >
-                      Choose Monthly Plan - Rp25.000
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Exclusive Plan Card */}
-                <div className="bg-gradient-to-br from-[#2F4157] to-[#1A252F] rounded-[20px] p-6 border-2 border-[#2F4157] relative">
-                  {/* Exclusive Badge */}
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <div className="bg-[#ffbf00] text-white px-4 py-1 rounded-full text-[12px] font-bold">
-                      EXCLUSIVE
-                    </div>
-                  </div>
-
-                  <div className="text-center mb-6 mt-4">
-                    <div className="bg-white rounded-[15px] h-[64px] p-3 w-fit mx-auto mb-4 flex items-center justify-center">
-                      <Image
-                        src="/images/logos/iels_blue.png"
-                        alt="Exclusive Plan"
-                        width={32}
-                        height={32}
-                        className="w-10 h-auto"
-                      />
-                    </div>
-                    <h3 className="text-[20px] font-bold text-white mb-2">
-                      IELS Lounge Exclusive
-                    </h3>
-                    <div className="mb-4">
-                      <p className="text-[24px] font-bold text-white">
-                        Rp500.000
-                      </p>
-                      <p className="text-[14px] text-[#B8C5D1]">
-                        Lifetime Access
-                      </p>
-                    </div>
-                    <p className="text-[14px] text-[#B8C5D1] mb-6">
-                      The ultimate IELS experience with exclusive lifetime
-                      benefits
-                    </p>
-                  </div>
-
-                  <div className="space-y-4 mb-6">
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src="/images/contents/general/white_tick_icon.png"
-                        alt="Included"
-                        width={20}
-                        height={20}
-                        className="w-5 h-5"
-                      />
-                      <span className="text-[14px] text-white font-bold">
-                        Includes All Premium Benefits
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src="/images/contents/general/white_tick_icon.png"
-                        alt="Included"
-                        width={20}
-                        height={20}
-                        className="w-5 h-5"
-                      />
-                      <span className="text-[14px] text-white">
-                        Lifetime Access to IELS Lounge
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src="/images/contents/general/white_tick_icon.png"
-                        alt="Included"
-                        width={20}
-                        height={20}
-                        className="w-5 h-5"
-                      />
-                      <span className="text-[14px] text-white">
-                        Private Mentoring with Founders
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <Link
-                      className="bg-white text-[#2F4157] rounded-[15px] w-full block text-center py-4 text-[16px] font-bold hover:bg-[#F8F9FA] transition-colors"
-                      href="https://ielsco.myr.id/membership/iels-lounge-premium"
-                      target="_blank"
-                    >
-                      Get Lifetime Access - Rp500.000
-                    </Link>
-                  </div>
-                </div>
-              </div>
+              <Link
+                href="https://www.instagram.com/p/YOUR_POST_LINK"
+                target="_blank"
+                className="inline-block bg-[#e56668] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#cc4f54] transition"
+              >
+                Read More on Instagram →
+              </Link>
             </div>
           </div>
+        </section>
+
+ {/* ===== WHY IELS SPECIAL ===== */}
+<section className="py-24 px-6 max-w-6xl mx-auto">
+  <h2 className="text-3xl font-bold text-center mb-16">
+    Why Learners Love IELS Lounge
+  </h2>
+
+  <div className="flex flex-col gap-16">
+    {[
+      {
+        emoji: "💬",
+        title: "Daily Speaking Habit",
+        desc: "Turn English into your daily rhythm with quick, fun practice sessions that help you build confidence naturally.",
+      },
+      {
+        emoji: "🤝",
+        title: "Community & Mentorship",
+        desc: "Connect with mentors and peers who encourage growth through collaboration and constant support.",
+      },
+      {
+        emoji: "🌍",
+        title: "Global Connections",
+        desc: "Join learners from different universities and cities, share stories, and expand your global mindset together.",
+      },
+      {
+        emoji: "🎟",
+        title: "IELS Member ID",
+        desc: "Get access to exclusive resources, faster event registration, and member-only perks.",
+        link: "https://docs.google.com/document/d/IELS_MEMBER_ID_GUIDE/view",
+      },
+    ].map((item, i) => (
+      <div
+        key={i}
+        className={`flex flex-col md:flex-row items-center gap-8 md:gap-14 ${
+          i % 2 === 1 ? "md:flex-row-reverse" : ""
+        }`}
+      >
+        {/* Emoji Section */}
+        <div className="flex-shrink-0 text-[70px] md:text-[90px] flex justify-center md:justify-center">
+          <span className="block leading-none">{item.emoji}</span>
+        </div>
+
+        {/* Text Section */}
+        <div className="flex flex-col items-center md:items-start text-center md:text-left max-w-lg">
+          <h3 className="text-2xl md:text-3xl font-semibold mb-2 text-[#294154]">
+            {item.title}
+          </h3>
+          <p className="text-gray-700 mb-3 leading-relaxed">{item.desc}</p>
+          {item.link && (
+            <Link
+              href={item.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block mt-2 text-[#e56668] font-semibold hover:underline hover:text-[#cc4f54] transition"
+            >
+              View Member ID Guide →
+            </Link>
+          )}
         </div>
       </div>
+    ))}
+  </div>
+</section>
+
+        {/* ===== WEEKLY ROUTINE ===== */}
+        <section className="relative py-22 px-5 text-center overflow-hidden">
+          <div className="absolute inset-0 flex justify-center opacity-100">
+            <Image
+              src="/images/contents/general/calendar.svg"
+              alt="Calendar icon background"
+              width={1000}
+              height={800}
+            />
+          </div>
+
+          <div className="relative z-10 max-w-5xl mx-auto">
+            <h2 className="text-3xl font-bold mb-6">Your Weekly Routine</h2>
+            <p className="text-gray-700 mb-8">
+              Tiny routines, big impact. Here’s what a typical week looks like.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-left">
+              {[
+                ["Monday", "Word of the Day → daily vocabulary"],
+                ["Tuesday", "Idiom of the Day → storytelling idioms"],
+                ["Wednesday", "Listen & Engage → audio or video task"],
+                ["Thursday", "Grammar Poll + Tip → tense or expression quiz"],
+                ["Friday", "Weekly Recap Quiz → fun review"],
+                ["Sunday", "Reflection & Journaling"],
+              ].map(([day, detail], i) => (
+                <div
+                  key={i}
+                  className="bg-white p-5 rounded-2xl border border-[#e56668]/20 hover:border-[#e56668] hover:scale-[1.02] transition"
+                >
+                  <h3 className="font-semibold text-[#e56668] mb-1">{day}</h3>
+                  <p className="text-gray-700 text-sm">{detail}</p>
+                </div>
+              ))}
+            </div>
+
+            <p className="mt-10 text-gray-600 text-sm">
+              Just 10–15 minutes a day can totally change how you learn English.
+            </p>
+          </div>
+        </section>
+
+
+       {/* ===== TESTIMONIALS ===== */}
+        <section className="py-24 px-6 text-center">
+          <h2 className="text-3xl font-bold mb-8">What Our Members Say</h2>
+
+          <div className="flex justify-center items-center gap-6 overflow-hidden">
+            {testimonialsData.map((t, i) => {
+              const pos =
+                (i - index + testimonialsData.length) % testimonialsData.length;
+              const isActive = pos === 0;
+              const isPrev = pos === testimonialsData.length - 1;
+              const isNext = pos === 1;
+
+              return (
+                <div
+                  key={t.id}
+                  className={`transition-all duration-500 ${
+                    isActive
+                      ? "scale-100 opacity-100 z-20"
+                      : (isPrev || isNext)
+                      ? "scale-90 opacity-50 blur-[1px] z-10"
+                      : "hidden md:block opacity-0"
+                  }`}
+                  style={{ width: "320px" }}
+                >
+                  <div className="bg-[#f8fbfc] rounded-2xl p-6 shadow-sm border border-[#f1f1f1]">
+                    <p
+                      className="text-gray-700 italic mb-4 text-sm leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: t.content }}
+                    />
+                    <div className="flex items-center justify-center gap-3">
+                      <Image
+                        src={t.author.avatar}
+                        alt={t.author.name}
+                        width={50}
+                        height={50}
+                        className="rounded-full object-cover"
+                      />
+                      <div className="text-left">
+                        <p className="font-semibold">{t.author.name}</p>
+                        <p className="text-sm text-gray-500">
+                          {t.author.university}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Arrows */}
+          <div className="flex justify-center gap-4 mt-10">
+            <button
+              onClick={prev}
+              className="bg-[#e56668] text-white w-10 h-10 rounded-full font-bold hover:bg-[#cc4f54] transition"
+            >
+              ‹
+            </button>
+            <button
+              onClick={next}
+              className="bg-[#e56668] text-white w-10 h-10 rounded-full font-bold hover:bg-[#cc4f54] transition"
+            >
+              ›
+            </button>
+          </div>
+        </section>
+
+         {/* ===== FINAL CTA ===== */}
+        <section className="py-24 text-center bg-[#fffaf9]">
+          <h2 className="text-3xl font-extrabold mb-6">
+            Join a community that helps you actually use English.
+          </h2>
+          <p className="text-gray-700 mb-10 max-w-xl mx-auto">
+            English isn’t something you memorize — it’s something you live.
+            Take the first step with IELS Lounge today.
+          </p>
+
+          <Link
+            href="/iels-lounge/pricing"
+            className="inline-block px-10 py-4 bg-gradient-to-r from-[#e56668] to-[#ff7b6e] text-white font-bold rounded-full shadow-lg hover:scale-[1.03] transition"
+          >
+            Join the Lounge →
+          </Link>
+
+          <p className="mt-8 text-sm text-gray-500">
+            Questions? Email community@ielsco.com or WhatsApp +62 882-9725-3491
+          </p>
+        </section>
+        {/* 🌊 Responsive Footer Wave Section */}
+        <div className="relative w-full overflow-hidden">
+          {/* Wave container: tinggi menyesuaikan device */}
+          <div className="w-full h-[220px] sm:h-[280px] md:h-[350px] lg:h-[350px] relative">
+            <img
+              src="/images/contents/general/footer_wave.svg"
+              alt="Footer Wave"
+              className="absolute left-1/2 top-0 -translate-x-1/2 w-[160%] sm:w-[140%] md:w-screen h-full object-cover pointer-events-none select-none"
+            />
+          </div>
+        </div>
+      </main>
+
       <Footer />
     </div>
   );

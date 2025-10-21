@@ -54,7 +54,7 @@ export default function LoungePage() {
             <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
               <Link
                 href="/iels-lounge/pricing"
-                className="bg-[#e56668] text-white px-8 py-4 rounded-2xl font-semibold hover:bg-[#cc4f54] hover:scale-[1.02] transition"
+                className="bg-[#e56668] text-white px-8 py-4 rounded-full font-semibold hover:bg-[#cc4f54] hover:scale-[1.02] transition"
               >
                 Start from Rp25.000 / Month →
               </Link>
@@ -351,7 +351,7 @@ export default function LoungePage() {
         </section>
 
          {/* ===== FINAL CTA ===== */}
-        <section className="py-24 text-center bg-[#fffaf9]">
+        <section className="py-24 text-center">
           <h2 className="text-3xl font-extrabold mb-6">
             Join a community that helps you actually use English.
           </h2>

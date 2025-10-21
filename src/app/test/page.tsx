@@ -54,7 +54,7 @@ export default function TestSelectionPage() {
                 href={guidePdfLink}
                 target="/test/guide"
                 rel="noopener noreferrer"
-                className="inline-flex justify-center items-center px-6 py-3 rounded-full bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition-colors duration-300 shadow-sm"
+                className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
               >
                 📘 View Test Guide
               </a>
@@ -63,7 +63,7 @@ export default function TestSelectionPage() {
                 href={googleFormLink}
                 target="https://forms.gle/yFCdzbeR8uMBzM5X8"
                 rel="noopener noreferrer"
-                className="inline-flex justify-center items-center px-6 py-3 rounded-full bg-[#294154] text-white font-semibold hover:bg-[#1F303C] transition-colors duration-300 shadow-sm"
+                className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition transform hover:scale-[1.02]"
               >
                 📝 Register Now
               </a>

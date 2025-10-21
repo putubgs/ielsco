@@ -32,14 +32,14 @@ export default function CoursesPage() {
                 href="https://wa.me/6288297253491"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-[#E56668] text-white font-semibold shadow hover:bg-[#c74e56] transition-colors"
+                className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
               >
                 📲 Book a Session (WhatsApp)
               </a>
 
               <a
                 href="#packages"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-white border border-[#294154] text-[#294154] font-semibold shadow hover:bg-[#294154] hover:text-white transition-colors"
+                className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition transform hover:scale-[1.02]"
               >
                 💡 View Class Packages
               </a>

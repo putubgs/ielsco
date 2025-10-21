@@ -122,8 +122,9 @@ const PAGE_SIZE = 6;
 /* ---------- Helper components ---------- */
 function ResourceCard({ r }: { r: Resource }) {
   return (
-    <article className="bg-white rounded-2xl shadow-sm hover:shadow-md transition transform hover:-translate-y-1 border border-transparent hover:border-[#e56668]/30 overflow-hidden">
-      <div className="relative h-40 md:h-36 lg:h-40 w-full bg-[#f8fafb]">
+    <article className="relative bg-white rounded-2xl shadow-sm hover:shadow-md transition transform hover:-translate-y-1 border border-transparent hover:border-[#e56668]/30 overflow-hidden">
+      {/* thumbnail */}
+      <div className="relative h-36 md:h-36 lg:h-40 w-full bg-[#f8fafb]">
         {r.thumbnail ? (
           <Image
             src={r.thumbnail}
@@ -139,16 +140,15 @@ function ResourceCard({ r }: { r: Resource }) {
         )}
       </div>
 
+      {/* Type badge — absolute so it doesn't affect layout */}
+      <span className="absolute top-4 right-4 text-xs px-3 py-1 rounded-full bg-[#294154] text-white font-medium">
+        {r.type}
+      </span>
+
+      {/* content */}
       <div className="p-4 md:p-5">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <h3 className="text-lg font-semibold text-[#294154]">{r.title}</h3>
-            <p className="text-sm text-gray-600 mt-1 line-clamp-3">{r.description}</p>
-          </div>
-          <span className="ml-2 text-xs px-2 py-1 rounded-full bg-[#294154] text-white font-medium self-start">
-            {r.type}
-          </span>
-        </div>
+        <h3 className="text-lg font-semibold text-[#294154]">{r.title}</h3>
+        <p className="text-sm text-gray-600 mt-2 line-clamp-3">{r.description}</p>
 
         <div className="mt-4 flex items-center justify-between gap-3">
           <Link
@@ -162,7 +162,7 @@ function ResourceCard({ r }: { r: Resource }) {
           </Link>
 
           <div className="text-xs text-gray-500">
-            {r.tags?.slice(0, 2).map((t, i) => (
+            {r.tags?.slice(0, 2).map((t) => (
               <span key={t} className="mr-2">
                 #{t.replace(/\s+/g, "")}
               </span>
@@ -227,7 +227,7 @@ export default function ResourcesPage() {
   const goToPage = (n: number) => setPage(Math.max(1, Math.min(totalPages, n)));
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-[#f8fbfc] to-[#fff6f6] text-[#294154]">
+    <div className="min-h-screen bg-gradient-to-b from-white via-[#f8fbfc] to-[#fff6f6] text-[#294154] overflow-x-hidden">
       <Header />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -245,14 +245,15 @@ export default function ResourcesPage() {
 
             <div className="mt-6 flex flex-col sm:flex-row gap-3">
               <Link
-                href="/lounge"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#e56668] text-white font-semibold hover:bg-[#cc4f54] transition"
+                href="https://drive.google.com/drive/folders/1UUyZA8s_C0u579s7HbJg0tl7f0Gwse8i?usp=drive_link"
+                target="_blank"
+                className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
               >
                 Access Free E-Books
               </Link>
               <Link
-                href="/lounge"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#294154] text-[#294154] font-semibold hover:bg-[#294154] hover:text-white transition"
+                href="/iels-lounge"
+                className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition transform hover:scale-[1.02]"
               >
                 Join IELS Lounge
               </Link>
@@ -274,23 +275,27 @@ export default function ResourcesPage() {
         </section>
 
         {/* FILTERS (tabs + search) */}
-        <section className="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-[#e6eef4] mb-8">
+        <section className="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-[#e6eef4] mb-8 overflow-hidden">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             {/* Category Tabs */}
-            <div className="flex items-center gap-2 overflow-x-auto">
-              {CATEGORIES.map((c) => (
-                <button
-                  key={c}
-                  onClick={() => handleCategoryClick(c)}
-                   className={`whitespace-nowrap px-3 py-2 rounded-full text-sm font-medium transition ${
-                    category === c
-                      ? "bg-[#294154] text-white shadow"
-                      : "bg-white text-[#294154] border border-[#e6eef4] hover:bg-[#f8fafb]"
-                  }`}
-                >
-                  {c}
-                </button>
-              ))}
+          {/* Category Tabs */}
+            <div className="w-full overflow-x-auto px-1" role="tablist" aria-label="Resource categories">
+              <div className="flex items-center gap-2">
+                {CATEGORIES.map((c) => (
+                  <button
+                    key={c}
+                    onClick={() => handleCategoryClick(c)}
+                    className={`flex-shrink-0 whitespace-nowrap px-3 py-2 rounded-full text-sm font-medium transition ${
+                      category === c
+                        ? "bg-[#294154] text-white shadow"
+                        : "bg-white text-[#294154] border border-[#e6eef4] hover:bg-[#f8fafb]"
+                    }`}
+                    aria-pressed={category === c}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Search */}
@@ -426,14 +431,14 @@ export default function ResourcesPage() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
               href="mailto:hello@ielsco.com"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#e56668] text-white font-semibold hover:bg-[#cc4f54] transition"
+              className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
             >
               📧 Email us
             </a>
 
             <Link
               href="/partners"
-              className="px-4 py-2 rounded-full border border-[#294154] text-[#294154] font-semibold hover:bg-[#294154] hover:text-white transition"
+              className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition transform hover:scale-[1.02]"
             >
               🔗 Partnership & Institutional Kits
             </Link>

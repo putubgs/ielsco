@@ -232,9 +232,9 @@ export default function ResourcesPage() {
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* HERO */}
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center mb-10">
-          <div className="lg:col-span-7 order-2 space-y-6">
-            <h1 className="text-3xl md:text-4xl font-extrabold leading-tight">
+        <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-10">
+        <div className="lg:col-span-7 order-2 space-y-6">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight">
               Learn. Access. Grow. 
             </h1>
             <p className="mt-3 text-gray-700 max-w-2xl">
@@ -281,8 +281,8 @@ export default function ResourcesPage() {
               {CATEGORIES.map((c) => (
                 <button
                   key={c}
-                  onClick={() => handleCategoryClick(c as any)}
-                  className={`whitespace-nowrap px-3 py-2 rounded-full text-sm font-medium transition ${
+                  onClick={() => handleCategoryClick(c)}
+                   className={`whitespace-nowrap px-3 py-2 rounded-full text-sm font-medium transition ${
                     category === c
                       ? "bg-[#294154] text-white shadow"
                       : "bg-white text-[#294154] border border-[#e6eef4] hover:bg-[#f8fafb]"

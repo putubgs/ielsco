@@ -98,7 +98,7 @@ export default function ResultPage() {
                 Join IELS Community (Free)
               </Link>
               <Link
-                href="/pricing"
+                href="/iels-lounge/pricing"
                 className="bg-[#2F4157] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#3e566b] hover:text-white transition"
               >
                 Start 7-Day Premium Trial
@@ -115,14 +115,15 @@ export default function ResultPage() {
             </div>
 
             <div className="mt-10 flex flex-wrap justify-center lg:justify-start gap-3">
-              <button
+              <Link
+                href="/courses"
                 className="bg-[#E56668] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#d25558] transition"
-                disabled
+            
               >
                 See Courses
-              </button>
+              </Link>
               <Link
-                href="/"
+                href="/#"
                 className="bg-[#2F4157] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#3e566b] hover:text-white transition"
               >
                 Back to Home

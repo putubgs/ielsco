@@ -20,7 +20,6 @@ export const QUESTIONS: Question[] = [
     id: 1,
     title: "Why do you want to learn English?",
     prompt: "Choose the option that best fits your dream.",
-    image: "/images/illustrations/quiz/why.png",
     options: [
       { id: "study", label: "To study abroad", emoji: "🎓", points: { scholar: 3, dreamer: 1 } },
       { id: "remote", label: "To work remotely", emoji: "🌐", points: { remote: 3 } },
@@ -32,7 +31,6 @@ export const QUESTIONS: Question[] = [
     id: 2,
     title: "Where do you dream of using English?",
     prompt: "Pick a region that excites you the most.",
-    image: "/images/illustrations/quiz/map.png",
     options: [
       { id: "uk", label: "UK", emoji: "🇬🇧", points: { scholar: 2 } },
       { id: "usa", label: "USA", emoji: "🇺🇸", points: { remote: 2, climber: 1 } },

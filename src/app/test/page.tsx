@@ -2,12 +2,43 @@
 
 import Footer from "@/components/footer";
 import Header from "@/components/header";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import codes from "@/data/codes.json"; // <-- make sure path matches
 
 export default function TestSelectionPage() {
   const googleFormLink = "https://forms.gle/yFCdzbeR8uMBzM5X8";
   const guidePdfLink = "/test/guide";
+
+    // ----- Access code state & validation -----
+    const [accessCode, setAccessCode] = useState("");
+    const [validation, setValidation] = useState<
+      { status: "valid" | "used" | "invalid" } | null
+    >(null);
+  
+  function validateCode() {
+    const codeValue = accessCode.trim().toUpperCase();
+    if (!codeValue) {
+      setValidation({ status: "invalid" });
+      return;
+    }
+  
+    // codes.json is an array
+    const found = (codes as any[]).find((item) => item.code === codeValue);
+  
+    if (!found) {
+      setValidation({ status: "invalid" });
+      return;
+    }
+  
+    if (found.used) {
+      setValidation({ status: "used" });
+      return;
+    }
+  
+    setValidation({ status: "valid" });
+  }
 
   const tests = [
     { title: "IELTS Mock Test", emoji: "🎓", active: true },
@@ -123,18 +154,17 @@ export default function TestSelectionPage() {
                     </p>
                     <div className="flex gap-3">
                       <a
-                        href={guidePdfLink}
-                        target="/test/guide"
+                        href="/test/guide/ielts"
                         rel="noopener noreferrer"
-                        className="flex-1 text-center rounded-full border border-[#294154] text-[#294154] py-2 font-semibold hover:bg-[#294154] hover:text-white transition-colors duration-300"
+                        className="flex-1 items-center justify-center rounded-full px-6 py-2 bg-[#E56668] text-white text-center font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
                       >
                         📘 Guide
                       </a>
                       <a
-                        href={googleFormLink}
-                        target="https://forms.gle/yFCdzbeR8uMBzM5X8"
-                        rel="noopener noreferrer"
-                        className="flex-1 text-center rounded-full bg-[#E56668] text-white py-2 font-semibold hover:bg-[#C04C4E] transition-colors duration-300"
+                    href={googleFormLink}
+                    target="https://forms.gle/yFCdzbeR8uMBzM5X8"
+                    rel="noopener noreferrer"
+                    className="flex-1 items-center justify-center rounded-full px-6 py-2 bg-[#294154] text-white text-center font-semibold hover:bg-[#21363f] transition transform hover:scale-[1.02]"
                       >
                         📝 Register
                       </a>
@@ -148,35 +178,134 @@ export default function TestSelectionPage() {
           </div>
         </section>
 
-        {/* ================= ACCESS CODE CTA ================= */}
+        {/* ===== ACCESS / VALIDATION CTA (FINAL) ===== */}
         <section className="mt-16">
-          <div className="bg-[#294154] text-white rounded-2xl p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-md">
-            <div className="text-left">
-              <h3 className="text-xl font-bold">Already Registered?</h3>
-              <p className="text-sm text-white/80">
-                Enter your access code to begin your test experience.
-              </p>
-            </div>
+          <div className="max-w-6xl mx-auto bg-white rounded-2xl p-6 shadow-sm border border-[#e6eef4]">
+            <div className="flex flex-col lg:flex-row items-center gap-6">
+              {/* Left: copy + form */}
+              <div className="flex-1 min-w-0">
+                <h3 className="text-2xl font-bold text-[#294154]">Start Your Test Now!</h3>
+                <p className="mt-1 text-sm text-gray-700">
+                  Enter the access code we sent to your email. Validate the code first — once it’s confirmed and unused, you’ll be able to start the test.
+                </p>
 
-            <Link
-              href="/test/access"
-              className="px-6 py-3 rounded-full bg-[#E56668] font-semibold hover:bg-[#C04C4E] transition-colors duration-300 shadow-sm"
-            >
-              Start the Test →
-            </Link>
+                <div className="mt-4">
+                  <label htmlFor="access-code-input" className="sr-only">Access code</label>
+                  <div className="flex gap-3">
+                    <input
+                      id="access-code-input"
+                      type="text"
+                      inputMode="text"
+                      value={accessCode}
+                      onChange={(e) => { setAccessCode(e.target.value.toUpperCase()); setValidation(null); }}
+                      placeholder="Enter access code (e.g. IELS-ABC123)"
+                      className="flex-1 border border-gray-200 rounded-full px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#e56668]/30"
+                    />
+
+                    <button
+                      type="button"
+                      onClick={validateCode}
+                      className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
+                    >
+                      Validate
+                    </button>
+                  </div>
+
+                  {/* validation status */}
+                  <div className="mt-3 min-h-[1.25rem]">
+                    {validation?.status === "valid" && (
+                      <div className="text-sm text-green-700">
+                        ✅ Code valid — not used. You can start your test.
+                      </div>
+                    )}
+                    {validation?.status === "used" && (
+                      <div className="text-sm text-yellow-800">
+                        ⚠ This code has already been used. If you believe this is an error, contact support.
+                      </div>
+                    )}
+                    {validation?.status === "invalid" && (
+                      <div className="text-sm text-red-700">
+                        ❌ Code not found. Check your email or the code you entered.
+                      </div>
+                    )}
+                    {!validation && accessCode.length > 0 && (
+                      <div className="text-sm text-gray-500">Press <strong>Validate</strong> to check your code.</div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="mt-4 text-xs text-gray-500">
+                  • If you didn’t receive your code, check spam or your payment confirmation email. • For group / organization bundles, email <span className="font-semibold text-[#294154]">partnership@ielsco.com</span>.
+                </div>
+              </div>
+
+              {/* Right: mascot + start button */}
+              <div className="w-full lg:w-[360px] flex-shrink-0">
+                <div className="flex flex-col items-center gap-4">
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      // Only allow navigation if validated and not used
+                      if (validation?.status === "valid") {
+                        // include code as query param so /test/access can pick it up
+                        window.location.href = `/test/access?code=${encodeURIComponent(accessCode)}`
+                      } else {
+                        // gentle hint
+                        alert("Please validate a valid access code before starting the test.");
+                      }
+                    }}
+                    className={`w-full px-4 py-3 rounded-full font-semibold transition ${
+                      validation?.status === "valid"
+                        ? "inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition transform hover:scale-[1.02]"
+                        : "bg-[#f3f4f6] text-[#6b7280] cursor-not-allowed"
+                    }`}
+                    aria-disabled={validation?.status !== "valid"}
+                  >
+                    Start Test
+                  </button>
+
+                  <Link href="mailto:support@ielsco.com" className="text-xs text-[#294154] hover:underline">
+                    Need help validating your code?
+                  </Link>
+                </div>
+
+                <p className="mt-4 text-center text-xs text-gray-500">
+                  Tests run on scheduled Zoom slots. After you validate and start, you’ll be shown scheduling options (or get the slot already assigned in your confirmation email).
+                </p>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* ================= FOOTER ================= */}
-        <div className="text-center text-gray-500 text-sm mt-10">
-          Need help? Contact{" "}
-          <a
-            href="mailto:support@ielsco.com"
-            className="underline text-[#294154] hover:text-[#E56668]"
-          >
-            support@ielsco.com
-          </a>
-        </div>
+          {/* Contact */}
+          <article className="bg-white rounded-2xl p-6 shadow-sm border border-[#294154]/6">
+            <h3 className="text-xl font-semibold mb-3">Need help?</h3>
+
+            <p className="text-gray-700 mb-4">
+              If you experience issues or have questions, contact our support team:
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a className="flex-1 items-center gap-3 p-4 rounded-lg border border-[#294154]/8 hover:shadow-sm transition"
+                 href="mailto:support@ielsco.com">
+                <span className="font-semibold">📧 Email</span>
+                <span className="text-gray-600">support@ielsco.com</span>
+              </a>
+
+              <a className="flex-1 items-center gap-3 p-4 rounded-lg border border-[#294154]/8 hover:shadow-sm transition"
+                 href="https://wa.me/6288297253491" target="_blank" rel="noreferrer">
+                <span className="font-semibold">📱 WhatsApp</span>
+                <span className="text-gray-600">+62 882-9725-3491</span>
+              </a>
+
+              <div className="flex-1 items-center gap-3 p-4 rounded-lg border border-[#294154]/8 hover:shadow-sm transition">
+                <div className="font-semibold">🕘 Support hours</div>
+                <div className="text-gray-600 text-sm">Mon–Fri, 09:00–17:00 (WIB)</div>
+              </div>
+            </div>
+          </article>
+
         
       </div>
     </main>

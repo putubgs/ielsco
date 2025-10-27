@@ -4,11 +4,9 @@
 /* Server component (App Router) */
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function TestGuidePage() {
-  const pdfUrl = "https://forms.gle/yFCdzbeR8uMBzM5X8"; // <-- replace with your Drive link
 
   return (
     <div className="min-h-screen bg-white text-[#294154] antialiased">
@@ -29,23 +27,23 @@ export default function TestGuidePage() {
                 Read it before registering so your test day is smooth.
               </p>
 
-              <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                <a
-                  href={pdfUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 bg-[#E56668] text-white px-5 py-3 rounded-full font-semibold hover:bg-[#cc4f54] transition"
-                >
-                  Register Now
-                </a>
+          <div className="mt-6 flex flex-col sm:flex-row gap-3">
+            <a
+            
+              href="#test-format"
+              rel="noopener noreferrer"
+            className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
+            >
+              Read Full Test Overview
+            </a>
 
-                <Link
-                  href="/test/access"
-                  className="inline-flex items-center gap-2 bg-[#294154] text-white px-5 py-3 rounded-full font-semibold hover:bg-[#1f3344] transition"
-                >
-                  🔐 Enter Access Code
-                </Link>
-              </div>
+            <a
+              href="#register"
+              className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition transform hover:scale-[1.02]"
+            >
+              Register Now!
+            </a>
+          </div>
 
               <p className="mt-3 text-sm text-gray-500">
                 Note: Registration and payment steps are handled during sign-up. After validation, you will receive an access code to join the scheduled test session.
@@ -98,7 +96,8 @@ export default function TestGuidePage() {
 
           {/* Format & Timing (general) */}
  {/* ===== Test Format & Timing (IMPROVED) ===== */}
-<article className="bg-white rounded-2xl p-8 shadow-sm border border-[#294154]/6">
+<article id="test-format"
+className="bg-white rounded-2xl p-8 shadow-sm border border-[#294154]/6">
   <div className="text-center mb-8">
     <h3 className="text-2xl font-bold mb-2">Test Format & Timing</h3>
     <p className="text-gray-700 max-w-3xl mx-auto">
@@ -127,7 +126,8 @@ export default function TestGuidePage() {
         <li>Speaking — 10–15 min live session</li>
       </ul>
       <Link
-        href="/test/guide/ielts"
+        href="https://drive.google.com/file/d/1h2IPjkahj1yKqU1_pK0T3L1cYAMz2pQk/view?usp=drive_link"
+        target="/blank"
         className="text-[#e56668] font-semibold hover:underline"
       >
         Read full details →
@@ -170,25 +170,6 @@ export default function TestGuidePage() {
       </ul>
       <div className="text-sm text-gray-500">Details coming soon</div>
     </div>
-  </div>
-
-  {/* Diagnostic */}
-  <div className="mt-8 bg-[#f8fafb] border border-[#e6eef4] rounded-2xl p-6 shadow-sm">
-    <h4 className="text-lg font-bold mb-1 flex items-center gap-2">
-      <span>🔍</span> Diagnostic & Institutional Tests
-    </h4>
-    <p className="text-sm text-gray-700 mb-2">
-      These are customizable assessments made for schools, institutions, and teachers who want placement or internal English tests.
-    </p>
-    <p className="text-sm text-gray-700 mb-4">
-      Duration and structure vary depending on the goal — from 30-minute quick checks to 90-minute full diagnostic tests.
-    </p>
-    <Link
-      href="/partners"
-      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#294154] text-white text-sm font-semibold hover:bg-[#1f3344] transition"
-    >
-      🏫 Contact Us for Custom Setup
-    </Link>
   </div>
 
   {/* Important Note */}
@@ -240,14 +221,14 @@ export default function TestGuidePage() {
           </article>
 
           {/* Pricing & Packages */}
-<article className="bg-white rounded-2xl p-8 shadow-sm border border-[#294154]/6">
+<article id="register"
+className="bg-white rounded-2xl p-8 shadow-sm border border-[#294154]/6">
   <div className="text-center mb-8">
     <h3 className="text-2xl font-bold mb-2">Test Packages & Pricing</h3>
     <p className="text-gray-700 max-w-2xl mx-auto">
       Choose the right assessment for your goal. Each test is designed to evaluate real-world English skills, 
       guided by the same quality and feedback system used by our tutors.  
-      <br className="hidden sm:block" />
-      <span className="text-[#e56668] font-semibold">Organizations get 20% off</span> — email <strong>partnership@ielsco.com</strong> to claim your bundle.
+    
     </p>
   </div>
 
@@ -326,41 +307,15 @@ export default function TestGuidePage() {
       </button>
     </div>
   </div>
-
-  {/* Diagnostic Review (Full Width) */}
-  <div className="mt-8 bg-[#f8fafb] border border-[#e6eef4] rounded-2xl p-6">
-    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-      <div>
-        <h4 className="text-lg font-bold mb-1">Diagnostic + Expert Review</h4>
-        <p className="text-sm text-gray-600 max-w-xl">
-          Deep diagnostic assessment across skills, reviewed by IELS expert tutors. Includes full writing and speaking feedback, 
-          plus a personalized learning roadmap designed to accelerate improvement.
-        </p>
-      </div>
-      <div className="text-right">
-        <div className="text-3xl font-extrabold text-[#294154] mb-1">Rp550.000</div>
-        <div className="text-xs text-gray-500 mb-2">premium one-time package</div>
-        <Link
-          href="/test/register"
-          className="inline-block px-5 py-2 rounded-full bg-[#294154] text-white font-semibold hover:bg-[#1f3344] transition"
-        >
-          Register Now
-        </Link>
-      </div>
+    <div className="text-center mb-8">
+       <br className="hidden sm:block" />
+      <span className="text-[#e56668] font-semibold">Organizations get 20% off</span> — email <strong>partnership@ielsco.com</strong> to claim your bundle.
     </div>
-  </div>
-
   {/* Footer CTA */}
   <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
-    <Link
-      href="/test/register"
-      className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#e56668] text-white font-semibold hover:bg-[#cc4f54] transition"
-    >
-      📝 Register Individually
-    </Link>
     <a
       href="mailto:partnership@ielsco.com?subject=Organization%20Test%20Bundle%20Request"
-      className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border border-[#294154] text-[#294154] font-semibold hover:bg-[#294154] hover:text-white transition"
+      className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition transform hover:scale-[1.02]"
     >
       🤝 Register for Your Organization — 20% Off
     </a>
@@ -433,19 +388,19 @@ export default function TestGuidePage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <a className="inline-flex items-center gap-3 p-4 rounded-lg border border-[#294154]/8 hover:shadow-sm transition"
+              <a className="flex-1 items-center gap-3 p-4 rounded-lg border border-[#294154]/8 hover:shadow-sm transition"
                  href="mailto:support@ielsco.com">
                 <span className="font-semibold">📧 Email</span>
                 <span className="text-gray-600">support@ielsco.com</span>
               </a>
 
-              <a className="inline-flex items-center gap-3 p-4 rounded-lg border border-[#294154]/8 hover:shadow-sm transition"
+              <a className="flex-1 items-center gap-3 p-4 rounded-lg border border-[#294154]/8 hover:shadow-sm transition"
                  href="https://wa.me/6288297253491" target="_blank" rel="noreferrer">
                 <span className="font-semibold">📱 WhatsApp</span>
                 <span className="text-gray-600">+62 882-9725-3491</span>
               </a>
 
-              <div className="p-4 rounded-lg border border-[#294154]/8">
+              <div className="flex-1 items-center gap-3 p-4 rounded-lg border border-[#294154]/8 hover:shadow-sm transition">
                 <div className="font-semibold">🕘 Support hours</div>
                 <div className="text-gray-600 text-sm">Mon–Fri, 09:00–17:00 (WIB)</div>
               </div>
@@ -453,27 +408,6 @@ export default function TestGuidePage() {
           </article>
         </section>
 
-        {/* Footer CTA */}
-        <section className="bg-[#294154] text-white rounded-2xl p-6 lg:p-8 text-center">
-          <h4 className="text-xl font-bold">Ready to take a test with IELS?</h4>
-          <p className="mt-2 text-white/90 max-w-2xl mx-auto">Follow the registration steps. After validation you’ll receive an access code and scheduling options. Good luck — you’ve got this!</p>
-          <div className="mt-6 flex justify-center gap-3">
-            <Link href="/test/register" className="bg-white text-[#294154] px-5 py-2 rounded-full font-semibold hover:bg-[#f1f5f9] transition">
-              📝 Register Now
-            </Link>
-
-            <a href={pdfUrl} target="_blank" rel="noopener noreferrer" className="bg-[#E56668] px-5 py-2 rounded-full font-semibold hover:bg-[#cc4f54] transition">
-              Download Guide (PDF)
-            </a>
-
-            <a
-              href="mailto:partnership@ielsco.com?subject=Organization%20Test%20Bundle%20Request"
-              className="bg-[#1f3344] px-5 py-2 rounded-full font-semibold hover:bg-[#15222e] transition"
-            >
-              Group Registration — 20% off
-            </a>
-          </div>
-        </section>
       </main>
 
       <Footer />

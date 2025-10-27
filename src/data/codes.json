@@ -1,5 +1,5 @@
 [
-  { "code": "IELS-001", "used": false, "name": "Test Taker 1", "email": "test1@example.com" },
+  { "code": "IELS-001", "used": true, "name": "Test Taker 1", "email": "test1@example.com" },
   { "code": "IELS-002", "used": false, "name": "Test Taker 2", "email": "test2@example.com" },
   { "code": "IELS-003", "used": true,  "name": "Used Code",    "email": "used@example.com"}
 ]

@@ -5,7 +5,16 @@ import Header from "@/components/header";
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import codes from "@/data/codes.json"; // <-- make sure path matches
+import codesRaw from "@/data/codes.json";
+
+type CodeEntry = {
+  code: string;
+  used: boolean;
+  name?: string;
+  email?: string;
+};
+
+const codes: CodeEntry[] = (codesRaw as unknown) as CodeEntry[];
 
 export default function TestSelectionPage() {
   const googleFormLink = "https://forms.gle/yFCdzbeR8uMBzM5X8";
@@ -25,7 +34,7 @@ export default function TestSelectionPage() {
     }
   
     // codes.json is an array
-    const found = (codes as any[]).find((item) => item.code === codeValue);
+   const found = codes.find((item) => item.code === codeValue);
   
     if (!found) {
       setValidation({ status: "invalid" });

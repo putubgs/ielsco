@@ -4,7 +4,16 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { useState } from "react";
 import Link from "next/link";
-import codes from "@/data/codes.json"; // <-- make sure path matches
+import codesRaw from "@/data/codes.json";
+
+type CodeEntry = {
+  code: string;
+  used: boolean;
+  name?: string;
+  email?: string;
+};
+
+const codes: CodeEntry[] = (codesRaw as unknown) as CodeEntry[];
 
 export default function IELTSGuidePage() {
   const formUrl = "https://forms.gle/yFCdzbeR8uMBzM5X8"; // Replace with actual form link
@@ -22,8 +31,7 @@ function validateCode() {
     return;
   }
 
-  // codes.json is an array
-  const found = (codes as any[]).find((item) => item.code === codeValue);
+  const found = codes.find((item) => item.code === codeValue);
 
   if (!found) {
     setValidation({ status: "invalid" });

@@ -84,29 +84,30 @@ export default function AccessPage() {
   };
 
   // ✅ FIXED — only one handleStart
-  const handleStart = () => {
-    localStorage.setItem("accessData", JSON.stringify(form));
-
-    let testPath: string | null = null;
-
-    if (form.testType === "IELTS") {
-      testPath = `/test/ielts?access=${encodeURIComponent(form.code)}`;
-    } else if (form.testType === "TOEFL") {
-      testPath = `/test/toefl?access=${encodeURIComponent(form.code)}`;
-    } else if (form.testType === "TOEIC") {
-      testPath = `/test/toeic?access=${encodeURIComponent(form.code)}`;
-    } else {
-      setStatus({
-        ok: false,
-        message: "Selected test type is not yet available.",
-      });
-      return;
-    }
-
-    if (!testPath) return;
-    router.push(testPath);
+ // ✅ Redirect ke Google Form setelah validasi server sukses
+const handleStart = () => {
+  const formsMap: Record<string, string> = {
+    IELTS: "https://forms.gle/9eFqiMqL1EvYBjE27",
+    TOEFL: "https://forms.gle/YOUR_TOEFL_FORM",
+    TOEIC: "https://forms.gle/YOUR_TOEIC_FORM",
   };
 
+  const selectedForm = formsMap[form.testType];
+
+  if (!selectedForm) {
+    setStatus({
+      ok: false,
+      message: "Selected test type does not have an active form yet."
+    });
+    return;
+  }
+
+  // ✅ Embed code in localStorage if needed later
+  localStorage.setItem("accessData", JSON.stringify(form));
+
+  // ✅ Redirect ke GForm
+  window.location.href = selectedForm;
+};
   return (
     <div>
       <Header/>
@@ -180,7 +181,7 @@ export default function AccessPage() {
               name="code"
               value={form.code}
               onChange={handleChange}
-              placeholder="e.g. IELS-001"
+              placeholder="e.g. IELS-****-****"
               className="w-full border border-gray-300 rounded-full p-3 text-sm focus:ring-2 focus:ring-[#E56668] outline-none uppercase tracking-wider"
             />
           </div>

@@ -394,7 +394,7 @@ export const eventsData: EventData[] = [
     registrationLink: "https://estudyme.com/study/simulation-test/toeic-testpro/test-1-62b69492bbc57b27fe10f7ac/",
     startDate: "2025-10-05",
     registrationTimeDeadline: "23:59",
-    registrationDateDeadline: "2025-11-05",
+    registrationDateDeadline: "2025-10-05",
     seo: {
       meta_title:
         "Free TOEIC Try Out Online",
@@ -440,7 +440,7 @@ export const eventsData: EventData[] = [
   registrationLink: "https://ielsco.com/iels-lounge",
   startDate: "2025-10-11",
   registrationTimeDeadline: "23:59",
-  registrationDateDeadline: "2025-10-31",
+  registrationDateDeadline: "2025-10-28",
   seo: {
     meta_title: "IELS Lounge Premium October 2025 — Speak to Connect",
     meta_description:
@@ -449,4 +449,55 @@ export const eventsData: EventData[] = [
       "IELS Lounge Premium, English speaking club, daily English practice, storytelling in English, teamwork skills, project planning English, IELS October program",
   },
 },
+{
+  id: "10",
+  title: "English Student Launchpad — Your Global English Career Starts Here",
+  poster: "/images/contents/events/launchpad.png",
+  description: `<div>
+  <div><strong>📅 Journey Duration: November 2025 – February 2026</strong></div>
+  <div>⏰ Weekly Community Activities & Monthly Webinars</div>
+  <div>&nbsp;</div>
+  <div><strong><em>English Student Launchpad</em> is a 3-month journey incubator designed to help English majors turn their degree into a real global career path.</strong></div>
+  <div>&nbsp;</div>
+  <div><strong>What You Will Experience:</strong></div>
+  <ul>
+    <li><strong>Remote Work & Global Career Roadmap</strong> — practical guidance to land international/remote jobs</li>
+    <li><strong>Exclusive Community Access</strong> — join 500+ peers with the same global ambition</li>
+    <li><strong>Weekly Skill-Building Activities</strong> — discussions, tasks, and peer support</li>
+    <li><strong>3 Major Webinars:</strong><br/>
+        - December 2025: Unlocking Global Employment <br/>
+        - January 2026: Mastering TEFL/TESL for Teaching Abroad <br/>
+        - February 2026: Global Resume Workshop
+    </li>
+    <li><strong>Capstone Project</strong> — graduate with a global-ready portfolio</li>
+  </ul>
+  <div>&nbsp;</div>
+  <div><strong>📌 Your Launchpad Roadmap</strong></div>
+  <ul>
+    <li><strong>December 2025</strong> — Remote Work & Global Jobs</li>
+    <li><strong>January 2026</strong> — TEFL/TESL & Teaching Abroad</li>
+    <li><strong>February 2026</strong> — Portfolio Building + Next Steps</li>
+  </ul>
+  <div>&nbsp;</div>
+  <div><strong>Choose Your Launch Tier:</strong></div>
+  <ul>
+    <li><strong>Solo Pass:</strong> Rp15.000 — full 3-month experience</li>
+    <li><strong>Friend Discount:</strong> Rp10.000/person (Rp20.000 for 2) — launch together and save more</li>
+  </ul>
+  <div>&nbsp;</div>
+  <div>English Student Launchpad is built for learners who want to turn English into real opportunities — with practical skills, clearer direction, and a supportive community.</div>
+</div>`,
+  registrationLink: "https://forms.gle/vgVGjCQVqbiuwQz29",
+  startDate: "2025-12-14",
+  registrationTimeDeadline: "23:59",
+  registrationDateDeadline: "2025-12-14",
+  seo: {
+    meta_title:
+      "English Student Launchpad — Global Career Journey for English Majors",
+    meta_description:
+      "Join the English Student Launchpad (Nov 2025 – Feb 2026), a 3-month guided journey for English majors to pursue global careers through webinars, portfolio building, and weekly community activities.",
+    meta_keywords:
+      "English Student Launchpad, English major career, TEFL TESL workshop, remote English jobs, international English careers, English portfolio, English webinar, global opportunities",
+  },
+}
 ];

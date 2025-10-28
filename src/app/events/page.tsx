@@ -389,10 +389,10 @@ export default function Events() {
                   <div className="relative w-[450px]">
                     <Image
                       src={upcomingEvents[currentSlide].poster}
-                      width={450}
-                      height={450}
+                      width={430}
+                      height={430}
                       alt={upcomingEvents[currentSlide].title}
-                      className="absolute top-0 left-0 w-[450px] h-auto rounded-[10px]"
+                      className="absolute top-0 left-0 w-[410px] h-auto rounded-[10px]"
                     />
                   </div>
                   <div className="w-[30vw] pl-6 text-white py-12 flex flex-col gap-4 text-[15px] justify-center">

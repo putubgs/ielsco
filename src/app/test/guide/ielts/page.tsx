@@ -100,21 +100,6 @@ function validateCode() {
           </p>
         </section>
 
-        {/* HOW IT WORKS */}
-        <section className="bg-[#f9fafb] rounded-2xl p-8 shadow-sm border border-[#294154]/10">
-          <h2 className="text-2xl font-bold mb-6">How the IELS Mock Test Works</h2>
-          <ol className="list-decimal pl-5 text-gray-700 space-y-3">
-            <li><strong>Register</strong> via the form below and choose your preferred date and package.</li>
-            <li>After validation and payment, you’ll receive an <strong>access code</strong> and detailed schedule by email.</li>
-            <li>On your chosen test day, join your assigned <strong>Zoom session</strong> and follow instructions from our test coordinator.</li>
-            <li><strong>Complete your mock test</strong> (Listening, Reading, Writing) through the secure online platform.</li>
-            <li><strong>No cheating!</strong> Each session is proctored, and switching tabs or using translators is strictly prohibited.</li>
-            <li>Submit your answers — your results will be processed automatically.</li>
-            <li>Receive detailed feedback from an <strong>IELS Expert Tutor</strong> within 3 working days.</li>
-            <li>Claim your <strong>digital certificate</strong> directly from your IELS profile or email.</li>
-          </ol>
-        </section>
-
         {/* PACKAGES & PRICING */}
         <section className="bg-white rounded-2xl p-8 shadow-sm border border-[#294154]/10">
           <h2 className="text-2xl font-bold mb-6 text-center">Select the Registration Package that Works Best for You! 🎓</h2>
@@ -184,105 +169,108 @@ function validateCode() {
           </div>
         </section>
 
-        {/* ===== ACCESS / VALIDATION CTA (FINAL) ===== */}
-        <section className="mt-16">
-          <div className="max-w-6xl mx-auto bg-white rounded-2xl p-6 shadow-sm border border-[#e6eef4]">
-            <div className="flex flex-col lg:flex-row items-center gap-6">
-              {/* Left: copy + form */}
-              <div className="flex-1 min-w-0">
-                <h3 className="text-2xl font-bold text-[#294154]">Start Your Test Now!</h3>
-                <p className="mt-1 text-sm text-gray-700">
-                  Enter the access code we sent to your email. Validate the code first — once it’s confirmed and unused, you’ll be able to start the test.
-                </p>
+  {/* ===== ACCESS / VALIDATION CTA (FINAL, FIXED) ===== */}
+<section id="access" className="mt-16">
+  <div className="max-w-6xl mx-auto bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-[#e6eef4]">
+    <div className="flex flex-col gap-8">
+      {/* Header */}
+      <div className="text-center sm:text-left">
+        <h3 className="text-2xl font-bold text-[#294154] mb-2">Start Your Test Now!</h3>
+        <p className="text-sm text-gray-700 max-w-2xl">
+          Enter the access code we sent to your email. Validate the code first — once it’s confirmed and unused, you’ll be able to start your test.
+        </p>
+      </div>
 
-                <div className="mt-4">
-                  <label htmlFor="access-code-input" className="sr-only">Access code</label>
-                  <div className="flex gap-3">
-                    <input
-                      id="access-code-input"
-                      type="text"
-                      inputMode="text"
-                      value={accessCode}
-                      onChange={(e) => { setAccessCode(e.target.value.toUpperCase()); setValidation(null); }}
-                      placeholder="Enter access code (e.g. IELS-ABC123)"
-                      className="flex-1 border border-gray-200 rounded-full px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#e56668]/30"
-                    />
+      {/* Input + Buttons */}
+      <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
+        <input
+          id="access-code-input"
+          type="text"
+          inputMode="text"
+          value={accessCode}
+          onChange={(e) => {
+            setAccessCode(e.target.value.toUpperCase());
+            setValidation(null);
+          }}
+          placeholder="Enter access code (e.g. IELS-ABCD-EFGH)"
+          className="flex-1 border border-gray-200 rounded-full px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#e56668]/30 w-full sm:w-auto"
+        />
 
-                    <button
-                      type="button"
-                      onClick={validateCode}
-                      className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
-                    >
-                      Validate
-                    </button>
-                  </div>
+        <button
+          type="button"
+          onClick={validateCode}
+          className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02] w-full sm:w-auto"
+        >
+          Validate
+        </button>
+      </div>
 
-                  {/* validation status */}
-                  <div className="mt-3 min-h-[1.25rem]">
-                    {validation?.status === "valid" && (
-                      <div className="text-sm text-green-700">
-                        ✅ Code valid — not used. You can start your test.
-                      </div>
-                    )}
-                    {validation?.status === "used" && (
-                      <div className="text-sm text-yellow-800">
-                        ⚠ This code has already been used. If you believe this is an error, contact support.
-                      </div>
-                    )}
-                    {validation?.status === "invalid" && (
-                      <div className="text-sm text-red-700">
-                        ❌ Code not found. Check your email or the code you entered.
-                      </div>
-                    )}
-                    {!validation && accessCode.length > 0 && (
-                      <div className="text-sm text-gray-500">Press <strong>Validate</strong> to check your code.</div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="mt-4 text-xs text-gray-500">
-                  • If you didn’t receive your code, check spam or your payment confirmation email. • For group / organization bundles, email <span className="font-semibold text-[#294154]">partnership@ielsco.com</span>.
-                </div>
-              </div>
-
-              {/* Right: mascot + start button */}
-              <div className="w-full lg:w-[360px] flex-shrink-0">
-                <div className="flex flex-col items-center gap-4">
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      // Only allow navigation if validated and not used
-                      if (validation?.status === "valid") {
-                        // include code as query param so /test/access can pick it up
-                        window.location.href = `/test/access?code=${encodeURIComponent(accessCode)}`
-                      } else {
-                        // gentle hint
-                        alert("Please validate a valid access code before starting the test.");
-                      }
-                    }}
-                    className={`w-full px-4 py-3 rounded-full font-semibold transition ${
-                      validation?.status === "valid"
-                        ? "inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition transform hover:scale-[1.02]"
-                        : "bg-[#f3f4f6] text-[#6b7280] cursor-not-allowed"
-                    }`}
-                    aria-disabled={validation?.status !== "valid"}
-                  >
-                    Start Test
-                  </button>
-
-                  <Link href="mailto:support@ielsco.com" className="text-xs text-[#294154] hover:underline">
-                    Need help validating your code?
-                  </Link>
-                </div>
-
-                <p className="mt-4 text-center text-xs text-gray-500">
-                  Tests run on scheduled Zoom slots. After you validate and start, you’ll be shown scheduling options (or get the slot already assigned in your confirmation email).
-                </p>
-              </div>
-            </div>
+      {/* Validation Status */}
+      <div className="min-h-[1.25rem]">
+        {validation?.status === "valid" && (
+          <div className="text-sm text-green-700">
+            ✅ Code valid — not used. You can start your test.
           </div>
-        </section>
+        )}
+        {validation?.status === "used" && (
+          <div className="text-sm text-yellow-800">
+            ⚠ This code has already been used. If you believe this is an error, contact support.
+          </div>
+        )}
+        {validation?.status === "invalid" && (
+          <div className="text-sm text-red-700">
+            ❌ Code not found. Check your email or the code you entered.
+          </div>
+        )}
+        {!validation && accessCode.length > 0 && (
+          <div className="text-sm text-gray-500">
+            Press <strong>Validate</strong> to check your code.
+          </div>
+        )}
+      </div>
+
+      {/* Start Button */}
+      <div className="flex flex-col items-center sm:items-start gap-3">
+        <button
+          type="button"
+          onClick={() => {
+            if (validation?.status === "valid") {
+              window.location.href = `/test/access?code=${encodeURIComponent(accessCode)}`;
+            } else {
+              alert("Please validate a valid access code before starting the test.");
+            }
+          }}
+          className={`w-full sm:w-auto px-6 py-3 rounded-full font-semibold transition text-center ${
+            validation?.status === "valid"
+              ? "bg-[#294154] text-white hover:bg-[#21363f]"
+              : "bg-[#f3f4f6] text-[#6b7280] cursor-not-allowed"
+          }`}
+          aria-disabled={validation?.status !== "valid"}
+        >
+          Start Test
+        </button>
+
+        <Link
+          href="mailto:support@ielsco.com"
+          className="text-xs text-[#294154] hover:underline text-center sm:text-left"
+        >
+          Need help validating your code?
+        </Link>
+      </div>
+
+      {/* Notes */}
+      <p className="mt-4 text-xs text-gray-500 text-center sm:text-left">
+        Tests run on scheduled Zoom slots. After you validate and start, you’ll be shown scheduling options or get the slot assigned in your confirmation email.
+      </p>
+
+      <div className="text-xs text-gray-500 mt-2">
+        • If you didn’t receive your code, check spam or your payment confirmation email. <br />
+        • For group / organization bundles, email{" "}
+        <span className="font-semibold text-[#294154]">support@ielsco.com</span>.
+      </div>
+    </div>
+  </div>
+</section>
       </main>
       <Footer />
     </div>

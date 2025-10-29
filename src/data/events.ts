@@ -487,7 +487,7 @@ export const eventsData: EventData[] = [
   <div>&nbsp;</div>
   <div>English Student Launchpad is built for learners who want to turn English into real opportunities — with practical skills, clearer direction, and a supportive community.</div>
 </div>`,
-  registrationLink: "https://forms.gle/vgVGjCQVqbiuwQz29",
+  registrationLink: " https://forms.gle/nvLAcbnAw5aAPvBf8",
   startDate: "2025-12-14",
   registrationTimeDeadline: "23:59",
   registrationDateDeadline: "2025-12-14",

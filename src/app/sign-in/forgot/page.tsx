@@ -39,7 +39,7 @@ export default function ForgotPasswordPage() {
         </h2>
 
         <p className="text-gray-600 text-center">
-          Enter your email and we'll send you an OTP to reset your password.
+          Enter your email and we&apos;ll send you an OTP to reset your password.
         </p>
 
         <input

@@ -1,29 +1,45 @@
-// pages/api/auth/forgot.ts
-import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/lib/prisma";
-import { makeOtpCode, hashOtp } from "@/lib/otp";
 import { sendOtpEmail } from "@/lib/email";
+import { makeOtpCode, hashOtp } from "@/lib/otp";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "POST") return res.status(405).end();
-  const { email } = req.body;
-  if (!email) return res.status(400).json({ error: "Email required" });
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    const { email } = body;
 
-  // optionally verify user exists
-  const user = await prisma.user.findUnique({ where: { email } });
-  if (!user) return res.status(404).json({ error: "User not found" });
+    if (!email) {
+      return Response.json({ error: "EMAIL_REQUIRED" }, { status: 400 });
+    }
 
-  const code = makeOtpCode();
-  const codeHash = await hashOtp(code);
-  const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+    // Check if user exists
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
 
-  await prisma.otp.create({ data: { email, codeHash, purpose: "reset", expiresAt } });
+    if (!user) {
+      return Response.json({ error: "EMAIL_NOT_FOUND" }, { status: 404 });
+    }
 
-  await sendOtpEmail(email, code, "Reset your IELS password");
-  res.json({ ok: true });
+    // Generate OTP
+    const code = makeOtpCode(6);
+    const codeHash = await hashOtp(code);
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
-return Response.json(
-  { error: "EMAIL_NOT_FOUND" },
-  { status: 400 }
-);
+    await prisma.otp.create({
+      data: {
+        email,
+        codeHash,
+        purpose: "forgot",
+        expiresAt,
+      },
+    });
+
+    // Send OTP
+    await sendOtpEmail(email, code, "forgot");
+
+    return Response.json({ ok: true, message: "OTP sent!" });
+  } catch (err) {
+    console.error("FORGOT OTP ERROR:", err);
+    return Response.json({ error: "SERVER_ERROR" }, { status: 500 });
+  }
 }

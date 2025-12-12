@@ -64,7 +64,14 @@ export default function RegisterPage() {
     }
   });
 
-  const onSubmit = async (values: any) => {
+  type SignupForm = {
+  fullName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
+
+const onSubmit = async (values: SignupForm) => {
     setLoading(true);
 
     // 👇 TEMPORARY POPUP (hilangkan setelah sistem siap)

@@ -1,58 +1,70 @@
-// pages/api/auth/verify-otp.ts
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { compareOtp } from "@/lib/otp";
 import bcrypt from "bcryptjs";
-import { randomBytes } from "crypto";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    
-  if (req.method !== "POST") return res.status(405).end();
+export async function POST(req: Request) {
+  try {
+    const { email, code, purpose = "signup", name, password } = await req.json();
 
-  const { email, code, purpose = "signup", name, password } = req.body;
-  if (!email || !code) return res.status(400).json({ error: "Missing fields" });
-
-  const record = await prisma.otp.findFirst({
-    where: {
-      email,
-      purpose,
-      used: false,
-      expiresAt: { gt: new Date() },
-    },
-    orderBy: { createdAt: "desc" },
-  });
-
-  if (!record) return res.status(400).json({ error: "No valid OTP found" });
-
-  const ok = await compareOtp(code, record.codeHash);
-  if (!ok) return res.status(400).json({ error: "Invalid code" });
-
-  // mark used
-  await prisma.otp.update({ where: { id: record.id }, data: { used: true } });
-
-  // create user if not exists
-  let user = await prisma.user.findUnique({ where: { email } });
-  if (!user) {
-    let passHash = null;
-    if (password) {
-      passHash = await bcrypt.hash(password, 10);
+    if (!email || !code) {
+      return NextResponse.json(
+        { error: "MISSING_FIELDS" },
+        { status: 400 }
+      );
     }
 
-    user = await prisma.user.create({
-      data: {
+    const record = await prisma.otp.findFirst({
+      where: {
         email,
-        name: name ?? null,
-        passwordHash: passHash,
+        purpose,
+        used: false,
+        expiresAt: { gt: new Date() },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    if (!record) {
+      return NextResponse.json(
+        { error: "NO_VALID_OTP" },
+        { status: 400 }
+      );
+    }
+
+    const ok = await compareOtp(code, record.codeHash);
+    if (!ok) {
+      return NextResponse.json({ error: "INVALID_OTP" }, { status: 400 });
+    }
+
+    await prisma.otp.update({
+      where: { id: record.id },
+      data: { used: true },
+    });
+
+    let user = await prisma.user.findUnique({ where: { email } });
+
+    if (!user) {
+      const passHash = password ? await bcrypt.hash(password, 10) : null;
+
+      user = await prisma.user.create({
+        data: {
+          email,
+          fullName: name ?? null,
+          passwordHash: passHash,
+        },
+      });
+    }
+
+    return NextResponse.json({
+      ok: true,
+      user: {
+        id: user.id,
+        email: user.email,
+        fullName: user.fullName,
       },
     });
+  } catch (err) {
+    console.error("VERIFY OTP ERROR:", err);
+    return NextResponse.json({ error: "SERVER_ERROR" }, { status: 500 });
   }
-
-  // Optionally create a session token (or return success and let NextAuth handle)
-  // Return user basic
-  res.json({ ok: true, user: { id: user.id, email: user.email, name: user.name } });
-  return Response.json(
-  { error: "OTP_INVALID" },
-  { status: 400 }
-);
-
 }

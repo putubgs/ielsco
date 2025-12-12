@@ -74,8 +74,8 @@ return (
           <p className="text-gray-200 text-lg mb-10 leading-relaxed">
             {achievement.text}
             <br /><br />
-            At IELS, you’re not just learning English — you’re building a global future.
-            Your answers show a clear direction, and we're here to guide you every step of the way.
+            At IELS, you&apos;re not just learning English — you&apos;re building a global future.
+            Your answers show a clear direction, and we&apos;re here to guide you every step of the way.
           </p>
 
           {/* Daily Target */}

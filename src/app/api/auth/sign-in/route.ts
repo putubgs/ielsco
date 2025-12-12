@@ -1,40 +1,48 @@
-// pages/api/auth/sign-in.ts
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import bcrypt, { compare } from "bcryptjs";
+import bcrypt from "bcryptjs";
 import { sign } from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    
-  if (req.method !== "POST") return res.status(405).end();
+export async function POST(req: Request) {
+  try {
+    const { email, password } = await req.json();
 
-  const { email, password } = req.body;
-  if (!email || !password) return res.status(400).json({ error: "Email & password required" });
+    if (!email || !password) {
+      return NextResponse.json(
+        { error: "EMAIL_AND_PASSWORD_REQUIRED" },
+        { status: 400 }
+      );
+    }
 
-  const user = await prisma.user.findUnique({ where: { email } });
-  if (!user || !user.passwordHash) return res.status(401).json({ error: "Invalid credentials" });
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user || !user.passwordHash) {
+      return NextResponse.json({ error: "INVALID_CREDENTIALS" }, { status: 401 });
+    }
 
-  const ok = await bcrypt.compare(password, user.passwordHash);
-  if (!ok) return res.status(401).json({ error: "Invalid credentials" });
-  if (!user) {
-  return Response.json(
-    { error: "EMAIL_NOT_FOUND" },
-    { status: 400 }
-  );
-}
+    const match = await bcrypt.compare(password, user.passwordHash);
+    if (!match) {
+      return NextResponse.json({ error: "INVALID_CREDENTIALS" }, { status: 401 });
+    }
 
-  const valid = await compare(password, user.passwordHash);
-  if (!valid) {
-  return Response.json(
-    { error: "WRONG_PASSWORD" },
-    { status: 400 }
+    const token = sign(
+      { sub: user.id, email: user.email },
+      JWT_SECRET,
+      { expiresIn: "7d" }
     );
-}
 
-  // sign simple JWT (or use NextAuth session)
-  const token = sign({ sub: user.id, email: user.email }, JWT_SECRET, { expiresIn: "7d" });
-
-  res.json({ ok: true, token, user: { id: user.id, email: user.email, name: user.fullName } });
+    return NextResponse.json({
+      ok: true,
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        fullName: user.fullName,
+      },
+    });
+  } catch (err) {
+    console.error("SIGN IN ERROR:", err);
+    return NextResponse.json({ error: "SERVER_ERROR" }, { status: 500 });
+  }
 }

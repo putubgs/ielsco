@@ -39,7 +39,12 @@ export default function LoginPage() {
     defaultValues: { email: "", password: "" },
   });
 
-  const onSubmit = async (values: any) => {
+  type LoginForm = {
+  email: string;
+  password: string;
+};
+
+const onSubmit = async (values: LoginForm) => {
     setLoading(true);
     setServerError("");
 

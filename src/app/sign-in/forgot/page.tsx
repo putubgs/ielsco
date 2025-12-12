@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 
-export default function ForgotPage() {
+export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
-  const [msg, setMsg] = useState("");
-  const [error, setError] = useState("");
+  const [feedback, setFeedback] = useState<{ type: "error" | "success"; msg: string } | null>(null);
+  const [loading, setLoading] = useState(false);
 
   async function submit() {
-    setMsg("");
-    setError("");
+    setLoading(true);
+    setFeedback(null);
 
     const res = await fetch("/api/auth/forgot", {
       method: "POST",
@@ -19,36 +19,59 @@ export default function ForgotPage() {
     const data = await res.json();
 
     if (!res.ok) {
-      setError("We couldn't find an account with that email.");
+      setFeedback({ type: "error", msg: "We couldn't find an account with that email." });
+      setLoading(false);
       return;
     }
 
-    setMsg("We just sent a 6-digit OTP to your inbox! 📩");
-    window.location.href = "/sign-in/reset?email=" + email;
+    setFeedback({ type: "success", msg: "A 6-digit OTP has been sent to your email! 📩" });
+
+    setTimeout(() => {
+      window.location.href = `/sign-in/forgot/verify?email=${email}`;
+    }, 800);
   }
 
   return (
-    <div className="p-10 max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4 text-[#2F4157]">
-        Reset your password
-      </h2>
+    <div className="p-6 min-h-screen flex items-center justify-center">
+      <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md space-y-6">
+        <h2 className="text-2xl font-bold text-[#2F4157] text-center">
+          Forgot Your Password?
+        </h2>
 
-      <input
-        className="border rounded-xl w-full p-3 bg-[#F7F8FA]"
-        placeholder="Your email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+        <p className="text-gray-600 text-center">
+          Enter your email and we'll send you an OTP to reset your password.
+        </p>
 
-      {error && <p className="text-[#E56668] text-sm mt-2">{error}</p>}
-      {msg && <p className="text-green-600 text-sm mt-2">{msg}</p>}
+        <input
+          className="border rounded-xl w-full p-3 bg-[#F7F8FA] focus:outline-none focus:ring-2 focus:ring-[#E56668]"
+          placeholder="Your email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-      <button
-        className="mt-4 w-full bg-[#E56668] text-white py-3 rounded-full hover:bg-[#C04C4E]"
-        onClick={submit}
-      >
-        Send OTP
-      </button>
+        {feedback && (
+          <p className={`text-sm text-center ${
+            feedback.type === "error" ? "text-[#E56668]" : "text-green-600"
+          }`}>
+            {feedback.msg}
+          </p>
+        )}
+
+        <button
+          disabled={loading}
+          onClick={submit}
+          className="w-full py-3 rounded-full bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] disabled:bg-[#C04C4E]"
+        >
+          {loading ? "Sending OTP…" : "Send OTP"}
+        </button>
+
+        <p className="text-center text-sm text-gray-500">
+          Remember your password?{" "}
+          <a href="/sign-in" className="text-[#E56668] font-semibold hover:underline">
+            Sign in
+          </a>
+        </p>
+      </div>
     </div>
   );
 }

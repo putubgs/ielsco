@@ -42,6 +42,7 @@ model Otp {
   email      String
   codeHash   String
   purpose    String   // "signup" | "forgot"
+  used       Boolean @default(false)
   expiresAt  DateTime
   createdAt  DateTime @default(now())
 

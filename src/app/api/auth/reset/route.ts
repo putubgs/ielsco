@@ -1,27 +1,62 @@
-// pages/api/auth/reset.ts
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { compareOtp } from "@/lib/otp";
 import bcrypt from "bcryptjs";
+import { compareOtp } from "@/lib/otp";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "POST") return res.status(405).end();
-  const { email, code, password } = req.body;
-  if (!email || !code || !password) return res.status(400).json({ error: "Missing fields" });
+export async function POST(req: Request) {
+  try {
+    const { email, code, password } = await req.json();
 
-  const record = await prisma.otp.findFirst({
-    where: { email, purpose: "reset", used: false, expiresAt: { gt: new Date() } },
-    orderBy: { createdAt: "desc" },
-  });
+    if (!email || !code || !password) {
+      return NextResponse.json(
+        { error: "MISSING_FIELDS" },
+        { status: 400 }
+      );
+    }
 
-  if (!record) return res.status(400).json({ error: "No valid OTP" });
-  const ok = await compareOtp(code, record.codeHash);
-  if (!ok) return res.status(400).json({ error: "Invalid code" });
+    const record = await prisma.otp.findFirst({
+      where: {
+        email,
+        purpose: "reset",
+        expiresAt: { gt: new Date() },
+        used: false, // pastikan field kamu ini bernama isUsed
+      },
+      orderBy: { createdAt: "desc" },
+    });
 
-  await prisma.otp.update({ where: { id: record.id }, data: { used: true } });
+    if (!record) {
+      return NextResponse.json(
+        { error: "NO_VALID_OTP" },
+        { status: 400 }
+      );
+    }
 
-  const passHash = await bcrypt.hash(password, 10);
-  await prisma.user.update({ where: { email }, data: { passwordHash: passHash } });
+    const ok = await compareOtp(code, record.codeHash);
+    if (!ok) {
+      return NextResponse.json(
+        { error: "INVALID_CODE" },
+        { status: 400 }
+      );
+    }
 
-  res.json({ ok: true });
+    await prisma.otp.update({
+      where: { id: record.id },
+      data: { used: true },
+    });
+
+    const hash = await bcrypt.hash(password, 10);
+
+    await prisma.user.update({
+      where: { email },
+      data: { passwordHash: hash },
+    });
+
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    console.error("RESET ERROR:", err);
+    return NextResponse.json(
+      { error: "SERVER_ERROR" },
+      { status: 500 }
+    );
+  }
 }

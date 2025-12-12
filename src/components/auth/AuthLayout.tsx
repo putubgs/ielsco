@@ -13,11 +13,11 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         {/* ---------------------------- */}
         <div className="text-center mb-10 mt-1">
           <h1 className="text-3xl md:text-4xl font-extrabold text-[#2F4157] leading-snug">
-            Let’s begin your journey ✨
+            Let&apos;s begin your journey ✨
           </h1>
 
           <p className="text-gray-600 text-lg mt-2">
-            I'm excited to help you unlock global opportunities.
+            I&apos;m excited to help you unlock global opportunities.
           </p>
         </div>
 

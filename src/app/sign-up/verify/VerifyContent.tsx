@@ -1,11 +1,11 @@
 "use client";
+
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-export default function VerifyOtpPage() {
+export default function VerifyContent() {
   const params = useSearchParams();
-  const email = params.get("email") || "";
-
+  const email = params.get("email") ?? "";
   const [code, setCode] = useState("");
   const [msg, setMsg] = useState("");
 
@@ -16,29 +16,28 @@ export default function VerifyOtpPage() {
     });
 
     const data = await res.json();
-    if (!res.ok) {
-      setMsg(data.error || "Invalid code");
-      return;
-    }
+    if (!res.ok) return setMsg(data.error || "Invalid code");
 
     window.location.href = "/dashboard";
   }
 
   return (
-    <div className="p-10 max-w-md mx-auto space-y-4">
-      <h2 className="text-2xl font-bold">Verify Your Email</h2>
+    <div className="p-10 max-w-md mx-auto space-y-6">
+      <h2 className="text-2xl font-bold text-[#2F4157]">Verify Your Email</h2>
 
-      <p className="text-gray-600">We sent a 6-digit code to <b>{email}</b></p>
+      <p className="text-gray-600">
+        We sent a 6-digit code to <b>{email}</b>
+      </p>
 
       <input
-        className="border w-full p-3 rounded"
+        className="border rounded-xl w-full p-3 bg-[#F7F8FA]"
         placeholder="Enter OTP"
         value={code}
         onChange={(e) => setCode(e.target.value)}
       />
 
       <button
-        className="w-full bg-[#E56668] text-white py-3 rounded"
+        className="w-full bg-[#E56668] text-white py-3 rounded-full hover:bg-[#C04C4E]"
         onClick={submit}
       >
         Verify

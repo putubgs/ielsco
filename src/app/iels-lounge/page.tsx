@@ -169,7 +169,7 @@ export default function LoungePage() {
               <Link
                 href="https://www.instagram.com/p/YOUR_POST_LINK"
                 target="_blank"
-                className="inline-block bg-[#e56668] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#cc4f54] transition"
+                className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
               >
                 Read More on Instagram →
               </Link>
@@ -362,7 +362,7 @@ export default function LoungePage() {
 
           <Link
             href="/iels-lounge/pricing"
-            className="inline-block px-10 py-4 bg-gradient-to-r from-[#e56668] to-[#ff7b6e] text-white font-bold rounded-full shadow-lg hover:scale-[1.03] transition"
+            className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
           >
             Join the Lounge →
           </Link>

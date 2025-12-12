@@ -16,7 +16,7 @@ export default function StartPage() {
             Let’s Find Your <span className="text-[#E56668]">English Journey!</span>
           </h1>
           <p className="text-base sm:text-lg text-gray-600 mb-12 max-w-2xl mx-auto">
-            Answer 6 friendly questions — it only takes 2 minutes.  
+            Answer these friendly questions — it only takes 2 minutes.  
             Your result will be <strong>personalized and actionable</strong> to guide your English learning path.
           </p>
 

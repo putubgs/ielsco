@@ -93,7 +93,7 @@ export default function CoursesPage() {
                   href="/docs/arba-credentials.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm inline-block bg-[#294154] text-white px-4 py-2 rounded-full hover:bg-[#0f2d6b] transition-colors"
+                  className="inline-flex items-center justify-center rounded-full px-4 py-2 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition transform hover:scale-[1.02]"
                 >
                   View Credentials
                 </a>
@@ -101,7 +101,7 @@ export default function CoursesPage() {
                   href="https://linkedin.com/in/arbadzarido"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm inline-flex items-center gap-2 bg-[#E56668] text-white px-4 py-2 rounded-full hover:bg-[#C04C4E] transition-colors"
+                  className="inline-flex items-center justify-center rounded-full px-4 py-2 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
                 >
                   🔗 LinkedIn
                 </a>
@@ -109,7 +109,7 @@ export default function CoursesPage() {
                   href="https://instagram.com/arbadzarido"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm inline-flex items-center gap-2 bg-[#E56668] text-white px-4 py-2 rounded-full hover:bg-[#C04C4E] transition-colors"
+                  className="inline-flex items-center justify-center rounded-full px-4 py-2 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
                 >
                   📸 Instagram
                 </a>
@@ -223,7 +223,7 @@ export default function CoursesPage() {
             <p className="mt-4 text-gray-700">You’re not only learning. You’re connecting to real opportunities.</p>
 
             <div className="mt-4">
-              <Link href="/stories" className="inline-block bg-[#E56668] px-4 py-2 rounded-full text-white font-semibold hover:bg-[#c74e56] transition-colors">
+              <Link href="/stories" className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]">
                 Discover Member Stories
               </Link>
             </div>
@@ -264,11 +264,11 @@ export default function CoursesPage() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <a href="https://wa.me/6288297253491" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-[#E56668] text-white font-semibold hover:bg-[#c74e56] transition">
+            <a href="https://wa.me/6288297253491" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]">
               Book Now via WhatsApp
             </a>
 
-            <a href="mailto:arbadza@ielsco.com" className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-white border border-[#294154] text-[#294154] font-semibold hover:bg-[#294154] hover:text-white transition">
+            <a href="mailto:arbadza@ielsco.com" className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition transform hover:scale-[1.02]">
               Email for Custom Plan
             </a>
           </div>
@@ -345,7 +345,7 @@ export default function CoursesPage() {
             href="https://wa.me/6288297253491"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-8 py-4 rounded-full bg-[#E56668] text-white font-semibold hover:bg-[#c74e56] transition text-lg"
+            className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
           >
             🌟 Start My English Journey (WhatsApp)
           </a>
@@ -354,7 +354,7 @@ export default function CoursesPage() {
             href="/docs/payment-instructions.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-8 py-4 rounded-full bg-white text-[#294154] font-semibold hover:bg-[#f1f5f9] transition text-lg"
+            className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-white text-[#294154] font-semibold hover:bg-gray-300 transition transform hover:scale-[1.02]"
           >
             📄 View Payment Instructions
           </a>
@@ -385,7 +385,7 @@ export default function CoursesPage() {
 
           <Link
             href="/iels-lounge"
-            className="inline-flex items-center px-8 py-4 rounded-full bg-[#E56668] text-white font-semibold hover:bg-[#c74e56] transition text-lg whitespace-nowrap"
+            className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02] whitespace-nowrap"
           >
             Explore IELS Lounge →
           </Link>

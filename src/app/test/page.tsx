@@ -531,36 +531,6 @@ export default function TestSelectionPage() {
               </div>
             </article>
 
-  
-
-          {/* Contact */}
-          <article className="bg-white rounded-2xl p-6 shadow-sm border border-[#294154]/6">
-            <h3 className="text-xl font-semibold mb-3">Need help?</h3>
-
-            <p className="text-gray-700 mb-4">
-              If you experience issues or have questions, contact our support team:
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a className="flex-1 items-center gap-3 p-4 rounded-lg border border-[#294154]/8 hover:shadow-sm transition"
-                 href="mailto:support@ielsco.com">
-                <span className="font-semibold">📧 Email</span>
-                <span className="text-gray-600">support@ielsco.com</span>
-              </a>
-
-              <a className="flex-1 items-center gap-3 p-4 rounded-lg border border-[#294154]/8 hover:shadow-sm transition"
-                 href="https://wa.me/6288297253491" target="_blank" rel="noreferrer">
-                <span className="font-semibold">📱 WhatsApp</span>
-                <span className="text-gray-600">+62 882-9725-3491</span>
-              </a>
-
-              <div className="flex-1 items-center gap-3 p-4 rounded-lg border border-[#294154]/8 hover:shadow-sm transition">
-                <div className="font-semibold">🕘 Support hours</div>
-                <div className="text-gray-600 text-sm">Mon–Fri, 09:00–17:00 (WIB)</div>
-              </div>
-            </div>
-          </article>
-
         </div>
       
     </main>

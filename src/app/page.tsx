@@ -56,15 +56,26 @@ export default function Home() {
         that helps you <strong>learn, speak, and grow</strong> toward your global goals.
       </p>
 
-      {/* CTA Button */}
-      <div className="flex justify-center lg:justify-start pt-2">
-        <Link
-          href="/start"
-          className="rounded-full bg-[#E56668] text-white px-8 py-3 font-semibold text-lg border border-transparent hover:bg-[#2F4157] transition-colors duration-300"
-        >
-          Start Now 🚀
-        </Link>
-      </div>
+          {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 pt-4">
+
+          {/* Start Now */}
+          <Link
+            href="/welcome/start"
+            className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
+          >
+            Start Now 🚀
+          </Link>
+
+          {/* Already have an account */}
+          <Link
+            href="/sign-in"
+            className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition transform hover:scale-[1.02]" 
+          >
+            I have an account
+          </Link>
+
+        </div>
     </div>
 
     {/* optional: subtle background overlay for clarity */}
@@ -282,7 +293,7 @@ export default function Home() {
       </p>
       <Link
         href="/stories"
-        className="inline-block rounded-full bg-[#E56668] text-white px-6 sm:px-8 py-3 text-base sm:text-lg font-semibold border border-transparent hover:bg-[#2F4157] hover:text-white transition-colors duration-300"
+        className="inline-flex items-center justify-center rounded-full px-7 py-4 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
       >
         Discover More Member Stories
       </Link>
@@ -305,7 +316,7 @@ export default function Home() {
       <div className="hidden lg:block mt-6">
         <br/><Link
           href="/iels-lounge"
-          className="rounded-full bg-[#E56668] text-white px-8 py-3 font-semibold text-lg hover:bg-[#2F4157] transition-colors duration-300"
+          className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
         >
           Join the Community
         </Link>
@@ -338,7 +349,7 @@ export default function Home() {
       <div className="block lg:hidden mt-4">
         <Link
           href="/iels-lounge"
-          className="rounded-full bg-[#E56668] text-white px-8 py-3 font-semibold text-lg hover:bg-[#2F4157] transition-colors duration-300"
+          className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
         >
           Join the Community
         </Link>
@@ -362,7 +373,7 @@ export default function Home() {
       </p>
       <br/><Link
         href="/test"
-        className="rounded-full bg-[#E56668] text-white px-8 py-3 font-semibold text-lg border border-transparent hover:bg-[#2F4157] transition-colors duration-300"
+        className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
       >
         Take the Test
       </Link>
@@ -396,9 +407,8 @@ export default function Home() {
         <strong className="text-[#E56668]"> IELS for Schools</strong> is a year-long structured program packed with challenges, mentorship, and cultural immersion designed for real student growth.
       </p>
       <br/><Link
-        href="/schools"
-        className="rounded-full bg-[#E56668] text-white px-8 py-3 font-semibold text-lg border border-transparent hover:bg-[#2F4157] transition-colors duration-300"
-      >
+        href="/products/schools"
+        className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]">
         Explore the Program
       </Link>
     </div>
@@ -420,7 +430,7 @@ export default function Home() {
       <br/>
       <Link
         href="/events"
-        className="rounded-full bg-[#E56668] text-white px-8 py-3 font-semibold text-lg border border-transparent hover:bg-[#2F4157] transition-colors duration-300"
+        className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
       >
         See What’s On
       <br/></Link>
@@ -457,8 +467,8 @@ export default function Home() {
         Learn anywhere, anytime, at your own pace.
       </p>
       <br/><Link
-        href="/resources"
-        className="rounded-full bg-[#E56668] text-white px-8 py-3 font-semibold text-lg border border-transparent hover:bg-[#2F4157] transition-colors duration-300"
+        href="/products/resources"
+        className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
       >
         Access Library
       </Link>
@@ -480,7 +490,7 @@ export default function Home() {
       </p>
       <br/><Link
         href="/partners"
-        className="rounded-full bg-[#E56668] text-white px-8 py-3 font-semibold text-lg border border-transparent hover:bg-[#2F4157] transition-colors duration-300"
+        className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
       >
         Become a Partner
       </Link>
@@ -502,7 +512,7 @@ export default function Home() {
     </h2>
     <Link
       href="/start"
-      className="rounded-full bg-[#E56668] text-white px-8 py-3 font-semibold text-lg border border-transparent hover:bg-[#2F4157] transition-colors duration-300"
+      className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
     >
       Start Now 🚀
     </Link>

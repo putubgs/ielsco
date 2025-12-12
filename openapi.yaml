@@ -1,0 +1,274 @@
+openapi: 3.0.3
+info:
+  title: IELS API
+  version: 1.0.0
+  description: API spec for IELS membership, test access, events, and Mayar integration.
+servers:
+  - url: https://api.yourdomain.com
+    description: Production
+  - url: http://localhost:3000
+    description: Local dev
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    SendLinkRequest:
+      type: object
+      required: [email]
+      properties:
+        email:
+          type: string
+          format: email
+    VerifyTokenRequest:
+      type: object
+      required: [token]
+      properties:
+        token:
+          type: string
+    AuthResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        expiresIn:
+          type: integer
+    UserBase:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+        displayName:
+          type: string
+        userIdCode:
+          type: string
+    MeResponse:
+      allOf:
+        - $ref: '#/components/schemas/UserBase'
+        - type: object
+          properties:
+            membership:
+              type: object
+              properties:
+                tier: { type: string }
+                active: { type: boolean }
+                expiresAt: { type: string, format: date-time }
+    ValidateCodeRequest:
+      type: object
+      required: [code]
+      properties:
+        code: { type: string }
+    ValidateCodeResponse:
+      type: object
+      properties:
+        ok: { type: boolean }
+        status: { type: string, enum: [valid, used, invalid] }
+        message: { type: string }
+
+    MayarWebhook:
+      type: object
+      description: Raw payload from Mayar — stored as-is (schema depends on Mayar)
+      properties:
+        txId:
+          type: string
+        status:
+          type: string
+        data:
+          type: object
+
+    Event:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        title: { type: string }
+        slug: { type: string }
+        capacity: { type: integer }
+        premiumOnly: { type: boolean }
+        startsAt: { type: string, format: date-time }
+
+security:
+  - BearerAuth: []
+
+paths:
+  /auth/send-link:
+    post:
+      summary: Send magic login link to email
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendLinkRequest'
+      responses:
+        '200':
+          description: Link queued (check email)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  message: { type: string }
+
+  /auth/verify:
+    post:
+      summary: Verify magic token and return JWT
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyTokenRequest'
+      responses:
+        '200':
+          description: Auth tokens
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+
+  /me:
+    get:
+      summary: Get current user profile & membership
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeResponse'
+    put:
+      summary: Update current profile
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName: { type: string }
+                shortTermGoal: { type: string }
+                longTermGoal: { type: string }
+      responses:
+        '200':
+          description: updated
+
+  /validate/code:
+    post:
+      summary: Validate access code (simple check)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidateCodeRequest'
+      responses:
+        '200':
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateCodeResponse'
+
+  /webhooks/mayar:
+    post:
+      summary: Webhook receiver for Mayar payments
+      description: Signed webhook. Validate signature server-side.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MayarWebhook'
+      responses:
+        '200':
+          description: accepted
+
+  /transactions/{txId}:
+    get:
+      summary: Lookup transaction
+      parameters:
+        - in: path
+          name: txId
+          schema: { type: string }
+          required: true
+      responses:
+        '200':
+          description: transaction
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /events:
+    get:
+      summary: List events
+      responses:
+        '200':
+          description: events list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+
+  /events/{id}/register:
+    post:
+      summary: Register current user to event
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: registered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  status: { type: string }
+
+  /products:
+    get:
+      summary: List products
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+
+  /admin/users:
+    get:
+      summary: Admin - list users (filter by membership)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: membership
+          schema: { type: string }
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserBase'

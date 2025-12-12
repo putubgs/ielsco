@@ -1,14 +1,49 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
+// ------------------------------------------------------
+// Prisma Client Generator
+// ------------------------------------------------------
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
+// ------------------------------------------------------
+// Datasource — NO URL HERE (URL is now in prisma.config.ts)
+// ------------------------------------------------------
 datasource db {
   provider = "postgresql"
+}
+
+// ------------------------------------------------------
+// MODELS
+// Fully compatible with:
+// - sign up
+// - verify OTP
+// - sign in
+// - forgot password
+// - reset password
+// ------------------------------------------------------
+
+// Main user table
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  fullName     String?
+  passwordHash String?
+  userIdCode   String?  @unique
+  createdAt    DateTime @default(now())
+  lastSeen     DateTime?
+
+  // relations
+  otps Otp[]
+}
+
+// OTP storage for sign-up, forgot-password, etc.
+model Otp {
+  id         String   @id @default(cuid())
+  email      String
+  codeHash   String
+  purpose    String   // "signup" | "forgot"
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+
+  user   User?   @relation(fields: [email], references: [email])
 }

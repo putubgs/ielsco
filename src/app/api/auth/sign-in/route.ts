@@ -36,5 +36,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // sign simple JWT (or use NextAuth session)
   const token = sign({ sub: user.id, email: user.email }, JWT_SECRET, { expiresIn: "7d" });
 
-  res.json({ ok: true, token, user: { id: user.id, email: user.email, name: user.name } });
+  res.json({ ok: true, token, user: { id: user.id, email: user.email, name: user.fullName } });
 }

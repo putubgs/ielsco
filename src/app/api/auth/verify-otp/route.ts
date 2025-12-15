@@ -12,14 +12,14 @@ export async function POST(req: Request) {
     );
   }
 
-  let user = await prisma.user.findUnique({ where: { email } });
+  let user = await prisma.users.findUnique({ where: { email } });
 
   if (!user) {
-    user = await prisma.user.create({
+    user = await prisma.users.create({
       data: {
         email,
-        fullName: name ?? null,
-        passwordHash: password ?? null, // TODO: hash later
+        full_name: name ?? null,
+        password_hash: password ?? null, // TODO: hash later
       },
     });
   }
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     user: {
       id: user.id,
       email: user.email,
-      fullName: user.fullName,
+      fullName: user.full_name,
     },
   });
 }

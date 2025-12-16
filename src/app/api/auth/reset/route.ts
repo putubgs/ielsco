@@ -15,9 +15,9 @@ export async function POST(req: Request) {
 
   const hash = await bcrypt.hash(password, 10);
 
-  await prisma.user.update({
+  await prisma.users.update({
     where: { email },
-    data: { passwordHash: hash },
+    data: { password_hash: hash },
   });
 
   console.log("[DEV] Password reset without OTP:", email);

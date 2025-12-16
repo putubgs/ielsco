@@ -9,7 +9,7 @@ export async function POST(req: Request) {
       return Response.json({ error: "EMAIL_REQUIRED" }, { status: 400 });
     }
 
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.users.findUnique({ where: { email } });
 
     if (!user) {
       // NOTE: jangan leak info user existence di production

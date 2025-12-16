@@ -16,12 +16,12 @@ export async function POST(req: Request) {
       );
     }
 
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user || !user.passwordHash) {
+    const user = await prisma.users.findUnique({ where: { email } });
+    if (!user || !user.password_hash) {
       return NextResponse.json({ error: "INVALID_CREDENTIALS" }, { status: 401 });
     }
 
-    const match = await bcrypt.compare(password, user.passwordHash);
+    const match = await bcrypt.compare(password, user.password_hash);
     if (!match) {
       return NextResponse.json({ error: "INVALID_CREDENTIALS" }, { status: 401 });
     }
@@ -38,7 +38,7 @@ export async function POST(req: Request) {
       user: {
         id: user.id,
         email: user.email,
-        fullName: user.fullName,
+        fullName: user.full_name,
       },
     });
   } catch (err) {

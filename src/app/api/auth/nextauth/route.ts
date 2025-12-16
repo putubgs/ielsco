@@ -35,15 +35,15 @@ const handler = NextAuth({
           return null;
         }
 
-        const user = await prisma.user.findUnique({
+        const user = await prisma.users.findUnique({
           where: { email: credentials.email },
         });
 
-        if (!user || !user.passwordHash) return null;
+        if (!user || !user.password_hash) return null;
 
         const valid = await bcrypt.compare(
           credentials.password,
-          user.passwordHash
+          user.password_hash
         );
 
         if (!valid) return null;
@@ -51,7 +51,7 @@ const handler = NextAuth({
         return {
           id: user.id,
           email: user.email,
-          fullName: user.fullName ?? null,
+          fullName: user.full_name ?? null,
         };
       },
     }),

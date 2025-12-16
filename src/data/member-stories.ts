@@ -263,5 +263,136 @@ export const memberStoriesData: MemberStory[] = [
     meta_keywords:
       "IELS, speaker story, Muhammad Zaki Fazansyah, Global UGRAD, University of South Dakota, biomedical engineering, international exchange, scholarship journey, cultural exchange, academic growth",
   },
+  },
+  {
+  id: "7",
+  title: "Proving Doubts Wrong: Yosua’s Journey as a BPC Winner",
+  subcategory: "Internals",
+  content: `<div>
+<div><strong>Yosua, a Universitas Indonesia student and Project Marketing Associate at IELS, challenged his own doubts by stepping into a business proposal competition—despite not coming from a business background.</strong></div>
+<div>&nbsp;</div>
+<div>“My main reason for joining was to prove that anyone can become anything they want, regardless of major, faculty, or background,” Yosua shared. Still, the doubt lingered. <em>“Can someone who isn’t from a business background actually win a business competition?”</em></div>
+<div>&nbsp;</div>
+<div>Instead of stepping back, Yosua chose to move forward. He committed himself fully to the process—researching, refining ideas, and continuously learning along the way. “But we must keep moving forward,” he asserted. That mindset became the foundation of his growth.</div>
+<div>&nbsp;</div>
+<div>One of his biggest advantages came from his <strong>English proficiency</strong>. Most of the research materials he relied on were written in English, allowing him to access broader perspectives and stronger references during the preparation stage.</div>
+<div>&nbsp;</div>
+<div>Through persistence and self-belief, Yosua proved that background does not define capability. His journey stands as a reminder that confidence, consistency, and willingness to learn can open doors far beyond one’s original field of study.</div>
+<div>&nbsp;</div>
+<div><em>“English is that important. You’ll find countless opportunities once you can speak it. Even if you have many doubts, keep walking—and you’ll get there.”</em></div>
+<div>&nbsp;</div>
+</div>
+<h4>✍️ Content Written <strong>by Valerine Aubrey Surjadi</strong><br /> 🎨 Design <strong>by Zainufri Aziz</strong></h4>
+<p>&nbsp;</p>
+<a href="https://www.instagram.com/p/DP5yWFikS-L/?img_index=1" target="_blank"
+   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
+   Read More
+</a>`,
+  bannerImage:
+    "/images/contents/stories/member-stories/banner/usa-banner.png",
+  author: {
+    name: "Yosua - IELS Internal Member",
+    avatar:
+      "/images/contents/stories/member-stories/profile/yosua.png",
+  },
+  date: "October 3, 2025",
+  location: "Depok, Indonesia",
+  seo: {
+    meta_title:
+      "Yosua’s Business Proposal Competition Journey - IELS Internal Story",
+    meta_description:
+      "Read how Yosua, an IELS internal member and Universitas Indonesia student, overcame doubts and won a business proposal competition by leveraging confidence, persistence, and English proficiency.",
+    meta_keywords:
+      "IELS internal story, Yosua IELS, business proposal competition, English advantage, student achievement, self growth, academic confidence",
+  },
+},
+{
+  id: "8",
+  title: "Learning Through Challenge: Fauzi’s Experience in a BPC",
+  subcategory: "Internals",
+  content: `<div>
+<div><strong>Fauzi, a Universitas Indonesia student and Project Marketing Associate at IELS, sees every new experience as a chance to grow—and the business proposal competition was no exception.</strong></div>
+<div>&nbsp;</div>
+<div>Driven by curiosity and a desire to learn, Fauzi signed up for the competition with an open mindset. “There were definite challenges,” he recalled, especially during the pitching session, which he described as confusing and anxiety-inducing. <em>“But the experience was super fun.”</em></div>
+<div>&nbsp;</div>
+<div>Rather than focusing solely on the outcome, Fauzi embraced the learning process. Navigating pressure, structuring ideas, and presenting them clearly became valuable lessons that extended beyond the competition itself.</div>
+<div>&nbsp;</div>
+<div>His English communication skills also played an important role. “The communication skills I learned in English translated directly into how I prepared,” Fauzi shared. They gave him a strong reference point for understanding what effective marketing messages and impactful pitches look like.</div>
+<div>&nbsp;</div>
+<div>For Fauzi, the competition offered more than a title. It sharpened his confidence, expanded his perspective, and reinforced the idea that growth often comes from stepping into unfamiliar territory.</div>
+<div>&nbsp;</div>
+<div><em>Enjoy the process, stay curious, and keep learning—because every challenge carries lessons worth taking.</em></div>
+<div>&nbsp;</div>
+</div>
+<h4>✍️ Content Written <strong>by Valerine Aubrey Surjadi</strong><br /> 🎨 Design <strong>by Zainufri Aziz</strong></h4>
+<p>&nbsp;</p>
+<a href="https://www.instagram.com/p/DP5yWFikS-L/?img_index=1" target="_blank"
+   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
+   Read More
+</a>`,
+  bannerImage:
+    "/images/contents/stories/member-stories/banner/usa-banner.png",
+  author: {
+    name: "Fauzi - IELS Internal Member",
+    avatar:
+      "/images/contents/stories/member-stories/profile/fauzi.png",
+  },
+  date: "October 3, 2025",
+  location: "Depok, Indonesia",
+  seo: {
+    meta_title:
+      "Fauzi’s Learning Journey in a Business Proposal Competition - IELS Internal Story",
+    meta_description:
+      "Discover how Fauzi, an IELS internal member, embraced challenges and personal growth through a business proposal competition, gaining confidence and communication skills along the way.",
+    meta_keywords:
+      "IELS internal story, Fauzi IELS, student competition experience, English communication skills, learning journey, self development",
+  },
+},
+{
+  id: "9",
+  title: "Exchange to Japan with English: Dzakwaan’s Journey at Tohoku University",
+  subcategory: "Lounge",
+  content: `<div>
+<div><strong>Ahmad Zakwaan Haniif Herefa, an Aerospace Engineering student from Institut Teknologi Bandung, is currently pursuing his long-time dream through an exchange program at <em>Tohoku University</em>, Japan.</strong></div>
+<div>&nbsp;</div>
+<div>Robotics and aerospace engineering have always been at the core of Dzakwaan’s interests. Alongside his passion for technology, he enjoys playing ping pong and exploring new places. Since high school, studying abroad—especially in Japan—had been his dream. “I admire Japan’s clean cities and advanced technology,” he shared. <em>“I really wanted to experience living and studying here.”</em></div>
+<div>&nbsp;</div>
+<div>After spending nearly two months in Japan, Dzakwaan describes the experience as eye-opening. From the environment and culture to the overall quality of life, Japan felt very different from Indonesia. He has also built friendships with international students at Tohoku University, which strengthened his global communication skills and appreciation for Japan’s culture of discipline.</div>
+<div>&nbsp;</div>
+<div>Academically, the experience has been equally exciting. His classes and research are conducted fully in English, making it easier for him to follow discussions and collaborate. Studying in an international space robotics laboratory alongside undergraduate, master’s, PhD, and postdoctoral researchers has been one of the most inspiring parts of his journey.</div>
+<div>&nbsp;</div>
+<div>Despite having limited Japanese proficiency, Dzakwaan found that <strong>English played a far more crucial role</strong> in the exchange process. From administrative requirements and registration—often involving English proficiency certificates such as IELTS, TOEFL, or TOEIC—to university classes, research activities, and social interactions, English became the main bridge throughout his exchange experience.</div>
+<div>&nbsp;</div>
+<div><em>“English skills are the key to unlocking global opportunity.”</em></div>
+<div>&nbsp;</div>
+<div>Reflecting on his journey, Dzakwaan encourages others to dream boldly and take action. <em>“The most important thing is to have the courage to dream and try. Not everyone has the courage to do that. It’s better to try and fail than fail to try.”</em></div>
+<div>&nbsp;</div>
+</div>
+<h4>✍️ Content Written <strong>by Valerine Aubrey Surjadi</strong><br /> 🎨 Design <strong>by IELS Creative Team</strong></h4>
+<p>&nbsp;</p>
+<a href="https://www.instagram.com/p/DRt0M7ngZIK/?img_index=1" target="_blank"
+   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
+   Read More
+</a>`,
+  bannerImage:
+    "/images/contents/stories/member-stories/banner/japan.png",
+  author: {
+    name: "Ahmad Zakwaan Haniif Herefa - IELS Lounge Member",
+    avatar:
+      "/images/contents/stories/member-stories/profile/dzakwan.png",
+  },
+  date: "October 2025",
+  location: "Sendai, Japan",
+  seo: {
+    meta_title:
+      "Dzakwaan’s Exchange Journey in Japan with English - IELS Lounge Story",
+    meta_description:
+      "Read how Ahmad Zakwaan Haniif Herefa, an ITB student and IELS Lounge member, pursued an exchange program at Tohoku University, Japan—using English as the key to global academic opportunities.",
+    meta_keywords:
+      "IELS Lounge, exchange to Japan, Tohoku University, ITB student exchange, English for exchange program, global academic experience, student story Japan",
+  },
 }
+
+
+
 ];

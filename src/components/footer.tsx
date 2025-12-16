@@ -41,11 +41,11 @@ export default function Footer() {
               { name: "Approach", url: "/about" },
               { name: "Partners", url: "/partners" },
               { name: "Careers", url: "/careers" },
-              { name: "Testimonials", url: "/testimonials" },
+              { name: "Testimonials", url: "/iels-lounge#testimonials" },
               { name: "Research", url: "/#" },
-              { name: "Courses", url: "/#" },
+              { name: "Courses", url: "/courses" },
               { name: "IELS Guidelines", url: "/#" },
-              { name: "Contact Us", url: "/#" },
+              { name: "Contact Us", url: "https://wa.me/6285770024261", target:"_blank" },
             ].map((item) => (
               <Link
                 key={item.name}

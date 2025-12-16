@@ -284,7 +284,8 @@ export default function LoungePage() {
 
 
        {/* ===== TESTIMONIALS ===== */}
-        <section className="py-24 px-6 text-center">
+        <section id="testimonials"
+        className="py-24 px-6 text-center">
           <h2 className="text-3xl font-bold mb-8">What Our Members Say</h2>
 
           <div className="flex justify-center items-center gap-6 overflow-hidden">

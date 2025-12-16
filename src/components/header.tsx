@@ -76,7 +76,8 @@ export default function Header() {
 
   if (item.children) {
     const isOpen = openDropdown === item.name;
-    const isActive = pathname === item.path;
+    const isActive =
+  pathname === item.path || pathname.startsWith(item.path + "/") || pathname.startsWith("/test") || pathname.startsWith("/iels-lounge");
 
     return (
       <div key={item.name} className="relative">
@@ -139,7 +140,8 @@ export default function Header() {
   }
 
   // NORMAL ITEM
-  const isActive = pathname === item.path;
+  const isActive =
+  pathname === item.path || pathname.startsWith(item.path + "/");
   return (
     <Link
       key={item.path}
@@ -176,7 +178,8 @@ export default function Header() {
 
           // dropdown items
           if (item.children) {
-            const isActive = pathname === item.path;
+            const isActive =
+  pathname === item.path || pathname.startsWith(item.path + "/") || pathname.startsWith("/test") || pathname.startsWith("/iels-lounge");
             return (
               <div key={item.name} className="relative group">
                 <div
@@ -208,7 +211,8 @@ export default function Header() {
           }
 
           // plain link
-          const isActive = pathname === item.path;
+          const isActive =
+  pathname === item.path || pathname.startsWith(item.path + "/");
           return (
             <Link
               key={item.path}

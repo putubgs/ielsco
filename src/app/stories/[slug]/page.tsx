@@ -137,7 +137,7 @@ export default async function DetailStoriesPage({
           />
 
           {/* === MOBILE OVERLAP AVATAR === */}
-          <div className="absolute left-4 -bottom-[60px] md:hidden">
+          <div className="absolute left-6 -bottom-[80px] md:hidden">
             <div className="w-[160px] h-[160px] rounded-full overflow-hidden bg-white border-4 border-white">
               <Image
                 src={memberStory.author.avatar}
@@ -181,7 +181,7 @@ export default async function DetailStoriesPage({
             </div>
 
             {/* === MOBILE TITLE === */}
-            <div className="md:hidden flex flex-col gap-4 mb-6">
+            <div className="md:hidden flex flex-col gap-4 mt-3 mb-6">
               <p className="text-xl font-bold text-[#2F4157]">
                 {memberStory.title}
               </p>

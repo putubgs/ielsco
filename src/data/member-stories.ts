@@ -266,7 +266,7 @@ export const memberStoriesData: MemberStory[] = [
   },
   {
   id: "7",
-  title: "Proving Doubts Wrong: Yosua’s Journey as a BPC Winner",
+  title: "Proving Doubts Wrong: Yosua’s Journey as a Business Proposal Competition Winner",
   subcategory: "Internals",
   content: `<div>
 <div><strong>Yosua, a Universitas Indonesia student and Project Marketing Associate at IELS, challenged his own doubts by stepping into a business proposal competition—despite not coming from a business background.</strong></div>
@@ -308,7 +308,7 @@ export const memberStoriesData: MemberStory[] = [
 },
 {
   id: "8",
-  title: "Learning Through Challenge: Fauzi’s Experience in a BPC",
+  title: "Learning Through Challenge: Fauzi’s Experience in a Business Proposal Competition",
   subcategory: "Internals",
   content: `<div>
 <div><strong>Fauzi, a Universitas Indonesia student and Project Marketing Associate at IELS, sees every new experience as a chance to grow—and the business proposal competition was no exception.</strong></div>

@@ -14,16 +14,18 @@ export default function Home() {
   {/* Hero Section */}
 <div
   className="
-    relative
-    px-4 sm:px-8 lg:px-[100px]
-    flex flex-col lg:flex-row
-    items-center justify-center
-    w-full gap-[40px] lg:gap-[80px]
-    mt-[20px] sm:mt-[40px] lg:-mt-[120px]  // ✅ adjust margin by breakpoint
-    min-h-[70vh] sm:min-h-[80vh] lg:min-h-[90vh]  // ✅ responsive height
-    bg-[url(/images/contents/general/indonesia_map.png)]
-    bg-no-repeat bg-cover bg-center overflow-hidden
-  "
+      relative
+      px-4 sm:px-8 lg:px-[100px]
+      flex flex-col lg:flex-row
+      items-center justify-center
+      w-full
+      gap-8 lg:gap-16
+      pt-16 sm:pt-26 lg:pt-30
+      pb-20 lg:pb-28
+      bg-[url(/images/contents/general/indonesia_map.png)]
+      bg-no-repeat bg-cover bg-center
+      overflow-hidden
+    "
 >
   {/* === Mascot (Top on Mobile, Left on Desktop) === */}
   <div className="order-1 lg:order-none flex justify-center items-center w-full lg:w-1/2 z-10 mt-[-10px] sm:mt-0 lg:mt-0">
@@ -358,7 +360,7 @@ export default function Home() {
   </div>
 </div>
  {/* ===== IELS English Test ===== */}
-<section className="py-20 px-6 sm:px-10 lg:px-[100px]">
+<section className="py-4 px-6 sm:px-10 lg:px-[100px]">
   <div className="max-w-6xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-10">
     <div className="flex-1 text-center lg:text-left">
       <h2 className="text-[28px] sm:text-[36px] lg:text-[52px] font-extrabold mb-4">
@@ -389,7 +391,7 @@ export default function Home() {
 </section>
 
 {/* ===== IELS for Schools ===== */}
-<section className="py-20 px-6 sm:px-10 lg:px-[100px]">
+<section className="py-4 px-5 sm:px-10 lg:px-[100px]">
   <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-10">
     <div className="flex-1 flex justify-center">
       <img
@@ -416,7 +418,7 @@ export default function Home() {
 </section>
 
 {/* ===== IELS Events ===== */}
-<section className="py-20 px-6 sm:px-10 lg:px-[100px]">
+<section className="py-4 px-6 sm:px-10 lg:px-[100px]">
   <div className="max-w-6xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-10">
     <div className="flex-1 text-center lg:text-left">
       <h2 className="text-[28px] sm:text-[36px] lg:text-[52px] font-extrabold mb-4">
@@ -446,7 +448,7 @@ export default function Home() {
 </section>
 
 {/* ===== Free Resources ===== */}
-<section className="py-20 px-6 sm:px-10 lg:px-[100px]">
+<section className="py-4 px-6 sm:px-10 lg:px-[100px]">
   <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-10">
     <div className="flex-1 flex justify-center">
       <img
@@ -477,7 +479,7 @@ export default function Home() {
 </section>
 
 {/* ===== Partner with IELS ===== */}
-<section className="py-20 px-6 sm:px-10 lg:px-[100px]">
+<section className="py-4 px-6 sm:px-10 lg:px-[100px]">
   <div className="max-w-6xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-10">
     <div className="flex-1 text-center lg:text-left">
       <h2 className="text-[28px] sm:text-[36px] lg:text-[52px] font-extrabold mb-4">

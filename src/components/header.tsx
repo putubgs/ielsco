@@ -61,80 +61,99 @@ export default function Header() {
       {/* ---------------- TABLET NAV (md only) ---------------- */}
       <div className="hidden md:flex lg:hidden items-center gap-3 text-white">
         {navItems.map((item) => {
-          // handle Start specifically so it never inherits the "active => white bg" rule
-          if (item.isStart) {
-            return (
-              <div key={item.name} className="relative">
-                <Link
-                  href={item.path}
-                  onClick={closeMobileMenu}
-                  className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
-                  aria-label="Start"
-                >
-                  {item.name}
-                </Link>
-              </div>
-            );
-          }
+  if (item.isStart) {
+    return (
+      <Link
+        key={item.name}
+        href={item.path}
+        onClick={closeMobileMenu}
+        className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition"
+      >
+        {item.name}
+      </Link>
+    );
+  }
 
-          // normal items with dropdown
-          if (item.children) {
-            const isOpen = openDropdown === item.name;
-            const isActive = pathname === item.path;
-            return (
-              <div key={item.name} className="relative">
-                <button
-                  onClick={() => setOpenDropdown(isOpen ? null : item.name)}
-                  className={`flex items-center gap-1 px-4 py-2 rounded-full transition-all ${
-                    isActive ? "bg-white text-[#2F4157]" : "hover:bg-white/20"
-                  }`}
-                >
-                  {item.name}
-                  <svg
-                    className={`w-4 h-4 transition-transform ${
-                      isOpen ? "rotate-180" : ""
-                    }`}
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
+  if (item.children) {
+    const isOpen = openDropdown === item.name;
+    const isActive = pathname === item.path;
 
-                {isOpen && (
-                  <div className="absolute left-0 mt-2 w-48 rounded-2xl bg-white text-[#2F4157] shadow-lg">
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.path}
-                        href={child.path}
-                        onClick={closeMobileMenu}
-                        className="block px-4 py-2 hover:bg-gray-100 rounded-2xl"
-                      >
-                        {child.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            );
-          }
+    return (
+      <div key={item.name} className="relative">
+        {/* CONTAINER */}
+        <div
+          className={`flex items-center justify-between rounded-full overflow-hidden transition-colors ${
+            isActive
+              ? "bg-white text-[#2F4157]"
+              : "text-white hover:bg-white/20"
+          }`}
+        >
+          {/* TEXT → NAVIGATE */}
+          <Link
+            href={item.path}
+            className="px-4 py-2"
+          >
+            {item.name}
+          </Link>
 
-          // plain link (non-dropdown)
-          const isActive = pathname === item.path;
-          return (
-            <Link
-              key={item.path}
-              href={item.path}
-              className={`px-4 py-2 rounded-full transition-colors ${
-                isActive ? "bg-white text-[#2F4157]" : "hover:bg-white/20"
+          {/* ARROW → TOGGLE */}
+          <button
+            type="button"
+            onClick={() =>
+              setOpenDropdown(isOpen ? null : item.name)
+            }
+            className="px-3"
+            aria-label="Toggle submenu"
+          >
+            <svg
+              className={`w-4 h-4 transition-transform ${
+                isOpen ? "rotate-180" : ""
               }`}
+              stroke="currentColor"
+              strokeWidth="2"
+              fill="none"
+              viewBox="0 0 24 24"
             >
-              {item.name}
-            </Link>
-          );
-        })}
+              <path d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+        </div>
+
+        {/* DROPDOWN */}
+        {isOpen && (
+          <div className="absolute left-0 mt-2 w-48 rounded-2xl bg-white text-[#2F4157] shadow-lg z-50">
+            {item.children.map((child) => (
+              <Link
+                key={child.path}
+                href={child.path}
+                className="block px-4 py-2 hover:bg-gray-100 rounded-2xl"
+                onClick={() => setOpenDropdown(null)}
+              >
+                {child.name}
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // NORMAL ITEM
+  const isActive = pathname === item.path;
+  return (
+    <Link
+      key={item.path}
+      href={item.path}
+      className={`px-4 py-2 rounded-full transition-colors ${
+        isActive
+          ? "bg-white text-[#2F4157]"
+          : "hover:bg-white/20 text-white"
+      }`}
+    >
+      {item.name}
+    </Link>
+  );
+})}
       </div>
 
       {/* ---------------- DESKTOP NAV ---------------- */}
@@ -240,19 +259,44 @@ export default function Header() {
             // items with children (collapsible)
             if (item.children) {
               const isOpen = openDropdown === item.name;
-              const isActive = pathname === item.path;
+              const isActive = 
+              pathname.startsWith("/products") || pathname.startsWith("/iels-lounge") || pathname.startsWith("/courses") || pathname.startsWith("/test") || pathname.startsWith("/schools") || pathname.startsWith("/resources");
               return (
                 <div key={item.name}>
-                  <button
-                    className={`w-full flex items-center justify-between px-4 py-2 text-white rounded-lg ${isActive ? "bg-white text-[#2F4157]" : ""}`}
-                    onClick={() => setOpenDropdown(isOpen ? null : item.name)}
-                  >
-                    {item.name}
-                    <svg className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`} stroke="currentColor" strokeWidth="2" fill="none" viewBox="0 0 24 24">
-                      <path d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
+                  <div
+  className={`flex items-center justify-between rounded-lg overflow-hidden transition-colors ${
+    isActive
+      ? "bg-white text-[#2F4157]"
+      : "text-white hover:bg-white/20"
+  }`}
+>
+  {/* TEXT → LINK */}
+  <Link
+    href={item.path}
+    onClick={closeMobileMenu}
+    className={`flex-1 px-4 py-2`}
+  >
+    {item.name}
+  </Link>
 
+ <button
+  onClick={() => setOpenDropdown(isOpen ? null : item.name)}
+  className="px-4"
+  aria-label="Toggle submenu"
+>
+  <svg
+    className={`w-4 h-4 transition-transform ${
+      isOpen ? "rotate-180" : ""
+    }`}
+    stroke="currentColor"
+    strokeWidth="2"
+    fill="none"
+    viewBox="0 0 24 24"
+  >
+    <path d="M19 9l-7 7-7-7" />
+  </svg>
+</button>
+</div>
                   {isOpen && (
                     <div className="ml-4 mt-2 space-y-2">
                       {item.children.map((child) => (
@@ -272,13 +316,15 @@ export default function Header() {
             }
 
             // plain mobile link
-            const isActive = pathname === item.path;
+            const isActive = pathname === item.path || pathname.startsWith(item.path + "/");
             return (
               <Link
                 key={item.path}
                 href={item.path}
                 onClick={closeMobileMenu}
-                className={`block px-4 py-2 rounded-lg text-white ${isActive ? "text-[#2F4157]" : "hover:bg-white/20"}`}
+                className={`block px-4 py-2 rounded-lg ${isActive 
+                  ? "bg-white text-[#2F4157]" 
+                  : "text-white hover:bg-white/20"}`}
               >
                 {item.name}
               </Link>

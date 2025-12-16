@@ -1,6 +1,5 @@
 // src/data/quizData.ts
 export type Answer = {
-  id: string;
   label: string;
   emoji?: string;
   points?: Partial<Record<string, number>>;
@@ -23,11 +22,11 @@ export const QUESTIONS: Question[] = [
     title: "Where did you hear about IELS?",
     prompt: "Choose the platform where you first discovered us.",
     options: [
-      { id: "instagram", label: "Instagram", emoji: "📸" },
-      { id: "whatsapp", label: "WhatsApp", emoji: "💬" },
-      { id: "friends", label: "Friends or Family", emoji: "👨‍👩‍👧‍👦" },
-      { id: "media", label: "Media Partners", emoji: "📰" },
-      { id: "roblox", label: "Roblox", emoji: "🎮" },
+      { label: "Instagram", emoji: "📸" },
+      { label: "WhatsApp", emoji: "💬" },
+      { label: "Friends or Family", emoji: "👨‍👩‍👧‍👦" },
+      { label: "Media Partners", emoji: "📰" },
+      { label: "Roblox", emoji: "🎮" },
     ],
   },
   {
@@ -35,10 +34,10 @@ export const QUESTIONS: Question[] = [
     title: "Why do you want to learn English?",
     prompt: "Choose the option that best fits your dream.",
     options: [
-      { id: "study", label: "To study abroad", emoji: "🎓", points: { academic: 3 } },
-      { id: "remote", label: "To work remotely", emoji: "🌐", points: { career: 3 } },
-      { id: "career", label: "To grow my career", emoji: "🚀", points: { career: 2 } },
-      { id: "social", label: "To meet new people", emoji: "🌏", points: { social: 3 } },
+      { label: "To study abroad", emoji: "🎓", points: { academic: 3 } },
+      { label: "To work remotely", emoji: "🌐", points: { career: 3 } },
+      { label: "To grow my career", emoji: "🚀", points: { career: 2 } },
+      { label: "To meet new people", emoji: "🌏", points: { social: 3 } },
     ],
   },
   {
@@ -46,12 +45,12 @@ export const QUESTIONS: Question[] = [
     title: "Where do you dream of using English?",
     prompt: "Pick a region that excites you the most.",
     options: [
-      { id: "uk", label: "UK", emoji: "🇬🇧", points: { academic: 2 } },
-      { id: "usa", label: "USA", emoji: "🇺🇸", points: { career: 2 } },
-      { id: "au", label: "Australia", emoji: "🇦🇺", points: { social: 2 } },
-      { id: "jp", label: "Japan", emoji: "🇯🇵", points: { social: 1 } },
-      { id: "kr", label: "Korea", emoji: "🇰🇷", points: { social: 1 } },
-      { id: "unsure", label: "Not sure yet", emoji: "🌍", points: { dream: 2 } },
+      { label: "UK", emoji: "🇬🇧", points: { academic: 2 } },
+      { label: "USA", emoji: "🇺🇸", points: { career: 2 } },
+      { label: "Australia", emoji: "🇦🇺", points: { social: 2 } },
+      { label: "Japan", emoji: "🇯🇵", points: { social: 1 } },
+      { label: "Korea", emoji: "🇰🇷", points: { social: 1 } },
+      { label: "Not sure yet", emoji: "🌍", points: { dream: 2 } },
     ],
   },
   {
@@ -59,10 +58,10 @@ export const QUESTIONS: Question[] = [
     title: "How confident are you in English today?",
     prompt: "Be honest — this helps us recommend the right path.",
     options: [
-      { id: "beg", label: "I'm just getting started", points: { beginner: 3 } },
-      { id: "beg", label: "I can understand a bit, but speaking still hard", points: { beginner: 2 } },
-      { id: "mid", label: "I use English sometimes, but I want to be more fluent", points: { intermediate: 2 } },
-      { id: "adv", label: "I feel confortable using English in most situations", points: { advanced: 2 } }
+      { label: "I'm just getting started", points: { beginner: 3 } },
+      { label: "I can understand a bit, but speaking still hard", points: { beginner: 2 } },
+      { label: "I use English sometimes, but I want to be more fluent", points: { intermediate: 2 } },
+      { label: "I feel confortable using English in most situations", points: { advanced: 2 } }
     ],
   },
   {
@@ -70,10 +69,10 @@ export const QUESTIONS: Question[] = [
     title: "How do you prefer to learn?",
     prompt: "Pick the style that helps you stay consistent.",
     options: [
-      { id: "solo", label: "By myself", emoji: "📚", points: { academic: 1 } },
-      { id: "mentor", label: "With a mentor", emoji: "🧑", points: { career: 1 } },
-      { id: "group", label: "In a group", emoji: "👨‍👩‍👧‍👦", points: { social: 2 } },
-      { id: "game", label: "Challenges / games", emoji: "🎯", points: { beginner: 1, dream: 1 } },
+      { label: "By myself", emoji: "📚", points: { academic: 1 } },
+      { label: "With a mentor", emoji: "🧑", points: { career: 1 } },
+      { label: "In a group", emoji: "👨‍👩‍👧‍👦", points: { social: 2 } },
+      { label: "Challenges / games", emoji: "🎯", points: { beginner: 1, dream: 1 } },
     ],
   },
 ];

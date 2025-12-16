@@ -101,7 +101,7 @@ const onSubmit = async (values: LoginForm) => {
                   <FormControl>
                     <Input
                       placeholder="example@mail.com"
-                      className="w-full px-4 py-3 rounded-xl border bg-[#F7F8FA]"
+                      className="border rounded-xl w-full p-3 bg-[#F7F8FA] focus:outline-none focus:ring-2 focus:ring-[#E56668]"
                       {...field}
                     />
                   </FormControl>
@@ -124,7 +124,7 @@ const onSubmit = async (values: LoginForm) => {
                       <Input
                         type={showPass ? "text" : "password"}
                         placeholder="Your password"
-                        className="w-full px-4 py-3 rounded-xl border bg-[#F7F8FA]"
+                        className="border rounded-xl w-full p-3 bg-[#F7F8FA] focus:outline-none focus:ring-2 focus:ring-[#E56668]"
                         {...field}
                       />
                       <button

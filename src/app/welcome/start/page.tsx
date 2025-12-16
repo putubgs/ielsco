@@ -1,12 +1,10 @@
 "use client";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
 import OnboardingQuiz from "@/components/homepage/OnboardingQuiz";
 
 export default function StartPage() {
   return (
     <>
-      <Header />
+      
 
       {/* MAIN SECTION */}
       <main className="min-h-screen flex flex-col justify-center items-center bg-white text-[#2F4157] px-6 pt-[120px] pb-20">
@@ -26,8 +24,6 @@ export default function StartPage() {
           </div>
         </div>
       </main>
-
-      <Footer />
     </>
   );
 }

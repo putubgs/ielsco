@@ -30,7 +30,7 @@ export default function VerifyContent() {
       </p>
 
       <input
-        className="border rounded-xl w-full p-3 bg-[#F7F8FA]"
+        className="border rounded-xl w-full p-3 bg-[#F7F8FA] focus:outline-none focus:ring-2 focus:ring-[#E56668]"
         placeholder="Enter OTP"
         value={code}
         onChange={(e) => setCode(e.target.value)}

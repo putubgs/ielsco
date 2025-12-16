@@ -1,7 +1,5 @@
 // src/app/welcome/result/page.tsx
 "use client";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
 import { useEffect, useState } from "react";
 import { generateAchievement } from "@/data/quizdata";
 import Link from "next/link";
@@ -29,88 +27,90 @@ export default function ResultPage() {
       setAchievement(generateAchievement(scores));
       setDailyTarget(dt);
     } catch (e) {
-      console.error("Failed parsing onboarding payload", e);
+      console.error(e);
     }
   }, []);
 
   if (!achievement) {
     return (
       <>
-        <Header />
-        <div className="min-h-screen flex justify-center items-center text-gray-600 bg-white">
-          Loading your personalized result...
+
+        <div className="min-h-screen flex items-center justify-center text-gray-600">
+          Loading your personalized result…
         </div>
-        <Footer />
+  
       </>
     );
   }
 
-return (
-  <>
-    <Header />
+  return (
+    <>
 
-    {/* FULL WHITE PAGE BACKGROUND */}
-    <div className="min-h-screen w-full bg-white py-16 px-4">
-      <div className="max-w-3xl mx-auto">
+      <div className="min-h-screen bg-white px-4 py-12 flex justify-center">
+        <div className="w-full max-w-xl">
 
-        {/* NAVY RESULT CARD */}
-        <div className="rounded-2xl p-8 md:p-10 shadow-xl bg-[#2F4157] text-white">
+          {/* RESULT CARD */}
+          <div className="bg-[#2F4157] text-white rounded-2xl shadow-xl p-6 sm:p-8">
 
-          {/* Presentation Image */}
-          <div className="w-full bg-white rounded-xl overflow-hidden mb-8 shadow-lg">
-            <img
-              src="/images/contents/general/banner.png"
-              alt="IELS Community"
-              className="w-full h-56 object-cover"
-            />
-          </div>
-
-          {/* Title */}
-          <h2 className="text-3xl md:text-4xl font-extrabold mb-4">
-            {achievement.title}
-          </h2>
-
-          {/* Description */}
-          <p className="text-gray-200 text-lg mb-10 leading-relaxed">
-            {achievement.text}
-            <br /><br />
-            At IELS, you&apos;re not just learning English — you&apos;re building a global future.
-            Your answers show a clear direction, and we&apos;re here to guide you every step of the way.
-          </p>
-
-          {/* Daily Target */}
-          {dailyTarget && (
-            <div className="bg-white/10 border border-white/20 p-5 rounded-xl mb-10">
-              <h3 className="font-semibold text-lg mb-2">Your Daily Learning Target</h3>
-              <p className="text-gray-100">
-                You committed to <strong>{dailyTarget} minutes/day</strong>.
-                Keep going — consistency is your superpower.
-              </p>
+            {/* IMAGE */}
+            <div className="bg-white rounded-xl overflow-hidden mb-6">
+              <img
+                src="/images/contents/general/banner.png"
+                alt="IELS Community"
+                className="w-full h-40 sm:h-56 object-cover"
+              />
             </div>
-          )}
 
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-3 mt-6">
+            {/* TITLE */}
+            <h2 className="text-2xl sm:text-3xl font-extrabold mb-4">
+              {achievement.title}
+            </h2>
+
+            {/* DESCRIPTION */}
+            <p className="text-gray-200 text-base sm:text-lg leading-relaxed mb-8">
+              {achievement.text}
+              <br /><br />
+              At IELS, you&apos;re not just learning English — you&apos;re building a global future.
+            </p>
+
+            {/* DAILY TARGET */}
+            {dailyTarget && (
+              <div className="bg-white/10 border border-white/20 rounded-xl p-4 mb-8">
+                <h3 className="font-semibold mb-1">
+                  Your Daily Learning Target
+                </h3>
+                <p className="text-sm text-gray-100">
+                  <strong>{dailyTarget} minutes/day</strong>.  
+                  Consistency beats intensity.
+                </p>
+              </div>
+            )}
+
+            {/* CTA PRIMARY */}
             <Link
               href="/sign-in"
-              className="inline-flex items-center justify-center rounded-full w-1/2 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
+              className="w-full block text-center py-3 rounded-full bg-[#E56668] font-semibold hover:bg-[#C04C4E] transition"
             >
-              Sign in! And begin your journey
+              Sign in, start your journey
             </Link>
 
+            {/* DIVIDER */}
+            <div className="flex items-center gap-3 my-5">
+              <div className="flex-grow border-t border-white/30" />
+              <span className="text-sm text-gray-300">or</span>
+              <div className="flex-grow border-t border-white/30" />
+            </div>
+
+            {/* CTA SECONDARY */}
             <Link
               href="/sign-up"
-              className="inline-flex items-center justify-center rounded-full w-1/2 py-3 bg-white text-[#294154] font-semibold hover:bg-gray-200 transition transform hover:scale-[1.02]" 
+              className="w-full block text-center py-3 rounded-full bg-white text-[#294154] font-semibold hover:bg-gray-200 transition"
             >
-              Sign Up! Create your IELS Account
+              Create an IELS account
             </Link>
           </div>
         </div>
       </div>
-    </div>
-
-    <Footer />
-  </>
-);
-
+    </>
+  );
 }

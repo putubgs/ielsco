@@ -124,7 +124,7 @@ const onSubmit = async (values: SignupForm) => {
                   <FormControl>
                     <Input
                       placeholder="Your full name"
-                      className="w-full px-4 py-3 rounded-xl border bg-[#F7F8FA]"
+                      className="border rounded-xl w-full p-3 bg-[#F7F8FA] focus:outline-none focus:ring-2 focus:ring-[#E56668]"
                       {...field}
                     />
                   </FormControl>
@@ -145,7 +145,7 @@ const onSubmit = async (values: SignupForm) => {
                   <FormControl>
                     <Input
                       placeholder="example@mail.com"
-                      className="w-full px-4 py-3 rounded-xl border bg-[#F7F8FA]"
+                      className="border rounded-xl w-full p-3 bg-[#F7F8FA] focus:outline-none focus:ring-2 focus:ring-[#E56668]"
                       {...field}
                     />
                   </FormControl>
@@ -168,7 +168,7 @@ const onSubmit = async (values: SignupForm) => {
                       <Input
                         type={showPass ? "text" : "password"}
                         placeholder="Choose a strong password"
-                        className="w-full px-4 py-3 rounded-xl border bg-[#F7F8FA]"
+                        className="border rounded-xl w-full p-3 bg-[#F7F8FA] focus:outline-none focus:ring-2 focus:ring-[#E56668]"
                         {...field}
                       />
                       <button
@@ -199,7 +199,7 @@ const onSubmit = async (values: SignupForm) => {
                       <Input
                         type={showConfirm ? "text" : "password"}
                         placeholder="Re-enter your password"
-                        className="w-full px-4 py-3 rounded-xl border bg-[#F7F8FA]"
+                        className="border rounded-xl w-full p-3 bg-[#F7F8FA] focus:outline-none focus:ring-2 focus:ring-[#E56668]"
                         {...field}
                       />
                       <button

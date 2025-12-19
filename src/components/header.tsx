@@ -264,7 +264,7 @@ export default function Header() {
             if (item.children) {
               const isOpen = openDropdown === item.name;
               const isActive = 
-              pathname.startsWith("/products") || pathname.startsWith("/iels-lounge") || pathname.startsWith("/courses") || pathname.startsWith("/test") || pathname.startsWith("/schools") || pathname.startsWith("/resources");
+              pathname.startsWith("/products") || pathname.startsWith("/iels-lounge") || pathname.startsWith("/courses") || pathname.startsWith("/courses" + "/") || pathname.startsWith("/test") || pathname.startsWith("/schools") || pathname.startsWith("/resources");
               return (
                 <div key={item.name}>
                   <div

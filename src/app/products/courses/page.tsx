@@ -118,37 +118,92 @@ export default function CoursesPage() {
           </div>
         </section>
 
-        {/* COURSE FOCUS */}
-        <section>
-          <h3 className="text-2xl font-bold mb-4">Choose Your Focus</h3>
-          <p className="text-gray-700 mb-6">All courses are purpose-oriented: Academic, Occupational, or Specific Needs. Choose your focus and personalize the journey.</p>
+ {/* COURSE FOCUS */}
+<section>
+  <h3 className="text-2xl font-bold mb-4">Choose Your Focus</h3>
+  <p className="text-gray-700 mb-6">
+    Each course is designed for a specific global outcome.  
+    Choose your focus and explore the full program details.
+  </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-white rounded-2xl p-4 shadow-sm border border-[#294154]/6 flex flex-col gap-3 hover:shadow-md transition">
-              <div className="text-3xl">🗣</div>
-              <h4 className="font-semibold">Speaking Fluency</h4>
-              <p className="text-sm text-gray-600">Build real-world confidence, pronunciation, and conversation skills.</p>
-            </div>
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    {/* 🔥 FEATURED: Singapore Global Insight Trip */}
+    <Link
+      href="/products/courses/sgtrip-mentoring"
+      className="relative bg-white rounded-2xl p-5 shadow-sm border-2 border-[#E56668]
+                 flex flex-col gap-3 hover:shadow-lg hover:-translate-y-1 transition"
+    >
+      {/* Badge */}
+      <span className="absolute -top-3 left-4 bg-[#E56668] text-white text-xs font-semibold px-3 py-1 rounded-full">
+        Featured Program
+      </span>
 
-            <div className="bg-white rounded-2xl p-4 shadow-sm border border-[#294154]/6 flex flex-col gap-3 hover:shadow-md transition">
-              <div className="text-3xl">✍</div>
-              <h4 className="font-semibold">Writing Excellence</h4>
-              <p className="text-sm text-gray-600">Craft essays, reports, and emails with clarity and structure.</p>
-            </div>
+      <div className="text-3xl">🇸🇬</div>
+      <h4 className="font-semibold text-lg leading-tight">
+        Singapore Global Insight <br /> Trip Mentoring
+      </h4>
+      <p className="text-sm text-gray-600">
+        Intensive mentoring for project proposal, interview,
+        and presentation preparation for SG Global Insight Trip 2026.
+      </p>
 
-            <div className="bg-white rounded-2xl p-4 shadow-sm border border-[#294154]/6 flex flex-col gap-3 hover:shadow-md transition">
-              <div className="text-3xl">📘</div>
-              <h4 className="font-semibold">Grammar Mastery</h4>
-              <p className="text-sm text-gray-600">Understand the logic behind grammar and use it naturally.</p>
-            </div>
+      <p className="text-sm font-semibold text-[#E56668] mt-auto">
+        View program →
+      </p>
+    </Link>
 
-            <div className="bg-white rounded-2xl p-4 shadow-sm border border-[#294154]/6 flex flex-col gap-3 hover:shadow-md transition">
-              <div className="text-3xl">🎓</div>
-              <h4 className="font-semibold">IELTS / TOEFL Prep</h4>
-              <p className="text-sm text-gray-600">Targeted test strategies and practice for real exam success.</p>
-            </div>
-          </div>
-        </section>
+    {/* Speaking */}
+    <Link
+      href="/courses/speaking"
+      className="bg-white rounded-2xl p-4 shadow-sm border border-[#294154]/6
+                 flex flex-col gap-3 hover:shadow-md hover:-translate-y-1 transition"
+    >
+      <div className="text-3xl">🗣</div>
+      <h4 className="font-semibold">Speaking Fluency</h4>
+      <p className="text-sm text-gray-600">
+        Build real-world confidence, pronunciation,
+        and professional conversation skills.
+      </p>
+      <p className="text-sm font-semibold text-[#294154] mt-auto">
+        Explore →
+      </p>
+    </Link>
+
+    {/* Writing */}
+    <Link
+      href="/courses/writing"
+      className="bg-white rounded-2xl p-4 shadow-sm border border-[#294154]/6
+                 flex flex-col gap-3 hover:shadow-md hover:-translate-y-1 transition"
+    >
+      <div className="text-3xl">✍</div>
+      <h4 className="font-semibold">Writing Excellence</h4>
+      <p className="text-sm text-gray-600">
+        Academic essays, project proposals,
+        and professional writing with clarity.
+      </p>
+      <p className="text-sm font-semibold text-[#294154] mt-auto">
+        Explore →
+      </p>
+    </Link>
+
+    {/* IELTS */}
+    <Link
+      href="/courses/ielts"
+      className="bg-white rounded-2xl p-4 shadow-sm border border-[#294154]/6
+                 flex flex-col gap-3 hover:shadow-md hover:-translate-y-1 transition"
+    >
+      <div className="text-3xl">🎓</div>
+      <h4 className="font-semibold">IELTS / TOEFL Prep</h4>
+      <p className="text-sm text-gray-600">
+        Strategy-driven preparation
+        for academic and global mobility goals.
+      </p>
+      <p className="text-sm font-semibold text-[#294154] mt-auto">
+        Explore →
+      </p>
+    </Link>
+  </div>
+</section>
 
         {/* BENEFITS */}
         <section className="bg-white rounded-2xl p-6 shadow-sm border border-[#294154]/8">
@@ -230,49 +285,7 @@ export default function CoursesPage() {
           </div>
         </section>
 
-        {/* PACKAGES & PRICING */}
-        <section id="packages" className="space-y-6">
-          <h3 className="text-2xl font-bold">Choose the Package That Fits You Best</h3>
-          <div className="overflow-x-auto bg-white rounded-2xl p-4 border border-[#294154]/8 shadow-sm">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="text-sm text-gray-600">
-                  <th className="py-3 px-4">Program Type</th>
-                  <th className="py-3 px-4">Private (1-on-1)</th>
-                  <th className="py-3 px-4">Semi-Private (2–3 learners)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-t">
-                  <td className="py-4 px-4 font-medium">Quick Run (4 sessions)</td>
-                  <td className="py-4 px-4">Rp 300.000</td>
-                  <td className="py-4 px-4">Rp 550.000</td>
-                </tr>
-                <tr className="border-t">
-                  <td className="py-4 px-4 font-medium">Extensive (12 sessions)</td>
-                  <td className="py-4 px-4">Rp 850.000</td>
-                  <td className="py-4 px-4">Rp 1.600.000</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
 
-          <div className="text-sm text-gray-700">
-            <p>• Sessions are 90 minutes each · Includes placement test, personalized feedback, and certificate.</p>
-            <p>• Extensive program = deeper learning & sustained improvement.</p>
-            <p className="mt-3"><strong>Highlights:</strong> ✅ Best for fast results (Quick Run) · 🌟 Best for lasting improvement (Extensive)</p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4">
-            <a href="https://wa.me/6288297253491" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]">
-              Book Now via WhatsApp
-            </a>
-
-            <a href="mailto:arbadza@ielsco.com" className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition transform hover:scale-[1.02]">
-              Email for Custom Plan
-            </a>
-          </div>
-        </section>
 
         {/* FAQ */}
         <section>
@@ -309,62 +322,63 @@ export default function CoursesPage() {
     </p>
   </div>
 
-  {/* STEPS */}
-  <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6 text-left">
-    <div className="bg-white/10 rounded-xl p-5 border border-white/20">
-      <div className="text-3xl mb-2">📝</div>
-      <h4 className="font-semibold text-lg">1. Send Your Details</h4>
-      <p className="text-sm text-white/80">
-        Send us a WhatsApp message (<strong>0882-9725-3491</strong>) or email including:
-        <br />– Full name<br />– Email & phone<br />– Program (e.g. Speaking, IELTS)<br />– Class type (Private/Semi-Private)<br />– Reason for learning
-      </p>
-    </div>
-
-    <div className="bg-white/10 rounded-xl p-5 border border-white/20">
-      <div className="text-3xl mb-2">💳</div>
-      <h4 className="font-semibold text-lg">2. Confirm & Make Payment</h4>
-      <p className="text-sm text-white/80">
-        Once confirmed, transfer your fee to:<br />
-        <strong>BCA 8681146512 – Arbadza Rido Adzariyat</strong><br />
-        Then send us the receipt. You’ll immediately receive your placement test link and class schedule form.
-      </p>
-    </div>
-
-    <div className="bg-white/10 rounded-xl p-5 border border-white/20">
-      <div className="text-3xl mb-2">🚀</div>
-      <h4 className="font-semibold text-lg">3. Start Learning & Get Certified</h4>
-      <p className="text-sm text-white/80">
-        Attend your first class, complete your learning journey, and earn your certificate — plus free access to IELS Lounge Premium.
-      </p>
-    </div>
+{/* STEPS */}
+<div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6 text-left">
+  <div className="bg-white/10 rounded-xl p-5 border border-white/20">
+    <div className="text-3xl mb-2">📝</div>
+    <h4 className="font-semibold text-lg">1. Fill the Registration Form</h4>
+    <p className="text-sm text-white/80">
+      Complete the registration form with your personal details,
+      learning goals, and preferred program.
+      <br />
+      <span className="italic">
+        This helps us understand you before the program starts.
+      </span>
+    </p>
   </div>
 
-        {/* CTA BUTTONS */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
-          <a
-            href="https://wa.me/6288297253491"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
-          >
-            🌟 Start My English Journey (WhatsApp)
-          </a>
+  <div className="bg-white/10 rounded-xl p-5 border border-white/20">
+    <div className="text-3xl mb-2">💳</div>
+    <h4 className="font-semibold text-lg">2. Confirm & Transfer Payment</h4>
+    <p className="text-sm text-white/80">
+      After confirmation, complete your payment to:
+      <br />
+      <strong>Bank Jago</strong><br />
+      <strong>103196849968</strong><br />
+      (a.n. Arbadza Rido Adzariyat)
+    </p>
+  </div>
 
-          <a
-            href="/docs/payment-instructions.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-white text-[#294154] font-semibold hover:bg-gray-300 transition transform hover:scale-[1.02]"
-          >
-            📄 View Payment Instructions
-          </a>
-        </div>
+  <div className="bg-white/10 rounded-xl p-5 border border-white/20">
+    <div className="text-3xl mb-2">🚀</div>
+    <h4 className="font-semibold text-lg">3. Start Learning</h4>
+    <p className="text-sm text-white/80">
+      Receive onboarding instructions, schedule details,
+      and start your learning journey with IELS.
+    </p>
+  </div>
+</div>
 
-        {/* TRUST MESSAGE */}
-        <div className="mt-6 text-sm text-white/80">
-          <p>💡 All programs include a placement test, personalized materials, and a certificate upon completion.</p>
-          <p>Payment Account: <strong>BCA 8681146512 – Arbadza Rido Adzariyat</strong></p>
-        </div>
+{/* CTA BUTTONS */}
+<div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
+  <a
+    href="https://wa.me/6288297253491"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
+  >
+    💬 Ask via WhatsApp
+  </a>
+
+  <a
+    href="https://forms.gle/XXXXXXX"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-white text-[#294154] font-semibold hover:bg-gray-200 transition transform hover:scale-[1.02]"
+  >
+    📝 Register via Form
+  </a>
+</div>
       </section>
 
       {/* COMMUNITY INVITE */}

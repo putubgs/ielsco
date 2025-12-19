@@ -112,7 +112,7 @@ export default function SGTripMentoringPage() {
     {/* CTA */}
     <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
       <a
-        href="https://forms.gle/UhmqBAWdWmAiRJmc6"
+        href="https://forms.gle/D4DMBFshr1JeydZC9"
         target="_blank"
         className="inline-flex items-center justify-center rounded-full px-8 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
       >
@@ -123,7 +123,7 @@ export default function SGTripMentoringPage() {
         target="_blank"
         className="inline-flex items-center justify-center rounded-full px-8 py-3 bg-white text-[#294154] font-semibold hover:bg-gray-200 transition transform hover:scale-[1.02]"
       >
-        Ask via WhatsApp
+        Ask Before Applying
       </a>
     </div>
   </div>
@@ -306,7 +306,7 @@ export default function SGTripMentoringPage() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
             <a
-              href="https://forms.gle/UhmqBAWdWmAiRJmc6"
+              href="https://forms.gle/D4DMBFshr1JeydZC9"
               target="_blank"
               className="inline-flex items-center justify-center rounded-full px-8 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
             >

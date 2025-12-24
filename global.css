@@ -1,0 +1,16 @@
+/* IELS Instagram Read More */
+a[data-iels="ig-readmore"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2F4157;
+  text-decoration: none;
+}
+
+a[data-iels="ig-readmore"]:hover {
+  text-decoration: underline;
+  opacity: 0.85;
+}

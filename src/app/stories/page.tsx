@@ -11,6 +11,7 @@ import { memberStoriesData, MemberStory } from "@/data/member-stories";
 import { programUpdatesData, ProgramUpdate } from "@/data/program-updates";
 import { partnerUpdatesData, PartnerUpdate } from "@/data/partner-updates";
 import { generateSlug } from "@/utils/slug";
+import { Button } from "@/components/ui/button"
 
 type NewsItem =
   | (MemberStory & { type: "member"; subcategory?: "All" | "Internals" | "Lounge" | "Speakers" | "Inspires" })
@@ -114,7 +115,11 @@ const filteredNews = newsData.filter((item) => {
     }
     return 0;
   });
+  const BTN_NAVY =
+  "inline-flex items-center justify-center rounded-full bg-[#294154] text-white font-semibold px-6 py-3 hover:bg-[#21363f] transition active:scale-[0.97]";
 
+const BTN_GHOST =
+  "inline-flex items-center justify-center rounded-full border border-gray-200 text-[#294154] font-medium px-5 py-2 hover:bg-gray-50 transition";
   const itemsPerPage = activeFilter === "member" ? 4 : 3;
   const totalPages = Math.ceil(sortedFilteredNews.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -243,44 +248,38 @@ const filteredNews = newsData.filter((item) => {
             </div>
           </div>
 
-          {/* Filter Buttons */}
+ {/* Filter Buttons */}
 <div className="mb-8 sm:mb-10 lg:mb-12 px-4">
-  <div className="flex flex-wrap gap-2 sm:gap-4 justify-center">
-  
+  <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
 
-{/* Member Stories Dropdown */}
-  
+    {/* MEMBER STORIES DROPDOWN */}
     <div className="relative inline-block">
       <button
         type="button"
         onClick={() => {
-          // switch ke member dan toggle dropdown
           setActiveFilter("member");
           setIsDropdownOpen((prev) => !prev);
           setCurrentPage(1);
         }}
-        className={`px-3 sm:px-4 lg:px-5 py-1 sm:py-1.5 rounded-full font-semibold transition-colors flex items-center gap-2 ${
-          activeFilter === "member"
-            ? "bg-[#E56668] text-white"
-            : "bg-white border border-[#2F4157] text-[#2F4157] hover:bg-gray-50"
-        }`}
+        className={activeFilter === "member" ? BTN_NAVY : BTN_GHOST}
         aria-haspopup="true"
         aria-expanded={isDropdownOpen}
       >
-      
-              <span>
+        <span>
           {activeSubFilter === "All"
             ? "Member Stories"
-            : `Member · ${activeSubFilter[0].toUpperCase() + activeSubFilter.slice(1)}`}
+            : `Member · ${
+                activeSubFilter[0].toUpperCase() +
+                activeSubFilter.slice(1)
+              }`}
         </span>
-  
+
         <svg
-          className={`h-4 w-4 text-current transition-transform duration-200 ${
+          className={`ml-2 h-4 w-4 transition-transform ${
             isDropdownOpen ? "rotate-180" : ""
           }`}
           viewBox="0 0 20 20"
           fill="currentColor"
-          aria-hidden="true"
         >
           <path
             fillRule="evenodd"
@@ -290,7 +289,7 @@ const filteredNews = newsData.filter((item) => {
         </svg>
       </button>
 
-    {/* Dropdown panel */}
+     {/* Dropdown panel */}
       {isDropdownOpen && activeFilter === "member" && (
         <div
           className="absolute left-0 z-50 mt-2 w-56 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
@@ -348,43 +347,36 @@ const filteredNews = newsData.filter((item) => {
         </div>
       )}
     </div>
-    
-     {/* Program Updates */}
+
+    {/* PROGRAM UPDATES */}
     <button
       onClick={() => {
         setActiveFilter("program");
-        setCurrentPage(1);
-        setIsDropdownOpen(false);
         setActiveSubFilter("All");
+        setIsDropdownOpen(false);
+        setCurrentPage(1);
       }}
-      className={`px-3 sm:px-4 lg:px-5 py-1 sm:py-1.5 rounded-full font-semibold transition-colors cursor-pointer text-sm sm:text-base ${
-        activeFilter === "program"
-          ? "bg-[#E56668] text-white"
-          : "bg-white border border-[#2F4157] text-[#2F4157] hover:bg-gray-50"
-      }`}
+      className={activeFilter === "program" ? BTN_NAVY : BTN_GHOST}
     >
       Program Updates
     </button>
 
-    {/* Partner Updates */}
+    {/* PARTNER UPDATES */}
     <button
       onClick={() => {
         setActiveFilter("partner");
-        setCurrentPage(1);
-        setIsDropdownOpen(false);
         setActiveSubFilter("All");
+        setIsDropdownOpen(false);
+        setCurrentPage(1);
       }}
-      className={`px-3 sm:px-4 lg:px-5 py-1 sm:py-1.5 rounded-full font-semibold transition-colors cursor-pointer text-sm sm:text-base ${
-        activeFilter === "partner"
-          ? "bg-[#E56668] text-white"
-          : "bg-white border border-[#2F4157] text-[#2F4157] hover:bg-gray-50"
-      }`}
+      className={activeFilter === "partner" ? BTN_NAVY : BTN_GHOST}
     >
       Partner Updates
     </button>
-            </div>
-            <div>
-          </div>
+
+  </div>
+</div>
+</div>
 
           {/* News Grid */}
           {currentNews.length === 0 ? (
@@ -424,14 +416,17 @@ const filteredNews = newsData.filter((item) => {
                           <p className="text-sm sm:text-[15px] text-[#2F4157] leading-relaxed mb-3 sm:mb-4">
                             {news.seo.meta_description}
                           </p>
-                          <Link
+                          <Button
+                        asChild
+                        className="bg-[#E56668] text-white px-6 py-2 hover:bg-[#C04C4E] mt-4"
+                      ><Link
                             href={`/stories/${generateSlug(news.title)}`}
                             onClick={handleReadMore}
                           >
-                            <button className="border border-[#2F4157] cursor-pointer text-[#2F4157] px-3 sm:px-4 py-1.5 sm:py-2 rounded-full hover:bg-gray-50 transition-colors text-sm sm:text-base">
+                            
                               Read More
-                            </button>
-                          </Link>
+                            
+                          </Link></Button>
                         </div>
                       </div>
                     </div>
@@ -502,8 +497,8 @@ const filteredNews = newsData.filter((item) => {
             </Link>
           </div>
         </div>
-      </div>
-</div>
+      
+
       <Footer />
-      </div> 
+    </div>
       )}

@@ -60,7 +60,7 @@ export default function ForgotPasswordPage() {
         <button
           disabled={loading}
           onClick={submit}
-          className="w-full py-3 rounded-full bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] disabled:bg-[#C04C4E]"
+          className="w-full py-3 rounded-full bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] disabled:bg-[#C04C4E] transition active:scale-[0.97]"
         >
           {loading ? "Sending OTP…" : "Send OTP"}
         </button>

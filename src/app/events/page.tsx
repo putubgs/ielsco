@@ -14,6 +14,7 @@ import LoadingOverlay from "@/components/LoadingOverlay";
 import { eventsData } from "@/data/events";
 import { generateSlug } from "@/utils/slug";
 import { useState, useMemo } from "react";
+import { Button } from "@/components/ui/button"
 
 export default function Events() {
   const [currentPage, setCurrentPage] = useState(0);
@@ -313,20 +314,28 @@ export default function Events() {
                           </p>
 
                           <div className="flex flex-col gap-3">
-                            <Link
-                              href={event.registrationLink}
-                              className="bg-white text-[#2F4157] rounded-[15px] px-6 py-3 text-center font-semibold"
-                              target="_blank"
+                           <Button
+                          asChild
+                          className="bg-[#E56668] text-white px-6 py-3 hover:bg-[#C04C4E]"
+                        >
+                          <Link
+                            href={event.registrationLink}
+                            target="_blank"
+                          >
+                            Register Now
+                          </Link>
+                        </Button>
+                            <Button
+                              asChild
+                              className="bg-[#E56668] text-white px-6 py-3 hover:bg-[#C04C4E]"
                             >
-                              Register Now
-                            </Link>
-                            <Link
-                              href={`/events/${generateSlug(event.title)}`}
-                              onClick={handleEventClick}
-                              className="border-2 border-white text-white rounded-[15px] px-6 py-3 text-center font-semibold"
-                            >
-                              Read More
-                            </Link>
+                              <Link
+                                href={`/events/${generateSlug(event.title)}`}
+                                onClick={handleEventClick}
+                              >
+                                Read More
+                              </Link>
+                            </Button>
                           </div>
                         </div>
                       ))}
@@ -404,21 +413,25 @@ export default function Events() {
                       {upcomingEvents[currentSlide].seo.meta_description}
                     </p>
                     <div className="flex gap-5 pt-6">
-                      <Link
+                      <Button
+                        asChild
+                        className="bg-[#E56668] text-white px-6 py-3 hover:bg-[#C04C4E]"
+                      ><Link
                         href={`/events/${generateSlug(
                           upcomingEvents[currentSlide].title
                         )}`}
-                        className="border-1 border-white rounded-[20px] px-2 py-1"
                       >
                         Read More
-                      </Link>
-                      <Link
+                      </Link></Button>
+                      <Button
+                        asChild
+                        className="bg-[#E56668] text-white px-6 py-3 hover:bg-[#C04C4E]"
+                      ><Link
                         href={upcomingEvents[currentSlide].registrationLink}
-                        className="border-1 border-white rounded-[20px] px-2 py-1"
                         target="_blank"
                       >
                         Register
-                      </Link>
+                      </Link></Button>
                     </div>
                   </div>
                 </div>

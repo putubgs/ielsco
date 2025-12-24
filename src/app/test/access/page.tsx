@@ -1,6 +1,5 @@
 "use client";
 
-import Footer from "@/components/footer";
 import Header from "@/components/header";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -196,10 +195,11 @@ const handleStart = () => {
             </p>
           )}
 
+          
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-[#E56668] text-white py-3 mt-6 rounded-full font-semibold hover:bg-[#C04C4E] transition-colors disabled:opacity-60"
+            className="w-full inline-flex items-center justify-center rounded-full bg-[#E56668] text-white font-semibold px-6 py-2.5 hover:bg-[#C04C4E] transition active:scale-[0.97]"
           >
             {isSubmitting ? "Validating..." : "Validate & Start Test"}
           </button>
@@ -237,7 +237,7 @@ const handleStart = () => {
         </div>
       )}
     </main>
-    <Footer/>
+
     </div>
   );
 }

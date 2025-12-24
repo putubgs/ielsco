@@ -41,8 +41,25 @@ export const memberStoriesData: MemberStory[] = [
 <h4>✍️ Content Written <strong>by Najlaa Thufailah Shafut</strong><br data-start="343" data-end="346" /> 🎨 Design <strong>by Muhammad Athallah Khairi</strong></h4>
 <p>&nbsp;</p>
 <a href="https://www.instagram.com/p/DPJJ3zcgcJ5/?utm_source=ig_web_copy_link&igsh=MWhucW82a2dtMGhoYg==" target="_blank"
-   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
-   Read More
+   style="
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #E56668;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  "
+  onmouseover="this.style.backgroundColor='#C04C4E'"
+  onmouseout="this.style.backgroundColor='#E56668'"
+  onmousedown="this.style.transform='scale(0.97)'"
+  onmouseup="this.style.transform='scale(1)'"
+>
+  Read More
 </a>`,
      bannerImage:
        "/images/contents/stories/member-stories/banner/philippines-banner.png",
@@ -83,8 +100,25 @@ export const memberStoriesData: MemberStory[] = [
 <h4>✍️ Content Written <strong>by Najlaa Thufailah Shafut</strong><br data-start="343" data-end="346" /> 🎨 Design <strong>by Muhammad Athallah Khairi</strong></h4>
 <p>&nbsp;</p>
 <a href="https://www.instagram.com/p/DPJJ3zcgcJ5/?utm_source=ig_web_copy_link&igsh=MWhucW82a2dtMGhoYg==" target="_blank"
-   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
-   Read More
+   style="
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #E56668;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  "
+  onmouseover="this.style.backgroundColor='#C04C4E'"
+  onmouseout="this.style.backgroundColor='#E56668'"
+  onmousedown="this.style.transform='scale(0.97)'"
+  onmouseup="this.style.transform='scale(1)'"
+>
+  Read More
 </a>`,
      bannerImage:
        "/images/contents/stories/member-stories/banner/malaysia-banner.png",
@@ -123,8 +157,25 @@ export const memberStoriesData: MemberStory[] = [
 <h4>✍️ Content Written <strong>by Valerine Aubrey Surjadi</strong><br data-start="343" data-end="346" /> 🎨 Design <strong>by Zainufri Aziz</strong></h4>
 <p>&nbsp;</p>
 <a href="https://www.instagram.com/p/DPOLpNwkUAR/?img_index=1" target="_blank"
-   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
-   Read More
+   style="
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #E56668;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  "
+  onmouseover="this.style.backgroundColor='#C04C4E'"
+  onmouseout="this.style.backgroundColor='#E56668'"
+  onmousedown="this.style.transform='scale(0.97)'"
+  onmouseup="this.style.transform='scale(1)'"
+>
+  Read More
 </a>`,
   bannerImage:
     "/images/contents/stories/member-stories/banner/singapore-banner.png",
@@ -163,8 +214,25 @@ export const memberStoriesData: MemberStory[] = [
 <h4>✍️ Content Written <strong>by Valerine Aubrey Surjadi</strong><br data-start="343" data-end="346" /> 🎨 Design <strong>by Zainufri Aziz</strong></h4>
 <p>&nbsp;</p>
 <a href="https://www.instagram.com/p/DPOLpNwkUAR/?img_index=1" target="_blank"
-   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
-   Read More
+   style="
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #E56668;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  "
+  onmouseover="this.style.backgroundColor='#C04C4E'"
+  onmouseout="this.style.backgroundColor='#E56668'"
+  onmousedown="this.style.transform='scale(0.97)'"
+  onmouseup="this.style.transform='scale(1)'"
+>
+  Read More
 </a>`,
   bannerImage:
     "/images/contents/stories/member-stories/banner/singapore-banner.png",
@@ -203,8 +271,25 @@ export const memberStoriesData: MemberStory[] = [
 <h4>✍️ Content Written <strong>by Najlaa Thufailah Shafut</strong><br data-start="343" data-end="346" /> 🎨 Design <strong>by Queen Rahma</strong></h4>
 <p>&nbsp;</p>
 <a href="https://www.instagram.com/p/DMhz-j3h4ly/?img_index=2" target="_blank"
-   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
-   Read More
+   style="
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #E56668;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  "
+  onmouseover="this.style.backgroundColor='#C04C4E'"
+  onmouseout="this.style.backgroundColor='#E56668'"
+  onmousedown="this.style.transform='scale(0.97)'"
+  onmouseup="this.style.transform='scale(1)'"
+>
+  Read More
 </a>`,
   bannerImage:
     "/images/contents/stories/member-stories/banner/usa-banner.png",
@@ -243,8 +328,25 @@ export const memberStoriesData: MemberStory[] = [
 <h4>✍️ Content Written <strong>by Valerine Aubrey Surjadi</strong><br data-start="343" data-end="346" /> 🎨 Design <strong>by Zainufri Aziz</strong></h4>
 <p>&nbsp;</p>
 <a href="https://www.instagram.com/p/DMkQwjbhqrT/?img_index=1" target="_blank"
-   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
-   Read More
+   style="
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #E56668;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  "
+  onmouseover="this.style.backgroundColor='#C04C4E'"
+  onmouseout="this.style.backgroundColor='#E56668'"
+  onmousedown="this.style.transform='scale(0.97)'"
+  onmouseup="this.style.transform='scale(1)'"
+>
+  Read More
 </a>`,
   bannerImage:
     "/images/contents/stories/member-stories/banner/usa-banner.png",
@@ -285,8 +387,25 @@ export const memberStoriesData: MemberStory[] = [
 <h4>✍️ Content Written <strong>by Valerine Aubrey Surjadi</strong><br /> 🎨 Design <strong>by Zainufri Aziz</strong></h4>
 <p>&nbsp;</p>
 <a href="https://www.instagram.com/p/DP5yWFikS-L/?img_index=1" target="_blank"
-   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
-   Read More
+   style="
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #E56668;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  "
+  onmouseover="this.style.backgroundColor='#C04C4E'"
+  onmouseout="this.style.backgroundColor='#E56668'"
+  onmousedown="this.style.transform='scale(0.97)'"
+  onmouseup="this.style.transform='scale(1)'"
+>
+  Read More
 </a>`,
   bannerImage:
     "/images/contents/stories/member-stories/banner/usa-banner.png",
@@ -327,8 +446,25 @@ export const memberStoriesData: MemberStory[] = [
 <h4>✍️ Content Written <strong>by Valerine Aubrey Surjadi</strong><br /> 🎨 Design <strong>by Zainufri Aziz</strong></h4>
 <p>&nbsp;</p>
 <a href="https://www.instagram.com/p/DP5yWFikS-L/?img_index=1" target="_blank"
-   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
-   Read More
+   style="
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #E56668;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  "
+  onmouseover="this.style.backgroundColor='#C04C4E'"
+  onmouseout="this.style.backgroundColor='#E56668'"
+  onmousedown="this.style.transform='scale(0.97)'"
+  onmouseup="this.style.transform='scale(1)'"
+>
+  Read More
 </a>`,
   bannerImage:
     "/images/contents/stories/member-stories/banner/usa-banner.png",
@@ -371,8 +507,25 @@ export const memberStoriesData: MemberStory[] = [
 <h4>✍️ Content Written <strong>by Valerine Aubrey Surjadi</strong><br /> 🎨 Design <strong>by IELS Creative Team</strong></h4>
 <p>&nbsp;</p>
 <a href="https://www.instagram.com/p/DRt0M7ngZIK/?img_index=1" target="_blank"
-   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
-   Read More
+   style="
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #E56668;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  "
+  onmouseover="this.style.backgroundColor='#C04C4E'"
+  onmouseout="this.style.backgroundColor='#E56668'"
+  onmousedown="this.style.transform='scale(0.97)'"
+  onmouseup="this.style.transform='scale(1)'"
+>
+  Read More
 </a>`,
   bannerImage:
     "/images/contents/stories/member-stories/banner/japan.png",

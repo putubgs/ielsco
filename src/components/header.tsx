@@ -21,6 +21,7 @@ export default function Header() {
         { name: "IELS Lounge", path: "/iels-lounge" },
         { name: "IELS Courses", path: "/products/courses" },
         { name: "IELS English Test", path: "/test" },
+        { name: "IELS Events", path: "/events" },
         { name: "IELS for Schools", path: "/products/schools" },
         { name: "E-books & Recordings", path: "/products/resources" },
       ],
@@ -179,7 +180,7 @@ export default function Header() {
           // dropdown items
           if (item.children) {
             const isActive =
-  pathname === item.path || pathname.startsWith(item.path + "/") || pathname.startsWith("/test") || pathname.startsWith("/iels-lounge");
+  pathname === item.path || pathname.startsWith(item.path + "/") || pathname.startsWith("/events") || pathname.startsWith("/test") || pathname.startsWith("/iels-lounge");
             return (
               <div key={item.name} className="relative group">
                 <div
@@ -264,7 +265,7 @@ export default function Header() {
             if (item.children) {
               const isOpen = openDropdown === item.name;
               const isActive = 
-              pathname.startsWith("/products") || pathname.startsWith("/iels-lounge") || pathname.startsWith("/courses") || pathname.startsWith("/courses" + "/") || pathname.startsWith("/test") || pathname.startsWith("/schools") || pathname.startsWith("/resources");
+              pathname.startsWith("/products") || pathname.startsWith("/iels-lounge") || pathname.startsWith("/courses") || pathname.startsWith("/courses" + "/") || pathname.startsWith("/test") || pathname.startsWith("/schools") || pathname.startsWith("/resources") || pathname.startsWith("/events");
               return (
                 <div key={item.name}>
                   <div

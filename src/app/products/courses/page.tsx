@@ -6,6 +6,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function CoursesPage() {
   return (
@@ -23,26 +24,26 @@ export default function CoursesPage() {
             </h1>
 
             <p className="text-lg text-gray-700 max-w-2xl">
-              Join Arba’s 1-on-1 or semi-private English programs tailored for your goals — whether it’s speaking fluency, writing,
+              Join Arba&apos;s 1-on-1 or semi-private English programs tailored for your goals — whether it&apos;s speaking fluency, writing,
               or IELTS preparation. Learn with mentorship, custom materials, and a supportive community.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mt-4">
-              <a
-                href="https://wa.me/6288297253491"
+              <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]">
+              <Link
+                href="https://forms.gle/t8xijoi6umFeYAu86"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
-              >
-                📲 Book a Session (WhatsApp)
-              </a>
-
-              <a
+                 >
+                Register Now
+              </Link></Button>
+              <Button asChild className="bg-[#294154] text-white font-semibold px-6 py-3 hover:bg-[#21363f]">
+              <Link
                 href="#packages"
-                className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition transform hover:scale-[1.02]"
+               
               >
-                💡 View Class Packages
-              </a>
+                View Class Packages
+              </Link></Button>
             </div>
 
             <p className="text-sm text-gray-600 mt-3">
@@ -259,7 +260,7 @@ export default function CoursesPage() {
           </div>
 
           <p className="mt-4 text-gray-700">
-            You’re not just taking a course — you’re joining a global mentorship journey.
+            You&apos;re not just taking a course — you&apos;re joining a global mentorship journey.
           </p>
         </section>
 
@@ -271,16 +272,17 @@ export default function CoursesPage() {
 
           <div>
             <blockquote className="text-xl italic text-gray-800">
-              “I’ll personally accompany you throughout your learning journey — from zero until you reach your dream goal.
-              It’s not just about learning English. I’ll ask where you want to go, what your dream career is, and help you build the path to get there.”
+              “I&apos;ll personally accompany you throughout your learning journey — from zero until you reach your dream goal.
+              It&apos;s not just about learning English. I&apos;ll ask where you want to go, what your dream career is, and help you build the path to get there.”
             </blockquote>
 
-            <p className="mt-4 text-gray-700">You’re not only learning. You’re connecting to real opportunities.</p>
+            <p className="mt-4 text-gray-700">You&apos;re not only learning. You&apos;re connecting to real opportunities.</p>
 
             <div className="mt-4">
-              <Link href="/stories" className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]">
+              <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]">
+                <Link href="/stories" >
                 Discover Member Stories
-              </Link>
+              </Link></Button>
             </div>
           </div>
         </section>
@@ -293,11 +295,11 @@ export default function CoursesPage() {
           <div className="space-y-3">
             <details className="bg-white rounded-2xl p-4 border border-[#294154]/8">
               <summary className="font-semibold cursor-pointer">Can I reschedule a session?</summary>
-              <p className="mt-2 text-gray-700">Yes — simply notify us 24 hours in advance and we’ll rearrange your session.</p>
+              <p className="mt-2 text-gray-700">Yes — simply notify us 24 hours in advance and we&apos;ll rearrange your session.</p>
             </details>
 
             <details className="bg-white rounded-2xl p-4 border border-[#294154]/8">
-              <summary className="font-semibold cursor-pointer">What if I don’t reach my target level?</summary>
+              <summary className="font-semibold cursor-pointer">What if I don&apos;t reach my target level?</summary>
               <p className="mt-2 text-gray-700">We offer a level-up guarantee: one free evaluation session and retake if needed.</p>
             </details>
 
@@ -318,7 +320,7 @@ export default function CoursesPage() {
   <div>
     <h3 className="text-3xl font-bold mb-3">Ready to Start Your English Journey?</h3>
     <p className="text-white/90 max-w-3xl mx-auto text-lg leading-relaxed">
-      Getting started with IELS is simple. Follow the steps below — and you’ll be learning with Arba and the IELS community in no time.
+      Getting started with IELS is simple. Follow the steps below — and you&apos;ll be learning with Arba and the IELS community in no time.
     </p>
   </div>
 
@@ -361,23 +363,26 @@ export default function CoursesPage() {
 
 {/* CTA BUTTONS */}
 <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
-  <a
-    href="https://wa.me/6288297253491"
+  
+  <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]">
+    <Link
+    href="https://forms.gle/t8xijoi6umFeYAu86"
     target="_blank"
     rel="noopener noreferrer"
     className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
-  >
-    💬 Ask via WhatsApp
-  </a>
+  > Register Now
+    
+  </Link></Button>
 
-  <a
-    href="https://forms.gle/XXXXXXX"
+  <Button asChild className="bg-white text-[#294154] font-semibold px-6 py-3 hover:bg-gray-200">
+    <Link
+    href="https://wa.me/6288297253491"
     target="_blank"
     rel="noopener noreferrer"
-    className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-white text-[#294154] font-semibold hover:bg-gray-200 transition transform hover:scale-[1.02]"
+  
   >
-    📝 Register via Form
-  </a>
+    💬 Ask via WhatsApp
+  </Link></Button>
 </div>
       </section>
 
@@ -397,12 +402,13 @@ export default function CoursesPage() {
               </p>
           </div>
 
-          <Link
+          <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]">
+            <Link
             href="/iels-lounge"
             className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02] whitespace-nowrap"
           >
-            Explore IELS Lounge →
-          </Link>
+            Explore IELS Lounge
+          </Link></Button>
         </div>
       </section>
       

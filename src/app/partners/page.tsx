@@ -4,6 +4,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/components/ui/button"
 
 export default function PartnersPage() {
   return (
@@ -23,21 +24,21 @@ export default function PartnersPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mt-4">
-              <a
+              <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]"><Link
                 href="mailto:partnership@ielsco.com"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-[#294154] text-white font-semibold shadow hover:bg-[#112433] transition-colors"
-              >
-                🤝 Let’s Collaborate
-              </a>
+               >
+                🤝 Let&apos;s Collaborate
+              </Link></Button>
 
-              <a
+                <Button asChild className="bg-[#294154] text-white font-semibold px-6 py-3 hover:bg-[#21363f]">
+                  <Link
                 href="/docs/IELS_Partnership_Deck.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-[#e56668] border border-white text-white font-semibold hover:bg-[#cb484a] transition-colors"
+                
               >
                 📄 View Partnership Deck
-              </a>
+              </Link></Button>
             </div>
           </div>
 
@@ -155,14 +156,17 @@ export default function PartnersPage() {
     </div>
 
     {/* CTA Button */}
-    <a
+    <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E] mt-6">
+      
+    <Link
       href="https://bit.ly/IELSImpact2025"
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-2 mt-10 bg-[#E56668] text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-[#c94c56] transition-all duration-300 shadow-md hover:shadow-xl"
+  
     >
       📈 View IELS Impact Report
-    </a>
+    </Link>
+    </Button>
   </div>
 
   {/* Decorative elements */}
@@ -276,21 +280,23 @@ export default function PartnersPage() {
 
     {/* CTA Buttons */}
     <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-      <a
+          <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]">
+            <Link
         href="https://wa.me/6288297253491"
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-[#E56668] text-white font-semibold text-lg hover:bg-[#c94c56] transition"
+        
       >
         💬 Chat on WhatsApp
-      </a>
+      </Link></Button>
 
-      <a
+      <Button asChild className="bg-[#294154] text-white font-semibold px-6 py-3 hover:bg-[#21363f]">
+                  
+        <Link
         href="mailto:partnership@ielsco.com"
-        className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white border border-[#294154] text-[#294154] font-semibold text-lg hover:bg-[#294154] hover:text-white transition"
       >
         ✉ Send Email
-      </a>
+      </Link></Button>
     </div>
 
     {/* Info */}

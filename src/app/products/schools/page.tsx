@@ -3,8 +3,10 @@
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Image from "next/image";
+import CountUp from "react-countup";
 import Link from "next/link";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 
 /**
@@ -139,21 +141,22 @@ export default function SchoolsPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mt-6">
-              <a
+              <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]"><Link
                 href="#contact"
-                className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
+                
               >
                 Request a Pilot Program
-              </a>
+              </Link></Button>
 
-              <a
+               <Button asChild className="bg-[#294154] text-white font-semibold px-6 py-3 hover:bg-[#21363f]">
+               <Link
                 href={LINKS.programOverview}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition transform hover:scale-[1.02]"
+             
               >
                 View Program Overview
-              </a>
+              </Link></Button>
             </div>
 
             <p className="text-sm text-gray-500 mt-3">
@@ -176,102 +179,187 @@ export default function SchoolsPage() {
           </div>
         </section>
 
-        {/* WHY SCHOOLS */}
-        <section>
-          <h2 className="text-2xl font-bold mb-6">Why Schools Partner with IELS</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                title: "Curriculum that Delivers Results",
-                desc:
-                  "Designed around CEFR and IELTS frameworks with measurable student progress.",
-                icon: "📘",
-              },
-              {
-                title: "Empowered Teachers",
-                desc:
-                  "Workshops, co-teaching models, and complete lesson kits to support your staff.",
-                icon: "👩‍🏫",
-              },
-              {
-                title: "Smart Progress Tracking",
-                desc:
-                  "School dashboards, student reports, and class performance insights.",
-                icon: "📊",
-              },
-              {
-                title: "Global Pathways",
-                desc:
-                  "Support for scholarships, exchange programs, and international admissions.",
-                icon: "🌏",
-              },
-            ].map((c) => (
-              <div
-                key={c.title}
-                className="bg-white rounded-2xl p-6 border border-[#294154]/8 hover:shadow-lg transition transform hover:-translate-y-1"
-              >
-                <div className="text-2xl mb-3">{c.icon}</div>
-                <h3 className="font-semibold mb-1">{c.title}</h3>
-                <p className="text-sm text-gray-600">{c.desc}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+ {/* WHY SCHOOLS */}
+<section>
+  <h2 className="text-2xl font-bold mb-8">
+    Why Schools Partner with IELS
+  </h2>
 
-        {/* PROGRAM HIGHLIGHTS */}
-        <section>
-          <h2 className="text-2xl font-bold mb-6">What’s Inside the Program</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                title: "Placement & Diagnostic Tests",
-                desc:
-                  "Identify student levels and create learning paths instantly.",
-                link: LINKS.programOverview,
-              },
-              {
-                title: "English Curriculum Packages",
-                desc:
-                  "12-week modular courses for academic and occupational English.",
-                link: LINKS.curriculumGuide,
-              },
-              {
-                title: "Teacher Training & Mentorship",
-                desc:
-                  "Support your teachers with lesson plans, coaching, and workshops.",
-                link: LINKS.teacherGuide,
-              },
-              {
-                title: "IELS Lounge for Students",
-                desc:
-                  "Access community events, speaking clubs, and micro-lessons.",
-                link: LINKS.loungeGuide,
-              },
-              {
-                title: "Reporting & Assessment Dashboard",
-                desc:
-                  "Real-time insights and exportable student progress reports.",
-                link: LINKS.dashboardPreview,
-              },
-            ].map((p) => (
-              <div
-                key={p.title}
-                className="bg-white rounded-2xl p-6 border border-[#294154]/8 hover:shadow-lg transition transform hover:-translate-y-1"
-              >
-                <h4 className="font-semibold mb-2">{p.title}</h4>
-                <p className="text-sm text-gray-600 mb-4">{p.desc}</p>
-                <a
-                  href={p.link}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-block text-sm font-semibold text-[#294154] hover:underline"
-                >
-                  Learn More →
-                </a>
-              </div>
-            ))}
+  <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+    {[
+      {
+        icon: "📘",
+        title: "Curriculum that Delivers Results",
+        proof: "CEFR-aligned & outcome-driven",
+        points: [
+          "Structured learning outcomes",
+          "IELTS & academic readiness",
+          "Measurable student progress",
+        ],
+      },
+      {
+        icon: "👩‍🏫",
+        title: "Empowered Teachers",
+        proof: "Support beyond the classroom",
+        points: [
+          "Teacher workshops & mentoring",
+          "Ready-to-use lesson kits",
+          "Co-teaching & feedback system",
+        ],
+      },
+      {
+        icon: "📊",
+        title: "Smart Progress Tracking",
+        proof: "Data-backed decisions",
+        points: [
+          "Student & class dashboards",
+          "Exportable progress reports",
+          "Performance-based insights",
+        ],
+      },
+      {
+        icon: "🌏",
+        title: "Global Pathways",
+        proof: "Beyond local classrooms",
+        points: [
+          "Scholarship & exchange prep",
+          "International exposure",
+          "Academic & career pathways",
+        ],
+      },
+    ].map((b, i) => (
+      <div
+        key={i}
+        className="
+          group relative rounded-3xl border bg-[#FAFAFA] p-7
+          transition-all duration-300
+          border-gray-200
+          hover:border-[#E56668]/60 hover:-translate-y-1 hover:shadow-xl
+          active:border-[#E56668] active:shadow-2xl active:-translate-y-1
+        "
+      >
+        {/* ACCENT BAR */}
+        <div
+          className="
+            absolute left-0 top-6 bottom-6 w-1 rounded-full
+            bg-transparent
+            group-hover:bg-[#E56668]
+            transition-all duration-300
+          "
+        />
+
+        <div className="pl-4 flex flex-col gap-4">
+          {/* HEADER */}
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">{b.icon}</span>
+            <h3
+              className="
+                text-lg font-bold text-[#2F4157]
+                transition group-hover:text-[#E56668]
+              "
+            >
+              {b.title}
+            </h3>
           </div>
-        </section>
+
+          {/* PROOF */}
+          <p className="text-sm font-semibold text-[#E56668]">
+            {b.proof}
+          </p>
+
+          {/* DETAILS */}
+          <ul className="text-sm text-gray-600 space-y-2">
+            {b.points.map((p, idx) => (
+              <li key={idx}>• {p}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+{/* PROGRAM HIGHLIGHTS */}
+<section>
+  <h2 className="text-2xl font-bold mb-8">
+    What&apos;s Inside the Program
+  </h2>
+
+  <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+    {[
+      {
+        title: "Placement & Diagnostic Tests",
+        desc: "Identify student levels and create learning paths instantly.",
+        link: LINKS.programOverview,
+      },
+      {
+        title: "English Curriculum Packages",
+        desc: "12-week modular courses for academic and occupational English.",
+        link: LINKS.curriculumGuide,
+      },
+      {
+        title: "Teacher Training & Mentorship",
+        desc: "Lesson plans, coaching, and professional development workshops.",
+        link: LINKS.teacherGuide,
+      },
+      {
+        title: "IELS Lounge for Students",
+        desc: "Community events, speaking clubs, and micro-lessons.",
+        link: LINKS.loungeGuide,
+      },
+      {
+        title: "Reporting & Assessment Dashboard",
+        desc: "Real-time insights and exportable student progress reports.",
+        link: LINKS.dashboardPreview,
+      },
+    ].map((p, i) => (
+      <div
+        key={i}
+        className="
+          group relative rounded-3xl border bg-[#FAFAFA] p-7
+          transition-all duration-300
+          border-gray-200
+          hover:border-[#E56668]/60 hover:-translate-y-1 hover:shadow-xl
+          active:border-[#E56668] active:shadow-2xl active:-translate-y-1
+        "
+      >
+        {/* ACCENT BAR */}
+        <div
+          className="
+            absolute left-0 top-6 bottom-6 w-1 rounded-full
+            bg-transparent
+            group-hover:bg-[#E56668]
+            transition-all duration-300
+          "
+        />
+
+        <div className="pl-4 flex flex-col gap-4">
+          <h4
+            className="
+              text-lg font-bold text-[#2F4157]
+              transition group-hover:text-[#E56668]
+            "
+          >
+            {p.title}
+          </h4>
+
+          <p className="text-sm text-gray-600">
+            {p.desc}
+          </p>
+
+          <a
+            href={p.link}
+            target="_blank"
+            rel="noreferrer"
+            className="text-sm font-semibold text-[#294154] hover:text-[#E56668] transition"
+          >
+            Learn More →
+          </a>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
 
         {/* PILOT PROGRAM */}
         <section>
@@ -287,13 +375,15 @@ export default function SchoolsPage() {
                 <p className="text-sm text-gray-600 italic mb-3">
                   *Ideal for up to 50 students. Custom cohorts available for schools and universities.
                 </p>
-
-                <a
+                <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E] mt-4">
+                  
+                <Link
                   href="#contact"
                   className="inline-flex items-center gap-2 rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
                 >
-                  Join the Pilot →
-                </a>
+                  Join the Pilot
+                </Link>
+                </Button>
               </div>
 
               {/* 3-step timeline */}
@@ -313,23 +403,90 @@ export default function SchoolsPage() {
           </div>
         </section>
 
-        {/* PROVEN IMPACT */}
-        <section>
-          <h2 className="text-2xl font-bold mb-6">Proven Impact</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { big: "+42%", text: "avg improvement in English confidence (8 weeks)" },
-              { big: "+31%", text: "increase in reading & writing accuracy" },
-              { big: "95%", text: "teacher satisfaction from workshops" },
-              { big: "4.8★", text: "student rating (feedback survey)" },
-            ].map((m) => (
-              <div key={m.big} className="bg-white rounded-2xl p-6 border border-[#294154]/8 text-center hover:shadow-lg transition transform hover:-translate-y-1">
-                <div className="text-3xl font-extrabold text-[#294154] mb-2">{m.big}</div>
-                <div className="text-sm text-gray-600">{m.text}</div>
-              </div>
-            ))}
+{/* ---------- PROVEN IMPACT ---------- */}
+<section>
+  <h2 className="text-2xl font-bold mb-8">Proven Impact</h2>
+
+  <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+    {[
+      {
+        value: 42,
+        suffix: "%",
+        label: "avg improvement in English confidence",
+        note: "within 8-week pilot program",
+      },
+      {
+        value: 31,
+        suffix: "%",
+        label: "increase in reading & writing accuracy",
+        note: "based on diagnostic comparison",
+      },
+      {
+        value: 95,
+        suffix: "%",
+        label: "teacher satisfaction rate",
+        note: "from training & workshops",
+      },
+      {
+        value: 4.8,
+        suffix: "★",
+        decimals: 1,
+        label: "average student rating",
+        note: "post-program feedback survey",
+      },
+    ].map((m, i) => (
+      <div
+        key={i}
+        className="
+          group relative rounded-3xl border bg-[#FAFAFA] p-7 text-center
+          transition-all duration-300
+          border-gray-200
+          hover:border-[#E56668]/60 hover:-translate-y-1 hover:shadow-xl
+          active:border-[#E56668] active:shadow-2xl
+        "
+      >
+        {/* ACCENT BAR */}
+        <div
+          className="
+            absolute left-0 top-6 bottom-6 w-1 rounded-full
+            bg-transparent
+            group-hover:bg-[#E56668]
+            transition-all duration-300
+          "
+        />
+
+        <div className="pl-4 flex flex-col items-center gap-3">
+          {/* COUNT */}
+          <div
+            className="
+              text-4xl font-extrabold text-[#294154]
+              transition group-hover:text-[#E56668]
+            "
+          >
+            <CountUp
+              end={m.value}
+              duration={2.4}
+              decimals={m.decimals ?? 0}
+              enableScrollSpy
+              scrollSpyOnce
+            />
+            {m.suffix}
           </div>
-        </section>
+
+          {/* MAIN LABEL */}
+          <p className="text-sm font-semibold text-[#294154] text-center">
+            {m.label}
+          </p>
+
+          {/* NOTE */}
+          <p className="text-xs text-gray-500 text-center">
+            {m.note}
+          </p>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
 
         {/* TESTIMONIALS */}
         <section>
@@ -355,9 +512,18 @@ export default function SchoolsPage() {
           </div>
 
           <div className="mt-6">
-            <a href={LINKS.caseStudies} target="_blank" rel="noreferrer" className="text-[#294154] font-semibold hover:underline">
-              View Pilot Case Studies →
-            </a>
+            
+                     <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]">
+                  
+                <Link
+                  href={LINKS.caseStudies}
+                  target="_blank" rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
+                >
+                  View Pilot Case Studies
+                </Link>
+                </Button>
+         
           </div>
         </section>
 
@@ -367,10 +533,10 @@ export default function SchoolsPage() {
             <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Left: Contact Info */}
               <div>
-                <h2 className="text-2xl font-bold mb-2">Let’s Build Global Opportunities Together.</h2>
+                <h2 className="text-2xl font-bold mb-2">Let&apos;s Build Global Opportunities Together.</h2>
                 <p className="text-gray-700 mb-4">
-                  We’d love to discuss how IELS can support your English programs. Reach out to our Principal
-                  directly or fill out the form and we’ll get back within 24 hours.
+                  We&apos;d love to discuss how IELS can support your English programs. Reach out to our Principal
+                  directly or fill out the form and we&apos;ll get back within 24 hours.
                 </p>
 
                 <div className="space-y-3 text-sm text-gray-700">
@@ -484,9 +650,9 @@ export default function SchoolsPage() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="rounded-full bg-[#E56668] text-white font-semibold px-5 py-2 hover:bg-[#C04C4E] transition transform hover:scale-[1.02] disabled:opacity-60"
+                      className= "inline-flex items-center justify-center rounded-full bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E] transition active:scale-[0.97]"
                     >
-                      {isSubmitting ? "Sending..." : "Send Inquiry →"}
+                      {isSubmitting ? "Sending..." : "Send Inquiry"}
                     </button>
                   </div>
                   
@@ -495,15 +661,6 @@ export default function SchoolsPage() {
               </div>
                </div>
           </section>
-
-          <div className="max-w-5xl mx-auto">
-            <div className="border-t border-gray-100 pt-6">
-                For media, sponsorships, or collaborations, please visit our{" "}
-                <Link href="/partnerships" className="text-[#294154] hover:underline">
-                  Partnerships Page
-                </Link>
-              </div>
-            </div>
           </div>
       <Footer />
     </main>

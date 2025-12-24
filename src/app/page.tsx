@@ -5,6 +5,8 @@ import Footer from "@/components/footer";
 import Image from "next/image";
 import CountUp from "react-countup";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+
 
 export default function Home() {
   return (
@@ -54,28 +56,30 @@ export default function Home() {
 
       {/* Subtitle */}
       <p className="text-base sm:text-lg lg:text-xl text-[#2F4157]/80 max-w-2xl leading-relaxed">
-        At IELS, you don’t just study grammar — you join a vibrant community
+        At IELS, you don&apos;t just study grammar — you join a vibrant community
         that helps you <strong>learn, speak, and grow</strong> toward your global goals.
       </p>
 
           {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 pt-4">
-
+          
           {/* Start Now */}
+          <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]">
           <Link
             href="/welcome/start"
-            className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
-          >
-            Start Now 🚀
+            >
+           Start Now 🚀
           </Link>
+          </Button>
 
           {/* Already have an account */}
+          <Button asChild className="bg-[#294154] text-white font-semibold px-6 py-3 hover:bg-[#21363f]">
           <Link
-            href="/sign-in"
-            className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition transform hover:scale-[1.02]" 
+            href="/sign-in" 
           >
             I have an account
           </Link>
+          </Button>
 
         </div>
     </div>
@@ -293,12 +297,13 @@ export default function Home() {
         <br />
         global success with IELS!
       </p>
+      <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]">
       <Link
         href="/stories"
-        className="inline-flex items-center justify-center rounded-full px-7 py-4 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
       >
         Discover More Member Stories
       </Link>
+      </Button>
     </div>
   </div>
 </div>
@@ -316,12 +321,14 @@ export default function Home() {
 
       {/* Desktop Button */}
       <div className="hidden lg:block mt-6">
-        <br/><Link
+         <br/>
+        <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]">
+       <Link
           href="/iels-lounge"
-          className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
-        >
+          >
           Join the Community
         </Link>
+        </Button>
       </div>
     </div>
 
@@ -349,12 +356,13 @@ export default function Home() {
 
       {/* Mobile Button */}
       <div className="block lg:hidden mt-4">
-        <Link
+        <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]">
+          <Link
           href="/iels-lounge"
-          className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
+      
         >
           Join the Community
-        </Link>
+        </Link></Button>
       </div>
     </div>
   </div>
@@ -373,12 +381,12 @@ export default function Home() {
       <p className="text-sm italic text-60 mb-8">
         Coming soon: online test dashboard & score insights.
       </p>
-      <br/><Link
+      <br/><Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]"><Link
         href="/test"
-        className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
+    
       >
         Take the Test
-      </Link>
+      </Link></Button>
     </div>
     <div className="flex-1 flex justify-center">
       <img
@@ -408,11 +416,11 @@ export default function Home() {
         Hi, teachers! Let’s bring global English learning right into your classrooms.  
         <strong className="text-[#E56668]"> IELS for Schools</strong> is a year-long structured program packed with challenges, mentorship, and cultural immersion designed for real student growth.
       </p>
-      <br/><Link
+      <br/><Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]"><Link
         href="/products/schools"
-        className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]">
+      >
         Explore the Program
-      </Link>
+      </Link></Button>
     </div>
   </div>
 </section>
@@ -429,13 +437,12 @@ export default function Home() {
         <strong className="text-[#E56668]"> IELS Events</strong> let you join speaking clubs, bootcamps, and workshops guided by global mentors.  
         Learn English by living it.
       </p>
-      <br/>
+      <br/><Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]">
       <Link
         href="/events"
-        className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
       >
-        See What’s On
-      <br/></Link>
+        See What&apos;s On
+      <br/></Link></Button>
     </div>
     <div className="flex-1 flex justify-center">
       <img
@@ -468,12 +475,11 @@ export default function Home() {
         Access <strong className="text-[#E56668]">IELS Free Resources</strong> — e-books, grammar guides, and study materials built for curious learners like you.  
         Learn anywhere, anytime, at your own pace.
       </p>
-      <br/><Link
+      <br/><Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]"><Link
         href="/products/resources"
-        className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
       >
         Access Library
-      </Link>
+      </Link></Button>
     </div>
   </div>
 </section>
@@ -490,12 +496,11 @@ export default function Home() {
         to make English education more accessible and meaningful.  
         <strong className="text-[#E56668]"> Partner with IELS</strong> to co-create programs, support learners, and shape the future of education.
       </p>
-      <br/><Link
+      <br/><Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]"><Link
         href="/partners"
-        className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
       >
         Become a Partner
-      </Link>
+      </Link></Button>
     </div>
     <div className="flex-1 flex justify-center">
       <img
@@ -512,12 +517,12 @@ export default function Home() {
     <h2 className="text-[36px] sm:text-[48px] lg:text-[64px] font-extrabold leading-tight">
       Learn English <br/> With <span className="text-[#E56668]">IELS!</span>
     </h2>
-    <Link
-      href="/start"
-      className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
+    <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]"><Link
+      href="/welcome/start"
     >
-      Start Now 🚀
+      Start Now 
     </Link>
+    </Button>
   </div>
 </section>
  

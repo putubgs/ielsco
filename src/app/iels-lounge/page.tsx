@@ -7,6 +7,7 @@ import Footer from "@/components/footer";
 import { useState } from "react";
 import { testimonialsData } from "@/data/testimonials";
 import type { Testimonial } from "@/data/testimonials";
+import { Button } from "@/components/ui/button"
 
 export default function LoungePage() {
   const [index, setIndex] = useState(0);
@@ -52,12 +53,12 @@ export default function LoungePage() {
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
-              <Link
+              <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]"><Link
                 href="/iels-lounge/pricing"
-                className="bg-[#e56668] text-white px-8 py-4 rounded-full font-semibold hover:bg-[#cc4f54] hover:scale-[1.02] transition"
+        
               >
                 Start from Rp25.000 / Month →
-              </Link>
+              </Link></Button>
             </div>
           </div>
 
@@ -75,11 +76,11 @@ export default function LoungePage() {
         {/* ===== SPEAKING CLUB STORY ===== */}
         <section className="py-24 px-6 text-center max-w-5xl mx-auto">
           <h2 className="text-3xl font-bold mb-6">
-            What’s IELS Lounge Speaking Club All About?
+            What&apos;s IELS Lounge Speaking Club All About?
           </h2>
           <p className="text-gray-700 text-lg mb-8 leading-relaxed">
-            Speaking Club isn’t just about practicing English every night at{" "}
-            <strong>8 PM</strong>. It’s where you share stories, discuss, and
+            Speaking Club isn&apos;t just about practicing English every night at{" "}
+            <strong>8 PM</strong>. It&apos;s where you share stories, discuss, and
             laugh with friends who are learning just like you. From nightly
             sessions to bi-weekly Zoom events like roleplays and games, to
             monthly events that connect you globally — IELS Lounge helps you
@@ -166,13 +167,13 @@ export default function LoungePage() {
                 </li>
               </ul>
 
-              <Link
+              <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]">
+                <Link
                 href="https://www.instagram.com/p/YOUR_POST_LINK"
                 target="_blank"
-                className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
               >
-                Read More on Instagram →
-              </Link>
+                Read More on Instagram
+              </Link></Button>
             </div>
           </div>
         </section>
@@ -240,116 +241,176 @@ export default function LoungePage() {
   </div>
 </section>
 
-        {/* ===== WEEKLY ROUTINE ===== */}
-        <section className="relative py-22 px-5 text-center overflow-hidden">
-          <div className="absolute inset-0 flex justify-center opacity-100">
-            <Image
-              src="/images/contents/general/calendar.svg"
-              alt="Calendar icon background"
-              width={1000}
-              height={800}
-            />
-          </div>
+  {/* ===== WEEKLY ROUTINE ===== */}
+<section className="bg-white py-24 px-4">
+  <div className="max-w-6xl mx-auto">
 
-          <div className="relative z-10 max-w-5xl mx-auto">
-            <h2 className="text-3xl font-bold mb-6">Your Weekly Routine</h2>
-            <p className="text-gray-700 mb-8">
-              Tiny routines, big impact. Here’s what a typical week looks like.
+    {/* HEADER */}
+    <div className="text-center mb-20">
+      <h2 className="text-3xl md:text-4xl font-extrabold text-[#2F4157] mb-4">
+        Your Weekly English Routine
+      </h2>
+      <p className="text-gray-600 max-w-3xl mx-auto">
+        Tiny routines, big impact.  
+        This is how consistency is built — one small habit at a time.
+      </p>
+    </div>
+
+    {/* GRID */}
+    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      {[
+        {
+          day: "Monday",
+          title: "Word of the Day",
+          desc: "Build vocabulary daily with practical words you’ll actually use.",
+        },
+        {
+          day: "Tuesday",
+          title: "Idiom Practice",
+          desc: "Learn storytelling idioms and sound more natural in conversations.",
+        },
+        {
+          day: "Wednesday",
+          title: "Listen & Engage",
+          desc: "Short audio or video tasks to train your listening instincts.",
+        },
+        {
+          day: "Thursday",
+          title: "Grammar Poll & Tip",
+          desc: "Quick grammar check-ins without the boring lectures.",
+        },
+        {
+          day: "Friday",
+          title: "Weekly Recap Quiz",
+          desc: "Fun review to lock in what you learned this week.",
+        },
+        {
+          day: "Sunday",
+          title: "Reflection & Journaling",
+          desc: "Slow down, reflect, and track how far you’ve grown.",
+        },
+      ].map((item, i) => (
+        <div
+          key={i}
+          className={`
+            relative rounded-3xl border bg-[#FAFAFA] p-7
+            transition-all duration-300
+            border-gray-200
+            hover:border-[#E56668]/60
+            hover:-translate-y-1
+            hover:shadow-xl
+            active:scale-[0.98]
+          `}
+        >
+          {/* RED ACCENT BAR */}
+          <div className="absolute left-0 top-6 bottom-6 w-1 rounded-full bg-[#E56668]/70" />
+
+          <div className="pl-4 flex flex-col gap-4">
+
+            {/* DAY */}
+            <p className="text-sm font-semibold text-[#E56668] uppercase tracking-wide">
+              {item.day}
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-left">
-              {[
-                ["Monday", "Word of the Day → daily vocabulary"],
-                ["Tuesday", "Idiom of the Day → storytelling idioms"],
-                ["Wednesday", "Listen & Engage → audio or video task"],
-                ["Thursday", "Grammar Poll + Tip → tense or expression quiz"],
-                ["Friday", "Weekly Recap Quiz → fun review"],
-                ["Sunday", "Reflection & Journaling"],
-              ].map(([day, detail], i) => (
-                <div
-                  key={i}
-                  className="bg-white p-5 rounded-2xl border border-[#e56668]/20 hover:border-[#e56668] hover:scale-[1.02] transition"
-                >
-                  <h3 className="font-semibold text-[#e56668] mb-1">{day}</h3>
-                  <p className="text-gray-700 text-sm">{detail}</p>
-                </div>
-              ))}
-            </div>
+            {/* TITLE */}
+            <h3 className="text-xl font-bold text-[#2F4157]">
+              {item.title}
+            </h3>
 
-            <p className="mt-10 text-gray-600 text-sm">
-              Just 10–15 minutes a day can totally change how you learn English.
+            {/* DESC */}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              {item.desc}
             </p>
           </div>
-        </section>
+        </div>
+      ))}
+    </div>
 
+    {/* FOOTNOTE */}
+    <p className="mt-16 text-center text-gray-600 text-sm max-w-xl mx-auto">
+      Just <b>10–15 minutes a day</b> is enough to build momentum.  
+      Consistency beats intensity — every single time.
+    </p>
+  </div>
+</section>
+   {/* ===== TESTIMONIALS===== */}
+<section className="bg-[#F7F8FA] py-20 overflow-hidden">
+  {/* HEADER */}
+  <div className="text-center mb-12 px-6">
+    <h2 className="text-3xl font-extrabold text-[#2F4157] mb-3">
+      What Our Members Say
+    </h2>
+    <p className="text-gray-600">
+      Swipe to read real stories from the IELS community.
+    </p>
+  </div>
 
-       {/* ===== TESTIMONIALS ===== */}
-        <section id="testimonials"
-        className="py-24 px-6 text-center">
-          <h2 className="text-3xl font-bold mb-8">What Our Members Say</h2>
+  {/* OUTER FRAME */}
+  <div className="relative max-w-[1400px] mx-auto">
+    {/* GRADIENT FADE */}
+    <div className="pointer-events-none absolute left-0 top-0 h-full w-20 bg-gradient-to-r from-[#F7F8FA] to-transparent z-10" />
+    <div className="pointer-events-none absolute right-0 top-0 h-full w-20 bg-gradient-to-l from-[#F7F8FA] to-transparent z-10" />
 
-          <div className="flex justify-center items-center gap-6 overflow-hidden">
-            {testimonialsData.map((t, i) => {
-              const pos =
-                (i - index + testimonialsData.length) % testimonialsData.length;
-              const isActive = pos === 0;
-              const isPrev = pos === testimonialsData.length - 1;
-              const isNext = pos === 1;
+    {/* SCROLL AREA */}
+    <div className="overflow-x-auto scrollbar-none px-12">
+      <div className="flex gap-8 w-max py-6 mx-auto">
+        {testimonialsData.map((t, i) => {
+          const isActive = i === 0; // featured testimonial (simple & clean)
 
-              return (
-                <div
-                  key={t.id}
-                  className={`transition-all duration-500 ${
-                    isActive
-                      ? "scale-100 opacity-100 z-20"
-                      : (isPrev || isNext)
-                      ? "scale-90 opacity-50 blur-[1px] z-10"
-                      : "hidden md:block opacity-0"
-                  }`}
-                  style={{ width: "320px" }}
-                >
-                  <div className="bg-[#f8fbfc] rounded-2xl p-6 shadow-sm border border-[#f1f1f1]">
-                    <p
-                      className="text-gray-700 italic mb-4 text-sm leading-relaxed"
-                      dangerouslySetInnerHTML={{ __html: t.content }}
-                    />
-                    <div className="flex items-center justify-center gap-3">
-                      <Image
-                        src={t.author.avatar}
-                        alt={t.author.name}
-                        width={50}
-                        height={50}
-                        className="rounded-full object-cover"
-                      />
-                      <div className="text-left">
-                        <p className="font-semibold">{t.author.name}</p>
-                        <p className="text-sm text-gray-500">
-                          {t.author.university}
-                        </p>
-                      </div>
-                    </div>
+          return (
+            <div
+              key={t.id}
+              className={`
+                relative min-w-[320px] max-w-[320px]
+                rounded-3xl bg-white p-6
+                transition-all duration-300
+                ${
+                  isActive
+                    ? "border-2 border-[#E56668] shadow-2xl scale-[1.05]"
+                    : "border border-gray-200 hover:shadow-lg hover:-translate-y-1"
+                }
+              `}
+            >
+              {/* FEATURED BADGE */}
+              {isActive && (
+                <div className="absolute -top-4 left-6 right-6 text-center">
+                  <div className="rounded-full bg-[#E56668] py-2 text-xs font-bold text-white shadow-md">
+                    ⭐ Featured Story
                   </div>
                 </div>
-              );
-            })}
-          </div>
+              )}
 
-          {/* Arrows */}
-          <div className="flex justify-center gap-4 mt-10">
-            <button
-              onClick={prev}
-              className="bg-[#e56668] text-white w-10 h-10 rounded-full font-bold hover:bg-[#cc4f54] transition"
-            >
-              ‹
-            </button>
-            <button
-              onClick={next}
-              className="bg-[#e56668] text-white w-10 h-10 rounded-full font-bold hover:bg-[#cc4f54] transition"
-            >
-              ›
-            </button>
-          </div>
-        </section>
+              {/* CONTENT */}
+              <p
+                className="text-sm italic text-gray-700 leading-relaxed mb-6"
+                dangerouslySetInnerHTML={{ __html: t.content }}
+              />
+
+              {/* AUTHOR */}
+              <div className="flex items-center gap-3 mt-auto">
+                <Image
+                  src={t.author.avatar}
+                  alt={t.author.name}
+                  width={44}
+                  height={44}
+                  className="rounded-full object-cover"
+                />
+                <div>
+                  <p className="font-semibold text-[#2F4157] text-sm">
+                    {t.author.name}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {t.author.university}
+                  </p>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+</section>
 
          {/* ===== FINAL CTA ===== */}
         <section className="py-24 text-center">
@@ -360,13 +421,12 @@ export default function LoungePage() {
             English isn’t something you memorize — it’s something you live.
             Take the first step with IELS Lounge today.
           </p>
-
+          <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]">
           <Link
             href="/iels-lounge/pricing"
-            className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
           >
-            Join the Lounge →
-          </Link>
+            Join the Lounge
+          </Link></Button>
 
           <p className="mt-8 text-sm text-gray-500">
             Questions? Email community@ielsco.com or WhatsApp +62 882-9725-3491

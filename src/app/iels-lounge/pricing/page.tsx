@@ -2,6 +2,7 @@ import Footer from "@/components/footer";
 import Header from "@/components/header";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/components/ui/button"
 
 export default function IelsLounge() {
   return (
@@ -519,42 +520,42 @@ export default function IelsLounge() {
                 <tr className="flex justify-between w-full py-4">
                   <td className="w-full flex-[1.5]"></td>
                   <td className="w-full flex-1 px-2">
-                    <Link
+                    <Button asChild className="bg-[#6F7680] text-white text-center rounded-[20px] w-full block font-semibold py-3 hover:bg-[#6F7680]/80">
+                      <Link
                       href="https://forms.gle/E9KbHVZEmaw8B9nh6"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-[#6F7680] text-white rounded-[20px] w-full block text-center py-2"
                     >
                       Free Access
-                    </Link>
+                    </Link></Button>
                   </td>
                   <td className="w-full flex-1 pl-2">
+                    <Button asChild className="bg-[#2F4157] text-white text-center rounded-[20px] w-full block font-semibold py-3 hover:bg-[#2F4157]/80">
                     <Link
                       href="https://ielsco.myr.id/membership/iels-lounge-premium"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-[#2F4157] text-white rounded-[20px] w-full block text-center py-2"
                     >
                       Rp200.000/year
-                    </Link>
-                    <Link
+                    </Link></Button>
+                     <Button asChild className="bg-[#2F4157] text-white text-center rounded-[20px] w-full block font-semibold py-3 mt-2 hover:bg-[#2F4157]/80">
+                     <Link
                       href="https://ielsco.myr.id/membership/iels-lounge-premium"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-white text-[#2F4157] border border-[#2F4157] rounded-[20px] w-full block text-center py-2 mt-2"
                     >
                       Rp25.000/month
-                    </Link>
+                    </Link></Button>
                   </td>
                   <td className="w-full flex-1 pl-2">
+                    <Button asChild className="bg-[#2F4157] text-white text-center rounded-[20px] w-full block font-semibold py-3 hover:bg-[#2F4157]/80">
                     <Link
                       href="https://ielsco.myr.id/membership/iels-lounge-premium"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-[#2F4157] text-white rounded-[20px] w-full block text-center py-2 font-bold"
                     >
                       Rp500.000
-                    </Link>
+                    </Link></Button>
                     <p className="text-center text-[12px] text-gray-600 mt-1">
                       Lifetime Access
                     </p>
@@ -671,14 +672,14 @@ export default function IelsLounge() {
                       </span>
                     </div>
                   </div>
-
+                  <Button asChild className="bg-[#6F7680] text-white  rounded-[15px] w-full block text-center font-semibold py-3 hover:bg-[#6F7680]/80">
                   <Link
-                    className="bg-[#6F7680] text-white rounded-[15px] w-full block text-center py-4 text-[16px] font-bold hover:bg-[#5A6268] transition-colors"
+                   
                     href="https://forms.gle/E9KbHVZEmaw8B9nh6"
                     target="_blank"
                   >
                     Get Free Access
-                  </Link>
+                  </Link></Button>
                 </div>
 
                 {/* Premium Plan Card */}
@@ -796,20 +797,22 @@ export default function IelsLounge() {
                   </div>
 
                   <div className="space-y-3">
+                    <Button asChild className="bg-white text-[#2F4157] rounded-[15px] w-full block text-center py-4 text-[16px] font-bold hover:bg-[#F8F9FA] transition-colors">
                     <Link
-                      className="bg-white text-[#2F4157] rounded-[15px] w-full block text-center py-4 text-[16px] font-bold hover:bg-[#F8F9FA] transition-colors"
+                      
                       href="https://ielsco.myr.id/membership/iels-lounge-premium"
                       target="_blank"
                     >
-                      Choose Yearly Plan - Rp200.000
-                    </Link>
+                      Choose Yearly Plan
+                    </Link></Button>
+                     <Button asChild className="bg-transparent text-white border-2 border-white rounded-[15px] w-full block text-center py-4 text-[16px] font-bold hover:bg-white hover:text-[#2F4157] transition-colors">
                     <Link
-                      className="bg-transparent text-white border-2 border-white rounded-[15px] w-full block text-center py-4 text-[16px] font-bold hover:bg-white hover:text-[#2F4157] transition-colors"
+   
                       href="https://ielsco.myr.id/membership/iels-lounge-premium"
                       target="_blank"
                     >
-                      Choose Monthly Plan - Rp25.000
-                    </Link>
+                      Choose Monthly Plan
+                    </Link></Button>
                   </div>
                 </div>
 
@@ -889,13 +892,14 @@ export default function IelsLounge() {
                   </div>
 
                   <div className="space-y-3">
-                    <Link
-                      className="bg-white text-[#2F4157] rounded-[15px] w-full block text-center py-4 text-[16px] font-bold hover:bg-[#F8F9FA] transition-colors"
+                    <Button asChild className="bg-white text-[#2F4157] rounded-[15px] w-full block text-center py-4 text-[16px] font-bold hover:bg-[#F8F9FA] transition-colors">
+                      <Link
+
                       href="https://ielsco.myr.id/membership/iels-lounge-premium"
                       target="_blank"
                     >
-                      Get Lifetime Access - Rp500.000
-                    </Link>
+                      Get Lifetime Access
+                    </Link></Button>
                   </div>
                 </div>
               </div>

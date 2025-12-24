@@ -89,7 +89,7 @@ export default function ResultPage() {
             {/* CTA PRIMARY */}
             <Link
               href="/sign-in"
-              className="w-full block text-center py-3 rounded-full bg-[#E56668] font-semibold hover:bg-[#C04C4E] transition"
+              className="w-full block inline-flex items-center justify-center rounded-full bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E] transition active:scale-[0.97]"
             >
               Sign in, start your journey
             </Link>
@@ -104,7 +104,7 @@ export default function ResultPage() {
             {/* CTA SECONDARY */}
             <Link
               href="/sign-up"
-              className="w-full block text-center py-3 rounded-full bg-white text-[#294154] font-semibold hover:bg-gray-200 transition"
+              className="w-full block inline-flex items-center justify-center rounded-full bg-white text-[#294154] font-semibold px-6 py-3 hover:bg-gray-200 transition active:scale-[0.97]"
             >
               Create an IELS account
             </Link>

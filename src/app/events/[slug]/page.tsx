@@ -6,6 +6,7 @@ import Footer from "@/components/footer";
 import { eventsData } from "@/data/events";
 import { generateSlug } from "@/utils/slug";
 import { Metadata } from "next";
+import { Button } from "@/components/ui/button"
 
 // Function to find event by slug
 function findEventBySlug(slug: string) {
@@ -105,8 +106,8 @@ export default async function EventDetailPage({
                 <div
                   className={`absolute top-4 right-4 px-4 py-2 rounded-full text-sm font-medium ${
                     isRegistrationOpen
-                      ? "bg-green-500 text-white"
-                      : "bg-red-500 text-white"
+                      ? "bg-emerald-600 text-white"
+                      : "bg-rose-600 text-white"
                   }`}
                 >
                   {isRegistrationOpen ? "Open" : "Closed"}
@@ -130,13 +131,15 @@ export default async function EventDetailPage({
               {/* Action Buttons */}
               <div className="flex">
                 {isRegistrationOpen && (
-                  <Link
+                   <Button
+              asChild
+              className="bg-[#E56668] text-white px-6 py-3 hover:bg-[#C04C4E]"
+            ><Link
                     href={event.registrationLink}
-                    className="inline-flex items-center justify-center bg-[#2F4157] text-white px-8 py-4 rounded-[20px] font-semibold text-lg hover:bg-[#4B5B6E] transition-colors shadow-lg"
                     target="_blank"
                   >
                     Register Now
-                  </Link>
+                  </Link></Button>
                 )}
               </div>
             </div>

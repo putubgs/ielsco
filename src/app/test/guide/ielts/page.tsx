@@ -5,6 +5,7 @@ import Footer from "@/components/footer";
 import { useState } from "react";
 import Link from "next/link";
 import codesRaw from "@/data/codes.json";
+import { Button } from "@/components/ui/button";
 
 type CodeEntry = {
   code: string;
@@ -62,21 +63,23 @@ function validateCode() {
                 Experience how the real IELTS feels, but more affordable and accessible anywhere.
               </p>
               <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                <Link
-                  href="https://drive.google.com/file/d/1h2IPjkahj1yKqU1_pK0T3L1cYAMz2pQk/view?usp=drive_link"
-                  target="_blank"
-                  className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
-                >
-                  Read Full IELTS Overview
-                </Link>
-                <a
-                  href={formUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition transform hover:scale-[1.02]"
-                >
-                  Register for IELTS Mock Test
-                </a>
+                            <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]">
+                              <Link
+                              href={formUrl}
+                              target="https://forms.gle/yFCdzbeR8uMBzM5X8"
+                              rel="noopener noreferrer"
+                            >
+                              Register for IELTS Mock Test
+                            </Link></Button>
+              
+                            <Button asChild className="bg-[#294154] text-white font-semibold px-6 py-3 hover:bg-[#21363f]"><Link
+                              href="https://drive.google.com/file/d/1h2IPjkahj1yKqU1_pK0T3L1cYAMz2pQk/view?usp=drive_link"
+                              rel="noopener noreferrer"
+                            >
+                              Read Full IELTS Overview
+                            </Link></Button>
+            
+            
               </div>
             </div>
           </div>
@@ -100,49 +103,129 @@ function validateCode() {
           </p>
         </section>
 
-        {/* PACKAGES & PRICING */}
-        <section className="bg-white rounded-2xl p-8 shadow-sm border border-[#294154]/10">
-          <h2 className="text-2xl font-bold mb-6 text-center">Select the Registration Package that Works Best for You! 🎓</h2>
+   {/* PACKAGES & PRICING */}
+<section className="bg-white rounded-2xl p-8 shadow-sm border border-[#294154]/10">
+  {/* HEADER */}
+  <div className="text-center mb-14">
+    <h2 className="text-2xl font-bold mb-3">
+      Select the Registration Package That Works Best for You 🎓
+    </h2>
+    <p className="text-gray-700 max-w-3xl mx-auto">
+      Choose a package based on your preparation needs — from quick assessment
+      to a full IELTS learning experience.
+    </p>
+  </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Package A */}
-            <div className="bg-[#fff9f8] border border-[#f0d8d9] rounded-2xl p-6 shadow-sm hover:shadow-md transition hover:-translate-y-1">
-              <h3 className="text-lg font-bold mb-2 text-[#294154]">Package A — Basic Mock Test</h3>
-              <div className="text-3xl font-extrabold mb-1">Rp 50.000</div>
-              <p className="text-sm text-gray-600 mb-3">Perfect for first-time takers or quick assessment.</p>
-              <ul className="list-disc pl-5 text-gray-700 text-sm space-y-1 mb-4">
-                <li>IELTS Mock Test (Listening, Reading, Writing)</li>
-                <li>AI-generated Score</li>
-                <li>Expert Feedback</li>
-              </ul>
-            </div>
+  {/* GRID */}
+  <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 text-[#294154]">
+    {[
+      {
+        title: "Package A — Basic Mock Test",
+        price: "Rp 50.000",
+        desc: "Perfect for first-time takers or quick assessment.",
+        bg: "bg-[#FAFAFA]",
+        border: "border-gray-200",
+        highlight: false,
+        points: [
+          "IELTS Mock Test (Listening, Reading, Writing)",
+          "AI-generated score report",
+          "Expert feedback & recommendations",
+        ],
+      },
+      {
+        title: "Package B — Mock Test + Preparation Kit",
+        price: "Rp 75.000",
+        desc: "Best for learners who want structured preparation before testing.",
+        bg: "bg-[#FAFAFA]",
+        border: "border-gray-200",
+        highlight: false,
+        points: [
+          "Everything in Package A",
+          "3 IELTS preparation videos",
+          "10 eBooks + 100+ practice questions",
+        ],
+      },
+      {
+        title: "Package C — Full IELTS Learning Experience",
+        price: "Rp 125.000",
+        desc: "For those aiming to experience the complete IELTS journey.",
+        bg: "bg-[#FAFAFA]",
+        border: "border-[#E56668]/40",
+        highlight: true,
+        points: [
+          "Everything in Package B",
+          "Live speaking simulation",
+          "1-Year IELS Lounge Premium access",
+          "Chance to win free Official IELTS Test (worth Rp 3.6M)",
+        ],
+      },
+    ].map((p, i) => (
+      <div
+        key={i}
+        className={`
+          group relative rounded-3xl border ${p.bg} ${p.border}
+          flex flex-col h-full
+          transition-all duration-300
+          hover:border-[#E56668]/60 hover:-translate-y-1 hover:shadow-xl
+        `}
+      >
+        {/* ACCENT BAR */}
+        <div
+          className={`
+            absolute left-0 top-6 bottom-6 w-1 rounded-full
+            transition-all duration-300
+            ${
+              p.highlight
+                ? "bg-[#E56668]"
+                : "bg-transparent group-hover:bg-[#E56668]"
+            }
+          `}
+        />
 
-            {/* Package B */}
-            <div className="bg-[#f9fbff] border border-[#d9e4f7] rounded-2xl p-6 shadow-sm hover:shadow-md transition hover:-translate-y-1">
-              <h3 className="text-lg font-bold mb-2 text-[#294154]">Package B — Mock Test + Preparation Kit</h3>
-              <div className="text-3xl font-extrabold mb-1">Rp 75.000</div>
-              <p className="text-sm text-gray-600 mb-3">Best for learners who want structured preparation before testing.</p>
-              <ul className="list-disc pl-5 text-gray-700 text-sm space-y-1 mb-4">
-                <li>Everything in Package A</li>
-                <li>3 IELTS Prep Videos</li>
-                <li>10 eBooks + 100+ Practice Questions</li>
-              </ul>
-            </div>
+        {/* RECOMMENDED BADGE */}
+        {p.highlight && (
+          <div className="absolute top-2 right-3 bg-[#294154]/80 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+            Recommended
+          </div>
+        )}
 
-            {/* Package C */}
-            <div className="bg-[#f8fcfa] border border-[#d3eedf] rounded-2xl p-6 shadow-sm hover:shadow-md transition hover:-translate-y-1">
-              <h3 className="text-lg font-bold mb-2 text-[#294154]">Package C — Full IELTS Learning Experience</h3>
-              <div className="text-3xl font-extrabold mb-1">Rp 125.000</div>
-              <p className="text-sm text-gray-600 mb-3">For those aiming to experience the complete IELTS journey.</p>
-              <ul className="list-disc pl-5 text-gray-700 text-sm space-y-1 mb-4">
-                <li>Everything in Package B</li>
-                <li>Speaking Simulation</li>
-                <li>1-Year IELS Lounge Premium</li>
-                <li>Chance to Win Free Official IELTS Test (Worth Rp 3.6M)</li>
-              </ul>
+        {/* CONTENT */}
+        <div className="pl-4 p-7 flex-1 flex flex-col gap-4">
+          <div>
+            <h3
+              className={`
+                text-lg font-bold transition
+                ${p.highlight ? "text-[#E56668]" : "group-hover:text-[#E56668]"}
+              `}
+            >
+              {p.title}
+            </h3>
+            <p className="text-sm text-gray-600 mt-1">
+              {p.desc}
+            </p>
+          </div>
+
+          <div>
+            <div className="text-3xl font-extrabold">
+              {p.price}
             </div>
           </div>
-        </section>
+
+          <ul className="text-sm text-gray-700 space-y-2">
+            {p.points.map((pt, idx) => (
+              <li key={idx}>• {pt}</li>
+            ))}
+          </ul>
+        </div>
+
+        {/* FOOTER (READY FOR CTA IF NEEDED) */}
+        <div className="border-t border-gray-100 p-5 text-center text-sm text-gray-500">
+          Secure checkout • Limited slots
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
 
         {/* REGISTRATION CTA */}
         <section className="rounded-2xl p-8 text-center shadow-sm">
@@ -152,125 +235,126 @@ function validateCode() {
             Accessible, affordable, and globally aligned.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link
-              href="https://drive.google.com/file/d/1h2IPjkahj1yKqU1_pK0T3L1cYAMz2pQk/view?usp=drive_link"
-              target="_blank"
-              className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
-            >
-              Read IELTS Test Details
-            </Link>
-            <a
-              href={formUrl}
-              target="_blank"
-              className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition transform hover:scale-[1.02]"
-            >
-              Register Now
-            </a>
+                            <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]">
+                              <Link
+                              href={formUrl}
+                              target="https://forms.gle/yFCdzbeR8uMBzM5X8"
+                              rel="noopener noreferrer"
+                            >
+                              Register for IELTS Mock Test
+                            </Link></Button>
+              
+                            <Button asChild className="bg-[#294154] text-white font-semibold px-6 py-3 hover:bg-[#21363f]"><Link
+                              href="https://drive.google.com/file/d/1h2IPjkahj1yKqU1_pK0T3L1cYAMz2pQk/view?usp=drive_link"
+                              rel="noopener noreferrer"
+                            >
+                              Read Full IELTS Overview
+                            </Link></Button>
           </div>
         </section>
 
-  {/* ===== ACCESS / VALIDATION CTA (FINAL, FIXED) ===== */}
-<section id="access" className="mt-16">
-  <div className="max-w-6xl mx-auto bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-[#e6eef4]">
-    <div className="flex flex-col gap-8">
-      {/* Header */}
-      <div className="text-center sm:text-left">
-        <h3 className="text-2xl font-bold text-[#294154] mb-2">Start Your Test Now!</h3>
-        <p className="text-sm text-gray-700 max-w-2xl">
-          Enter the access code we sent to your email. Validate the code first — once it’s confirmed and unused, you’ll be able to start your test.
+    {/* ===== ACCESS / VALIDATION CTA (FINAL, FIXED) ===== */}
+  <section id="access" className="mt-16">
+    <div className="max-w-6xl mx-auto bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-[#e6eef4]">
+      <div className="flex flex-col gap-8">
+        {/* Header */}
+        <div className="text-center sm:text-left">
+          <h3 className="text-2xl font-bold text-[#294154] mb-2">Start Your Test Now!</h3>
+          <p className="text-sm text-gray-700 max-w-2xl">
+            Enter the access code we sent to your email. Validate the code first — once it’s confirmed and unused, you’ll be able to start your test.
+          </p>
+        </div>
+  
+        {/* Input + Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
+          <input
+            id="access-code-input"
+            type="text"
+            inputMode="text"
+            value={accessCode}
+            onChange={(e) => {
+              setAccessCode(e.target.value.toUpperCase());
+              setValidation(null);
+            }}
+            placeholder="Enter access code (e.g. IELS-ABCD-EFGH)"
+            className="flex-1 border border-gray-200 rounded-full px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#e56668]/30 w-full sm:w-auto"
+          />
+  
+          <button
+            type="button"
+            onClick={validateCode}
+            className="inline-flex items-center justify-center rounded-full bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E] transition active:scale-[0.97]"
+          >
+            Validate
+          </button>
+        </div>
+  
+        {/* Validation Status */}
+        <div className="min-h-[1.25rem]">
+          {validation?.status === "valid" && (
+            <div className="text-sm text-green-700">
+              ✅ Code valid — not used. You can start your test.
+            </div>
+          )}
+          {validation?.status === "used" && (
+            <div className="text-sm text-yellow-800">
+              ⚠ This code has already been used. If you believe this is an error, contact support.
+            </div>
+          )}
+          {validation?.status === "invalid" && (
+            <div className="text-sm text-red-700">
+              ❌ Code not found. Check your email or the code you entered.
+            </div>
+          )}
+          {!validation && accessCode.length > 0 && (
+            <div className="text-sm text-gray-500">
+              Press <strong>Validate</strong> to check your code.
+            </div>
+          )}
+        </div>
+  
+        {/* Start Button */}
+        <div className="flex flex-col items-center sm:items-start gap-3">
+          <button
+            type="button"
+            onClick={() => {
+              if (validation?.status === "valid") {
+                window.location.href = `/test/access?code=${encodeURIComponent(accessCode)}`;
+              } else {
+                alert("Please validate a valid access code before starting the test.");
+              }
+            }}
+            className={`w-full sm:w-auto px-6 py-3 rounded-full font-semibold transition text-center transition active:scale-[0.97] ${
+              validation?.status === "valid"
+                ? "bg-[#294154] text-white hover:bg-[#21363f]"
+                : "bg-[#f3f4f6] text-[#6b7280] cursor-not-allowed"
+            }`}
+            aria-disabled={validation?.status !== "valid"}
+          >
+            Start Test
+          </button>
+  
+          <Link
+            href="mailto:support@ielsco.com"
+            className="text-xs text-[#294154] hover:underline text-center sm:text-left"
+          >
+            Need help validating your code?
+          </Link>
+        </div>
+  
+        {/* Notes */}
+        <p className="mt-4 text-xs text-gray-500 text-center sm:text-left">
+          Tests run on scheduled Zoom slots. After you validate and start, you’ll be shown scheduling options or get the slot assigned in your confirmation email.
         </p>
-      </div>
-
-      {/* Input + Buttons */}
-      <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
-        <input
-          id="access-code-input"
-          type="text"
-          inputMode="text"
-          value={accessCode}
-          onChange={(e) => {
-            setAccessCode(e.target.value.toUpperCase());
-            setValidation(null);
-          }}
-          placeholder="Enter access code (e.g. IELS-ABCD-EFGH)"
-          className="flex-1 border border-gray-200 rounded-full px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#e56668]/30 w-full sm:w-auto"
-        />
-
-        <button
-          type="button"
-          onClick={validateCode}
-          className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02] w-full sm:w-auto"
-        >
-          Validate
-        </button>
-      </div>
-
-      {/* Validation Status */}
-      <div className="min-h-[1.25rem]">
-        {validation?.status === "valid" && (
-          <div className="text-sm text-green-700">
-            ✅ Code valid — not used. You can start your test.
-          </div>
-        )}
-        {validation?.status === "used" && (
-          <div className="text-sm text-yellow-800">
-            ⚠ This code has already been used. If you believe this is an error, contact support.
-          </div>
-        )}
-        {validation?.status === "invalid" && (
-          <div className="text-sm text-red-700">
-            ❌ Code not found. Check your email or the code you entered.
-          </div>
-        )}
-        {!validation && accessCode.length > 0 && (
-          <div className="text-sm text-gray-500">
-            Press <strong>Validate</strong> to check your code.
-          </div>
-        )}
-      </div>
-
-      {/* Start Button */}
-      <div className="flex flex-col items-center sm:items-start gap-3">
-        <button
-          type="button"
-          onClick={() => {
-            if (validation?.status === "valid") {
-              window.location.href = `/test/access?code=${encodeURIComponent(accessCode)}`;
-            } else {
-              alert("Please validate a valid access code before starting the test.");
-            }
-          }}
-          className={`w-full sm:w-auto px-6 py-3 rounded-full font-semibold transition text-center ${
-            validation?.status === "valid"
-              ? "bg-[#294154] text-white hover:bg-[#21363f]"
-              : "bg-[#f3f4f6] text-[#6b7280] cursor-not-allowed"
-          }`}
-          aria-disabled={validation?.status !== "valid"}
-        >
-          Start Test
-        </button>
-
-        <Link
-          href="mailto:support@ielsco.com"
-          className="text-xs text-[#294154] hover:underline text-center sm:text-left"
-        >
-          Need help validating your code?
-        </Link>
-      </div>
-
-      {/* Notes */}
-      <p className="mt-4 text-xs text-gray-500 text-center sm:text-left">
-        Tests run on scheduled Zoom slots. After you validate and start, you’ll be shown scheduling options or get the slot assigned in your confirmation email.
-      </p>
-
-      <div className="text-xs text-gray-500 mt-2">
-        • If you didn’t receive your code, check spam or your payment confirmation email. <br />
-        • For group / organization bundles, email{" "}
-        <span className="font-semibold text-[#294154]">support@ielsco.com</span>.
+  
+        <div className="text-xs text-gray-500 mt-2">
+          • If you didn&apos;t receive your code, check spam or your payment confirmation email. <br />
+          • For group / organization bundles, email{" "}
+          <span className="font-semibold text-[#294154]">support@ielsco.com</span>.
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
       </main>
       <Footer />
     </div>

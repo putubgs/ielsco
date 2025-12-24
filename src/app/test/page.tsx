@@ -6,6 +6,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import codesRaw from "@/data/codes.json";
+import { Button } from "@/components/ui/button";
 
 type CodeEntry = {
   code: string;
@@ -88,291 +89,464 @@ export default function TestSelectionPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mt-6">
-              <a
-                href="https://docs.google.com/document/d/1YSVY9lNDNmBCi7oaZZOhXoEa2xMWaYLuD4cVUc_4vFc/edit?usp=sharing"
-                target="/blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
-              >
-                📘 View Test Guide
-              </a>
-
-              <a
+              <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]">
+                <Link
                 href={googleFormLink}
                 target="https://forms.gle/yFCdzbeR8uMBzM5X8"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition transform hover:scale-[1.02]"
               >
-                📝 Register Now
-              </a>
+                Register Now
+              </Link></Button>
+
+              <Button asChild className="bg-[#294154] text-white font-semibold px-6 py-3 hover:bg-[#21363f]"><Link
+                href="https://docs.google.com/document/d/1YSVY9lNDNmBCi7oaZZOhXoEa2xMWaYLuD4cVUc_4vFc/edit?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                📘 View Test Guide
+              </Link></Button>
             </div>
 
             <p className="text-sm text-gray-500 mt-3">
               Registration and payment are handled externally via Google Form.  
-              You’ll receive an access code after registration to unlock your test.
+              You&apos;ll receive an access code after registration to unlock your test.
             </p>
           </div>
         </section>
-
-
-  <article id="test-format"
-  className="bg-white rounded-2xl p-8 shadow-sm border border-[#294154]/6">
-    <div className="text-center mb-8">
-      <h3 className="text-2xl font-bold mb-2">Test Format & Timing</h3>
-      <p className="text-gray-700 max-w-3xl mx-auto">
-        Each IELS test follows international standards but is simplified for accessibility and clarity.  
-        Below is a quick comparison of our current and upcoming test formats — including duration, focus, and purpose.
-      </p>
-    </div>
-  
-    {/* Test Comparison Grid */}
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-[#294154]">
-      {/* IELTS-style */}
-      <div className="relative bg-[#fffaf9] border border-[#f0d8d9] rounded-2xl p-6 shadow-sm hover:shadow-md transition hover:-translate-y-1">
-        <div className="absolute top-4 right-4 bg-[#e56668]/10 text-[#e56668] text-xs font-semibold px-3 py-1 rounded-full">
-          Available
-        </div>
-        <h4 className="text-lg font-bold mb-1 flex items-center gap-2">
-          <span>📘</span> IELTS-style
-        </h4>
-        <p className="text-sm text-gray-700 mb-4">
-          A balanced, academic-focused test for real communication skills. Ideal for students preparing for global study or scholarship programs.
-        </p>
-        <ul className="list-disc text-sm text-gray-700 pl-5 mb-4 space-y-1">
-          <li>Listening — 25–30 min</li>
-          <li>Reading — 45–60 min</li>
-          <li>Writing — 45–60 min</li>
-          <li>Speaking — 10–15 min live session</li>
-        </ul>
-        <Link
-          href="https://drive.google.com/file/d/1h2IPjkahj1yKqU1_pK0T3L1cYAMz2pQk/view?usp=drive_link"
-          target="/blank"
-          className="text-[#e56668] font-semibold hover:underline"
-        >
-          Read full details →
-        </Link>
-      </div>
-  
-      {/* TOEFL-style */}
-      <div className="relative bg-[#f9fbff] border border-[#d9e4f7] rounded-2xl p-6 shadow-sm hover:shadow-md transition hover:-translate-y-1 opacity-80">
-        <div className="absolute top-4 right-4 bg-gray-100 text-gray-600 text-xs font-semibold px-3 py-1 rounded-full">
-          Coming Soon
-        </div>
-        <h4 className="text-lg font-bold mb-1 flex items-center gap-2">
-          <span>🧠</span> TOEFL-style
-        </h4>
-        <p className="text-sm text-gray-700 mb-4">
-          Focuses on academic comprehension and integrated writing. Ideal for university readiness and research-based learners.
-        </p>
-        <ul className="list-disc text-sm text-gray-700 pl-5 mb-4 space-y-1">
-          <li>Listening — 30–40 min</li>
-          <li>Reading — 60–80 min</li>
-          <li>Writing — 50–60 min</li>
-        </ul>
-        <div className="text-sm text-gray-500">Details coming soon</div>
-      </div>
-  
-      {/* TOEIC-style */}
-      <div className="relative bg-[#f8fcfa] border border-[#d3eedf] rounded-2xl p-6 shadow-sm hover:shadow-md transition hover:-translate-y-1 opacity-80">
-        <div className="absolute top-4 right-4 bg-gray-100 text-gray-600 text-xs font-semibold px-3 py-1 rounded-full">
-          Coming Soon
-        </div>
-        <h4 className="text-lg font-bold mb-1 flex items-center gap-2">
-          <span>💼</span> TOEIC-style
-        </h4>
-        <p className="text-sm text-gray-700 mb-4">
-          Workplace-oriented assessment built for communication efficiency and clarity. Perfect for professionals and job applicants.
-        </p>
-        <ul className="list-disc text-sm text-gray-700 pl-5 mb-4 space-y-1">
-          <li>Listening — 45–60 min</li>
-          <li>Reading — 45–60 min</li>
-        </ul>
-        <div className="text-sm text-gray-500">Details coming soon</div>
-      </div>
-    </div>
-  
-    {/* Important Note */}
-    <p className="mt-6 text-sm text-gray-600 border-t border-gray-100 pt-4">
-      ⏰ <strong>Note:</strong> Timers run per section and must be completed in order. During your test, 
-      you’ll join a Zoom session or secure web portal. Each participant is monitored by IELS proctors to ensure fairness and prevent cheating.
+{/* Test Format */}
+<article
+  id="test-format"
+  className="bg-white rounded-2xl p-8 shadow-sm border border-[#294154]/6"
+>
+  {/* HEADER */}
+  <div className="text-center mb-14">
+    <h3 className="text-2xl font-bold mb-3">
+      Test Format & Timing
+    </h3>
+    <p className="text-gray-700 max-w-3xl mx-auto">
+      Each IELS test follows international standards but is simplified for
+      accessibility and clarity. Below is a quick comparison of our current
+      and upcoming test formats — including duration, focus, and purpose.
     </p>
-  </article>
-  
-  
-            {/* Pricing & Packages */}
-  <article id="register"
-  className="bg-white rounded-2xl p-8 shadow-sm border border-[#294154]/6">
-    <div className="text-center mb-8">
-      <h3 className="text-2xl font-bold mb-2">Test Packages & Pricing</h3>
-      <p className="text-gray-700 max-w-2xl mx-auto">
-        Choose the right assessment for your goal. Each test is designed to evaluate real-world English skills, 
-        guided by the same quality and feedback system used by our tutors.  
-      
-      </p>
-    </div>
-  
-    {/* Cards */}
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-[#294154]">
-      {/* IELTS-style */}
-      <div className="relative bg-white border border-[#e6eef4] rounded-2xl p-6 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
-        <div className="absolute top-4 right-4 bg-[#e56668]/10 text-[#e56668] text-xs font-semibold px-3 py-1 rounded-full">
-          Available
-        </div>
-        <h4 className="text-lg font-bold mb-1">IELTS-style Assessment</h4>
-        <p className="text-sm text-gray-600 mb-4">
-          Academic and general English simulation — measures your ability to use English in real academic, professional, and daily contexts.
-        </p>
-        <div className="text-3xl font-extrabold text-[#294154] mb-1">Rp50.000</div>
-        <div className="text-xs text-gray-500 mb-4">starting price per participant</div>
-        <ul className="list-disc text-sm text-gray-700 pl-5 mb-5 space-y-1">
-          <li>Listening, Reading, and Writing modules</li>
-          <li>Optional live Speaking interview</li>
-          <li>Expert feedback & personalized improvement plan</li>
-        </ul>
-        <Link
-          href="/test/guide/ielts"
-          className="inline-flex items-center justify-center w-full px-4 py-2 rounded-full bg-[#e56668] text-white font-semibold hover:bg-[#cc4f54] transition"
-        >
-          Register Now
-        </Link>
-      </div>
-  
-      {/* TOEFL-style */}
-      <div className="relative bg-white border border-[#e6eef4] rounded-2xl p-6 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 opacity-80">
-        <div className="absolute top-4 right-4 bg-gray-100 text-gray-600 text-xs font-semibold px-3 py-1 rounded-full">
-          Coming Soon
-        </div>
-        <h4 className="text-lg font-bold mb-1">TOEFL-style Assessment</h4>
-        <p className="text-sm text-gray-600 mb-4">
-          Academic-integrated test designed for university and scholarship applicants. 
-          Focuses on reading, listening, and integrated writing performance.
-        </p>
-        <div className="text-3xl font-extrabold text-[#294154] mb-1">Rp30.000</div>
-        <div className="text-xs text-gray-500 mb-4">expected starting price</div>
-        <ul className="list-disc text-sm text-gray-700 pl-5 mb-5 space-y-1">
-          <li>Academic-oriented tasks & integrated sections</li>
-          <li>Automated scoring with tutor review add-on</li>
-          <li>Preparation-focused practice mode</li>
-        </ul>
-        <button
-          disabled
-          className="inline-flex items-center justify-center w-full px-4 py-2 rounded-full bg-gray-200 text-gray-500 font-semibold cursor-not-allowed"
-        >
-          Coming Soon
-        </button>
-      </div>
-  
-      {/* TOEIC-style */}
-      <div className="relative bg-white border border-[#e6eef4] rounded-2xl p-6 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 opacity-80">
-        <div className="absolute top-4 right-4 bg-gray-100 text-gray-600 text-xs font-semibold px-3 py-1 rounded-full">
-          Coming Soon
-        </div>
-        <h4 className="text-lg font-bold mb-1">TOEIC-style Assessment</h4>
-        <p className="text-sm text-gray-600 mb-4">
-          Workplace English evaluation focused on comprehension, accuracy, and practical usage in professional settings.
-        </p>
-        <div className="text-3xl font-extrabold text-[#294154] mb-1">Rp30.000</div>
-        <div className="text-xs text-gray-500 mb-4">expected starting price</div>
-        <ul className="list-disc text-sm text-gray-700 pl-5 mb-5 space-y-1">
-          <li>Listening & Reading sections</li>
-          <li>Professional English task simulation</li>
-          <li>Quick certificate for employment use</li>
-        </ul>
-        <button
-          disabled
-          className="inline-flex items-center justify-center w-full px-4 py-2 rounded-full bg-gray-200 text-gray-500 font-semibold cursor-not-allowed"
-        >
-          Coming Soon
-        </button>
-      </div>
-    </div>
-      <div className="text-center mb-8">
-         <br className="hidden sm:block" />
-        <span className="text-[#e56668] font-semibold">Organizations get 20% off</span> — email <strong>partnership@ielsco.com</strong> to claim your bundle.
-      </div>
-    {/* Footer CTA */}
-    <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
-      <a
-        href="mailto:partnership@ielsco.com?subject=Organization%20Test%20Bundle%20Request"
-        className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition transform hover:scale-[1.02]"
+  </div>
+
+  {/* GRID */}
+  <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 text-[#294154]">
+    {[
+      {
+        status: "available",
+        badge: "Available",
+        icon: "📘",
+        title: "IELTS-style",
+        desc:
+          "Balanced, academic-focused test for real communication skills. Ideal for global study and scholarship preparation.",
+        sections: [
+          "Listening — 25–30 min",
+          "Reading — 45–60 min",
+          "Writing — 45–60 min",
+          "Speaking — 10–15 min (live)",
+        ],
+        link:
+          "https://drive.google.com/file/d/1h2IPjkahj1yKqU1_pK0T3L1cYAMz2pQk/view?usp=drive_link",
+      },
+      {
+        status: "soon",
+        badge: "Coming Soon",
+        icon: "🧠",
+        title: "TOEFL-style",
+        desc:
+          "Academic comprehension and integrated writing test for university readiness and research-based learners.",
+        sections: [
+          "Listening — 30–40 min",
+          "Reading — 60–80 min",
+          "Writing — 50–60 min",
+        ],
+      },
+      {
+        status: "soon",
+        badge: "Coming Soon",
+        icon: "💼",
+        title: "TOEIC-style",
+        desc:
+          "Workplace-oriented assessment focused on clarity, efficiency, and professional communication.",
+        sections: [
+          "Listening — 45–60 min",
+          "Reading — 45–60 min",
+        ],
+      },
+    ].map((t, i) => (
+      <div
+        key={i}
+        className={`
+          group relative rounded-3xl border bg-[#FAFAFA] flex flex-col h-full
+          transition-all duration-300
+          ${
+            t.status === "available"
+              ? "border-gray-200 hover:border-[#E56668]/60 hover:-translate-y-1 hover:shadow-xl"
+              : "border-gray-200 opacity-80"
+          }
+        `}
       >
-        🤝 Register for Your Organization — 20% Off
-      </a>
-    </div>
-  </article>
+        {/* ACCENT BAR */}
+        <div
+          className="
+            absolute left-0 top-6 bottom-6 w-1 rounded-full
+            bg-transparent
+            group-hover:bg-[#E56668]
+            transition-all duration-300
+          "
+        />
+
+        {/* BADGE */}
+        <div
+          className={`
+            absolute top-4 right-4 text-xs font-semibold px-3 py-1 rounded-full
+            ${
+              t.status === "available"
+                ? "bg-[#E56668]/10 text-[#E56668]"
+                : "bg-gray-100 text-gray-600"
+            }
+          `}
+        >
+          {t.badge}
+        </div>
+
+        {/* CONTENT */}
+        <div className="pl-4 p-7 flex-1 flex flex-col gap-4">
+          {/* HEADER */}
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">{t.icon}</span>
+            <h4
+              className="
+                text-lg font-bold transition
+                group-hover:text-[#E56668]
+              "
+            >
+              {t.title}
+            </h4>
+          </div>
+
+          {/* DESC */}
+          <p className="text-sm text-gray-700">
+            {t.desc}
+          </p>
+
+          {/* SECTIONS */}
+          <ul className="text-sm text-gray-700 space-y-2">
+            {t.sections.map((s, idx) => (
+              <li key={idx}>• {s}</li>
+            ))}
+          </ul>
+        </div>
+
+        {/* FOOTER */}
+        <div className="border-t border-gray-100 p-5">
+          {t.status === "available" ? (
+            <Link
+              href={t.link!}
+              target="_blank"
+              className="text-sm font-semibold text-[#E56668] hover:underline"
+            >
+              Read full details →
+            </Link>
+          ) : (
+            <div className="text-sm text-gray-500">
+              Details coming soon
+            </div>
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  {/* NOTE */}
+  <p className="mt-8 text-sm text-gray-600 border-t border-gray-100 pt-5">
+    ⏰ <strong>Note:</strong> Timers run per section and must be completed in
+    order. During your test, you&apos;ll join a Zoom session or secure web portal.
+    Each participant is monitored by IELS proctors to ensure fairness and
+    prevent cheating.
+  </p>
+</article>
   
-           {/* Registration & Access Flow */}
-  <article className="bg-white rounded-2xl p-8 shadow-sm border border-[#294154]/10">
-    <h3 className="text-2xl font-bold mb-6 text-center text-[#294154]">
+ {/* Pricing & Packages */}
+<article
+  id="register"
+  className="bg-white rounded-2xl p-8 shadow-sm border border-[#294154]/6"
+>
+  {/* HEADER */}
+  <div className="text-center mb-14">
+    <h3 className="text-2xl font-bold mb-3">
+      Test Packages & Pricing
+    </h3>
+    <p className="text-gray-700 max-w-2xl mx-auto">
+      Choose the right assessment for your goal. Each test is designed to
+      evaluate real-world English skills, guided by the same quality and
+      feedback system used by our tutors.
+    </p>
+  </div>
+
+  {/* GRID */}
+  <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 text-[#294154]">
+    {[
+      {
+        status: "available",
+        badge: "Available",
+        title: "IELTS-style Assessment",
+        desc:
+          "Academic and general English simulation for academic, professional, and daily contexts.",
+        price: "Rp50.000",
+        note: "starting price per participant",
+        points: [
+          "Listening, Reading, and Writing modules",
+          "Optional live Speaking interview",
+          "Expert feedback & improvement plan",
+        ],
+        link: "/test/guide/ielts",
+      },
+      {
+        status: "soon",
+        badge: "Coming Soon",
+        title: "TOEFL-style Assessment",
+        desc:
+          "Academic-integrated test for university and scholarship applicants.",
+        price: "Rp30.000",
+        note: "expected starting price",
+        points: [
+          "Integrated academic tasks",
+          "Automated scoring + tutor review add-on",
+          "Preparation-focused practice mode",
+        ],
+      },
+      {
+        status: "soon",
+        badge: "Coming Soon",
+        title: "TOEIC-style Assessment",
+        desc:
+          "Workplace English evaluation for professional settings.",
+        price: "Rp30.000",
+        note: "expected starting price",
+        points: [
+          "Listening & Reading sections",
+          "Professional task simulation",
+          "Quick certificate for employment use",
+        ],
+      },
+    ].map((p, i) => (
+      <div
+        key={i}
+        className={`
+          group relative rounded-3xl border bg-[#FAFAFA] flex flex-col h-full
+          transition-all duration-300
+          ${
+            p.status === "available"
+              ? "border-gray-200 hover:border-[#E56668]/60 hover:-translate-y-1 hover:shadow-xl"
+              : "border-gray-200 opacity-80"
+          }
+        `}
+      >
+        {/* ACCENT BAR */}
+        <div
+          className="
+            absolute left-0 top-6 bottom-6 w-1 rounded-full
+            bg-transparent
+            group-hover:bg-[#E56668]
+            transition-all duration-300
+          "
+        />
+
+        {/* BADGE */}
+        <div
+          className={`
+            absolute top-4 right-4 text-xs font-semibold px-3 py-1 rounded-full
+            ${
+              p.status === "available"
+                ? "bg-[#E56668]/10 text-[#E56668]"
+                : "bg-gray-100 text-gray-600"
+            }
+          `}
+        >
+          {p.badge}
+        </div>
+
+        {/* CONTENT */}
+        <div className="pl-4 p-7 flex-1 flex flex-col gap-4">
+          <div>
+            <h4 className="text-lg font-bold mb-1">
+              {p.title}
+            </h4>
+            <p className="text-sm text-gray-600">
+              {p.desc}
+            </p>
+          </div>
+
+          <div>
+            <div className="text-3xl font-extrabold mb-1">
+              {p.price}
+            </div>
+            <div className="text-xs text-gray-500">
+              {p.note}
+            </div>
+          </div>
+
+          <ul className="text-sm text-gray-700 space-y-2">
+            {p.points.map((pt, idx) => (
+              <li key={idx}>• {pt}</li>
+            ))}
+          </ul>
+        </div>
+
+        {/* FOOTER CTA */}
+        <div className="border-t border-gray-100 p-5">
+          {p.status === "available" ? (
+            <Button
+              asChild
+              className="w-full bg-[#E56668] text-white font-semibold py-2 rounded-full hover:bg-[#C04C4E] transition active:scale-[0.97]"
+            >
+              <Link href={p.link!}>
+                Register Now
+              </Link>
+            </Button>
+          ) : (
+            <button
+              disabled
+              className="w-full rounded-full bg-gray-200 text-gray-500 font-semibold py-2 cursor-not-allowed"
+            >
+              Coming Soon
+            </button>
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  {/* ORG NOTE */}
+  <div className="text-center mt-10 text-sm text-gray-700">
+    <span className="text-[#E56668] font-semibold">
+      Organizations get 20% off
+    </span>{" "}
+    — email <strong>partnership@ielsco.com</strong> to claim your bundle.
+  </div>
+
+  {/* FOOTER CTA */}
+  <div className="mt-8 flex justify-center">
+    <Button
+      asChild
+      className="bg-[#294154] text-white font-semibold px-6 py-3 rounded-full hover:bg-[#21363f] transition active:scale-[0.97]"
+    >
+      <Link href="mailto:partnership@ielsco.com?subject=Organization%20Test%20Bundle%20Request">
+        Register for Your Organization — 20% Off
+      </Link>
+    </Button>
+  </div>
+</article>
+ {/* ===== REGISTRATION & ACCESS FLOW ===== */}
+<section className="py-20 overflow-hidden">
+  {/* HEADER */}
+  <div className="text-center mb-12 px-6">
+    <h3 className="text-2xl sm:text-3xl font-bold text-[#294154] mb-3">
       Registration & Access — Step by Step
     </h3>
-  
-    <p className="text-center text-gray-600 mb-6 max-w-2xl mx-auto">
-      A quick, no-drama guide to register, validate your access code, join the Zoom session,
-      and receive your results. Follow these steps in order — the access code you receive by
-      email is the single key that unlocks your test.
+    <p className="text-gray-600 max-w-2xl mx-auto">
+      A quick, no-drama guide to register, validate your access code, join the Zoom
+      session, and receive your results. Follow these steps in order — the access
+      code you receive by email is the single key that unlocks your test.
     </p>
-  
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      {[
-        {
-          step: 1,
-          title: "Complete Registration",
-          desc: "Fill the official registration form with your full name, valid email, phone number, and chosen test package.",
-        },
-        {
-          step: 2,
-          title: "Confirm & Pay",
-          desc: "Follow the payment instructions in the confirmation email. Keep your payment proof — it may be required for verification.",
-        },
-        {
-          step: 3,
-          title: "Receive Access Code",
-          desc: "After verification we send a one-time access code to your email/WhatsApp. Save it — this code is required to start the test.",
-        },
-        {
-          step: 4,
-          title: "Pick a Test Slot",
-          desc: "Choose a Zoom schedule from available slots (or accept the slot we assigned). Slot link and time appear in your confirmation email.",
-        },
-        {
-          step: 5,
-          title: "Validate Your Code",
-          desc: "Before test day, paste your access code into the Access form (section with id=\"access\") and press <strong>Validate</strong> — the form checks the code status.",
-        },
-        {
-          step: 6,
-          title: "Start the Test",
-          desc: "After validation (code must be valid & unused), click <strong>Start Test</strong> to proceed — you’ll be routed to the test entry (or the form) and timers will begin when you start.",
-        },
-        {
-          step: 7,
-          title: "Receive Feedback",
-          desc: "Tutors review your writing and speaking; expect personalized feedback within 24–72 hours after submission.",
-        },
-        {
-          step: 8,
-          title: "Get Certificate",
-          desc: "After verification, we email your completion certificate and performance summary (if included with your package).",
-        },
-      ].map((item) => (
-        <div
-          key={item.step}
-          className="bg-[#f9fafb] border border-[#e4e8ec] rounded-xl p-6 text-center shadow-sm hover:shadow-md transition hover:-translate-y-1"
-        >
-          <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#E56668] text-white font-bold mx-auto mb-3 text-lg">
-            {item.step}
-          </div>
-          <h4 className="text-lg font-semibold text-[#294154] mb-1">{item.title}</h4>
-          <p className="text-sm text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: item.desc }} />
-        </div>
-      ))}
+  </div>
+
+  {/* OUTER FRAME */}
+  <div className="relative max-w-[1400px] mx-auto">
+    {/* GRADIENT FADE */}
+    <div className="pointer-events-none absolute left-0 top-0 h-full w-20 bg-gradient-to-r from-white to-transparent z-10" />
+    <div className="pointer-events-none absolute right-0 top-0 h-full w-20 bg-gradient-to-l from-white to-transparent z-10" />
+
+    {/* SCROLL AREA */}
+    <div className="overflow-x-auto scrollbar-none px-12">
+      <div className="flex gap-8 w-max py-6 mx-auto">
+        {[
+          {
+            step: 1,
+            title: "Complete Registration",
+            desc: "Fill the official registration form with your full name, valid email, phone number, and chosen test package.",
+          },
+          {
+            step: 2,
+            title: "Confirm & Pay",
+            desc: "Follow the payment instructions in the confirmation email. Keep your payment proof — it may be required for verification.",
+          },
+          {
+            step: 3,
+            title: "Receive Access Code",
+            desc: "After verification we send a one-time access code to your email/WhatsApp. Save it — this code is required to start the test.",
+          },
+          {
+            step: 4,
+            title: "Pick a Test Slot",
+            desc: "Choose a Zoom schedule from available slots (or accept the slot we assigned). Slot link and time appear in your confirmation email.",
+          },
+          {
+            step: 5,
+            title: "Validate Your Code",
+            desc: "Before test day, paste your access code into the Access form (section with id=\"access\") and press <strong>Validate</strong> — the form checks the code status.",
+          },
+          {
+            step: 6,
+            title: "Start the Test",
+            desc: "After validation (code must be valid & unused), click <strong>Start Test</strong> to proceed — timers begin when you start.",
+          },
+          {
+            step: 7,
+            title: "Receive Feedback",
+            desc: "Tutors review your writing and speaking; expect personalized feedback within 24–72 hours after submission.",
+          },
+          {
+            step: 8,
+            title: "Get Certificate",
+            desc: "After verification, we email your completion certificate and performance summary (if included with your package).",
+          },
+        ].map((item, i) => {
+          const isActive = i === 0; // first step highlighted (same logic as testimonial)
+
+          return (
+            <div
+              key={item.step}
+              className={`
+                relative min-w-[300px] max-w-[300px]
+                rounded-2xl p-6 text-center bg-[#f9fafb]
+                transition-all duration-300
+                ${
+                  isActive
+                    ? "border-2 border-[#E56668] shadow-2xl scale-[1.05]"
+                    : "border border-[#e4e8ec] hover:shadow-lg hover:-translate-y-1"
+                }
+              `}
+            >
+              {/* STEP NUMBER */}
+              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#E56668] text-white font-bold mx-auto mb-4 text-lg">
+                {item.step}
+              </div>
+
+              {/* CONTENT */}
+              <h4 className="text-lg font-semibold text-[#294154] mb-2">
+                {item.title}
+              </h4>
+              <p
+                className="text-sm text-gray-700 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: item.desc }}
+              />
+            </div>
+          );
+        })}
+      </div>
     </div>
-  
-    <p className="text-sm text-gray-600 text-center mt-8 max-w-2xl mx-auto">
-      💡 Tip: validation (step 5) is mandatory — only codes that are <strong>valid</strong> and <strong>unused</strong> will allow you to start the test.
-    </p>
-  </article>
+  </div>
+
+  {/* FOOTNOTE */}
+  <p className="text-sm text-gray-600 text-center mt-10 max-w-2xl mx-auto px-6">
+    💡 <strong>Tip:</strong> Validation (step 5) is mandatory — only access codes
+    that are <strong>valid</strong> and <strong>unused</strong> will allow you to
+    start the test.
+  </p>
+</section>
   
     {/* ===== ACCESS / VALIDATION CTA (FINAL, FIXED) ===== */}
   <section id="access" className="mt-16">
@@ -404,7 +578,7 @@ export default function TestSelectionPage() {
           <button
             type="button"
             onClick={validateCode}
-            className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02] w-full sm:w-auto"
+            className="inline-flex items-center justify-center rounded-full bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E] transition active:scale-[0.97]"
           >
             Validate
           </button>
@@ -445,7 +619,7 @@ export default function TestSelectionPage() {
                 alert("Please validate a valid access code before starting the test.");
               }
             }}
-            className={`w-full sm:w-auto px-6 py-3 rounded-full font-semibold transition text-center ${
+            className={`w-full sm:w-auto px-6 py-3 rounded-full font-semibold transition text-center transition active:scale-[0.97] ${
               validation?.status === "valid"
                 ? "bg-[#294154] text-white hover:bg-[#21363f]"
                 : "bg-[#f3f4f6] text-[#6b7280] cursor-not-allowed"
@@ -469,7 +643,7 @@ export default function TestSelectionPage() {
         </p>
   
         <div className="text-xs text-gray-500 mt-2">
-          • If you didn’t receive your code, check spam or your payment confirmation email. <br />
+          • If you didn&apos;t receive your code, check spam or your payment confirmation email. <br />
           • For group / organization bundles, email{" "}
           <span className="font-semibold text-[#294154]">support@ielsco.com</span>.
         </div>

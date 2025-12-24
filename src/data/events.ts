@@ -50,8 +50,25 @@ export const eventsData: EventData[] = [
 </div>
   <div>&nbsp;</div>
  <a href="https://www.instagram.com/p/DG5MJscBQ8W/?utm_source=ig_web_copy_link&igsh=MWtrZnI5M3BwbmRpYg==" target="_blank" 
-   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
-   Read More
+   style="
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #E56668;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  "
+  onmouseover="this.style.backgroundColor='#C04C4E'"
+  onmouseout="this.style.backgroundColor='#E56668'"
+  onmousedown="this.style.transform='scale(0.97)'"
+  onmouseup="this.style.transform='scale(1)'"
+>
+  Read More
 </a>`,
     registrationLink: "https://bit.ly/StepUp-R",
     startDate: "2025-03-05",
@@ -99,8 +116,25 @@ export const eventsData: EventData[] = [
 </div>
 <div>&nbsp;</div>
 <a href="https://www.instagram.com/p/DECV1UghuuL/?utm_source=ig_web_copy_link&igsh=N2ZwdzM1d2hnaGkw" target="_blank"
-   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
-   Read More
+     style="
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #E56668;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  "
+  onmouseover="this.style.backgroundColor='#C04C4E'"
+  onmouseout="this.style.backgroundColor='#E56668'"
+  onmousedown="this.style.transform='scale(0.97)'"
+  onmouseup="this.style.transform='scale(1)'"
+>
+  Read More
 </a>`,
     registrationLink: "#",
     startDate: "2025-01-01",
@@ -146,8 +180,25 @@ export const eventsData: EventData[] = [
 </div>
 <div>&nbsp;</div>
 <a href="https://www.instagram.com/p/DMScTRIhOcw/?utm_source=ig_web_copy_link&igsh=MXRlbTQ4djBmYTYxNQ==" target="_blank"
-   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
-   Read More
+   style="
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #E56668;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  "
+  onmouseover="this.style.backgroundColor='#C04C4E'"
+  onmouseout="this.style.backgroundColor='#E56668'"
+  onmousedown="this.style.transform='scale(0.97)'"
+  onmouseup="this.style.transform='scale(1)'"
+>
+  Read More
 </a>`,
     registrationLink: "/register/business-english",
     startDate: "2025-07-10",
@@ -202,8 +253,25 @@ export const eventsData: EventData[] = [
 </div>
 <div>&nbsp;</div>
 <a href="https://www.instagram.com/p/DM5BEqGBCZe/?utm_source=ig_web_copy_link&igsh=MXUzNnBpZnI5ODFxag==" target="_blank"
-   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
-   Read More
+   style="
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #E56668;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  "
+  onmouseover="this.style.backgroundColor='#C04C4E'"
+  onmouseout="this.style.backgroundColor='#E56668'"
+  onmousedown="this.style.transform='scale(0.97)'"
+  onmouseup="this.style.transform='scale(1)'"
+>
+  Read More
 </a>`,
     registrationLink: "/register/speaking-club",
     startDate: "2025-08-20",
@@ -251,8 +319,25 @@ export const eventsData: EventData[] = [
 </div>
 <div>&nbsp;</div>
 <a href="https://www.instagram.com/p/DDjgyPmB0pt/?utm_source=ig_web_copy_link&igsh=MWd5bWFneHB3cDFkYQ==" target="_blank"
-   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
-   Read More
+   style="
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #E56668;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  "
+  onmouseover="this.style.backgroundColor='#C04C4E'"
+  onmouseout="this.style.backgroundColor='#E56668'"
+  onmousedown="this.style.transform='scale(0.97)'"
+  onmouseup="this.style.transform='scale(1)'"
+>
+  Read More
 </a>`,
     registrationLink: "/register/grammar-intensive",
     startDate: "2024-12-01",
@@ -302,8 +387,25 @@ export const eventsData: EventData[] = [
 </div>
 <div>&nbsp;</div>
 <a href="https://www.instagram.com/p/DO3HtnngaDn/?utm_source=ig_web_copy_link&igsh=dHJxZTRib2QyZnNw" target="_blank"
-   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
-   Read More
+   style="
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #E56668;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  "
+  onmouseover="this.style.backgroundColor='#C04C4E'"
+  onmouseout="this.style.backgroundColor='#E56668'"
+  onmousedown="this.style.transform='scale(0.97)'"
+  onmouseup="this.style.transform='scale(1)'"
+>
+  Read More
 </a>`,
     registrationLink: "https://forms.gle/WzidhZoT8YfgsJwx7",
     startDate: "2025-10-11",
@@ -343,8 +445,25 @@ export const eventsData: EventData[] = [
 </div>
 <div>&nbsp;</div>
 <a href="https://www.instagram.com/p/DNdH2drBTpp/?utm_source=ig_web_copy_link&igsh=MWtidXAwMHVoOWp5Mg==" target="_blank"
-   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
-   Read More
+   style="
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #E56668;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  "
+  onmouseover="this.style.backgroundColor='#C04C4E'"
+  onmouseout="this.style.backgroundColor='#E56668'"
+  onmousedown="this.style.transform='scale(0.97)'"
+  onmouseup="this.style.transform='scale(1)'"
+>
+  Read More
 </a>`,
     registrationLink: "https://forms.gle/WzidhZoT8YfgsJwx7",
     startDate: "2025-8-30",
@@ -434,8 +553,25 @@ export const eventsData: EventData[] = [
 </div>
 <div>&nbsp;</div>
 <a href="https://www.instagram.com/p/DPQ3B_DgflP/?igsh=MWw5enkwNXZrMWdldg==" target="_blank"
-   style="display:inline-block; padding:10px 20px; background:#fff; color:#000; text-decoration:none; border:1px solid #000; border-radius:999px; font-weight:bold;">
-   Read More
+   style="
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #E56668;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  "
+  onmouseover="this.style.backgroundColor='#C04C4E'"
+  onmouseout="this.style.backgroundColor='#E56668'"
+  onmousedown="this.style.transform='scale(0.97)'"
+  onmouseup="this.style.transform='scale(1)'"
+>
+  Read More
 </a>`,
   registrationLink: "https://ielsco.com/iels-lounge",
   startDate: "2025-10-11",

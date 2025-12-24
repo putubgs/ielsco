@@ -11,7 +11,7 @@ export default function StartPage() {
         <div className="w-full max-w-3xl text-center">
           {/* Heading */}
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-4 leading-tight">
-            Let’s Find Your <span className="text-[#E56668]">English Journey!</span>
+            Let&apos;s Find Your <span className="text-[#E56668]">English Journey!</span>
           </h1>
           <p className="text-base sm:text-lg text-gray-600 mb-12 max-w-2xl mx-auto">
             Answer these friendly questions — it only takes 2 minutes.  

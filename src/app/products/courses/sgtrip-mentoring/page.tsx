@@ -5,6 +5,65 @@ import Footer from "@/components/footer";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+
+type CurriculumItem = {
+  date: string;
+  title: string;
+  desc: string;
+  output: string;
+};
+
+const curriculum: CurriculumItem[] = [
+  {
+    date: "10 Jan 2026",
+    title: "Onboarding & Selection Framework",
+    desc: "Understand the full structure of the Singapore Global Insight Trip, evaluation criteria, and selection mindset. This session aligns your personal objectives with selection expectations.",
+    output: "Clear positioning statement & readiness roadmap.",
+  },
+  {
+    date: "17 Jan 2026",
+    title: "Project Ideation (SDG 4 & SDG 8)",
+    desc: "Develop and evaluate project ideas aligned with Quality Education and Decent Work, tested for impact, feasibility, and relevance.",
+    output: "One validated project direction.",
+  },
+  {
+    date: "24 Jan 2026",
+    title: "Problem Framing & Impact Logic",
+    desc: "Sharpen your problem statement and build an impact logic evaluators can clearly trust.",
+    output: "Problem tree & impact logic model.",
+  },
+  {
+    date: "31 Jan 2026",
+    title: "Project Deck Structuring",
+    desc: "Structure your project into a clear, persuasive deck using international presentation standards.",
+    output: "Complete draft of project deck.",
+  },
+  {
+    date: "7 Feb 2026",
+    title: "Deck Review & Refinement",
+    desc: "Deep review on logic, clarity, and persuasion to elevate your deck to submission-ready quality.",
+    output: "Refined final deck.",
+  },
+  {
+    date: "14 Feb 2026",
+    title: "Interview Preparation",
+    desc: "Mock interviews and structured answer frameworks for personal motivation and project defense.",
+    output: "Interview answer bank.",
+  },
+  {
+    date: "21 Feb 2026",
+    title: "Presentation Simulation",
+    desc: "Live simulation of project presentation with Q&A handling and performance feedback.",
+    output: "Presentation-ready confidence.",
+  },
+  {
+    date: "28 Feb 2026",
+    title: "Final Review & Closing",
+    desc: "Final readiness evaluation, private feedback, and strategic advice before entering selection.",
+    output: "Clear next steps & confidence.",
+  },
+];
 
 const DEADLINE = new Date("2025-12-28T23:59:59+07:00");
 
@@ -111,20 +170,22 @@ export default function SGTripMentoringPage() {
 
     {/* CTA */}
     <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
-      <a
+       <Button asChild className="bg-[#E56668] text-white font-semibold px-8 py-3 hover:bg-[#C04C4E]">
+        <Link
         href="https://forms.gle/D4DMBFshr1JeydZC9"
         target="_blank"
-        className="inline-flex items-center justify-center rounded-full px-8 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
+      
       >
         Apply for Mentoring
-      </a>
-      <a
+      </Link></Button>
+      <Button asChild className="bg-white text-[#294154] font-semibold px-8 py-3 hover:bg-gray-200">
+        <Link
         href="https://wa.me/6288297253491"
         target="_blank"
-        className="inline-flex items-center justify-center rounded-full px-8 py-3 bg-white text-[#294154] font-semibold hover:bg-gray-200 transition transform hover:scale-[1.02]"
+       
       >
         Ask Before Applying
-      </a>
+      </Link></Button>
     </div>
   </div>
 </section>
@@ -145,7 +206,7 @@ export default function SGTripMentoringPage() {
   <p className="text-gray-700 max-w-4xl leading-relaxed">
     This program is <strong>not a sightseeing trip</strong>. It is a learning-
     and impact-driven journey that connects participants directly with
-    Singapore’s world-class academic ecosystem and global career landscape—
+    Singapore&apos;s world-class academic ecosystem and global career landscape—
     while preparing them to bring tangible outcomes back to Indonesia.
   </p>
 
@@ -211,69 +272,81 @@ export default function SGTripMentoringPage() {
         </div>
       </section>
 
-      {/* ================= CURRICULUM ================= */}
-      <section className="max-w-6xl mx-auto px-6 py-20">
-        <h3 className="text-3xl font-bold mb-10">
+      <section className="bg-[#F7F8FA] py-20 overflow-hidden">
+      {/* HEADER */}
+      <div className="text-center mb-12 px-6">
+        <h2 className="text-3xl font-extrabold text-[#2F4157] mb-3">
           Mentoring Curriculum & Timeline
-        </h3>
-
-        <div className="space-y-6">
-          <Session
-            date="10 Jan 2026"
-            title="Onboarding & Selection Framework"
-            desc="You will understand the full structure of the Singapore Global Insight Trip, evaluation criteria, and selection mindset. This session establishes your personal objective and success benchmark."
-            output="Clear positioning statement & readiness roadmap."
-          />
-          <Session
-            date="17 Jan 2026"
-            title="Project Ideation (SDG 4 & SDG 8)"
-            desc="You will develop and evaluate project ideas aligned with Quality Education and Decent Work. Ideas are tested for impact, feasibility, and relevance."
-            output="One validated project direction."
-          />
-          <Session
-            date="24 Jan 2026"
-            title="Problem Framing & Impact Logic"
-            desc="This session sharpens your problem statement and builds a logical impact framework evaluators can trust."
-            output="Problem tree & impact logic model."
-          />
-          <Session
-            date="31 Jan 2026"
-            title="Project Deck Structuring"
-            desc="You will structure your project into a clear, persuasive deck using international presentation standards."
-            output="Complete draft of project deck."
-          />
-          <Session
-            date="7 Feb 2026"
-            title="Deck Review & Refinement"
-            desc="Detailed feedback on logic, clarity, and persuasion to elevate your deck to submission-ready quality."
-            output="Refined, final deck."
-          />
-          <Session
-            date="14 Feb 2026"
-            title="Interview Preparation"
-            desc="Mock interviews and structured answer frameworks for personal motivation and project defense."
-            output="Interview answer bank."
-          />
-          <Session
-            date="21 Feb 2026"
-            title="Presentation Simulation"
-            desc="Live simulation of project presentation with Q&A handling and performance feedback."
-            output="Presentation-ready confidence."
-          />
-          <Session
-            date="28 Feb 2026"
-            title="Final Review & Closing"
-            desc="Final readiness evaluation, private feedback, and strategic advice before entering selection."
-            output="Clear next steps & confidence."
-          />
-        </div>
-
-        <p className="mt-6 text-sm text-gray-600 max-w-4xl">
-          All sessions are recorded. If you miss a session, you can access the
-          recording, book a 1-on-1 mentoring session, and consult privately
-          outside scheduled meetings.
+        </h2>
+        <p className="text-gray-600 max-w-2xl mx-auto">
+          A structured mentoring journey designed to prepare you strategically,
+          academically, and professionally for international selection.
         </p>
-      </section>
+      </div>
+
+      {/* OUTER FRAME */}
+      <div className="relative max-w-[1400px] mx-auto">
+        {/* TRACK */}
+        <div
+          className="
+            absolute left-0 right-0 top-1/2
+            h-[6px]
+            bg-[#E56668]/30
+            rounded-full
+            -translate-y-1/2
+          "
+        />
+
+        {/* GRADIENT FADE */}
+        <div className="pointer-events-none absolute left-0 top-0 h-full w-12 bg-gradient-to-r from-[#F7F8FA] to-transparent z-10" />
+        <div className="pointer-events-none absolute right-0 top-0 h-full w-12 bg-gradient-to-l from-[#F7F8FA] to-transparent z-10" />
+
+        {/* SCROLL AREA */}
+        <div className="overflow-x-auto scrollbar-none px-12">
+          <div className="flex gap-8 w-max py-6 mx-auto">
+            {curriculum.map((item, i) => (
+              <div
+                key={i}
+                className="
+                  relative min-w-[300px] max-w-[300px]
+                  rounded-3xl bg-white p-6
+                  border border-gray-200
+                  transition-all duration-300
+                  hover:shadow-xl hover:-translate-y-1
+                "
+              >
+                <p className="text-sm font-semibold text-[#E56668] mb-2">
+                  {item.date}
+                </p>
+
+                <h3 className="text-lg font-bold text-[#2F4157] mb-3">
+                  {item.title}
+                </h3>
+
+                <p className="text-sm text-gray-600 leading-relaxed mb-4">
+                  {item.desc}
+                </p>
+
+                <div className="text-sm font-semibold text-[#2F4157]">
+                  Output:
+                  <span className="block mt-1 font-normal text-gray-600">
+                    {item.output}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* FOOTNOTE */}
+      <p className="mt-10 text-sm text-gray-600 max-w-4xl mx-auto px-6 text-center">
+        All sessions are recorded. If you miss a session, you may access the
+        recording, book a 1-on-1 mentoring session, and consult privately outside
+        scheduled meetings.
+      </p>
+    </section>
+  
 
       {/* ================= INVESTMENT CARD ================= */}
       <section className="max-w-6xl mx-auto px-6 pb-20">
@@ -305,20 +378,21 @@ export default function SGTripMentoringPage() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
-            <a
+            <Button asChild className="bg-[#E56668] text-white font-semibold px-8 py-3 hover:bg-[#C04C4E]">
+            <Link
               href="https://forms.gle/D4DMBFshr1JeydZC9"
               target="_blank"
-              className="inline-flex items-center justify-center rounded-full px-8 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
-            >
+             >
               Apply Now
-            </a>
-            <a
+            </Link></Button>
+            <Button asChild className="bg-white text-[#294154] font-semibold px-8 py-3 hover:bg-gray-200">
+        <Link
               href="https://wa.me/6288297253491"
               target="_blank"
               className="inline-flex items-center justify-center rounded-full px-8 py-3 bg-white text-[#294154] font-semibold hover:bg-gray-200 transition transform hover:scale-[1.02]"
             >
               Ask Before Applying
-            </a>
+            </Link></Button>
           </div>
         </div>
       </section>

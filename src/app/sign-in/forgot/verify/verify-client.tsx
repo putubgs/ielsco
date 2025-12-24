@@ -59,7 +59,7 @@ export default function VerifyOtpForgotClient() {
         </button>
 
         <p className="text-center text-sm text-gray-500">
-          Didn’t receive the email? Check your spam folder.
+          Didn&apos;t receive the email? Check your spam folder.
         </p>
       </div>
     </div>

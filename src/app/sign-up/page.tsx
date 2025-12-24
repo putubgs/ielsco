@@ -240,7 +240,7 @@ const onSubmit = async (values: SignupForm) => {
           onClick={() =>
             setPopup("Google sign-up isn’t available yet — but coming very soon! ⚡️")
           }
-          className="inline-flex items-center justify-center gap-2 rounded-full w-full py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f]"
+          className="inline-flex items-center justify-center gap-2 rounded-full w-full py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition active:scale-[0.97]"
         >
           <Image src="/images/contents/general/google.png" width={25} height={25} alt="Google" />
           Continue with Google

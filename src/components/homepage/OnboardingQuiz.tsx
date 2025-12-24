@@ -152,11 +152,11 @@ return (
     </div>
 
     {/* ACTION BUTTONS */}
-    <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
+    <div className="flex gap-3 justify-center">
       <button
         onClick={onBack}
         className=
-"inline-flex items-center justify-center rounded-full bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E] transition active:scale-[0.97]"
+"inline-flex items-center justify-center rounded-full bg-[#E56668] text-white font-semibold px-6 py-2 hover:bg-[#C04C4E] transition active:scale-[0.97]"
         
       >
         Back
@@ -164,9 +164,9 @@ return (
 
       <button
         onClick={onFinish}
-        className="inline-flex items-center justify-center rounded-full bg-[#294154] text-white font-semibold px-6 py-3 hover:bg-[#21363f] transition active:scale-[0.97]"
+        className="inline-flex items-center justify-center rounded-full bg-[#294154] text-white font-semibold px-6 py-2 hover:bg-[#21363f] transition active:scale-[0.97]"
       >
-        Lock My Commitment
+        Finish
       </button>
     </div>
 
@@ -200,10 +200,10 @@ return (
       </motion.div>
 
       <div className="flex gap-3 justify-center">
-        <button onClick={onBack} className="inline-flex items-center justify-center rounded-full bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E] transition active:scale-[0.97]" disabled={step === 0}>
+        <button onClick={onBack} className="inline-flex items-center justify-center rounded-full bg-[#E56668] text-white font-semibold px-6 py-2 hover:bg-[#C04C4E] transition active:scale-[0.97]" disabled={step === 0}>
           Back
         </button>
-        <button onClick={onNext} className="inline-flex items-center justify-center rounded-full bg-[#294154] text-white font-semibold px-6 py-3 hover:bg-[#21363f] transition active:scale-[0.97]">
+        <button onClick={onNext} className="inline-flex items-center justify-center rounded-full bg-[#294154] text-white font-semibold px-6 py-2 hover:bg-[#21363f] transition active:scale-[0.97]">
           {step === total - 1 ? "Next" : "Next"}
         </button>
       </div>

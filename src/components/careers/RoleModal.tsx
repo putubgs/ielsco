@@ -38,9 +38,6 @@ export default function RoleModal({ role, onClose }: Props) {
         <div className="px-6 py-5 overflow-y-auto flex-1 space-y-6">
           {/* JOB DESCRIPTION */}
           <section>
-            <h4 className="font-semibold text-[#2F4157] mb-2">
-              Job Description
-            </h4>
             <div
               className="text-sm text-gray-700 leading-relaxed
                 [&_ul]:list-disc [&_ul]:ml-5 [&_li]:mb-1"

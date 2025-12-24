@@ -344,78 +344,85 @@ export const divisions: Division[] = [
         ],
       },
 
-      {
-        name: "Creative & Brand Experience",
-        objective:
-          "Build a strong visual identity and interactive brand experience across digital platforms and learning environments.",
-        roles: [
-          {
-            title: "Creative Associate",
-            level: "Associate",
-            mode: "Remote",
-            description:
-              "Execute visual and design tasks that translate ideas and briefs into strong, consistent, and impactful IELS brand visuals.",
+   {
+  name: "Creative",
+  objective:
+    "Build and maintain a strong, consistent visual identity for IELS across all platforms, programs, and communications.",
+  roles: [
+    {
+      title: "Creative Associate",
+      level: "Associate",
+      mode: "Remote",
+      description:
+        "Execute visual and design tasks that translate ideas and briefs into strong, consistent, and impactful IELS brand visuals.",
+      jobDescription: `
+        <ul>
+          <li>Execute visual and design tasks for social media, programs, and internal needs.</li>
+          <li>Translate briefs into clear, engaging, and on-brand designs.</li>
+          <li>Apply and maintain IELS design systems and visual guidelines.</li>
+          <li>Revise designs based on feedback and quality standards.</li>
+          <li>Organize and manage design files and assets properly.</li>
+        </ul>
+      `,
+      requirements: `
+        <ul>
+          <li>Strong design portfolio using Figma.</li>
+          <li>Ability to interpret briefs into brand-aligned visuals.</li>
+          <li>Active Indonesian undergraduate students (Batch 2023–2025) from any major.</li>
+          <li>High sense of responsibility and ownership.</li>
+        </ul>
+      `,
+      benefits: `
+        <ul>
+          <li>Portfolio-building with real brand assets.</li>
+          <li>Experience working with a growing edtech brand.</li>
+        </ul>
+      `,
+      duration: "Flexible, minimum 10–12 hours/week",
+      applyLink: "https://forms.gle/DotTzXLZ9vzcF4BJA",
+    },
+  ],
+},
 
-            jobDescription: `
-              <ul>
-                <li>Execute visual and design tasks for social media, programs, and internal needs.</li>
-                <li>Translate briefs into clear, engaging, and on-brand designs.</li>
-                <li>Apply and maintain IELS design systems and visual guidelines.</li>
-                <li>Revise designs based on feedback and quality standards.</li>
-                <li>Organize and manage design files and assets properly.</li>
-              </ul>
-            `,
-            requirements: `
-              <ul>
-                <li>Strong design portfolio using Figma.</li>
-                <li>Ability to interpret briefs into brand-aligned visuals.</li>
-                <li>Active Indonesian undergraduate students (Batch 2023–2025) from any major.</li>
-                <li>High sense of responsibility and ownership.</li>
-              </ul>
-            `,
-            benefits: `
-              <ul>
-                <li>Portfolio-building with real brand assets.</li>
-                <li>Experience working with a growing edtech brand.</li>
-              </ul>
-            `,
-            duration: "Flexible, minimum 10–12 hours/week",
-            applyLink: "https://forms.gle/DotTzXLZ9vzcF4BJA",
-          },
+{
+  name: "Brand Experience",
+  objective:
+    "Design interactive, fun, and meaningful brand experiences through community engagement and experimental learning environments.",
+  roles: [
+    {
+      title: "Brand Experience Associate",
+      level: "Associate",
+      mode: "Remote",
+      description:
+        "Support interactive learning and community engagement inside the IELS Roblox ecosystem while shaping fun, youth-driven brand experiences.",
+      jobDescription: `
+        <ul>
+          <li>Support daily community engagement inside the IELS Roblox ecosystem.</li>
+          <li>Help plan and execute Roblox-based learning activities and in-game events.</li>
+          <li>Create trend-driven TikTok content related to Roblox gameplay and experience.</li>
+          <li>Collaborate with Community and Creative teams to align experience with brand values.</li>
+        </ul>
+      `,
+      requirements: `
+        <ul>
+          <li>Active and familiar with Roblox (minimum 5 months experience).</li>
+          <li>Fluent in English (written & verbal).</li>
+          <li>Active Indonesian undergraduate students (Batch 2023–2025) from any major.</li>
+          <li>High sense of responsibility, ownership, and curiosity.</li>
+        </ul>
+      `,
+      benefits: `
+        <ul>
+          <li>Hands-on experience in interactive edtech and community-based learning.</li>
+          <li>Exposure to experimental digital learning environments.</li>
+        </ul>
+      `,
+      duration: "Flexible, minimum 10–12 hours/week",
+      applyLink: "https://forms.gle/DotTzXLZ9vzcF4BJA",
+    },
+  ],
+},
 
-          {
-            title: "Brand Experience Associate",
-            level: "Associate",
-            mode: "Remote",
-            description:
-              "Support interactive learning and community engagement inside the IELS Roblox ecosystem while shaping fun, youth-driven brand experiences.",
-
-            jobDescription: `
-              <ul>
-                <li>Support daily community engagement inside Roblox.</li>
-                <li>Help plan and execute Roblox learning activities and in-game events.</li>
-                <li>Create trend-driven TikTok content related to Roblox gameplay.</li>
-              </ul>
-            `,
-            requirements: `
-              <ul>
-                <li>Active and familiar with Roblox (minimum 5 months experience).</li>
-                <li>Fluent in English (written & verbal).</li>
-                <li>Active Indonesian undergraduate students (Batch 2023–2025) from any major.</li>
-                <li>High sense of responsibility and ownership.</li>
-              </ul>
-            `,
-            benefits: `
-              <ul>
-                <li>Hands-on experience in interactive edtech & community building.</li>
-                <li>Exposure to digital learning innovation.</li>
-              </ul>
-            `,
-            duration: "Flexible, minimum 10–12 hours/week",
-            applyLink: "https://forms.gle/DotTzXLZ9vzcF4BJA",
-          },
-        ],
-      },
     ],
   },
 

@@ -174,7 +174,6 @@ export const divisions: Division[] = [
             </ul>
           `,
           requirements: `
-            <h4>General Requirements</h4>
             <ul>
               <li>Strong interest in teaching and English language mastery.</li>
               <li>Analytical and creative in educational design.</li>
@@ -678,19 +677,12 @@ export const divisions: Division[] = [
             </ul>
           `,
           requirements: `
-            <h4>General Requirements</h4>
             <ul>
               <li>Strong written and verbal communication skills.</li>
               <li>Professional, proactive, and comfortable interacting with external stakeholders.</li>
               <li>Detail-oriented and organized in managing partnership documentation.</li>
               <li>Active Indonesian students (Batch 2023–2025) from any major.</li>
               <li>Willing to prioritize IELS and be responsive in daily communication.</li>
-            </ul>
-            <h4>Specific Requirements (Plus Points)</h4>
-            <ul>
-              <li>Experience in student organizations, outreach, or institutional relations.</li>
-              <li>Comfortable preparing proposals or presentation materials.</li>
-              <li>Interest in education systems, school programs, or university collaborations.</li>
             </ul>
           `,
           benefits: `

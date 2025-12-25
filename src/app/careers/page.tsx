@@ -84,7 +84,7 @@ export default function CareersPage() {
     "/images/contents/careers/iels_team_1.png",
     "/images/contents/careers/iels_team_2.png",
     "/images/contents/careers/iels_team_3.png",
-    "/images/contents/careers/iels_team_4.png",
+ 
   ];
 
   const [currentImage, setCurrentImage] = useState(0);
@@ -109,7 +109,7 @@ export default function CareersPage() {
         {/* ===== HERO ===== */}
         <section className="text-center py-16 px-4">
           <h1 className="text-4xl font-bold mb-4">
-            💼 IELS MT Open Recruitment Batch 3
+            IELS MT Open Recruitment Batch 3 💼 
           </h1>
           <p className="max-w-2xl mx-auto text-base text-gray-200">
             We&apos;re a student-led organization empowering youths for global
@@ -189,7 +189,7 @@ export default function CareersPage() {
         {/* HEADER */}
         <div className="text-center mb-20">
           <h2 className="text-3xl md:text-4xl font-extrabold text-[#2F4157] mb-4">
-            What You’ll Gain from IELS
+            What You&apos;ll Gain from IELS
           </h2>
           <p className="text-gray-600 max-w-3xl mx-auto">
             IELS is <b>not a paid internship</b>.  

@@ -273,7 +273,6 @@ export const divisions: Division[] = [
             duration: "Flexible, minimum 10–12 hours/week",
             applyLink: "https://forms.gle/DotTzXLZ9vzcF4BJA",
           },
-
           {
             title: "Social Media Specialist",
             level: "Associate",
@@ -294,6 +293,38 @@ export const divisions: Division[] = [
               <ul>
                 <li>Detail-oriented and well-organized in managing posting schedules.</li>
                 <li>Strong communication skills and professionalism.</li>
+                <li>Active Indonesian undergraduate students (Batch 2023–2025) from any major.</li>
+                <li>High sense of responsibility and ownership.</li>
+              </ul>
+            `,
+            benefits: `
+              <ul>
+                <li>Hands-on experience managing real social media growth.</li>
+                <li>Exposure to analytics, reporting, and audience behavior.</li>
+              </ul>
+            `,
+            duration: "Flexible, minimum 10–12 hours/week",
+            applyLink: "https://forms.gle/DotTzXLZ9vzcF4BJA",
+          },
+          {
+            title: "External Relations",
+            level: "Associate",
+            mode: "Remote",
+            description:
+              "Maintain long-term relationships with IELS’ media and community partnership, ensuring clear communication and mutual value.",
+
+            jobDescription: `
+              <ul>
+                <li>Identify, approach, and secure new media and external partnerships aligned with IELS programs and brand values.</li>
+                <li>Manage all publication and promotion requests to and from partners.</li>
+                <li>Coordinate MoUs and collaboration documents with the Legal team, including review, revisions, and signing flow.</li>
+                <li>Manage and regularly update the media & partnership tracker.</li>
+              </ul>
+            `,
+            requirements: `
+              <ul>
+                <li>Strong interpersonal and communication skills, both in writing and speaking.</li>
+                <li>Professional, proactive, and responsive in managing communications.</li>
                 <li>Active Indonesian undergraduate students (Batch 2023–2025) from any major.</li>
                 <li>High sense of responsibility and ownership.</li>
               </ul>

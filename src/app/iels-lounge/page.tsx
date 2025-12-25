@@ -21,7 +21,7 @@ export default function LoungePage() {
     "/images/contents/careers/iels_team_1.png",
     "/images/contents/careers/iels_team_2.png",
     "/images/contents/careers/iels_team_3.png",
-    "/images/contents/careers/iels_team_4.png",
+
   ];
   const [currentImage, setCurrentImage] = useState(0);
 

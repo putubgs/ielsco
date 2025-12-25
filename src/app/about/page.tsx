@@ -4,6 +4,7 @@ import Footer from "@/components/footer";
 import Header from "@/components/header";
 import Image from "next/image";
 import { useState } from "react";
+import { Instagram, Linkedin } from "lucide-react";
 
 type ActiveSection = "vision" | "curriculum" | "impact" | "team";
 
@@ -16,7 +17,29 @@ export default function About() {
   const [isButtonAnimating, setIsButtonAnimating] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
-
+  const principals = [
+  {
+    name: "Arbadza Rido Adzariyat",
+    role: "Principal of Operations & Business",
+    image: "/images/contents/about/arba.png",
+    instagram: "https://instagram.com/arbadzarido",
+    linkedin: "https://linkedin.com/in/arbadzarido",
+  },
+  {
+    name: "Fadhila Qurotul Aini",
+    role: "Principal of Growth & Finance",
+    image: "/images/contents/about/dhila.png",
+    instagram: "https://www.instagram.com/fadhilaqa._/",
+    linkedin: "https://linkedin.com/in/fadhilaqa/",
+  },
+  {
+    name: "Syifa Hana Nabila",
+    role: "Principal of Talent",
+    image: "/images/contents/about/hana.png",
+    instagram: "https://www.instagram.com/ssyifahana/",
+    linkedin: "https://www.linkedin.com/in/syifahana/",
+  },
+];
   const handleSectionChange = (newSection: ActiveSection) => {
     if (newSection === activeSection) return;
 
@@ -92,12 +115,11 @@ export default function About() {
                   Our Vision
                 </h3>
                 <p className="text-[14px] sm:text-[15px] text-justify leading-relaxed">
-                  To provide high-quality global English education across
-                  Indonesia, preparing students to meet international academic
-                  standards and access real-world opportunities including
-                  scholarships, remote jobs, global internships, and
-                  entrepreneurial ventures. We aim to democratize access to
-                  English learning to empower Indonesians to compete globally.
+                  To become a goal-driven English learning ecosystem that enables learners 
+                  across Indonesia to clearly track, achieve, and sustain real-world outcomes—ranging 
+                  from English proficiency and academic success to global opportunities such 
+                  as exchanges, scholarships, internships, and remote work—regardless of 
+                  their background or location.
                 </p>
               </div>
               <div className="flex-1">
@@ -105,20 +127,16 @@ export default function About() {
                   Our Mission
                 </h3>
                 <p className="text-[14px] sm:text-[15px] text-justify mb-4 leading-relaxed">
-                  IELS is dedicated to making English education practical,
-                  inclusive, and future-ready. Our mission is built on four key
-                  pillars:
+                  IELS is committed to making English learning practical, measurable, and accessible by:
                 </p>
                 <ol className="text-[14px] sm:text-[15px] space-y-2 list-decimal list-inside leading-relaxed">
-                  <li>Fostering a supportive learning community.</li>
-                  <li>Providing high-quality English mentorship.</li>
+                  <li>Building an active and supportive learning community that encourages consistency, accountability, and peer growth.</li>
+                  <li>Guiding learners through structured and personalized learning journeys aligned with their individual goals.</li>
                   <li>
-                    Equipping students with essential skills for international
-                    scholarships, remote work, and global careers.
+                    Providing clear progress tracking, feedback, and recommendations to help learners move from learning to real outcomes.
                   </li>
                   <li>
-                    Bridging educational and socio-economic gaps through
-                    accessible and scalable learning solutions.
+                    Expanding access to global exposure and opportunities while reducing educational and socio-economic barriers through affordable and scalable programs.
                   </li>
                 </ol>
               </div>
@@ -129,54 +147,34 @@ export default function About() {
         return (
           <div className="space-y-4 sm:space-y-6">
             <h2 className="font-bold text-[20px] sm:text-[22px] lg:text-[24px]">
-              Our ESP-Based Curriculum
+              Our Outcome-Driven Learning Tracks
             </h2>
             <div className="space-y-4 sm:space-y-6">
               <p className="text-[14px] sm:text-[15px] text-justify leading-relaxed">
-                IELS specializes in English for Specific Purposes (ESP)—a
-                focused approach that develops English skills directly tied to
-                learners&apos; academic, professional, and global aspirations.
-                Unlike traditional English courses, ESP targets real-life needs
-                and industry-specific contexts, making the learning process more
-                efficient and relevant.
+                IELS designs its learning programs around real goals, not generic English proficiency. Our approach focuses on helping learners use English for specific outcomes—such as academic success, professional growth, and global participation—by aligning language development with what learners actually need to achieve.
+</p><p className="text-[14px] sm:text-[15px] text-justify leading-relaxed">
+Instead of separating English into isolated skills, IELS integrates learning with clear objectives, progress tracking, and real-world application, ensuring that learners understand why they are learning and how each step moves them closer to their target.
               </p>
               <div className="space-y-4">
                 <div>
                   <h3 className="font-semibold text-[16px] sm:text-[17px] lg:text-[18px] mb-3">
-                    ESP Program Tracks:
+                    IELS Learning Tracks
                   </h3>
                   <ul className="text-[14px] sm:text-[15px] space-y-2 list-disc list-inside leading-relaxed">
                     <li>
-                      <strong>English for Academic Purposes (EAP):</strong>{" "}
-                      Preparing students for IELTS/TOEFL exams, research
-                      writing, and academic success abroad.
+                      <strong>Academic Track</strong>{" "}
+                      This track focuses on academic communication, test readiness (IELTS/TOEFL), research and writing skills, and the confidence needed to perform in global academic environments.
                     </li>
                     <li>
-                      <strong>English for Occupational Purposes (EOP):</strong>{" "}
-                      Supporting professional English skills for careers in
-                      global industries, including remote work, networking, and
-                      internships.
+                      <strong>Professional & Global Track</strong>{" "}
+                      This track emphasizes practical workplace communication, interviews, professional writing, digital collaboration, networking, and cross-cultural communication—especially for remote and global contexts.
                     </li>
+                    <p className="text-[14px] sm:text-[15px] text-justify leading-relaxed">
+                      Across all tracks, learners are guided through structured journeys with milestones, feedback, and measurable progress—so learning English is not just about improvement, but about reaching a clear outcome.
+                    </p>
                   </ul>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-[16px] sm:text-[17px] lg:text-[18px] mb-3">
-                    Key Areas of Focus:
-                  </h3>
-                  <ul className="text-[14px] sm:text-[15px] space-y-2 list-disc list-inside leading-relaxed">
-                    <li>
-                      <strong>Academic Pathways:</strong> Study abroad
-                      readiness, academic writing, test preparation.
-                    </li>
-                    <li>
-                      <strong>Professional Development:</strong> Workplace
-                      communication, job interviews, digital collaboration.
-                    </li>
-                    <li>
-                      <strong>International Engagement:</strong> Public
-                      speaking, cultural fluency, cross-border networking.
-                    </li>
-                  </ul>
                 </div>
               </div>
             </div>
@@ -192,27 +190,21 @@ export default function About() {
                     What We Value
                   </h3>
                   <p className="text-[14px] sm:text-[15px] mb-3 leading-relaxed">
-                    We are driven by three core values that define our approach
-                    and impact:
+                    We are guided by values that shape how we design learning, build systems, and grow our community:
                   </p>
                   <ul className="text-[14px] sm:text-[15px] space-y-2 list-disc list-inside leading-relaxed">
                     <li>
-                      <strong>Inclusivity:</strong> We believe every learner
-                      deserves the chance to grow. We work to make English
-                      education accessible, affordable, and adaptable for
-                      diverse needs across Indonesia.
-                    </li>
+                      <strong>Accessibility with Purpose</strong> 
+                     <p>We believe quality English education should be reachable for learners across Indonesia. IELS is committed to keeping learning affordable and flexible—while still providing clear structure, direction, and measurable progress.
+                   </p> </li>
                     <li>
-                      <strong>Quality:</strong> Our programs are designed with
-                      excellence and relevance in mind, combining real-world
-                      applications, evidence-based methods, and experienced
-                      mentors.
-                    </li>
+                      <strong>Outcome-Driven Learning</strong> 
+                      <p>We focus on results, not just participation. Every program, activity, and product is designed to help learners move closer to a specific goal through structured journeys, progress tracking, and real-world application.
+                    </p></li>
                     <li>
-                      <strong>Community:</strong> Learning is better together.
-                      We build a strong, inclusive community where learners
-                      support one another and grow together.
-                    </li>
+                      <strong>Community as a System</strong> 
+                      <p>IELS believes growth happens faster and more sustainably in community. We cultivate an active learning environment where learners stay consistent, support each other, and evolve into contributors who create impact beyond themselves.
+                   </p> </li>
                   </ul>
                 </div>
                 <div>
@@ -220,8 +212,7 @@ export default function About() {
                     Who We Serve
                   </h3>
                   <p className="text-[14px] sm:text-[15px] mb-3 leading-relaxed">
-                    IELS supports a wide range of learners and institutions,
-                    with tailored programs for:
+                    IELS is built for individuals and institutions that value progress, clarity, and long-term impact.
                   </p>
                   <ul className="text-[14px] sm:text-[15px] space-y-2 list-disc list-inside leading-relaxed">
                     <li>
@@ -247,8 +238,7 @@ export default function About() {
                   Our Value Proposition
                 </h3>
                 <p className="text-[14px] sm:text-[15px] mb-4 leading-relaxed">
-                  We deliver meaningful value to students, educational
-                  institutions, and partner organizations:
+                  IELS delivers value by turning English learning into a <strong>clear, trackable, and outcome-oriented journey.</strong>
                 </p>
                 <div className="space-y-4">
                   <div>
@@ -304,186 +294,89 @@ export default function About() {
         );
 case "team":
   return (
-    <div className="space-y-10 sm:space-y-12">
-      <h2 className="font-bold text-2xl sm:text-3xl">Organizational Team</h2>
-      <p className="text-[15px] sm:text-base text-justify leading-relaxed">
-        Behind every initiative of IELS is a strong and passionate team. 
-        Together, we are committed to building a platform that connects 
-        Indonesian students with global opportunities.
-      </p>
+<div className="space-y-10 sm:space-y-12">
+  <h2 className="font-bold text-2xl sm:text-3xl text-center">
+    Organizational Team
+  </h2>
 
-      {/* ===== MOBILE VIEW ===== */}
-      <div className="md:hidden space-y-8">
-        {/* Principals */}
-        <h3 className="font-semibold text-xl sm:text-2xl mb-4 text-center">Principals</h3>
-        <div className="grid grid-cols-1 gap-6">
-          {/* Principal 1 */}
-          <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
-            <img src="/images/contents/about/arba.png" alt="Arbadza Rido Adzariyat" className="w-40 h-40 rounded-full object-cover mb-4"/>
-            <h4 className="font-bold text-lg sm:text-xl text-center">Arbadza Rido Adzariyat</h4>
-            <p className="text-sm sm:text-base text-gray-600 text-center">Principal of Operations</p>
-          </div>
-          {/* Principal 2 */}
-          <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
-            <img src="/images/contents/about/dhila.png" alt="Fadhila Qurrotul Aini" className="w-40 h-40 rounded-full object-cover mb-4"/>
-            <h4 className="font-bold text-lg sm:text-xl text-center">Fadhila Qurotul Aini</h4>
-            <p className="text-sm sm:text-base text-gray-600 text-center">Principal of Growth</p>
+  <p className="text-[15px] sm:text-base text-gray-600 text-center max-w-3xl mx-auto leading-relaxed">
+    Behind every initiative of IELS is a strong and passionate team.
+    Together, we are committed to building a platform that connects
+    Indonesian students with global opportunities.
+  </p>
+
+  <h3 className="font-semibold text-xl sm:text-2xl text-center mt-10">
+    Principals
+  </h3>
+
+  <div className="flex justify-center">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl">
+      {principals.map((p) => (
+        <div
+          key={p.name}
+          className="
+            group bg-[#F8F8F8] rounded-2xl p-6
+            flex flex-col items-center text-center
+            shadow-sm transition-all duration-300
+            hover:-translate-y-1 hover:shadow-lg
+          "
+        >
+          {/* Avatar */}
+          <img
+            src={p.image}
+            alt={p.name}
+            className="
+              w-36 h-36 rounded-full object-cover mb-4
+              transition-transform duration-300
+              group-hover:scale-105
+            "
+          />
+
+          {/* Name */}
+          <h4 className="font-bold text-lg sm:text-xl text-[#2F4157]">
+            {p.name}
+          </h4>
+
+          {/* Role */}
+          <p className="text-sm sm:text-base text-gray-600 mb-4">
+            {p.role}
+          </p>
+
+          {/* Socials */}
+          <div className="flex gap-4">
+            <a
+              href={p.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+                p-2 rounded-full bg-white
+                text-gray-500 hover:text-[#E56668]
+                hover:shadow transition
+              "
+              aria-label="Instagram"
+            >
+              <Instagram size={18} />
+            </a>
+
+            <a
+              href={p.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+                p-2 rounded-full bg-white
+                text-gray-500 hover:text-[#0A66C2]
+                hover:shadow transition
+              "
+              aria-label="LinkedIn"
+            >
+              <Linkedin size={18} />
+            </a>
           </div>
         </div>
-
-        {/* Managers of Operations */}
-        <h3 className="font-semibold text-xl sm:text-2xl mt-8 mb-4 text-center">Managers of Operations</h3>
-        <div className="grid grid-cols-1 gap-6">
-          {/* Ops Managers */}
-          <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
-            <img src="/images/contents/about/farrel.png" className="w-35 h-35 rounded-full object-cover mb-4"/>
-            <h4 className="font-bold text-lg sm:text-xl text-center">M Farrel Alrezky</h4>
-            <p className="text-sm sm:text-base text-gray-600 text-center">Business Manager</p>
-          </div>
-          <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
-            <img src="/images/contents/about/bintang.png" className="w-35 h-35 rounded-full object-cover mb-4"/>
-            <h4 className="font-bold text-lg sm:text-xl text-center">Bintang Mahardika</h4>
-            <p className="text-sm sm:text-base text-gray-600 text-center">Product Manager</p>
-          </div>
-          <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
-            <img src="/images/contents/about/tamira.png" className="w-35 h-35 rounded-full object-cover mb-4"/>
-            <h4 className="font-bold text-lg sm:text-xl text-center">Tamira Wijdani Khalisa</h4>
-            <p className="text-sm sm:text-base text-gray-600 text-center">Project Manager</p>
-          </div>
-          <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
-            <img src="/images/contents/about/safira.png" className="w-35 h-35 rounded-full object-cover mb-4"/>
-            <h4 className="font-bold text-lg sm:text-xl text-center">Safira Salsabila</h4>
-            <p className="text-sm sm:text-base text-gray-600 text-center">Community Manager</p>
-          </div>
-        </div>
-
-        {/* Managers of Growth */}
-        <h3 className="font-semibold text-xl sm:text-2xl mt-8 mb-4 text-center">Managers of Growth</h3>
-        <div className="grid grid-cols-1 gap-6">
-          {/* Growth Managers */}
-          <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
-            <img src="/images/contents/about/angga.png" className="w-35 h-35 rounded-full object-cover mb-4"/>
-            <h4 className="font-bold text-lg sm:text-xl text-center">Laurensius Erlangga</h4>
-            <p className="text-sm sm:text-base text-gray-600 text-center">Marketing Manager</p>
-          </div>
-          <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
-            <img src="/images/contents/about/didi.png" className="w-35 h-35 rounded-full object-cover mb-4"/>
-            <h4 className="font-bold text-lg sm:text-xl text-center">Haydi Aprilia</h4>
-            <p className="text-sm sm:text-base text-gray-600 text-center">Vice Marketing Manager</p>
-          </div>
-          <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
-            <img src="/images/contents/about/zain.png" className="w-35 h-35 rounded-full object-cover mb-4"/>
-            <h4 className="font-bold text-lg sm:text-xl text-center">Zainufri Aziz</h4>
-            <p className="text-sm sm:text-base text-gray-600 text-center">Creative Manager</p>
-          </div>
-          <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
-            <img src="/images/contents/about/zayyina.png" className="w-35 h-35 rounded-full object-cover mb-4"/>
-            <h4 className="font-bold text-lg sm:text-xl text-center">Zayyina Musyarrofa</h4>
-            <p className="text-sm sm:text-base text-gray-600 text-center">Creator Manager</p>
-          </div>
-        </div>
-      </div>
-
-      {/* ===== DESKTOP VIEW ===== */}
-      <div className="hidden md:block">
-        <div className="hidden md:grid grid-cols-4 gap-8 text-center"></div>
-        {/* Principals */}
-        <div>
-          <h3 className="font-semibold text-xl sm:text-2xl mb-6 text-center">Principals</h3>
-          <div className="grid sm:grid-cols-2 gap-6">
-            <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
-              <img
-                src="/images/contents/about/arba.png"
-                alt="Arbadza Rido Adzariyat"
-                className="w-40 h-40 lg:w-50 lg:h-50 rounded-full object-cover mb-4"
-              />
-              <h4 className="font-bold text-lg sm:text-xl">Arbadza Rido Adzariyat</h4>
-              <p className="text-sm sm:text-base text-gray-600">Principal of Operations</p>
-            </div>
-            <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
-              <img
-                src="/images/contents/about/dhila.png"
-                alt="Fadhila Qurrotul Aini"
-                className="w-40 h-40 lg:w-50 lg:h-50 rounded-full object-cover mb-4"
-              />
-              <h4 className="font-bold text-lg sm:text-xl">Fadhila Qurotul Aini</h4>
-              <p className="text-sm sm:text-base text-gray-600">Principal of Growth</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Managers of Operations */}
-              <div>
-                <div className="grid grid-cols-4 gap-8 text-center">
-                {/* Heading kiri */}
-                <div className="col-span-2">
-                  <h3 className="font-semibold text-xl sm:text-2xl mb-6">
-                    Managers of Operations
-                  </h3>
-                </div>
-
-                {/* Heading kanan */}
-                <div className="col-span-2">
-                  <h3 className="font-semibold text-xl sm:text-2xl mb-6">
-                    Managers of Growth
-                  </h3>
-                </div>
-
-            </div>
-          <div className="grid sm:grid-cols-4 lg:grid-cols-4 gap-6">
-          {/*Operation Managers Row 1*/}
-            <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
-              <img src="/images/contents/about/farrel.png" className="w-35 h-35 lg:w-40 lg:h-40 rounded-full object-cover mb-4"/>
-              <h4 className="font-bold text-lg sm:text-xl text-center">M Farrel Alrezky</h4>
-              <p className="text-sm sm:text-base text-gray-600 text-center">Business Manager</p>
-            </div>
-            <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
-              <img src="/images/contents/about/bintang.png" className="w-35 h-35 lg:w-40 lg:h-40 rounded-full object-cover mb-4"/>
-              <h4 className="font-bold text-lg sm:text-xl text-center">Bintang Mahardika</h4>
-              <p className="text-sm sm:text-base text-gray-600 text-center">Product Manager</p>
-            </div>
-           {/*Growth Managers Row 1*/}
-            <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
-              <img src="/images/contents/about/angga.png" className="w-35 h-35 lg:w-40 lg:h-40 rounded-full object-cover mb-4"/>
-              <h4 className="font-bold text-lg sm:text-xl text-center">Laurensius Erlangga</h4>
-              <p className="text-sm sm:text-base text-gray-600 text-center">Marketing Manager</p>
-            </div>
-            <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
-              <img src="/images/contents/about/didi.png" className="w-35 h-35 lg:w-40 lg:h-40 rounded-full object-cover mb-4"/>
-              <h4 className="font-bold text-lg sm:text-xl text-center">Haydi Aprilia</h4>
-              <p className="text-sm sm:text-base text-gray-600 text-center">Vice Marketing Manager</p>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <div className="grid sm:grid-cols-4 lg:grid-cols-4 gap-6">
-         {/*Operation Managers Row 2*/}
-            <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
-              <img src="/images/contents/about/tamira.png" className="w-35 h-35 lg:w-40 lg:h-40 rounded-full object-cover mb-4"/>
-              <h4 className="font-bold text-lg sm:text-xl text-center">Tamira Wijdani Khalisa</h4>
-              <p className="text-sm sm:text-base text-gray-600 text-center">Project Manager</p>
-            </div>
-            <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
-              <img src="/images/contents/about/safira.png" className="w-35 h-35 lg:w-40 lg:h-40 rounded-full object-cover mb-4"/>
-              <h4 className="font-bold text-lg sm:text-xl text-center">Safira Salsabila</h4>
-              <p className="text-sm sm:text-base text-gray-600 text-center">Community Manager</p>
-            </div>
-        {/*Growth Managers Row 2*/}
-            <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
-              <img src="/images/contents/about/zain.png" className="w-35 h-35 lg:w-40 lg:h-40 rounded-full object-cover mb-4"/>
-              <h4 className="font-bold text-lg sm:text-xl text-center">Zainufri Aziz</h4>
-              <p className="text-sm sm:text-base text-gray-600 text-center">Creative Manager</p>
-            </div>
-            <div className="bg-[#F8F8F8] rounded-xl p-6 flex flex-col items-center shadow">
-              <img src="/images/contents/about/zayyina.png" className="w-35 h-35 lg:w-40 lg:h-40 rounded-full object-cover mb-4"/>
-              <h4 className="font-bold text-lg sm:text-xl text-center">Zayyina Musyarrofa</h4>
-              <p className="text-sm sm:text-base text-gray-600 text-center">Creator Manager</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      </div>
+      ))}
+    </div>
+  </div>
+</div>
 
         );
 
@@ -524,21 +417,22 @@ case "team":
               About IELS
             </h1>
             <p className="text-[14px] sm:text-[15px] text-justify">
-              IELS (Inclusive English Learning Space) is a learning platform
-              dedicated to empowering Indonesian students and young
-              professionals by equipping them with practical and globally
-              relevant English skills. Our mission is to bridge the gap between
-              English education and real-world application by offering
-              mentorship, structured learning programs, and a strong support
-              community.
+              IELS (Inclusive English Learning Space) is a goal-driven English learning 
+              community designed to help Indonesian students and young professionals 
+              achieve real, measurable outcomes. IELS supports learners in setting 
+              clear English-related goals—such as improving fluency, achieving test 
+              scores, joining exchange programs, or accessing global opportunities—then 
+              guides them through structured learning journeys with progress tracking, 
+              mentorship, and community support.
             </p>
             <p className="text-[14px] sm:text-[15px] text-justify">
-              In today&apos;s interconnected world, English is more than just a
-              language—it&apos;s a gateway to academic excellence, professional
-              growth, and global collaboration. IELS is here to ensure that
-              learners in Indonesia, regardless of their background or location,
-              have the tools, guidance, and confidence to thrive
-              internationally.
+              Rather than focusing only on lessons or certificates, IELS focuses 
+              on progress and outcomes. Through affordable programs, daily community 
+              engagement, and access to real opportunities, IELS helps learners stay 
+              consistent, understand where they are in their journey, and know what 
+              steps to take next. By combining learning, tracking, and empowerment 
+              in one ecosystem, IELS aims to make quality English education and 
+              global exposure more accessible to learners across Indonesia.
             </p>
           </div>
         </div>

@@ -26,22 +26,22 @@ const timeline: TimelineItem[] = [
     end: new Date("2026-02-08"),
   },
   {
-    title: "Interview Phase",
-    date: "8–16 February 2026",
+    title: "Interview",
+    date: "10–15 February 2026",
     desc: "Structured interviews with IELS principals & core team.",
     start: new Date("2026-02-08"),
     end: new Date("2026-02-16"),
   },
   {
-    title: "Announcement Apprentice",
+    title: "Announcement to Apprenticeship",
     date: "19 February 2026",
     desc: "Selected candidates proceed as IELS Apprentices.",
     start: new Date("2026-02-19"),
     end: new Date("2026-02-19"),
   },
   {
-    title: "Apprenticeship",
-    date: "23 Feb – 31 March 2026",
+    title: "Training & Apprenticeship",
+    date: "20 Feb – 29 March 2026",
     desc: "Training, real tasks, and performance evaluation.",
     start: new Date("2026-02-23"),
     end: new Date("2026-03-31"),
@@ -54,7 +54,7 @@ const timeline: TimelineItem[] = [
     end: new Date("2026-04-01"),
   },
   {
-    title: "MT Onboarding",
+    title: "Onboarding",
     date: "4 April 2026",
     desc: "Formal onboarding and start of Batch 3 journey.",
     start: new Date("2026-04-04"),
@@ -82,7 +82,7 @@ export default function Timeline() {
   );
 
   return (
-    <section className="bg-[#F7F8FA] py-20 overflow-hidden">
+    <section className="bg-white py-20 overflow-hidden">
       {/* HEADER */}
       <div className="text-center mb-12 px-6">
         <h2 className="text-3xl font-extrabold text-[#2F4157] mb-3">
@@ -131,7 +131,7 @@ export default function Timeline() {
                   {isActive && (
                     <div className="absolute -top-4 left-6 right-6 text-center">
                       <div className="rounded-full bg-[#E56668] py-2 text-xs font-bold text-white shadow-md">
-                        🔴 {daysLeft} DAYS LEFT
+                        {daysLeft} DAYS LEFT!!
                       </div>
                     </div>
                   )}

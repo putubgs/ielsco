@@ -29,8 +29,8 @@ export default function Header() {
 
     // Start — no dropdown, special styling
     {
-      name: "Start!",
-      path: "/welcome/start",
+      name: "Sign in!",
+      path: "/sign-in",
       isStart: true,
     },
   ];

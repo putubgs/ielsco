@@ -639,45 +639,7 @@ export const divisions: Division[] = [
       ],
     },
 
-    {
-      name: "Talent Acquisition",
-      objective:
-        "Support recruitment execution, candidate coordination, and onboarding preparation.",
-      roles: [
-        {
-          title: "Talent Acquisition Associate",
-          level: "Associate",
-          mode: "Remote",
-          description:
-            "Support end-to-end recruitment operations, candidate coordination, and onboarding preparation under the Talent Acquisition function.",
-          jobDescription: `
-            <ul>
-              <li>Support recruitment execution and application screening.</li>
-              <li>Manage application data, screening records, and candidate documentation.</li>
-              <li>Coordinate interview schedules, assessments, and candidate communication.</li>
-              <li>Assist onboarding preparation, including materials, timelines, and follow-ups.</li>
-              <li>Maintain talent pool databases and update high-potential candidate records.</li>
-            </ul>
-          `,
-          requirements: `
-            <ul>
-              <li>Highly responsive and reliable in operational tasks.</li>
-              <li>Comfortable working with deadlines and administrative details.</li>
-                <li>Active Indonesian undergraduate students (Batch 2023–2025) from any major.</li>
-                <li>High sense of responsibility and ownership.</li>
-            </ul>
-          `,
-          benefits: `
-            <ul>
-              <li>Hands-on experience in recruitment and onboarding processes.</li>
-              <li>Exposure to talent pipeline and candidate experience design.</li>
-            </ul>
-          `,
-          duration: "Flexible, minimum 10–12 hours/week",
-          applyLink: "https://forms.gle/DotTzXLZ9vzcF4BJA",
-        },
-      ],
-    },
+   
   ],
 },
 {

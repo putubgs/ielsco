@@ -134,7 +134,8 @@ export default function LoungePage() {
           </div>
       </section>
         {/* ===== EXCLUSIVE EVENTS ===== */}
-        <section className="py-15 px-5">
+        <section id="talkroom"
+        className="py-15 px-5">
           <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-10">
             {/* Poster */}
             <div className="w-full lg:w-1/2">
@@ -334,7 +335,8 @@ export default function LoungePage() {
   </div>
 </section>
    {/* ===== TESTIMONIALS===== */}
-<section className="bg-[#F7F8FA] py-20 overflow-hidden">
+<section id="testimonials"
+className="bg-[#F7F8FA] py-20 overflow-hidden">
   {/* HEADER */}
   <div className="text-center mb-12 px-6">
     <h2 className="text-3xl font-extrabold text-[#2F4157] mb-3">

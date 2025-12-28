@@ -43,7 +43,7 @@ export default function Footer() {
               { name: "Careers", url: "/careers" },
               { name: "Testimonials", url: "/iels-lounge#testimonials" },
               { name: "Research", url: "/#" },
-              { name: "Courses", url: "/courses" },
+              { name: "Courses", url: "/products/courses" },
               { name: "IELS Guidelines", url: "/#" },
               { name: "Contact Us", url: "https://wa.me/6285770024261", target:"_blank" },
             ].map((item) => (
@@ -66,7 +66,7 @@ export default function Footer() {
               { name: "Member Stories", url: "/stories" },
               { name: "Program Updates", url: "/stories" },
               { name: "Partners Update", url: "/stories" },
-              { name: "Speaking Club", url: "/speaking-club" },
+              { name: "Speaking Club", url: "/iels-lounge#talkroom" },
             ].map((item) => (
               <Link
                 key={item.name}
@@ -86,7 +86,7 @@ export default function Footer() {
             {[
               { name: "IELS Lounge", url: "/iels-lounge" },
               { name: "IELS Insight Series", url: "/events" },
-              { name: "IELS for Schools", url: "/iels-schools" },
+              { name: "IELS for Schools", url: "/products/schools" },
               { name: "IELS Events", url: "/events" },
               { name: "IELS English Test", url: "/test" },
               { name: "English Students Launchpad", url: "/launchpad" },

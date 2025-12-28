@@ -2,10 +2,80 @@
 
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import codesRaw from "@/data/codes.json";
 import { Button } from "@/components/ui/button";
+
+type CurriculumItem = {
+  date: string;
+  title: string;
+  desc: string;
+  output: string;
+};
+
+const curriculum: CurriculumItem[] = [
+  {
+    date: "Before Jan 10, 2026",
+    title: "Onboarding & Access Preparation",
+    desc: "Participants receive their personal access code, guidebook, and full batch timeline. This phase ensures clarity, readiness, and confidence before starting the test.",
+    output: "Clear understanding of flow, rules, and expectations.",
+  },
+  {
+    date: "10 Jan 2026",
+    title: "Pre-Test (Baseline Assessment)",
+    desc: "IELTS-style mock test covering Listening, Reading, and Writing to measure your current proficiency as a baseline for improvement.",
+    output: "Baseline IELTS band score & skill breakdown.",
+  },
+  {
+    date: "After Pre-Test",
+    title: "Score Feedback & Personal Insight",
+    desc: "AI-powered score report combined with human insight to identify strengths, weaknesses, and the gap toward your target band.",
+    output: "Personalized improvement focus & band gap clarity.",
+  },
+  {
+    date: "13 Jan 2026",
+    title: "MasterClass 1 — IELTS Foundations & Band Strategy",
+    desc: "Deep understanding of IELTS structure, band descriptors, and how examiners score. Participants build a realistic improvement roadmap.",
+    output: "Personal IELTS Improvement Map.",
+  },
+  {
+    date: "17 Jan 2026",
+    title: "MasterClass 2 — Listening & Reading Strategies",
+    desc: "Score-oriented techniques for accuracy, speed, and time management. Learn how to avoid traps and careless mistakes.",
+    output: "Listening & Reading strategy checklist.",
+  },
+  {
+    date: "20 Jan 2026",
+    title: "MasterClass 3 — Writing Task 1 & Task 2",
+    desc: "Learn examiner-friendly writing structures, idea development, and sentence upgrading for higher band scores.",
+    output: "Writing frameworks & personal checklist.",
+  },
+  {
+    date: "24 Jan 2026",
+    title: "MasterClass 4 — Speaking Confidence & Psychology",
+    desc: "Build natural fluency, confidence, and clarity for the speaking test through structured frameworks and live practice.",
+    output: "Speaking answer framework & confidence strategies.",
+  },
+  {
+    date: "27 Jan 2026",
+    title: "Speaking Mock Test",
+    desc: "Realistic IELTS-style speaking simulation with structured questions and examiner-style feedback.",
+    output: "Speaking performance feedback.",
+  },
+  {
+    date: "31 Jan 2026",
+    title: "Post-Test (Final Assessment)",
+    desc: "Participants retake the test to clearly compare Pre-Test and Post-Test performance and measure real progress.",
+    output: "Pre vs Post score comparison & improvement highlight.",
+  },
+  {
+    date: "7 Feb 2026",
+    title: "Certification & Next Steps",
+    desc: "Official certificate issuance, recognition of improvement, and guidance toward next opportunities.",
+    output: "IELS Test Certificate & future pathway clarity.",
+  },
+];
 
 type CodeEntry = {
   code: string;
@@ -15,6 +85,45 @@ type CodeEntry = {
 };
 
 const codes: CodeEntry[] = (codesRaw as unknown) as CodeEntry[];
+
+const DEADLINE = new Date("2026-01-05T23:59:59+07:00");
+
+function CountdownTimer() {
+  const [timeLeft, setTimeLeft] = useState<number>(
+    DEADLINE.getTime() - new Date().getTime()
+  );
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(DEADLINE.getTime() - new Date().getTime());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  if (timeLeft <= 0) {
+    return <span className="text-[#E56668] font-bold">Registration Closed</span>;
+  }
+
+  const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
+  const seconds = Math.floor((timeLeft / 1000) % 60);
+
+  return (
+    <div className="flex gap-3 text-center justify-center text-white">
+      {[["Days", days], ["Hours", hours], ["Min", minutes], ["Sec", seconds]].map(
+        ([label, value]) => (
+          <div key={label} className="bg-[#294154] rounded-xl px-4 py-2">
+            <div className="text-2xl font-extrabold">{value}</div>
+            <p className="text-xs uppercase tracking-wide text-white">
+              {label}
+            </p>
+          </div>
+        )
+      )}
+    </div>
+  );
+}
 
 export default function IELTSGuidePage() {
   const formUrl = "https://forms.gle/yFCdzbeR8uMBzM5X8"; // Replace with actual form link
@@ -51,18 +160,25 @@ function validateCode() {
       <Header />
       <main className="max-w-5xl mx-auto px-6 py-12 lg:py-20 space-y-12">
         {/* HERO */}
-        <section className="bg-gradient-to-b from-white to-[#fff9f8] rounded-2xl p-8 lg:p-12 shadow-sm border border-[#294154]/10">
+        <section className="p-8 lg:p-12 ">
           <div className="flex flex-col lg:flex-row items-center gap-8">
             <div className="flex-1">
-              <h1 className="text-3xl lg:text-4xl font-extrabold leading-tight">
+              <h1 className="text-3xl lg:text-4xl font-extrabold leading-tight text-center">
                 IELTS-style Mock Test by IELS
               </h1>
-              <p className="mt-3 text-gray-700 max-w-2xl">
+              <p className="mt-3 text-gray-700 justify-center text-center">
                 The IELS Mock Test helps you measure your English proficiency with real test standards — 
                 combining AI-powered scoring and expert tutor feedback.  
                 Experience how the real IELTS feels, but more affordable and accessible anywhere.
               </p>
-              <div className="mt-6 flex flex-col sm:flex-row gap-3">
+                  {/* COUNTDOWN (TOP) */}
+    <div className="mt-10">
+      <p className="text-sm text-center uppercase tracking-widest text-[#294154] mb-3">
+        Registration closes in
+      </p>
+      <CountdownTimer />
+    </div>
+<div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
                             <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]">
                               <Link
                               href={formUrl}
@@ -74,11 +190,11 @@ function validateCode() {
               
                             <Button asChild className="bg-[#294154] text-white font-semibold px-6 py-3 hover:bg-[#21363f]"><Link
                               href="https://drive.google.com/file/d/1h2IPjkahj1yKqU1_pK0T3L1cYAMz2pQk/view?usp=drive_link"
+                              target="_blank"
                               rel="noopener noreferrer"
                             >
                               Read Full IELTS Overview
                             </Link></Button>
-            
             
               </div>
             </div>
@@ -102,6 +218,203 @@ function validateCode() {
             The IELS Mock Test follows the same structure — offering a realistic practice experience with accurate scoring and personalized feedback.
           </p>
         </section>
+
+{/* ===== IELTS TEST CURRICULUM & TIMELINE ===== */}
+<section className="py-20 overflow-hidden">
+  {/* HEADER */}
+  <div className="text-center mb-12 px-6">
+    <h2 className="text-3xl font-extrabold text-[#2F4157] mb-3">
+      IELTS Test Curriculum & Timeline
+    </h2>
+    <p className="text-gray-600 max-w-2xl mx-auto">
+      A structured, batch-based journey designed to measure your progress,
+      strengthen key IELTS skills, and build real confidence for the test.
+    </p>
+  </div>
+
+  {/* OUTER FRAME */}
+  <div className="relative max-w-[1400px] mx-auto">
+    {/* TRACK */}
+    <div
+      className="
+        absolute left-0 right-0 top-1/2
+        h-[6px]
+       
+        rounded-full
+        -translate-y-1/2
+      "
+    />
+
+    {/* GRADIENT FADE */}
+    <div className="pointer-events-none absolute left-0 top-0 h-full w-12 bg-gradient-to-r from-[#F7F8FA] to-transparent z-10" />
+    <div className="pointer-events-none absolute right-0 top-0 h-full w-12 bg-gradient-to-l from-[#F7F8FA] to-transparent z-10" />
+
+    {/* SCROLL AREA */}
+    <div className="overflow-x-auto scrollbar-none px-12">
+      <div className="flex gap-8 w-max py-6 mx-auto">
+        {curriculum.map((item, i) => (
+          <div
+            key={i}
+            className="
+              relative min-w-[300px] max-w-[300px]
+              rounded-3xl bg-white p-6
+              border border-gray-200
+              transition-all duration-300
+              hover:shadow-xl hover:-translate-y-1
+            "
+          >
+            <p className="text-sm font-semibold text-[#E56668] mb-2">
+              {item.date}
+            </p>
+
+            <h3 className="text-lg font-bold text-[#2F4157] mb-3">
+              {item.title}
+            </h3>
+
+            <p className="text-sm text-gray-600 leading-relaxed mb-4">
+              {item.desc}
+            </p>
+
+            <div className="text-sm font-semibold text-[#2F4157]">
+              Output:
+              <span className="block mt-1 font-normal text-gray-600">
+                {item.output}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+{/* ===== FEEDBACK & INSIGHT ===== */}
+<section className="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-[#294154]/10">
+  {/* HEADER */}
+  <div className="mb-8 max-w-3xl">
+    <h2 className="text-2xl md:text-3xl font-extrabold text-[#294154] mb-3">
+      More Than Just a Score
+    </h2>
+    <p className="text-gray-700 leading-relaxed">
+      Your IELTS result is treated as a <b>diagnostic tool</b>, not a verdict.
+      Every participant receives personalized insight designed to guide
+      real, measurable improvement.
+    </p>
+  </div>
+
+  {/* CONTENT GRID */}
+  <div className="grid gap-6 sm:grid-cols-2">
+    {[
+      {
+        title: "Fast & Accurate Scoring",
+        desc: "AI-powered scoring delivered quickly after your test — aligned with real IELTS band descriptors.",
+      },
+      {
+        title: "Human Insight Included",
+        desc: "Your score is reviewed and enriched with human insight on strengths, weaknesses, and patterns.",
+      },
+      {
+        title: "Clear Band Gap Explanation",
+        desc: "Understand exactly where you stand today and what separates you from your target band.",
+      },
+      {
+        title: "Personalized Focus Area",
+        desc: "Actionable recommendation on what to prioritize during MasterClass and self-practice.",
+      },
+    ].map((item, i) => (
+      <div
+        key={i}
+        className="
+          relative rounded-2xl bg-[#F7F8FA] p-6
+          border border-gray-100
+          transition-all duration-300
+          hover:shadow-md
+        "
+      >
+        {/* ACCENT BAR */}
+        <div className="absolute left-0 top-4 bottom-4 w-1 rounded-full bg-[#E56668]" />
+
+        <div className="pl-4">
+          <h3 className="font-bold text-[#294154] mb-1">
+            {item.title}
+          </h3>
+          <p className="text-sm text-gray-600 leading-relaxed">
+            {item.desc}
+          </p>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  {/* QUOTE */}
+  <div className="mt-10 text-sm italic text-gray-600 max-w-2xl">
+    “You’re not just scored. You’re understood — and guided forward.”
+  </div>
+</section>
+
+{/* ===== CERTIFICATION & RECOGNITION ===== */}
+<section className="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-[#294154]/10">
+  {/* HEADER */}
+  <div className="mb-8 max-w-3xl">
+    <h2 className="text-2xl md:text-3xl font-extrabold text-[#294154] mb-3">
+      Certification & Recognition
+    </h2>
+    <p className="text-gray-700 leading-relaxed">
+      Your journey concludes with a certificate that reflects
+      <b> real effort, real assessment, and real progress</b> —
+      not just attendance.
+    </p>
+  </div>
+
+  {/* CERTIFICATE FEATURES */}
+  <div className="grid gap-6 sm:grid-cols-2">
+    {[
+      {
+        title: "Official IELS Certificate",
+        desc: "Issued directly by IELS as proof of participation and assessment completion.",
+      },
+      {
+        title: "Skill Assessment Breakdown",
+        desc: "Listening, Reading, Writing, and Speaking clearly stated for transparency.",
+      },
+      {
+        title: "Batch-Based Recognition",
+        desc: "Your certificate includes your batch name (IELS Test Batch 1).",
+      },
+      {
+        title: "Portfolio-Ready Design",
+        desc: "Designed to be confidently used on CVs, LinkedIn, and academic portfolios.",
+      },
+    ].map((item, i) => (
+      <div
+        key={i}
+        className="
+          relative rounded-2xl bg-[#F7F8FA] p-6
+          border border-gray-100
+          transition-all duration-300
+          hover:shadow-md
+        "
+      >
+        {/* ACCENT BAR */}
+        <div className="absolute left-0 top-4 bottom-4 w-1 rounded-full bg-[#E56668]" />
+
+        <div className="pl-4">
+          <h3 className="font-bold text-[#294154] mb-1">
+            {item.title}
+          </h3>
+          <p className="text-sm text-gray-600 leading-relaxed">
+            {item.desc}
+          </p>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  {/* CLOSING NOTE */}
+  <div className="mt-10 text-sm text-gray-600 max-w-2xl">
+    This certificate represents learning, commitment, and measurable growth —
+    something worth being proud of.
+  </div>
+</section>
 
    {/* PACKAGES & PRICING */}
 <section className="bg-white rounded-2xl p-8 shadow-sm border border-[#294154]/10">
@@ -234,7 +547,13 @@ function validateCode() {
             Choose your package, complete your registration, and start your IELTS Mock Test journey today.  
             Accessible, affordable, and globally aligned.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <div className="mt-10 justify-center">
+      <p className="text-sm uppercase tracking-widest text-[#294154] mb-3">
+        Registration closes in
+      </p>
+      <CountdownTimer />
+    </div>
+          <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
                             <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]">
                               <Link
                               href={formUrl}
@@ -246,7 +565,9 @@ function validateCode() {
               
                             <Button asChild className="bg-[#294154] text-white font-semibold px-6 py-3 hover:bg-[#21363f]"><Link
                               href="https://drive.google.com/file/d/1h2IPjkahj1yKqU1_pK0T3L1cYAMz2pQk/view?usp=drive_link"
+                              target="_blank"
                               rel="noopener noreferrer"
+                             
                             >
                               Read Full IELTS Overview
                             </Link></Button>

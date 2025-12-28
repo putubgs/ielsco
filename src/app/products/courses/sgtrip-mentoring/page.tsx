@@ -65,7 +65,7 @@ const curriculum: CurriculumItem[] = [
   },
 ];
 
-const DEADLINE = new Date("2025-12-28T23:59:59+07:00");
+const DEADLINE = new Date("2026-01-05T23:59:59+07:00");
 
 function CountdownTimer() {
   const [timeLeft, setTimeLeft] = useState<number>(
@@ -93,7 +93,7 @@ function CountdownTimer() {
       {[["Days", days], ["Hours", hours], ["Min", minutes], ["Sec", seconds]].map(
         ([label, value]) => (
           <div key={label} className="bg-white/50 rounded-xl px-4 py-2">
-            <p className="text-2xl font-extrabold">{value}</p>
+            <div className="text-2xl font-extrabold">{value}</div>
             <p className="text-xs uppercase tracking-wide text-white/70">
               {label}
             </p>
@@ -163,7 +163,7 @@ export default function SGTripMentoringPage() {
     {/* COUNTDOWN (TOP) */}
     <div className="mt-10">
       <p className="text-sm uppercase tracking-widest text-white/70 mb-3">
-        Registration closes in
+        <strong>EXTENDED!</strong> Registration closes in
       </p>
       <CountdownTimer />
     </div>
@@ -372,7 +372,7 @@ export default function SGTripMentoringPage() {
           {/* COUNTDOWN (BOTTOM CTA) */}
           <div className="mt-12">
             <p className="uppercase tracking-widest text-sm text-white/70 mb-3">
-              Registration closes in
+              <strong>EXTENDED!</strong> Registration closes in
             </p>
             <CountdownTimer />
           </div>

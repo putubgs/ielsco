@@ -70,7 +70,7 @@ export default function SGITPage() {
     {/* BADGE */}
     <div className="inline-flex items-center gap-2 bg-[#E56668]/20 text-[#FFD7D8] border border-[#E56668]/40 px-4 py-2 rounded-full text-sm font-semibold mb-6">
       <span className="w-2 h-2 bg-[#E56668] rounded-full animate-pulse" />
-      COMING SOON! Registration Opens — February 2025
+      COMING SOON! Registration Opens — February 2026
     </div>
 
     {/* TITLE */}

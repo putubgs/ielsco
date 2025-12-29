@@ -590,43 +590,53 @@ export const eventsData: EventData[] = [
   title: "English Student Launchpad — Your Global English Career Starts Here",
   poster: "/images/contents/events/launchpad.png",
   description: `<div>
-  <div><strong>📅 Journey Duration: November 2025 – February 2026</strong></div>
-  <div>⏰ Weekly Community Activities & Monthly Webinars</div>
+  <div><strong>📅 Journey Duration: January – March 2025</strong></div>
+  <div>⏰ Structured Program Days + Guided Community Engagement</div>
   <div>&nbsp;</div>
-  <div><strong><em>English Student Launchpad</em> is a 3-month journey incubator designed to help English majors turn their degree into a real global career path.</strong></div>
+
+  <div><strong><em>English Student Launchpad</em> is a career-focused incubation program designed to help English Education & English Literature students turn their degree into real global opportunities.</strong></div>
   <div>&nbsp;</div>
+
   <div><strong>What You Will Experience:</strong></div>
   <ul>
-    <li><strong>Remote Work & Global Career Roadmap</strong> — practical guidance to land international/remote jobs</li>
-    <li><strong>Exclusive Community Access</strong> — join 500+ peers with the same global ambition</li>
-    <li><strong>Weekly Skill-Building Activities</strong> — discussions, tasks, and peer support</li>
-    <li><strong>3 Major Webinars:</strong><br/>
-        - December 2025: Unlocking Global Employment <br/>
-        - January 2026: Mastering TEFL/TESL for Teaching Abroad <br/>
-        - February 2026: Global Resume Workshop
-    </li>
-    <li><strong>Capstone Project</strong> — graduate with a global-ready portfolio</li>
+    <li><strong>Global Career Roadmap</strong> — understand real pathways to remote jobs and international careers for English majors</li>
+    <li><strong>Teaching Abroad & Certification Insights</strong> — clear guidance on TEFL/TESL and how to secure teaching contracts</li>
+    <li><strong>Exclusive National Community</strong> — connect with English students across Indonesia with shared global ambition</li>
+    <li><strong>Guided Career Sessions</strong> — structured learning, discussion, and reflection throughout the program</li>
+    <li><strong>Practical Career Outputs</strong> — finish the program with a clear action plan and global-ready direction</li>
   </ul>
   <div>&nbsp;</div>
+
   <div><strong>📌 Your Launchpad Roadmap</strong></div>
   <ul>
-    <li><strong>December 2025</strong> — Remote Work & Global Jobs</li>
-    <li><strong>January 2026</strong> — TEFL/TESL & Teaching Abroad</li>
-    <li><strong>February 2026</strong> — Portfolio Building + Next Steps</li>
+    <li><strong>Opening Day (8 February 2025)</strong> — Program onboarding, global mindset, and career landscape overview</li>
+    <li><strong>Day 1 (14 February 2025)</strong> — Remote Work & Global Jobs<br/>
+        Webinar: <em>Unlocking Global Employment — Your Roadmap to Remote and International Careers</em><br/>
+        Output: Personal Career Starter Plan
+    </li>
+    <li><strong>Day 2 (21 February 2025)</strong> — Teaching Abroad & Certification Path<br/>
+        Webinar: <em>The Easiest Path Abroad — Mastering TEFL/TESL and Securing Teaching Contracts</em><br/>
+        Output: Teaching Certification Action Plan
+    </li>
+    <li><strong>Closing Day (28 February 2025)</strong> — Program recap, portfolio direction, and next career steps</li>
+    <li><strong>Certification Issued (7 March 2025)</strong> — Digital certificate for program completion</li>
   </ul>
   <div>&nbsp;</div>
-  <div><strong>Choose Your Launch Tier:</strong></div>
+
+  <div><strong>Why Join English Student Launchpad?</strong></div>
   <ul>
-    <li><strong>Solo Pass:</strong> Rp15.000 — full 3-month experience</li>
-    <li><strong>Friend Discount:</strong> Rp10.000/person (Rp20.000 for 2) — launch together and save more</li>
+    <li>Gain clarity on how your English degree can open global and remote opportunities</li>
+    <li>Learn realistic income pathways, including remote teaching with international students (up to ± USD 200/month)</li>
+    <li>Build confidence, direction, and a strong foundation before graduation</li>
   </ul>
   <div>&nbsp;</div>
-  <div>English Student Launchpad is built for learners who want to turn English into real opportunities — with practical skills, clearer direction, and a supportive community.</div>
+
+  <div>English Student Launchpad is built for students who don&apos;t want to wait until graduation to think about their future — but want to start preparing for global careers early, strategically, and with guidance.</div>
 </div>`,
-  registrationLink: " https://forms.gle/nvLAcbnAw5aAPvBf8",
-  startDate: "2025-12-14",
+  registrationLink: "https://ielsco.com/events/launchpad",
+  startDate: "2026-02-08",
   registrationTimeDeadline: "23:59",
-  registrationDateDeadline: "2025-12-14",
+  registrationDateDeadline: "2026-02-07",
   seo: {
     meta_title:
       "English Student Launchpad — Global Career Journey for English Majors",

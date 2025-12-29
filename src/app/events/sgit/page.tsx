@@ -354,10 +354,10 @@ export default function SGITPage() {
 </section>
 
  {/* ================= PROGRAM STRUCTURE & TIMELINE ================= */}
-<section className="bg-[#F7F8FA] py-20 overflow-hidden">
+<section className="bg-[#F7F8FA] py-10 overflow-hidden">
 
   {/* HEADER */}
-  <div className="text-center mb-12 px-6">
+  <div className="text-center mb-10 px-6">
     <h2 className="text-3xl font-extrabold text-[#2F4157] mb-3">
       Program Structure & Timeline
     </h2>

@@ -225,14 +225,29 @@ export default function SGTripMentoringPage() {
   </p>
 
   {/* CTA */}
-  <div className="pt-6">
-    <button
-      disabled
-      className="inline-flex items-center justify-center rounded-full px-7 py-3 
-                 bg-[#294154]/10 text-[#294154] font-semibold cursor-not-allowed"
+  <div className="pt-5">
+  <Button
+    asChild
+    className="
+      bg-[#E56668] text-white
+      font-semibold
+      px-6 py-3
+      rounded-full
+      hover:bg-[#C04C4E]
+      transition-all duration-300
+      active:scale-[0.97]
+      shadow-lg hover:shadow-xl
+  
+      w-full sm:w-auto
+      max-w-full
+    "
+  >
+    <Link
+      href="/events/sgit"
     >
-      Read More — Full Program Details Coming February 2026
-    </button>
+      Read More
+    </Link>
+  </Button>  
   </div>
 </section>
 

@@ -110,9 +110,20 @@ export default function EnglishStudentLaunchpadPage() {
         <div className="absolute inset-0 bg-[#2F4157]/85" />
 
         <div className="relative max-w-6xl mx-auto px-6 py-28">
-          <p className="uppercase tracking-widest text-white/70 text-sm mb-4">
-            English Student Launchpad 2026
-          </p>
+<div className="mb-6">
+  <Image
+    src="/images/logos/events/esl.png"
+    alt="English Student Launchpad"
+    width={180}
+    height={48}
+    className="
+      h-10 w-auto
+      brightness-0 invert
+      opacity-90
+    "
+    priority
+  />
+</div>
 
           <h1 className="text-4xl sm:text-5xl font-extrabold text-white max-w-3xl leading-tight">
             English Major?
@@ -214,7 +225,7 @@ export default function EnglishStudentLaunchpadPage() {
                 <CountUp end={1} /> clear insight
               </p>
               <p className="mt-2 text-sm text-gray-600 max-w-sm">
-                keeps appearing: they don’t want just a degree —
+                keeps appearing: they don&apos;t want just a degree —
                 they want <b>real opportunities</b>
               </p>
             </div>
@@ -245,7 +256,7 @@ export default function EnglishStudentLaunchpadPage() {
       {[
         {
           title: "🌍 Global Career Roadmap",
-          desc: "You won’t be left guessing. You’ll clearly understand realistic pathways to remote work, international roles, and global exposure — and where English actually fits in.",
+          desc: "You won&apos;t be left guessing. You&apos;ll clearly understand realistic pathways to remote work, international roles, and global exposure — and where English actually fits in.",
         },
         {
           title: "🎓 Teaching Abroad Insight (TEFL / TESL)",
@@ -261,11 +272,11 @@ export default function EnglishStudentLaunchpadPage() {
         },
         {
           title: "💸 Realistic Income Pathway",
-          desc: "Understand how English can generate income while you’re still a student — including realistic potential up to ± USD 200/month through remote teaching (based on skill & consistency).",
+          desc: "Understand how English can generate income while you&apos;re still a student — including realistic potential up to ± USD 200/month through remote teaching (based on skill & consistency).",
         },
         {
           title: "🚀 Clear Direction, Not Confusion",
-          desc: "You’ll finish this program knowing your next steps — instead of wondering what to do after graduation.",
+          desc: "You&apos;ll finish this program knowing your next steps — instead of wondering what to do after graduation.",
         },
       
             ].map((item, i) => {
@@ -466,9 +477,20 @@ export default function EnglishStudentLaunchpadPage() {
       {/* CONTENT */}
       <div className="text-white">
 
-        <p className="text-sm uppercase tracking-widest text-white/70 mb-3">
-          English Student Launchpad 2026
-        </p>
+<div className="mb-6">
+  <Image
+    src="/images/logos/events/esl.png"
+    alt="English Student Launchpad"
+    width={180}
+    height={48}
+    className="
+      h-10 w-auto
+      brightness-0 invert
+      opacity-90
+    "
+    priority
+  />
+</div>
 
         <h2 className="text-3xl sm:text-4xl font-extrabold leading-tight mb-6">
           Ready to <span className="text-[#E56668]">Launch</span><br />
@@ -483,7 +505,7 @@ export default function EnglishStudentLaunchpadPage() {
 
         <div className="space-y-2 text-sm text-white/80 mb-10">
           <p>🧭 Be part of the early movers</p>
-          <p>🌍 Build global exposure while you’re still a student</p>
+          <p>🌍 Build global exposure while you&apos;re still a student</p>
         </div>
 
         {/* CTA BUTTON */}

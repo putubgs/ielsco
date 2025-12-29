@@ -16,6 +16,147 @@ import { generateSlug } from "@/utils/slug";
 import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button"
 
+function SGITHighlightCard() {
+  return (
+    <Link
+      href="/events/sgit"
+      className="
+        group relative overflow-hidden rounded-3xl
+        bg-white text-[#2F4157]
+        p-8
+        border border-gray-200
+        transition-all duration-300
+
+        hover:-translate-y-1 hover:shadow-2xl hover:border-[#E56668]/60
+        active:scale-[0.98] active:shadow-xl
+      "
+    >
+        {/* BACKGROUND IMAGE */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/contents/stories/member-stories/banner/singapore-banner.png"
+          alt="Singapore Global Insight Trip"
+          fill
+          className="object-cover opacity-30 group-hover:scale-105 transition-transform duration-500"
+        />
+        <div className="absolute inset-0 bg-white/60" />
+      </div>
+      {/* ACCENT BAR */}
+      <div className="absolute left-0 top-6 bottom-6 w-1 bg-[#E56668] rounded-full opacity-0 group-hover:opacity-100 transition" />
+
+      <div className="relative flex flex-col h-full justify-between pl-4">
+
+        <div>
+          <p className="text-sm uppercase tracking-widest text-gray-400 mb-3">
+            🌏 Flagship Global Program
+          </p>
+<div className="mb-6">
+  <Image
+    src="/images/logos/events/sgit.png"
+    alt="Singapore Global Insight Trip"
+    width={270}
+    height={72}
+    className="
+      h-20 w-auto
+      
+      opacity-90
+    "
+    priority
+  />
+</div>
+
+          <p className="text-gray-600 leading-relaxed max-w-md">
+            A selective international exposure program connecting Indonesian students
+            to global academic and career ecosystems — and translating that exposure
+            into <b>real local impact</b>.
+          </p>
+        </div>
+
+        <div className="mt-8 flex items-center justify-between">
+          <span className="text-sm text-gray-500">
+            🚀 Open Registration • February 2025
+          </span>
+          <span className="font-semibold text-[#E56668]">
+            Learn more →
+          </span>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+function LaunchpadHighlightCard() {
+  return (
+    <Link
+      href="/events/launchpad"
+      className="
+        group relative overflow-hidden rounded-3xl
+        bg-white text-[#2F4157]
+        p-8
+        border border-gray-200
+        transition-all duration-300
+
+        hover:-translate-y-1 hover:shadow-2xl hover:border-[#E56668]/60
+        active:scale-[0.98] active:shadow-xl
+      "
+    >
+            {/* BACKGROUND IMAGE */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/contents/careers/iels_team_0.png"
+          alt="English Students Launchpad Community"
+          fill
+          className="object-cover opacity-30 group-hover:scale-105 transition-transform duration-500"
+        />
+        <div className="absolute inset-0 bg-white/60" />
+      </div>
+      {/* ACCENT BAR */}
+      <div className="absolute left-0 top-6 bottom-6 w-1 bg-[#E56668] rounded-full opacity-0 group-hover:opacity-100 transition" />
+
+      <div className="relative flex flex-col h-full justify-between pl-4">
+
+        <div>
+          <p className="text-sm uppercase tracking-widest text-gray-400 mb-3">
+            🎓 Career Incubation Program
+          </p>
+
+<div className="mb-6">
+  <Image
+    src="/images/logos/events/esl.png"
+    alt="English Student Launchpad"
+    width={270}
+    height={72}
+    className="
+      h-15 w-auto
+      
+      opacity-90
+    "
+    priority
+  />
+</div>
+
+          <p className="text-gray-600 leading-relaxed max-w-md">
+            An intensive career launch journey for English Education & Literature students
+            to turn their major into <b>global opportunities</b> —
+            from remote work and teaching abroad to international portfolios.
+          </p>
+        </div>
+
+        <div className="mt-8 flex items-center justify-between">
+          <span className="text-sm text-gray-500">
+            🗓 Registration • Jan – Feb 2025
+          </span>
+          <span className="font-semibold text-[#E56668]">
+            Explore program →
+          </span>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+
+
 export default function Events() {
   const [currentPage, setCurrentPage] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
@@ -200,6 +341,38 @@ export default function Events() {
   return (
     <div>
       <Header />
+ {/* ================= FLAGSHIP PROGRAMS ================= */}
+<section className="relative bg-[#2F4157] px-6 lg:px-[100px] py-20 overflow-hidden">
+
+  {/* SUBTLE GLOW */}
+  <div className="absolute -top-32 -right-32 w-[420px] h-[420px] bg-[#E56668]/20 rounded-full blur-[140px]" />
+  <div className="absolute -bottom-32 -left-32 w-[420px] h-[420px] bg-white/10 rounded-full blur-[140px]" />
+
+  <div className="relative max-w-6xl mx-auto">
+
+    {/* HEADER */}
+    <div className="mb-14 max-w-3xl">
+      <p className="text-sm uppercase tracking-widest text-white/60 mb-3">
+        ⭐ Flagship Programs
+      </p>
+      <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
+        Built for Global Exposure & Real Impact
+      </h2>
+      <p className="text-white/80 leading-relaxed">
+        These are not one-off events.  
+        They are <b>long-term, impact-driven programs</b> designed to prepare
+        students for global opportunities — academically, professionally, and strategically 🌍
+      </p>
+    </div>
+
+    {/* GRID */}
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <SGITHighlightCard />
+      <LaunchpadHighlightCard />
+    </div>
+
+  </div>
+</section>
       <LoadingOverlay isLoading={isLoading} message="Loading event..." />
       <div className="flex flex-col bg-white lg:px-[100px] w-full py-12">
         <div>

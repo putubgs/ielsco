@@ -74,9 +74,20 @@ export default function SGITPage() {
     </div>
 
     {/* TITLE */}
-    <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight max-w-3xl text-white">
-      Singapore Global Insight Trip 2026
-    </h1>
+<div className="mb-6">
+  <Image
+    src="/images/logos/events/sgit.png"
+    alt="Singapore Global Insight Trip"
+    width={270}
+    height={72}
+    className="
+     h-50 w-auto
+      brightness-0 invert
+      opacity-90
+    "
+    priority
+  />
+</div>
 
     {/* TAGLINE */}
     <p className="mt-6 text-lg text-white/90 max-w-3xl">
@@ -505,10 +516,20 @@ export default function SGITPage() {
       {/* CONTENT SIDE */}
       <div className="text-white">
 
-        {/* EYEBROW */}
-        <p className="text-sm uppercase tracking-widest text-white/70 mb-3">
-          SGIT Preparation Program
-        </p>
+  <div className="mb-6">
+  <Image
+    src="/images/logos/events/sgit.png"
+    alt="Singapore Global Insight Trip"
+    width={270}
+    height={72}
+    className="
+     h-15 w-auto
+      brightness-0 invert
+      opacity-90
+    "
+    priority
+  /></div>
+
 
         {/* HEADLINE */}
         <h2 className="text-3xl sm:text-4xl font-extrabold leading-tight mb-6">
@@ -550,7 +571,7 @@ export default function SGITPage() {
   "
 >
   <Link
-    href="/products/courses/sgtrip-mentoring"
+    href="/events/sgit/mentoring"
   >
     Join SGIT Project Prep
   </Link>

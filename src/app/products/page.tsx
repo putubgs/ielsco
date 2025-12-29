@@ -139,57 +139,100 @@ export default function ProductsPage() {
         </section>
 
 {/* ================= FLAGSHIP EVENTS (EDITORIAL) ================= */}
-<section className="py-24 px-6">
-  <div className="max-w-6xl mx-auto grid gap-12 lg:grid-cols-2 items-center">
+<section className="relative py-15 px-6 overflow-hidden bg-white">
+
+  {/* SUBTLE BACKGROUND SHAPE */}
+  <div className="absolute -top-32 -right-32 w-[420px] h-[420px] bg-[#E56668]/10 rounded-full blur-[140px]" />
+
+  <div className="relative max-w-6xl mx-auto grid gap-14 lg:grid-cols-2 items-center">
 
     {/* LEFT — EVENT DOCUMENTATION IMAGE */}
-    <div className="relative h-[420px] w-full overflow-hidden rounded-3xl shadow-xl">
+    <div
+      className="
+        group relative h-[360px] sm:h-[420px] w-full
+        overflow-hidden rounded-3xl
+        shadow-2xl
+        transition-all duration-500
+        hover:-translate-y-1
+      "
+    >
       <img
         src="/images/contents/careers/iels_team_0.png"
-        alt="IELS Flagship Event"
-        className="absolute inset-0 w-full h-full object-cover"
+        alt="IELS Flagship Event Experience"
+        className="
+          absolute inset-0 w-full h-full object-cover
+          transition-transform duration-700
+          group-hover:scale-105
+        "
       />
 
-      {/* SOFT OVERLAY */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-[#2F4157]/40 via-transparent to-transparent" />
+      {/* EDITORIAL OVERLAY */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-[#2F4157]/60 via-[#2F4157]/20 to-transparent" />
+
+      {/* LABEL */}
+      <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur px-4 py-2 rounded-full text-sm font-semibold text-[#2F4157] shadow">
+        Real IELS Moments
+      </div>
     </div>
 
     {/* RIGHT — CONTENT */}
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-8">
 
+      {/* HEADER */}
       <div>
         <p className="uppercase tracking-widest text-sm text-[#E56668] font-semibold mb-3">
           IELS Experiences
         </p>
 
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-[#2F4157] mb-4">
-          Inside IELS Flagship Events
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-[#2F4157] mb-5 leading-tight">
+          Where Learning Turns Into <br className="hidden sm:block" />
+          <span className="text-[#E56668]">Real Exposure</span>
         </h2>
 
         <p className="text-gray-600 max-w-xl leading-relaxed">
-          IELS events are not seminars or webinars.
-          They are <b>real exposure platforms</b> where learners collaborate,
-          present ideas, and connect with global institutions.
+          IELS flagship events are <b>not seminars or passive webinars</b>.
+          They are curated exposure platforms where learners
+          <b> collaborate, present ideas, get challenged</b>,
+          and connect directly with global institutions and partners.
         </p>
       </div>
 
       {/* EVENT LIST */}
       <ul className="space-y-4">
         {[
-          "English Global Festival",
-          "Step Up!",
-          "IELS Insight Series",
-          "Singapore Global Insight Trip",
+          {
+            name: "English Global Festival",
+            desc: "National-scale showcase of English, ideas, and youth collaboration.",
+          },
+          {
+            name: "Step Up!",
+            desc: "Career acceleration programs for students ready to move beyond campus.",
+          },
+          {
+            name: "IELS Insight Series",
+            desc: "Focused discussions with practitioners, mentors, and global partners.",
+          },
+          {
+            name: "Singapore Global Insight Trip",
+            desc: "Flagship international exposure connecting global insight with local impact.",
+          },
         ].map((event) => (
           <li
-            key={event}
+            key={event.name}
             className="
-              flex items-center gap-3 text-[#2F4157]
-              font-semibold
+              group flex gap-4
+              transition-all duration-300
             "
           >
-            <span className="w-2 h-2 rounded-full bg-[#E56668]" />
-            {event}
+            <span className="mt-2 w-2 h-2 rounded-full bg-[#E56668] flex-shrink-0" />
+            <div>
+              <p className="font-semibold text-[#2F4157] group-hover:text-[#E56668] transition">
+                {event.name}
+              </p>
+              <p className="text-sm text-gray-500 leading-relaxed">
+                {event.desc}
+              </p>
+            </div>
           </li>
         ))}
       </ul>
@@ -198,7 +241,16 @@ export default function ProductsPage() {
       <div className="pt-4">
         <Button
           asChild
-          className="bg-[#E56668] text-white px-8 py-3 hover:bg-[#C04C4E]"
+          className="
+            bg-[#E56668] text-white
+            px-8 py-3 rounded-full
+            font-semibold
+            hover:bg-[#C04C4E]
+            transition-all duration-300
+            active:scale-[0.97]
+            shadow-lg hover:shadow-xl
+            w-full sm:w-auto
+          "
         >
           <Link href="/events">
             See What&apos;s Running Now

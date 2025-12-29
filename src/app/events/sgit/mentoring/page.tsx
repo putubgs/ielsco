@@ -122,15 +122,22 @@ export default function SGTripMentoringPage() {
   <div className="absolute inset-0 bg-[#2F4157]/80" />
 
   {/* CONTENT */}
-  <div className="relative max-w-6xl mx-auto px-6 pt-28 pb-16 lg:pt-31 lg:pb-20 -mt-6 text-white text-center">
+  <div className="relative max-w-6xl mx-auto px-6 pt-10 pb-16 lg:pt-21 lg:pb-20 -mt-0 text-white text-center">
 
-    <p className="uppercase tracking-[0.25em] text-xs text-white/70 mb-4">
-      Founder-Led Flagship Program
-    </p>
-
-    <h1 className="text-4xl lg:text-5xl font-extrabold leading-tight">
-      Singapore Global Insight Trip <br />
-      <span className="text-[#E56668]">Mentoring Program 2026</span>
+        <div className="flex items-center justify-center">
+        <Image
+          src="/images/logos/events/sgit.png"
+          alt="Singapore Global Insight Trip"
+          width={270}
+          height={72}
+          className="
+           h-50 w-auto
+            brightness-0 invert
+            opacity-90
+          "
+          priority
+        /></div>     <h1 className="text-4xl lg:text-5xl font-semibold leading-tight mb-10">
+      <span className="text-[#E56668]">Project Prep Mentoring</span>
     </h1>
 
     <p className="mt-6 max-w-3xl mx-auto text-lg text-white/90 leading-relaxed">

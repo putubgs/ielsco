@@ -205,7 +205,7 @@ function validateCode() {
         <section className="bg-white rounded-2xl p-8 shadow-sm border border-[#294154]/10">
           <h2 className="text-2xl font-bold mb-4">What Is IELTS?</h2>
           <p className="text-gray-700 mb-3">
-            IELTS (International English Language Testing System) is the world’s most recognized English proficiency test. 
+            IELTS (International English Language Testing System) is the world&apos;s most recognized English proficiency test. 
             It measures your ability to communicate effectively in English across <strong>four key skills:</strong>
           </p>
           <ul className="list-disc pl-5 text-gray-700 space-y-1 mb-4">
@@ -347,7 +347,7 @@ function validateCode() {
 
   {/* QUOTE */}
   <div className="mt-10 text-sm italic text-gray-600 max-w-2xl">
-    “You’re not just scored. You’re understood — and guided forward.”
+    “You&apos;re not just scored. You&apos;re understood — and guided forward.”
   </div>
 </section>
 
@@ -582,7 +582,7 @@ function validateCode() {
         <div className="text-center sm:text-left">
           <h3 className="text-2xl font-bold text-[#294154] mb-2">Start Your Test Now!</h3>
           <p className="text-sm text-gray-700 max-w-2xl">
-            Enter the access code we sent to your email. Validate the code first — once it’s confirmed and unused, you’ll be able to start your test.
+            Enter the access code we sent to your email. Validate the code first — once it&apos;s confirmed and unused, you&apos;ll be able to start your test.
           </p>
         </div>
   
@@ -665,7 +665,7 @@ function validateCode() {
   
         {/* Notes */}
         <p className="mt-4 text-xs text-gray-500 text-center sm:text-left">
-          Tests run on scheduled Zoom slots. After you validate and start, you’ll be shown scheduling options or get the slot assigned in your confirmation email.
+          Tests run on scheduled Zoom slots. After you validate and start, you&apos;ll be shown scheduling options or get the slot assigned in your confirmation email.
         </p>
   
         <div className="text-xs text-gray-500 mt-2">

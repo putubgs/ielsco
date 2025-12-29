@@ -130,7 +130,7 @@ export default function CoursesPage() {
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
     {/* 🔥 FEATURED: Singapore Global Insight Trip */}
     <Link
-      href="/products/courses/sgtrip-mentoring"
+      href="/events/sgit/mentoring"
       className="relative bg-white rounded-2xl p-5 shadow-sm border-2 border-[#E56668]
                  flex flex-col gap-3 hover:shadow-lg hover:-translate-y-1 transition"
     >

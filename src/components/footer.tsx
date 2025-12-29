@@ -89,7 +89,8 @@ export default function Footer() {
               { name: "IELS for Schools", url: "/products/schools" },
               { name: "IELS Events", url: "/events" },
               { name: "IELS English Test", url: "/test" },
-              { name: "English Students Launchpad", url: "/launchpad" },
+              { name: "English Students Launchpad", url: "/events/launchpad" },
+              { name: "Singapore Global Insight Trip", url: "/events/sgit" },
             ].map((item) => (
               <Link
                 key={item.name}

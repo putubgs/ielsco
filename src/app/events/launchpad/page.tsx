@@ -256,7 +256,7 @@ export default function EnglishStudentLaunchpadPage() {
       {[
         {
           title: "🌍 Global Career Roadmap",
-          desc: "You won&apos;t be left guessing. You'll clearly understand realistic pathways to remote work, international roles, and global exposure — and where English actually fits in.",
+          desc: "You won't be left guessing. You'll clearly understand realistic pathways to remote work, international roles, and global exposure — and where English actually fits in.",
         },
         {
           title: "🎓 Teaching Abroad Insight (TEFL / TESL)",

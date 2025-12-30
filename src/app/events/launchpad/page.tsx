@@ -256,7 +256,7 @@ export default function EnglishStudentLaunchpadPage() {
       {[
         {
           title: "🌍 Global Career Roadmap",
-          desc: "You won&apos;t be left guessing. You&apos;ll clearly understand realistic pathways to remote work, international roles, and global exposure — and where English actually fits in.",
+          desc: "You won&apos;t be left guessing. You'll clearly understand realistic pathways to remote work, international roles, and global exposure — and where English actually fits in.",
         },
         {
           title: "🎓 Teaching Abroad Insight (TEFL / TESL)",
@@ -272,11 +272,11 @@ export default function EnglishStudentLaunchpadPage() {
         },
         {
           title: "💸 Realistic Income Pathway",
-          desc: "Understand how English can generate income while you&apos;re still a student — including realistic potential up to ± USD 200/month through remote teaching (based on skill & consistency).",
+          desc: "Understand how English can generate income while you're still a student — including realistic potential up to ± USD 200/month through remote teaching (based on skill & consistency).",
         },
         {
           title: "🚀 Clear Direction, Not Confusion",
-          desc: "You&apos;ll finish this program knowing your next steps — instead of wondering what to do after graduation.",
+          desc: "You'll finish this program knowing your next steps — instead of wondering what to do after graduation.",
         },
       
             ].map((item, i) => {
@@ -441,7 +441,7 @@ export default function EnglishStudentLaunchpadPage() {
           "
         >
           <Image
-            src="/images/contents/careers/iels_team_4.png"
+            src="/images/contents/careers/banner/business.jpeg"
             alt="English Student Launchpad Session"
             width={600}
             height={420}
@@ -465,7 +465,7 @@ export default function EnglishStudentLaunchpadPage() {
           "
         >
           <Image
-            src="/images/contents/careers/iels_team_2.png"
+            src="/images/contents/careers/banner/operations.jpeg"
             alt="English Student Launchpad Community"
             width={600}
             height={420}

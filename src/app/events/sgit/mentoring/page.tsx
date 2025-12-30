@@ -131,7 +131,7 @@ export default function SGTripMentoringPage() {
           width={270}
           height={72}
           className="
-           h-50 w-auto
+           h-38 sm:h-55 w-auto object-contain
             brightness-0 invert
             opacity-90
           "

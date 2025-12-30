@@ -65,7 +65,7 @@ export default function SGITPage() {
   <div className="absolute inset-0 bg-[url('/images/contents/stories/member-stories/banner/singapore-banner.png')] bg-cover bg-center" />
   <div className="absolute inset-0 bg-gradient-to-b from-[#2F4157]/90 via-[#2F4157]/85 to-[#1f2d3d]/95" />
 
-  <div className="relative max-w-6xl mx-auto px-6 py-28">
+  <div className="relative max-w-6xl mx-auto px-6 py-15">
 
     {/* BADGE */}
     <div className="inline-flex items-center gap-2 bg-[#E56668]/20 text-[#FFD7D8] border border-[#E56668]/40 px-4 py-2 rounded-full text-sm font-semibold mb-6">
@@ -81,7 +81,7 @@ export default function SGITPage() {
     width={270}
     height={72}
     className="
-     h-50 w-auto
+     h-38 sm:h-55 w-auto object-contain
       brightness-0 invert
       opacity-90
     "

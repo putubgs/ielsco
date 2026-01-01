@@ -465,7 +465,7 @@ export default function EnglishStudentLaunchpadPage() {
           "
         >
           <Image
-            src="/images/contents/careers/banner/operations.jpeg"
+            src="/images/contents/careers/banner/talent.jpeg"
             alt="English Student Launchpad Community"
             width={600}
             height={420}

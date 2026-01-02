@@ -3,8 +3,10 @@
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Image from "next/image";
+import CountUp from "react-countup";
 import Link from "next/link";
 import { Button } from "@/components/ui/button"
+import DemographySection from "@/components/demography/DemographySection";
 
 export default function PartnersPage() {
   return (
@@ -16,28 +18,30 @@ export default function PartnersPage() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 items-center gap-10">
           <div className="lg:col-span-7 space-y-6">
             <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight">
-              Partner with IELS — Empower English Education Across Indonesia
+        Partner with IELS —<br />
+        Build Real Impact Through English Education
             </h1>
-            <p className="text-[#294154]-90 max-w-2xl text-lg">
-              Join our mission to bridge equal access to quality English education.
-              Together, we create real impact — from schools to global communities.
-            </p>
+      <p className="text-lg text-gray-700 max-w-2xl leading-relaxed">
+        IELS collaborates with schools, universities, companies, and communities
+        to deliver <b>outcome-driven English learning</b> and
+        <b> real global opportunities</b> across Indonesia.
+      </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mt-4">
               <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]"><Link
                 href="mailto:partnership@ielsco.com"
                >
-                🤝 Let&apos;s Collaborate
+                Start a Partnership
               </Link></Button>
 
                 <Button asChild className="bg-[#294154] text-white font-semibold px-6 py-3 hover:bg-[#21363f]">
                   <Link
-                href="/docs/IELS_Partnership_Deck.pdf"
+                href="https://www.canva.com/design/DAG8C9itJGw/3NQtJPsgxKeiDUZGwbRwqg/edit?utm_content=DAG8C9itJGw&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton"
                 target="_blank"
                 rel="noopener noreferrer"
                 
               >
-                📄 View Partnership Deck
+                View Partnership Deck
               </Link></Button>
             </div>
           </div>
@@ -59,40 +63,273 @@ export default function PartnersPage() {
         </div>
       </section>
 
-      {/* ===== PARTNERSHIP CATEGORIES ===== */}
-      <section className="max-w-6xl mx-auto px-6 py-20 text-center">
-        <h2 className="text-3xl font-bold mb-3">Partnership Opportunities</h2>
-        <p className="text-gray-700 mb-12">
-          We collaborate with organizations that share our vision for accessible, high-quality English education.
+ {/* ================= PARTNER CATEGORIES ================= */}
+<section className="py-16 px-6">
+  <div className="max-w-6xl mx-auto">
+    <div className="mb-14 max-w-2xl">
+      <h2 className="text-3xl sm:text-4xl font-extrabold text-[#294154] mb-3">
+        Who We Partner With
+      </h2>
+      <p className="text-gray-700">
+        We work with institutions and organizations that share a commitment
+        to education, access, and real-world outcomes. <strong> Explore the discussions, below!</strong>
+      </p>
+    </div>
+
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+  {[
+    {
+      title: "Schools",
+      emoji: "🎓",
+      desc: "Structured English programs, curriculum support, and student readiness for academic and global pathways.",
+      cta: "I'm from School",
+      link: "/partners/schools",
+    },
+    {
+      title: "Global Universities",
+      emoji: "🌍",
+      desc: "Exposure programs, mentoring, and international collaboration initiatives.",
+      cta: "I'm from University",
+      link: "/partners/global-universities",
+    },
+    {
+      title: "Corporate",
+      emoji: "💼",
+      desc: "English upskilling, career readiness programs, and access to emerging talent.",
+      cta: "I'm from Company",
+      link: "/partners/companies",
+    },
+    {
+      title: "Media & Community",
+      emoji: "📢",
+      desc: "Campaigns, events, and storytelling to expand access and awareness.",
+      cta: "I'm from Community",
+      link: "/partners/media-community",
+    },
+  ].map((item, i) => (
+    <Link
+      key={i}
+      href={item.link}
+      className="
+        group relative rounded-3xl bg-white p-6
+        border border-[#294154]/10
+        transition-all duration-300
+        hover:-translate-y-1 hover:shadow-xl hover:border-[#E56668]/50
+        active:scale-[0.98]
+        flex flex-col
+      "
+    >
+      {/* Accent line */}
+      <div className="absolute left-0 top-6 bottom-6 w-1 rounded-full bg-transparent group-hover:bg-[#E56668] transition" />
+
+      {/* CONTENT */}
+      <div className="pl-4 space-y-3">
+        <div className="text-3xl">{item.emoji}</div>
+        <h3 className="font-bold text-lg text-[#294154]">{item.title}</h3>
+        <p className="text-sm text-gray-600 leading-relaxed">
+          {item.desc}
+        </p>
+      </div>
+
+   
+      <div className="pl-4 mt-auto pt-4 ">
+        <span
+          className="
+            inline-flex items-center gap-1
+            text-sm font-semibold
+            bg-[#E56668] text-white font-semibold px-4 py-2 hover:bg-[#C04C4E]
+            px-3 py-1.5 rounded-full
+            transition-all
+            group-hover:bg-[#C04C4E]
+            group-hover:text-white
+          "
+        >
+          {item.cta}
+        </span>
+      </div>
+    </Link>
+  ))}
+</div>
+  </div>
+</section>
+{/* ================= HOW IT WORKS ================= */}
+<section className="py-16 px-6">
+  <div className="max-w-6xl mx-auto">
+
+    {/* HEADER */}
+    <div className="mb-14 max-w-2xl">
+      <h2 className="text-3xl sm:text-4xl font-extrabold text-[#294154] mb-3">
+        How Partnership with IELS Works
+      </h2>
+      <p className="text-gray-700">
+        A simple, transparent process designed to turn collaboration
+        into measurable impact.
+      </p>
+    </div>
+
+    {/* FLOW CARDS */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {[
+        {
+          step: "01",
+          title: "Understand Your Goals",
+          desc: "We begin by learning your objectives, audience, and the type of impact you want to create.",
+        },
+        {
+          step: "02",
+          title: "Co-Design the Collaboration",
+          desc: "Together, we design a partnership model—programs, exposure, or campaigns—aligned with your needs.",
+        },
+        {
+          step: "03",
+          title: "Execute & Engage",
+          desc: "Programs are delivered through structured systems and active community engagement.",
+        },
+        {
+          step: "04",
+          title: "Measure & Share Impact",
+          desc: "We track participation, outcomes, and stories to ensure transparency and value.",
+        },
+      ].map((item, i) => (
+        <div
+          key={i}
+          className="
+            group relative rounded-3xl bg-white p-6
+            border border-[#294154]/10
+            transition-all duration-300
+            hover:-translate-y-1 hover:shadow-xl hover:border-[#E56668]/50
+            active:scale-[0.98]
+          "
+        >
+          {/* LEFT ACCENT BAR */}
+          <div className="absolute left-0 top-6 bottom-6 w-1 rounded-full bg-transparent group-hover:bg-[#E56668] transition" />
+
+          <div className="pl-4 space-y-3">
+            {/* STEP */}
+            <p className="text-sm font-semibold text-[#E56668]">
+              Step {item.step}
+            </p>
+
+            {/* TITLE */}
+            <h3 className="font-bold text-lg text-[#294154]">
+              {item.title}
+            </h3>
+
+            {/* DESC */}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              {item.desc}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+{/* ================= IMPACT AT A GLANCE ================= */}
+<section className="rounded-3xl bg-[#294154] py-24 px-6 text-white overflow-hidden">
+  <div className="max-w-6xl mx-auto">
+
+    {/* HEADER */}
+    <div className=" mb-16 text-center">
+      <h2 className="text-3xl sm:text-4xl font-extrabold mb-4">
+        IELS Impact at a Glance
+      </h2>
+      <p className="text-white/80 leading-relaxed">
+        We don&apos;t measure impact by activity alone —
+        but by learners reached, programs delivered,
+        <br/>and partnerships that translate into
+        <b> real educational outcomes</b>.
+      </p>
+    </div>
+
+    {/* IMPACT CARDS */}
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-16">
+
+      {/* LEARNERS */}
+      <div className="group relative rounded-3xl bg-white text-[#294154] p-6 hover:-translate-y-1 hover:shadow-2xl transition-all">
+        <img
+          src="/images/contents/impact/learners.jpg"
+          alt="IELS Learners"
+          className="h-40 w-full object-cover rounded-xl mb-4"
+        />
+
+        <p className="text-4xl font-extrabold text-[#E56668]">
+          <CountUp
+            end={2800}
+            duration={1.8}
+            separator=","
+            enableScrollSpy
+            scrollSpyOnce={false}
+          />+
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <PartnerCard
-            emoji="🎓"
-            title="Schools & Universities"
-            desc="Integrate IELS programs into your curriculum and empower students to reach global standards."
-            link="/schools"
-          />
-          <PartnerCard
-            emoji="💼"
-            title="Corporate Partners"
-            desc="Equip your employees and interns with world-class English skills through tailored programs."
-          />
-          <PartnerCard
-            emoji="🌍"
-            title="Global Institutions & NGOs"
-            desc="Join forces with IELS to build international exposure programs, mentorships, and scholarships."
-          />
-          <PartnerCard
-            emoji="📢"
-            title="Sponsors & Media Partners"
-            desc="Support IELS projects and events — gain visibility while empowering young learners."
-          />
-        </div>
-      </section>
+        <h4 className="font-bold text-lg mt-2">Learners Reached</h4>
+
+        <p className="text-sm text-gray-600 mt-2">
+          Students and young professionals engaged through
+          structured English programs and global exposure initiatives.
+        </p>
+      </div>
+
+      {/* PROGRAMS */}
+      <div className="group relative rounded-3xl bg-white text-[#294154] p-6 hover:-translate-y-1 hover:shadow-2xl transition-all">
+        <img
+          src="/images/contents/impact/programs.jpg"
+          alt="IELS Programs"
+          className="h-40 w-full object-cover rounded-xl mb-4"
+        />
+
+        <p className="text-4xl font-extrabold text-[#E56668]">
+          <CountUp
+            end={20}
+            duration={1.6}
+            enableScrollSpy
+            scrollSpyOnce={false}
+          />+
+        </p>
+
+        <h4 className="font-bold text-lg mt-2">Programs & Initiatives</h4>
+
+        <p className="text-sm text-gray-600 mt-2">
+          Community learning, institutional programs,
+          and international exposure initiatives.
+        </p>
+      </div>
+
+      {/* PARTNERS */}
+      <div className="group relative rounded-3xl bg-white text-[#294154] p-6 hover:-translate-y-1 hover:shadow-2xl transition-all">
+        <img
+          src="/images/contents/impact/partners.jpg"
+          alt="IELS Partners"
+          className="h-40 w-full object-cover rounded-xl mb-4"
+        />
+
+        <p className="text-4xl font-extrabold text-[#E56668]">
+          <CountUp
+            end={10}
+            duration={1.4}
+            enableScrollSpy
+            scrollSpyOnce={false}
+          />+
+        </p>
+
+        <h4 className="font-bold text-lg mt-2">Partner Institutions</h4>
+
+        <p className="text-sm text-gray-600 mt-2">
+          Schools, universities, companies, and communities
+          collaborating with IELS nationwide.
+        </p>
+      </div>
+    </div>
+<DemographySection/>
+
+  </div>
+</section>
+
 
  {/* ===== PARTNER BENEFITS (Enhanced) ===== */}
-<section className="relative bg-[#fdfdfd] py-16 sm:py-20 px-6 overflow-hidden">
+<section className=" py-16 sm:py-16 px-6 overflow-hidden">
   {/* Subtle top accent line */}
   <div className="absolute top-0 left-0 w-full h-[6px] bg-gradient-to-r from-[#294154] to-[#E56668]" />
 
@@ -102,8 +339,8 @@ export default function PartnersPage() {
     </h2>
 
     <p className="text-lg text-gray-700 mb-12 max-w-3xl mx-auto">
-      Because we don’t just teach English — we build futures.  
-      Together with our partners, we’re unlocking access, opportunities, and impact across Indonesia.
+      Because we don&apos;t just teach English — we build futures.  
+      Together with our partners, we&apos;re unlocking access, opportunities, and impact across Indonesia.
     </p>
 
     {/* Benefit Cards */}
@@ -112,7 +349,7 @@ export default function PartnersPage() {
         {
           emoji: "🇮🇩",
           title: "Nationwide Reach",
-          desc: "Connect with 10,000+ learners and schools across Indonesia through IELS programs and activations.",
+          desc: "Connect with 2,800+ learners and schools across Indonesia through IELS programs and activations.",
         },
         {
           emoji: "🚀",
@@ -126,17 +363,27 @@ export default function PartnersPage() {
         },
         {
           emoji: "📊",
-          title: "Data-Driven Results",
-          desc: "Receive transparent reports, growth metrics, and real stories of learners impacted through your partnership.",
+          title: "Verified Learner Distribution",
+          desc: "Access region-based insights from thousands of real learners, enabling partners to target programs where engagement is already proven",
         },
       ].map((item, i) => (
         <div
           key={i}
-          className="group relative bg-white rounded-2xl p-6 shadow-sm border border-[#294154]/10 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+   
+          className="
+            group relative rounded-3xl bg-white p-6
+            border border-[#294154]/10
+            transition-all duration-300
+            hover:-translate-y-1 hover:shadow-xl hover:border-[#E56668]/50
+            active:scale-[0.98]
+          "
         >
+                    {/* LEFT ACCENT BAR */}
+      
+       
           {/* Accent overlay on hover */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#E56668]/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="relative z-10">
+           <div className="absolute left-0 top-6 bottom-6 w-1 rounded-full bg-transparent group-hover:bg-[#E56668] transition" />
+      <div className="relative z-10">
             <div className="text-4xl mb-3">{item.emoji}</div>
             <h4 className="font-bold text-lg text-[#294154] mb-2">{item.title}</h4>
             <p className="text-sm text-gray-700 leading-relaxed">{item.desc}</p>
@@ -159,12 +406,12 @@ export default function PartnersPage() {
     <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E] mt-6">
       
     <Link
-      href="https://bit.ly/IELSImpact2025"
+      href="https://www.canva.com/design/DAG8C9itJGw/3NQtJPsgxKeiDUZGwbRwqg/edit?utm_content=DAG8C9itJGw&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton"
       target="_blank"
       rel="noopener noreferrer"
   
     >
-      📈 View IELS Impact Report
+      View IELS Impact Report
     </Link>
     </Button>
   </div>
@@ -174,6 +421,128 @@ export default function PartnersPage() {
   <div className="absolute -top-16 -right-10 w-52 h-52 bg-[#E56668]/10 rounded-full blur-3xl" />
 </section>
 </div>
+{/* ================= FLAGSHIP EVENTS (EDITORIAL) ================= */}
+<section className="relative py-15 px-6 overflow-hidden bg-white">
+
+  {/* SUBTLE BACKGROUND SHAPE */}
+  <div className="absolute -top-32 -right-32 w-[420px] h-[420px] bg-[#E56668]/10 rounded-full blur-[140px]" />
+
+  <div className="relative max-w-6xl mx-auto grid gap-14 lg:grid-cols-2 items-center">
+
+    {/* LEFT — EVENT DOCUMENTATION IMAGE */}
+    <div
+      className="
+        group relative h-[360px] sm:h-[420px] w-full
+        overflow-hidden rounded-3xl
+        shadow-2xl
+        transition-all duration-500
+        hover:-translate-y-1
+      "
+    >
+      <img
+        src="/images/contents/careers/iels_team_0.png"
+        alt="IELS Flagship Event Experience"
+        className="
+          absolute inset-0 w-full h-full object-cover
+          transition-transform duration-700
+          group-hover:scale-105
+        "
+      />
+
+      {/* EDITORIAL OVERLAY */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-[#2F4157]/60 via-[#2F4157]/20 to-transparent" />
+
+      {/* LABEL */}
+      <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur px-4 py-2 rounded-full text-sm font-semibold text-[#2F4157] shadow">
+        Documented IElS Programs
+      </div>
+    </div>
+
+    {/* RIGHT — CONTENT */}
+    <div className="flex flex-col gap-8">
+
+      {/* HEADER */}
+      <div>
+   <p className="uppercase tracking-widest text-sm text-[#E56668] font-semibold mb-3">
+  IELS Ecosystem
+</p>
+
+<h2 className="text-3xl sm:text-4xl font-extrabold text-[#2F4157] mb-5 leading-tight">
+  A Program Ecosystem Built for 
+  <span className="text-[#E56668]"> Real Collaboration</span>
+</h2>
+
+<p className="text-gray-600 max-w-xl leading-relaxed">
+  IELS operates a growing ecosystem of structured programs and flagship initiatives
+  designed to connect learners, institutions, and partners through
+  <b> practical execution, exposure, and measurable engagement</b>.
+</p>
+      </div>
+
+      {/* EVENT LIST */}
+      <ul className="space-y-4">
+        {[
+          {
+            name: "English Global Festival",
+            desc: "National-scale showcase of English, ideas, and youth collaboration.",
+          },
+          {
+            name: "Step Up!",
+            desc: "Career acceleration programs for students ready to move beyond campus.",
+          },
+          {
+            name: "IELS Insight Series",
+            desc: "Focused discussions with practitioners, mentors, and global partners.",
+          },
+          {
+            name: "Singapore Global Insight Trip",
+            desc: "Flagship international exposure connecting global insight with local impact.",
+          },
+        ].map((event) => (
+          <li
+            key={event.name}
+            className="
+              group flex gap-4
+              transition-all duration-300
+            "
+          >
+            <span className="mt-2 w-2 h-2 rounded-full bg-[#E56668] flex-shrink-0" />
+            <div>
+              <p className="font-semibold text-[#2F4157] group-hover:text-[#E56668] transition">
+                {event.name}
+              </p>
+              <p className="text-sm text-gray-500 leading-relaxed">
+                {event.desc}
+              </p>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      {/* CTA */}
+      <div className="pt-4">
+        <Button
+          asChild
+          className="
+            bg-[#E56668] text-white
+            px-8 py-3 rounded-full
+            font-semibold
+            hover:bg-[#C04C4E]
+            transition-all duration-300
+            active:scale-[0.97]
+            shadow-lg hover:shadow-xl
+            w-full sm:w-auto
+          "
+        >
+          <Link href="/events">
+            Explore IELS Programs
+          </Link>
+        </Button>
+      </div>
+    </div>
+
+  </div>
+</section>
 
       {/* ===== PREVIOUS PARTNERS ===== */}
       <section className="relative bg-[#294154] flex flex-col gap-3">

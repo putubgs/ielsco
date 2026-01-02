@@ -13,4 +13,18 @@ a[data-iels="ig-readmore"] {
 a[data-iels="ig-readmore"]:hover {
   text-decoration: underline;
   opacity: 0.85;
+
+}
+.region path {
+  fill: #d1dbdd;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.region:hover path {
+  fill: #9fb4c7;
+}
+
+.region.active path {
+  fill: #e56668;
 }

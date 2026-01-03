@@ -9,7 +9,7 @@ export default function DemographySection() {
   const [activeRegion, setActiveRegion] = useState<RegionKey | null>(null);
 
   return (
-    <section className="py-12 px-6">
+    <div className="py-12 px-6">
       <div className="max-w-6xl mx-auto space-y-16">
 
         {/* HEADER */}
@@ -33,7 +33,7 @@ export default function DemographySection() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
 
           {/* MAP */}
-          <div className="lg:col-span-2 rounded-3xl bg-white p-4 sm:p-6 border border-[#294154]/10">
+          <div className="lg:col-span-2 bg-white rounded-2xl  p-2 sm:p-4">
             <IndonesiaMap
               activeRegion={activeRegion}
               onSelect={setActiveRegion}
@@ -41,7 +41,7 @@ export default function DemographySection() {
 
             {/* Helper */}
             {!activeRegion && (
-              <p className="mt-4 text-sm text-gray-500 text-center">
+              <p className="mt-3 text-xs sm:text-sm text-gray-500 text-center">
                 Click a region to explore participation data
               </p>
             )}
@@ -55,6 +55,6 @@ export default function DemographySection() {
       </div>
  
  
-    </section>
+    </div>
   );
 }

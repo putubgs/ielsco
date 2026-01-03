@@ -6,9 +6,12 @@ import Image from "next/image";
 import CountUp from "react-countup";
 import Link from "next/link";
 import { Button } from "@/components/ui/button"
+import { useState } from "react";
 import DemographySection from "@/components/demography/DemographySection";
 
 export default function PartnersPage() {
+
+    const [active, setActive] = useState(false);
   return (
     <main className="min-h-screen bg-[#ffffff] text-[#294154] font-geologica">
        <Header />
@@ -152,86 +155,14 @@ export default function PartnersPage() {
 </div>
   </div>
 </section>
-{/* ================= HOW IT WORKS ================= */}
-<section className="py-16 px-6">
-  <div className="max-w-6xl mx-auto">
-
-    {/* HEADER */}
-    <div className="mb-14 max-w-2xl">
-      <h2 className="text-3xl sm:text-4xl font-extrabold text-[#294154] mb-3">
-        How Partnership with IELS Works
-      </h2>
-      <p className="text-gray-700">
-        A simple, transparent process designed to turn collaboration
-        into measurable impact.
-      </p>
-    </div>
-
-    {/* FLOW CARDS */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      {[
-        {
-          step: "01",
-          title: "Understand Your Goals",
-          desc: "We begin by learning your objectives, audience, and the type of impact you want to create.",
-        },
-        {
-          step: "02",
-          title: "Co-Design the Collaboration",
-          desc: "Together, we design a partnership model—programs, exposure, or campaigns—aligned with your needs.",
-        },
-        {
-          step: "03",
-          title: "Execute & Engage",
-          desc: "Programs are delivered through structured systems and active community engagement.",
-        },
-        {
-          step: "04",
-          title: "Measure & Share Impact",
-          desc: "We track participation, outcomes, and stories to ensure transparency and value.",
-        },
-      ].map((item, i) => (
-        <div
-          key={i}
-          className="
-            group relative rounded-3xl bg-white p-6
-            border border-[#294154]/10
-            transition-all duration-300
-            hover:-translate-y-1 hover:shadow-xl hover:border-[#E56668]/50
-            active:scale-[0.98]
-          "
-        >
-          {/* LEFT ACCENT BAR */}
-          <div className="absolute left-0 top-6 bottom-6 w-1 rounded-full bg-transparent group-hover:bg-[#E56668] transition" />
-
-          <div className="pl-4 space-y-3">
-            {/* STEP */}
-            <p className="text-sm font-semibold text-[#E56668]">
-              Step {item.step}
-            </p>
-
-            {/* TITLE */}
-            <h3 className="font-bold text-lg text-[#294154]">
-              {item.title}
-            </h3>
-
-            {/* DESC */}
-            <p className="text-sm text-gray-600 leading-relaxed">
-              {item.desc}
-            </p>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
+</div>
 
 {/* ================= IMPACT AT A GLANCE ================= */}
-<section className="rounded-3xl bg-[#294154] py-24 px-6 text-white overflow-hidden">
+<section className="bg-[#294154] py-16 sm:py-20 px-4 sm:px-6 text-white">
   <div className="max-w-6xl mx-auto">
 
     {/* HEADER */}
-    <div className=" mb-16 text-center">
+    <div className=" mb-16 sm:mb-16 text-center">
       <h2 className="text-3xl sm:text-4xl font-extrabold mb-4">
         IELS Impact at a Glance
       </h2>
@@ -244,14 +175,16 @@ export default function PartnersPage() {
     </div>
 
     {/* IMPACT CARDS */}
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-16">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 mb-14 sm:mb-16">
 
       {/* LEARNERS */}
       <div className="group relative rounded-3xl bg-white text-[#294154] p-6 hover:-translate-y-1 hover:shadow-2xl transition-all">
         <img
-          src="/images/contents/impact/learners.jpg"
+          src="/images/contents/careers/banner/talent.jpeg"
           alt="IELS Learners"
-          className="h-40 w-full object-cover rounded-xl mb-4"
+          className={`h-40 w-full object-cover rounded-xl mb-4 transition-transform duration-500
+            ${active ? "scale-105" : "group-hover:scale-105"}
+          `}
         />
 
         <p className="text-4xl font-extrabold text-[#E56668]">
@@ -275,9 +208,11 @@ export default function PartnersPage() {
       {/* PROGRAMS */}
       <div className="group relative rounded-3xl bg-white text-[#294154] p-6 hover:-translate-y-1 hover:shadow-2xl transition-all">
         <img
-          src="/images/contents/impact/programs.jpg"
+          src="/images/contents/events/iels-program.png"
           alt="IELS Programs"
-          className="h-40 w-full object-cover rounded-xl mb-4"
+           className={`h-40 w-full object-cover rounded-xl mb-4 transition-transform duration-500
+            ${active ? "scale-105" : "group-hover:scale-105"}
+          `}
         />
 
         <p className="text-4xl font-extrabold text-[#E56668]">
@@ -300,10 +235,11 @@ export default function PartnersPage() {
       {/* PARTNERS */}
       <div className="group relative rounded-3xl bg-white text-[#294154] p-6 hover:-translate-y-1 hover:shadow-2xl transition-all">
         <img
-          src="/images/contents/impact/partners.jpg"
+          src="/images/contents/events/sgn-partners.png"
           alt="IELS Partners"
-          className="h-40 w-full object-cover rounded-xl mb-4"
-        />
+            className={`h-40 w-full object-cover rounded-xl mb-4 transition-transform duration-500
+            ${active ? "scale-105" : "group-hover:scale-105"}
+          `}  />
 
         <p className="text-4xl font-extrabold text-[#E56668]">
           <CountUp
@@ -324,12 +260,11 @@ export default function PartnersPage() {
     </div>
 <DemographySection/>
 
-  </div>
-</section>
-
+  
+</div></section>
 
  {/* ===== PARTNER BENEFITS (Enhanced) ===== */}
-<section className=" py-16 sm:py-16 px-6 overflow-hidden">
+<section className=" py-14 sm:py-16 px-4 overflow-hidden">
   {/* Subtle top accent line */}
   <div className="absolute top-0 left-0 w-full h-[6px] bg-gradient-to-r from-[#294154] to-[#E56668]" />
 
@@ -420,9 +355,9 @@ export default function PartnersPage() {
   <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-[#294154]/10 rounded-full blur-2xl" />
   <div className="absolute -top-16 -right-10 w-52 h-52 bg-[#E56668]/10 rounded-full blur-3xl" />
 </section>
-</div>
+
 {/* ================= FLAGSHIP EVENTS (EDITORIAL) ================= */}
-<section className="relative py-15 px-6 overflow-hidden bg-white">
+<section className="relative py-15 px-6 bg-white">
 
   {/* SUBTLE BACKGROUND SHAPE */}
   <div className="absolute -top-32 -right-32 w-[420px] h-[420px] bg-[#E56668]/10 rounded-full blur-[140px]" />
@@ -612,66 +547,138 @@ export default function PartnersPage() {
           <p className="hidden lg:block">Partners</p>
         </div>
       </section>
+{/* ================= PARTNERSHIP CTA ================= */}
+<section className="py-16 sm:py-20 px-6 bg-white border-t border-[#294154]/10">
+  <div className="max-w-6xl mx-auto space-y-16">
 
- {/* ===== CONTACT SECTION (Improved) ===== */}
-<section className="bg-white text-[#294154] py-20 px-6 text-center border-t border-[#294154]/10">
-  <div className="max-w-4xl mx-auto space-y-8">
-
-    {/* Headline */}
-    <div>
-      <h2 className="text-4xl font-extrabold mb-3">Let’s Build Impact — Together 🤝</h2>
-      <p className="max-w-2xl mx-auto text-lg text-gray-700 leading-relaxed">
-        Partnering with IELS is simple, flexible, and built for real outcomes.  
-        Whether you represent a <strong>school, university, company, or NGO</strong>, we’ll help you empower learners and amplify your social impact.
+    {/* HEADER */}
+    <div className="max-w-3xl">
+      <h2 className="text-3xl sm:text-4xl font-extrabold text-[#294154] mb-4">
+        Let’s Build Meaningful Impact — Together
+      </h2>
+      <p className="text-gray-700 leading-relaxed">
+        IELS partners with schools, universities, companies, and organizations
+        that believe <b>English is a gateway to opportunity</b>.
+        
+        Our collaborations are designed to be structured, measurable,
+        and aligned with real educational and workforce outcomes.
       </p>
     </div>
 
-    {/* Steps / Flow */}
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-left text-gray-700">
-      <div className="bg-[#f9fafb] rounded-xl p-6 border border-[#294154]/10">
-        <div className="text-3xl mb-2">📩</div>
-        <h4 className="font-semibold text-lg mb-1">1. Reach Out</h4>
-        <p className="text-sm">Send us an email or WhatsApp message about your organization and goals.</p>
-      </div>
+    {/* PROCESS FLOW — SAME STYLE */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {[
+        {
+          step: "01",
+          title: "Share Your Objectives",
+          desc: "Tell us about your audience, goals, and the type of impact you want to create.",
+        },
+        {
+          step: "02",
+          title: "Design the Collaboration",
+          desc: "We co-create programs, exposure initiatives, or campaigns aligned with your needs.",
+        },
+        {
+          step: "03",
+          title: "Execute with Structure",
+          desc: "Programs are delivered through IELS systems, communities, and partner coordination.",
+        },
+        {
+          step: "04",
+          title: "Track & Communicate Impact",
+          desc: "Participation, outcomes, and stories are documented transparently for shared value.",
+        },
+      ].map((item, i) => (
+        <div
+          key={i}
+          className="
+            group relative rounded-3xl bg-white p-6
+            border border-[#294154]/10
+            transition-all duration-300
+            hover:-translate-y-1 hover:shadow-xl hover:border-[#E56668]/50
+            active:scale-[0.98]
+          "
+        >
+          {/* LEFT ACCENT */}
+          <div className="absolute left-0 top-6 bottom-6 w-1 rounded-full bg-transparent group-hover:bg-[#E56668] transition" />
 
-      <div className="bg-[#f9fafb] rounded-xl p-6 border border-[#294154]/10">
-        <div className="text-3xl mb-2">💡</div>
-        <h4 className="font-semibold text-lg mb-1">2. Co-Design the Program</h4>
-        <p className="text-sm">We’ll collaborate to tailor a partnership or pilot that fits your needs.</p>
-      </div>
+          <div className="pl-4 space-y-3">
+            <p className="text-sm font-semibold text-[#E56668]">
+              Step {item.step}
+            </p>
 
-      <div className="bg-[#f9fafb] rounded-xl p-6 border border-[#294154]/10">
-        <div className="text-3xl mb-2">🚀</div>
-        <h4 className="font-semibold text-lg mb-1">3. Launch & Grow Together</h4>
-        <p className="text-sm">Execute the project, monitor the impact, and share success stories together.</p>
+            <h3 className="font-bold text-lg text-[#294154]">
+              {item.title}
+            </h3>
+
+            <p className="text-sm text-gray-600 leading-relaxed">
+              {item.desc}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* CTA AREA */}
+    <div className="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
+
+      {/* LEFT — TRUST NOTE */}
+      <p className="text-sm text-gray-600 max-w-xl">
+        Most partnerships start with a short discussion to align goals
+        and explore potential collaboration models.
+        No commitment required at this stage.
+      </p>
+
+      {/* RIGHT — CTA BUTTONS */}
+      <div className="flex flex-col sm:flex-row gap-3">
+
+        {/* PRIMARY CTA */}
+        <a
+          href="https://wa.me/6288297253491"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="
+            inline-flex items-center justify-center
+            rounded-full
+            bg-[#E56668] text-white
+            px-6 py-3
+            font-semibold
+            transition-all duration-200
+            hover:bg-[#C04C4E]
+            hover:-translate-y-[1px]
+            active:scale-[0.97]
+          "
+        >
+          💬 Start a Partnership Discussion
+        </a>
+
+        {/* SECONDARY CTA */}
+        <a
+          href="mailto:partnership@ielsco.com"
+          className="
+            inline-flex items-center justify-center
+            rounded-full
+            border border-[#294154]/20
+            bg-white text-[#294154]
+            px-6 py-3
+            font-semibold
+            transition-all duration-200
+            hover:bg-[#294154]/5
+            active:scale-[0.97]
+          "
+        >
+          ✉ Contact via Email
+        </a>
+
       </div>
     </div>
 
-    {/* CTA Buttons */}
-    <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-          <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]">
-            <Link
-        href="https://wa.me/6288297253491"
-        target="_blank"
-        rel="noopener noreferrer"
-        
-      >
-        💬 Chat on WhatsApp
-      </Link></Button>
-
-      <Button asChild className="bg-[#294154] text-white font-semibold px-6 py-3 hover:bg-[#21363f]">
-                  
-        <Link
-        href="mailto:partnership@ielsco.com"
-      >
-        ✉ Send Email
-      </Link></Button>
+    {/* FOOTNOTE */}
+    <div className="text-sm text-gray-500">
+      📱 WhatsApp: +62 882-9725-3491 (Arba — Principal of Operations & Business) ·
+      📧 partnership@ielsco.com
     </div>
 
-    {/* Info */}
-    <div className="text-sm text-gray-600 mt-6 space-y-1">
-      <p>📱 WhatsApp: 0882-9725-3491 · 📧 partnership@ielsco.com</p>
-    </div>
   </div>
 </section>
       <Footer />

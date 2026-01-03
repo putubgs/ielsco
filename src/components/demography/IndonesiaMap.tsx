@@ -12,14 +12,14 @@ type Props = {
 const DEFAULT_VIEWBOX = "0 0 1000 764";
 
 const REGION_VIEWBOX: Record<RegionKey, string> = {
-  sumatra: "-50 150 350 350",
-  "jakarta-west-java": "150 380 250 200",
-  "central-java-diy": "200 380 260 200",
-  "east-java-bali": "250 420 260 250",
-  kalimantan: "210 170 380 300",
-  sulawesi: "410 200 280 350",
-  "nusa-tenggara": "400 440 320 200",
-  "maluku-papua": "550 220 450 350",
+  "sumatra": "-50 150 450 350",
+  "jakarta-west-java": "170 390 180 200",
+  "central-java-diy": "230 400 180 200",
+  "east-java-bali": "280 390 200 250",
+  "kalimantan": "210 170 380 300",
+  "sulawesi": "430 200 280 350",
+  "nusa-tenggara": "400 440 270 200",
+  "maluku-papua": "580 220 430 350",
 };
 
 /* ===== SMOOTH VIEWBOX ANIMATION ===== */
@@ -69,25 +69,66 @@ export default function IndonesiaMap({ activeRegion, onSelect }: Props) {
 
  
   return (
-    <div className="relative w-full h-[420px] sm:h-[520px] rounded-2xl overflow-hidden bg-white border">
+    <div className="relative w-full aspect-[16/9] sm:aspect-[21/14] rounded-2xl overflow-hidden bg-white border">
 
-      {/* RESET BUTTON */}
-      <button
-        onClick={() => onSelect(null)}
-        className="
-          absolute top-4 right-4 z-20
-          bg-white/90 backdrop-blur
-          text-[#294154] text-sm font-semibold
-          px-4 py-2 rounded-full
-          shadow hover:bg-white
-        "
-      >
-        Reset View
-      </button>
+   {/* RESET BUTTON — DESKTOP */}
+  <button
+    onClick={() => onSelect(null)}
+    className="
+      hidden sm:flex
+      absolute top-4 right-4 z-20
+      items-center gap-2
+
+      bg-white/90 backdrop-blur
+      text-[#294154] text-sm font-semibold
+      px-4 py-2 rounded-full
+      shadow
+      whitespace-nowrap
+
+      transition-all duration-200
+      hover:scale-[1.02]
+      hover:bg-white
+
+      active:scale-[0.96]
+      active:brightness-95
+
+      hover:[@media(hover:none)]:scale-100
+    "
+  >
+    Reset View
+  </button>
+
+  {/* RESET BUTTON — MOBILE */}
+  <button
+    onClick={() => onSelect(null)}
+    aria-label="Reset map view"
+    className="
+      sm:hidden
+      absolute top-3 right-3 z-20
+
+      w-6 h-6
+      flex items-center justify-center
+
+      bg-white/90 backdrop-blur
+      text-[#294154] text-base font-semibold
+      rounded-full
+      shadow
+
+      transition-all duration-150
+      active:scale-[0.9]
+      active:brightness-95
+    "
+  >
+    ↺
+  </button>
+  
 
       <svg
         viewBox={viewBox}
-        className="w-full h-full"
+        width="100%"
+        height="100%"
+        preserveAspectRatio="xMidYMid slice"
+        className="absoulute inset-0"
         xmlns="http://www.w3.org/2000/svg"
       >
                   {/* ===== MAP ROOT ===== */}

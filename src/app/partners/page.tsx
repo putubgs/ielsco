@@ -85,7 +85,7 @@ export default function PartnersPage() {
       emoji: "🎓",
       desc: "Structured English programs, curriculum support, and student readiness for academic and global pathways.",
       cta: "I'm from School",
-      link: "/partners/schools",
+      link: "/products/schools",
     },
     {
       title: "Global Universities",
@@ -385,7 +385,7 @@ export default function PartnersPage() {
 
       {/* LABEL */}
       <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur px-4 py-2 rounded-full text-sm font-semibold text-[#2F4157] shadow">
-        Documented IElS Programs
+        Documented IELS Programs
       </div>
     </div>
 
@@ -631,45 +631,21 @@ export default function PartnersPage() {
 {/* RIGHT — CTA BUTTONS (Responsive for Tablet/iPad) */}
 <div className="flex flex-col sm:flex-col md:flex-col lg:flex-row gap-3 w-full lg:w-auto">
 
-  {/* PRIMARY CTA */}
-  <a
-    href="https://wa.me/6288297253491"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="
-      inline-flex items-center justify-center
-      rounded-full
-      bg-[#E56668] text-white
-      px-6 py-3
-      font-semibold
-      transition-all duration-200
-      hover:bg-[#C04C4E]
-      hover:-translate-y-[1px]
-      active:scale-[0.97]
-      w-full lg:w-auto /* Tombol full width di tablet, auto di desktop */
-    "
-  >
-    Start Discussion
-  </a>
+               <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]"><Link
+                href="https://wa.me/6288297253491"
+                target="_blank"
+                rel="noopener noreferrer"
+               >
+                Start Discussion
+              </Link></Button>
 
-  {/* SECONDARY CTA */}
-  <a
-    href="mailto:partnership@ielsco.com"
-    className="
-      inline-flex items-center justify-center
-      rounded-full
-      border border-[#294154]/20
-      bg-white text-[#294154]
-      px-6 py-3
-      font-semibold
-      transition-all duration-200
-      hover:bg-[#294154]/5
-      active:scale-[0.97]
-      w-full lg:w-auto /* Tombol full width di tablet, auto di desktop */
-    "
-  >
-    Contact via Email
-  </a>
+                <Button asChild className="bg-[#294154] text-white font-semibold px-6 py-3 hover:bg-[#21363f]">
+                  <Link
+                href="mailto:partnership@ielsco.com"
+                
+              >
+                Contact Via Email
+              </Link></Button>
 </div>
 
       </div>

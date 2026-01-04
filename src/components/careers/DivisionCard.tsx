@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { Button } from "@/components/ui/button"; // Pastikan import Button shadcn/ui
 
 type Props = {
   slug: string;
@@ -20,13 +21,12 @@ export default function DivisionCard({
   const [active, setActive] = useState(false);
 
   return (
-    <Link
-      href={`/careers/${slug}`}
+    <div
       onPointerDown={() => setActive(true)}
       onPointerUp={() => setTimeout(() => setActive(false), 120)}
       onPointerLeave={() => setActive(false)}
       className={`
-        group relative block overflow-hidden
+        group relative overflow-hidden flex flex-col h-full
         rounded-3xl border bg-white
         transition-all duration-300
         ${
@@ -36,7 +36,7 @@ export default function DivisionCard({
         }
       `}
     >
-      {/* IMAGE */}
+      {/* IMAGE SECTION */}
       <div className="relative h-44 w-full overflow-hidden">
         <Image
           src={image}
@@ -52,58 +52,53 @@ export default function DivisionCard({
         <div
           className={`
             absolute inset-0
-            bg-gradient-to-t from-black/60 via-black/30 to-transparent
+            bg-gradient-to-t from-black/70 via-black/30 to-transparent
             transition-opacity duration-300
-            ${active ? "opacity-100" : "opacity-70"}
+            ${active ? "opacity-100" : "opacity-80"}
           `}
         />
 
-        {/* TITLE */}
-        <div className="absolute bottom-4 left-4 right-4">
+        {/* TITLE ON IMAGE */}
+        <div className="absolute bottom-4 left-6 right-6">
           <h3 className="text-xl font-bold text-white leading-tight">
             {title}
           </h3>
         </div>
       </div>
 
-      {/* CONTENT */}
-      <div className="relative p-6 flex flex-col gap-4">
-
+      {/* CONTENT SECTION */}
+      <div className="relative p-6 flex flex-col flex-grow">
+        
         {/* LEFT ACCENT BAR */}
         <div
           className={`
             absolute left-0 top-6 bottom-6 w-1 rounded-full
             transition-all duration-300
-            ${
-              active
-                ? "bg-[#E56668]"
-                : "bg-transparent group-hover:bg-[#E56668]"
-            }
+            ${active ? "bg-[#E56668]" : "bg-transparent group-hover:bg-[#E56668]"}
           `}
         />
 
-        {/* DESCRIPTION */}
-        <p className="pl-4 text-sm text-gray-600 leading-relaxed">
+        {/* DESCRIPTION (Diberi margin bottom agar tidak menempel ke tombol) */}
+        <p className="pl-4 text-sm text-gray-600 leading-relaxed mb-6">
           {description}
         </p>
 
-        {/* FOOTER */}
-        <div className="pl-4 flex items-center justify-between pt-2">
-          <span
+        {/* FOOTER - BUTTON (mt-auto membuat ini selalu di bawah) */}
+        <div className="mt-auto pl-4">
+          <Button
+            asChild
             className={`
-              text-sm font-semibold text-[#E56668]
-              transition-all duration-300
-              ${
-                active
-                  ? "opacity-100 translate-x-0"
-                  : "opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
-              }
+              w-full bg-[#E56668] text-white rounded-full font-semibold py-2.5
+              hover:bg-[#C04C4E] transition-all duration-300
+              active:scale-[0.97] shadow-sm hover:shadow-md
             `}
           >
-            Explore →
-          </span>
+            <Link href={`/careers/${slug}`}>
+              Explore Division
+            </Link>
+          </Button>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }

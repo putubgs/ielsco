@@ -9,6 +9,7 @@ type Props = {
 };
 
 export default function RoleModal({ role, onClose }: Props) {
+  const isClosed = role.isClosed;
   return (
     <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
       {/* MODAL CONTAINER */}
@@ -36,7 +37,16 @@ export default function RoleModal({ role, onClose }: Props) {
 
         {/* ================= SCROLLABLE CONTENT ================= */}
         <div className="px-6 py-5 overflow-y-auto flex-1 space-y-6">
-          {/* JOB DESCRIPTION */}
+
+{isClosed && (
+  <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 flex gap-3 items-start">
+    <span className="text-lg">⚠️</span>
+    <div>
+      <p className="text-sm font-bold text-amber-800">Positions Filled</p>
+      <p className="text-xs text-amber-700">This role is currently at full capacity. We are no longer accepting new applications.</p>
+    </div>
+  </div>
+)}          {/* JOB DESCRIPTION */}
           <section>
             <div
               className="text-sm text-gray-700 leading-relaxed
@@ -95,7 +105,13 @@ export default function RoleModal({ role, onClose }: Props) {
         {/* ================= FOOTER (FIXED) ================= */}
         <div className="px-6 py-4 rounded-2xl border-t bg-white">
            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-  <Button asChild className="flex-1 bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]">
+   {isClosed ? (
+    // Tampilan tombol saat CLOSED
+    <Button disabled className="flex-1 bg-gray-300 text-gray-500 cursor-not-allowed font-semibold px-6 py-3">
+      Applications Closed
+    </Button>
+  ) : (
+    <Button asChild className="flex-1 bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]">
     <Link
     href={role.applyLink}
     target="_blank"
@@ -104,6 +120,7 @@ export default function RoleModal({ role, onClose }: Props) {
     Apply for This Role
   </Link>
 </Button>
+  )}
   </div> 
    
         </div>

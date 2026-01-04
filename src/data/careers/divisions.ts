@@ -12,6 +12,7 @@ export type Role = {
   benefits: string;
   duration?: string;
   applyLink: string;
+  isClosed?: boolean;
   seo?: {
     meta_title: string;
     meta_description: string;
@@ -418,9 +419,10 @@ export const divisions: Division[] = [
   name: "Brand Experience",
   objective:
     "Design interactive, fun, and meaningful brand experiences through community engagement and experimental learning environments.",
-  roles: [
+    roles: [
     {
       title: "Brand Experience Associate",
+      isClosed:true,
       level: "Associate",
       mode: "Remote",
       description:

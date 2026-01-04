@@ -11,15 +11,14 @@ import DemographySection from "@/components/demography/DemographySection";
 
 export default function PartnersPage() {
 
-    const [active, setActive] = useState(false);
+    const [active] = useState(false);
   return (
-    <main className="min-h-screen bg-[#ffffff] text-[#294154] font-geologica">
+    <main className="min-h-screen overflow-x-hidden bg-[#ffffff] text-[#294154] font-geologica">
        <Header />
-       <div className="max-w-6xl mx-auto px-6 py-16 space-y-16">
       {/* ===== HERO SECTION ===== */}
-      <section className="bg-white text-[#294154] font-geologica">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 items-center gap-10">
-          <div className="lg:col-span-7 space-y-6">
+<section className="relative overflow-hidden w-full bg-white py-16 px-4 sm:px-6">
+  <div className="relative max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+    <div className="lg:col-span-7 space-y-6">
             <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight">
         Partner with IELS —<br />
         Build Real Impact Through English Education
@@ -59,11 +58,11 @@ export default function PartnersPage() {
                 className="w-full h-auto object-contain"
               />
               <div className="absolute -bottom-4 right-0 bg-white text-[#294154] px-4 py-2 rounded-full text-sm font-semibold shadow">
-               
+               </div>
               </div>
             </div>
           </div>
-        </div>
+      
       </section>
 
  {/* ================= PARTNER CATEGORIES ================= */}
@@ -155,7 +154,7 @@ export default function PartnersPage() {
 </div>
   </div>
 </section>
-</div>
+
 
 {/* ================= IMPACT AT A GLANCE ================= */}
 <section className="bg-[#294154] py-16 sm:py-20 px-4 sm:px-6 text-white">
@@ -258,13 +257,19 @@ export default function PartnersPage() {
         </p>
       </div>
     </div>
-<DemographySection/>
+
 
   
 </div></section>
+<DemographySection/>
+{/* ===== PARTNER BENEFITS (Enhanced) ===== */}
+<section className="relative py-14 sm:py-16 px-4 overflow-hidden">
+  {/* Tambahkan pembungkus ini untuk mengunci elemen dekoratif agar tidak bocor ke kanan */}
+  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-[#294154]/10 rounded-full blur-2xl" />
+    <div className="absolute -top-16 -right-10 w-52 h-52 bg-[#E56668]/10 rounded-full blur-3xl" />
+  </div>
 
- {/* ===== PARTNER BENEFITS (Enhanced) ===== */}
-<section className=" py-14 sm:py-16 px-4 overflow-hidden">
   {/* Subtle top accent line */}
   <div className="absolute top-0 left-0 w-full h-[6px] bg-gradient-to-r from-[#294154] to-[#E56668]" />
 
@@ -304,21 +309,18 @@ export default function PartnersPage() {
       ].map((item, i) => (
         <div
           key={i}
-   
           className="
-            group relative rounded-3xl bg-white p-6
+            group relative rounded-3xl bg-white p-8
             border border-[#294154]/10
             transition-all duration-300
-            hover:-translate-y-1 hover:shadow-xl hover:border-[#E56668]/50
+            hover:-translate-y-2 hover:shadow-2xl hover:border-[#E56668]/30
             active:scale-[0.98]
           "
         >
-                    {/* LEFT ACCENT BAR */}
-      
-       
-          {/* Accent overlay on hover */}
-           <div className="absolute left-0 top-6 bottom-6 w-1 rounded-full bg-transparent group-hover:bg-[#E56668] transition" />
-      <div className="relative z-10">
+          {/* ACCENT BAR */}
+          <div className="absolute left-0 top-8 bottom-8 w-1.5 rounded-r-full bg-transparent group-hover:bg-[#E56668] transition-all duration-300" />
+          
+          <div className="relative z-10">
             <div className="text-4xl mb-3">{item.emoji}</div>
             <h4 className="font-bold text-lg text-[#294154] mb-2">{item.title}</h4>
             <p className="text-sm text-gray-700 leading-relaxed">{item.desc}</p>
@@ -339,21 +341,15 @@ export default function PartnersPage() {
 
     {/* CTA Button */}
     <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E] mt-6">
-      
-    <Link
-      href="https://www.canva.com/design/DAG8C9itJGw/3NQtJPsgxKeiDUZGwbRwqg/edit?utm_content=DAG8C9itJGw&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton"
-      target="_blank"
-      rel="noopener noreferrer"
-  
-    >
-      View IELS Impact Report
-    </Link>
+      <Link
+        href="https://www.canva.com/design/DAG8C9itJGw/3NQtJPsgxKeiDUZGwbRwqg/edit?..."
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        View IELS Impact Report
+      </Link>
     </Button>
   </div>
-
-  {/* Decorative elements */}
-  <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-[#294154]/10 rounded-full blur-2xl" />
-  <div className="absolute -top-16 -right-10 w-52 h-52 bg-[#E56668]/10 rounded-full blur-3xl" />
 </section>
 
 {/* ================= FLAGSHIP EVENTS (EDITORIAL) ================= */}
@@ -632,43 +628,49 @@ export default function PartnersPage() {
       {/* RIGHT — CTA BUTTONS */}
       <div className="flex flex-col sm:flex-row gap-3">
 
-        {/* PRIMARY CTA */}
-        <a
-          href="https://wa.me/6288297253491"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="
-            inline-flex items-center justify-center
-            rounded-full
-            bg-[#E56668] text-white
-            px-6 py-3
-            font-semibold
-            transition-all duration-200
-            hover:bg-[#C04C4E]
-            hover:-translate-y-[1px]
-            active:scale-[0.97]
-          "
-        >
-          💬 Start a Partnership Discussion
-        </a>
+{/* RIGHT — CTA BUTTONS (Responsive for Tablet/iPad) */}
+<div className="flex flex-col sm:flex-col md:flex-col lg:flex-row gap-3 w-full lg:w-auto">
 
-        {/* SECONDARY CTA */}
-        <a
-          href="mailto:partnership@ielsco.com"
-          className="
-            inline-flex items-center justify-center
-            rounded-full
-            border border-[#294154]/20
-            bg-white text-[#294154]
-            px-6 py-3
-            font-semibold
-            transition-all duration-200
-            hover:bg-[#294154]/5
-            active:scale-[0.97]
-          "
-        >
-          ✉ Contact via Email
-        </a>
+  {/* PRIMARY CTA */}
+  <a
+    href="https://wa.me/6288297253491"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="
+      inline-flex items-center justify-center
+      rounded-full
+      bg-[#E56668] text-white
+      px-6 py-3
+      font-semibold
+      transition-all duration-200
+      hover:bg-[#C04C4E]
+      hover:-translate-y-[1px]
+      active:scale-[0.97]
+      w-full lg:w-auto /* Tombol full width di tablet, auto di desktop */
+    "
+  >
+    Start Discussion
+  </a>
+
+  {/* SECONDARY CTA */}
+  <a
+    href="mailto:partnership@ielsco.com"
+    className="
+      inline-flex items-center justify-center
+      rounded-full
+      border border-[#294154]/20
+      bg-white text-[#294154]
+      px-6 py-3
+      font-semibold
+      transition-all duration-200
+      hover:bg-[#294154]/5
+      active:scale-[0.97]
+      w-full lg:w-auto /* Tombol full width di tablet, auto di desktop */
+    "
+  >
+    Contact via Email
+  </a>
+</div>
 
       </div>
     </div>

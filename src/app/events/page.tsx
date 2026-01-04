@@ -21,7 +21,7 @@ function SGITHighlightCard() {
     <Link
       href="/events/sgit"
       className="
-        group relative overflow-hidden rounded-3xl
+        group relative overflow-x-hidden rounded-3xl
         bg-white text-[#2F4157]
         p-8
         border border-gray-200
@@ -330,7 +330,7 @@ export default function Events() {
     return (
       <div>
         <Header />
-        <div className="flex flex-col bg-white lg:px-[100px] w-full py-12">
+        <div className="flex flex-col bg-white px-4 lg:px-[100px] w-full py-12 overflow-x-hidden">
           <EmptyState />
         </div>
         <Footer />
@@ -374,7 +374,7 @@ export default function Events() {
   </div>
 </section>
       <LoadingOverlay isLoading={isLoading} message="Loading event..." />
-      <div className="flex flex-col bg-white lg:px-[100px] w-full py-12">
+      <div className="flex flex-col bg-white px-4 lg:px-[100px] w-full py-12 overflow-x-hidden">
         <div>
           {/* Mobile Design - Completely Different Layout */}
           <div className="block lg:hidden">
@@ -478,7 +478,7 @@ export default function Events() {
                               width={280}
                               height={350}
                               alt={event.title}
-                              className="w-[280px] h-[350px] rounded-[15px] object-cover"
+                              className="max-w-full h-auto aspect-[4/5] rounded-[15px] object-cover"
                             />
                           </div>
 
@@ -500,7 +500,7 @@ export default function Events() {
                         </Button>
                             <Button
                               asChild
-                              className="bg-[#E56668] text-white px-6 py-3 hover:bg-[#C04C4E]"
+                              className="bg-white text-[#E56668] px-6 py-3 hover:bg-white/80"
                             >
                               <Link
                                 href={`/events/${generateSlug(event.title)}`}

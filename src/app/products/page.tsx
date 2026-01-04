@@ -79,64 +79,68 @@ export default function ProductsPage() {
           </p>
         </section>
 
-        {/* ================= PRODUCTS ================= */}
-        <section className="max-w-6xl mx-auto px-6 pb-24">
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {products.map((p) => {
-              const isActive = pressed === p.name;
+   {/* ================= PRODUCTS ================= */}
+<section className="max-w-6xl mx-auto px-6 pb-24">
+  <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+    {products.map((p) => {
+      const isActive = pressed === p.name;
 
-              return (
-                <Link
-                  key={p.name}
-                  href={p.href}
-                  onPointerDown={() => setPressed(p.name)}
-                  onPointerUp={() => setTimeout(() => setPressed(null), 120)}
-                  onPointerLeave={() => setPressed(null)}
-                  className={`
-                    relative group rounded-3xl border bg-white p-8
-                    transition-all duration-300
-                    ${
-                      isActive
-                        ? "border-[#E56668] shadow-2xl -translate-y-1"
-                        : "border-[#294154]/10 hover:border-[#E56668]/60 hover:-translate-y-1 hover:shadow-xl"
-                    }
-                  `}
-                >
-                  {/* Accent */}
-                  <div
-                    className={`
-                      absolute left-0 top-6 bottom-6 w-1 rounded-full
-                      transition-all duration-300
-                      ${isActive ? "bg-[#E56668]" : "bg-transparent group-hover:bg-[#E56668]"}
-                    `}
-                  />
+      return (
+        <div
+          key={p.name}
+          onPointerDown={() => setPressed(p.name)}
+          onPointerUp={() => setTimeout(() => setPressed(null), 120)}
+          onPointerLeave={() => setPressed(null)}
+          className={`
+            relative group rounded-3xl border bg-white p-8
+            flex flex-col h-full /* Membuat card menjadi kontainer flex vertikal */
+            transition-all duration-300
+            ${
+              isActive
+                ? "border-[#E56668] shadow-2xl -translate-y-1"
+                : "border-[#294154]/10 hover:border-[#E56668]/60 hover:-translate-y-1 hover:shadow-xl"
+            }
+          `}
+        >
+          {/* Accent Line */}
+          <div
+            className={`
+              absolute left-0 top-8 bottom-8 w-1.5 rounded-r-full
+              transition-all duration-300
+              ${isActive ? "bg-[#E56668]" : "bg-transparent group-hover:bg-[#E56668]"}
+            `}
+          />
 
-                  <div className="pl-4 flex flex-col h-full justify-between gap-6">
-                    <div>
-                      <div className="text-4xl mb-4">{p.emoji}</div>
-                      <h3 className="text-xl font-bold mb-2">{p.name}</h3>
-                      <p className="text-gray-600 text-sm">{p.desc}</p>
-                    </div>
-
-                    <span
-                      className={`
-                        text-sm font-semibold text-[#E56668]
-                        transition-all duration-300
-                        ${
-                          isActive
-                            ? "opacity-100 translate-x-0"
-                            : "opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
-                        }
-                      `}
-                    >
-                      Explore →
-                    </span>
-                  </div>
-                </Link>
-              );
-            })}
+          {/* Content Area */}
+          <div className="flex flex-col flex-grow">
+            <div className="text-4xl mb-4">{p.emoji}</div>
+            <h3 className="text-xl font-bold mb-3 text-[#294154]">{p.name}</h3>
+            <p className="text-gray-600 text-sm leading-relaxed mb-8">
+              {p.desc}
+            </p>
           </div>
-        </section>
+
+          {/* Footer Area — Tombol diletakkan di sini dengan mt-auto agar sejajar */}
+          <div className="mt-auto pt-1">
+            <Button
+              asChild
+              className="
+                w-full bg-[#E56668] text-white 
+                rounded-full font-semibold py-3
+                hover:bg-[#C04C4E] transition-all duration-300
+                active:scale-[0.97] shadow-md hover:shadow-lg
+              "
+            >
+              <Link href={p.href}>
+                Explore {p.name}
+              </Link>
+            </Button>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</section>
 
 {/* ================= FLAGSHIP EVENTS (EDITORIAL) ================= */}
 <section className="relative py-15 px-6 overflow-hidden bg-white">

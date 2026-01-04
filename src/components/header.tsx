@@ -39,7 +39,7 @@ export default function Header() {
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   return (
-    <div className="fixed top-0 left-0 w-full bg-[#2F4157] flex items-center justify-between py-6 lg:py-10 px-4 sm:px-8 lg:px-[100px] z-50 shadow-md">
+    <div className="fixed top-0 left-0 right-0 w-full bg-[#2F4157] flex items-center justify-between py-6 lg:py-10 px-4 sm:px-8 lg:px-[100px] z-50 shadow-md">
       {/* Logo */}
       <Link
         href="/"
@@ -59,174 +59,104 @@ export default function Header() {
         </div>
       </Link>
 
-      {/* ---------------- TABLET NAV (md only) ---------------- */}
-      <div className="hidden md:flex lg:hidden items-center gap-3 text-white">
-        {navItems.map((item) => {
-  if (item.isStart) {
+{/* ---------------- TABLET & DESKTOP NAV ---------------- */}
+<div className="hidden md:flex items-center text-white gap-3">
+  {navItems.map((item) => {
+    // 1. Handle "Sign in!" (Start Button)
+    if (item.isStart) {
+      return (
+        <Link
+          key={item.name}
+          href={item.path}
+          className="inline-flex items-center justify-center rounded-full px-5 py-2.5 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
+        >
+          {item.name}
+        </Link>
+      );
+    }
+
+    // 2. Handle Dropdown (Products)
+    if (item.children) {
+      const isOpen = openDropdown === item.name;
+      const isActive = pathname.startsWith(item.path) || pathname.startsWith("/test") || pathname.startsWith("/iels-lounge");
+
+      return (
+        <div 
+          key={item.name} 
+          className="relative group"
+          onMouseLeave={() => setOpenDropdown(null)} // Tutup saat mouse keluar
+        >
+          <div
+            className={`flex items-center rounded-full transition-all ${
+              isActive ? "bg-white text-[#2F4157]" : "hover:bg-white/20 text-white"
+            }`}
+          >
+            {/* Nama Menu Utama (Bisa diklik langsung) */}
+            <Link href={item.path} className="pl-4 py-2 pr-1">
+              {item.name}
+            </Link>
+
+            {/* Tombol Panah (Untuk Tablet/Touch) */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                setOpenDropdown(isOpen ? null : item.name);
+              }}
+              className="pr-3 py-2 flex items-center justify-center"
+            >
+              <svg
+                className={`w-4 h-4 transition-transform ${
+                  isOpen ? "rotate-180" : "group-hover:rotate-180"
+                }`}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <path d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Menu Dropdown (Muncul saat Hover ATAU saat State Open) */}
+          <div
+            className={`absolute left-0 mt-2 w-52 rounded-2xl bg-white text-[#2F4157] shadow-xl z-[60] transition-all duration-200 
+              ${isOpen ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible lg:group-hover:opacity-100 lg:group-hover:translate-y-0 lg:group-hover:visible"}
+            `}
+          >
+            <div className="py-2">
+              {item.children.map((child) => (
+                <Link
+                  key={child.path}
+                  href={child.path}
+                  className="block px-5 py-2.5 hover:bg-gray-100 first:rounded-t-2xl last:rounded-b-2xl transition-colors"
+                  onClick={() => setOpenDropdown(null)}
+                >
+                  {child.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // 3. Normal Link
+    const isActive = pathname === item.path || pathname.startsWith(item.path + "/");
     return (
       <Link
-        key={item.name}
+        key={item.path}
         href={item.path}
-        onClick={closeMobileMenu}
-        className="inline-flex items-center justify-center rounded-full px-6 py-3 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition"
+        className={`px-4 py-2 rounded-full transition-colors ${
+          isActive ? "bg-white text-[#2F4157]" : "hover:bg-white/20 text-white"
+        }`}
       >
         {item.name}
       </Link>
     );
-  }
-
-  if (item.children) {
-    const isOpen = openDropdown === item.name;
-    const isActive =
-  pathname === item.path || pathname.startsWith(item.path + "/") || pathname.startsWith("/test") || pathname.startsWith("/iels-lounge");
-
-    return (
-      <div key={item.name} className="relative">
-        {/* CONTAINER */}
-        <div
-          className={`flex items-center justify-between rounded-full overflow-hidden transition-colors ${
-            isActive
-              ? "bg-white text-[#2F4157]"
-              : "text-white hover:bg-white/20"
-          }`}
-        >
-          {/* TEXT → NAVIGATE */}
-          <Link
-            href={item.path}
-            className="px-4 py-2"
-          >
-            {item.name}
-          </Link>
-
-          {/* ARROW → TOGGLE */}
-          <button
-            type="button"
-            onClick={() =>
-              setOpenDropdown(isOpen ? null : item.name)
-            }
-            className="px-3"
-            aria-label="Toggle submenu"
-          >
-            <svg
-              className={`w-4 h-4 transition-transform ${
-                isOpen ? "rotate-180" : ""
-              }`}
-              stroke="currentColor"
-              strokeWidth="2"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-        </div>
-
-        {/* DROPDOWN */}
-        {isOpen && (
-          <div className="absolute left-0 mt-2 w-48 rounded-2xl bg-white text-[#2F4157] shadow-lg z-50">
-            {item.children.map((child) => (
-              <Link
-                key={child.path}
-                href={child.path}
-                className="block px-4 py-2 hover:bg-gray-100 rounded-2xl"
-                onClick={() => setOpenDropdown(null)}
-              >
-                {child.name}
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  // NORMAL ITEM
-  const isActive =
-  pathname === item.path || pathname.startsWith(item.path + "/");
-  return (
-    <Link
-      key={item.path}
-      href={item.path}
-      className={`px-4 py-2 rounded-full transition-colors ${
-        isActive
-          ? "bg-white text-[#2F4157]"
-          : "hover:bg-white/20 text-white"
-      }`}
-    >
-      {item.name}
-    </Link>
-  );
-})}
-      </div>
-
-      {/* ---------------- DESKTOP NAV ---------------- */}
-      <div className="hidden lg:flex items-center text-white gap-3">
-        {navItems.map((item) => {
-          // Start handled first: always red, hover scale, no arrow
-          if (item.isStart) {
-            return (
-              <div key={item.name} className="relative group">
-                <Link
-                  href={item.path}
-                  onClick={closeMobileMenu}
-                  className="inline-flex items-center justify-center rounded-full px-4 py-2 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02]"
-                >
-                  {item.name}
-                </Link>
-              </div>
-            );
-          }
-
-          // dropdown items
-          if (item.children) {
-            const isActive =
-  pathname === item.path || pathname.startsWith(item.path + "/") || pathname.startsWith("/events") || pathname.startsWith("/test") || pathname.startsWith("/iels-lounge");
-            return (
-              <div key={item.name} className="relative group">
-                <div
-                  className={`flex items-center gap-1 px-4 py-2 rounded-full cursor-pointer transition-all ${
-                    isActive ? "bg-white text-[#2F4157]" : "hover:bg-white/20 text-white"
-                  }`}
-                >
-                  <Link href={item.path}>{item.name}</Link>
-                  <svg
-                    className="w-4 h-4 transition-transform group-hover:rotate-180"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-
-                <div className="absolute left-0 mt-2 w-48 rounded-2xl bg-white text-[#2F4157] shadow-lg opacity-0 group-hover:opacity-100 group-hover:translate-y-1 transition-all duration-200">
-                  {item.children.map((child) => (
-                    <Link key={child.path} href={child.path} className="block px-4 py-2 hover:bg-gray-100 rounded-2xl">
-                      {child.name}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            );
-          }
-
-          // plain link
-          const isActive =
-  pathname === item.path || pathname.startsWith(item.path + "/");
-          return (
-            <Link
-              key={item.path}
-              href={item.path}
-              className={`px-4 py-2 rounded-full transition-colors ${
-                isActive ? "bg-white text-[#2F4157]" : "hover:bg-white/20 text-white"
-              }`}
-            >
-              {item.name}
-            </Link>
-          );
-        })}
-      </div>
+  })}
+</div>
 
       {/* Mobile hamburger */}
       <button

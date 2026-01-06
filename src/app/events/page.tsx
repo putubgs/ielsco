@@ -57,7 +57,7 @@ function SGITHighlightCard() {
     width={270}
     height={72}
     className="
-      h-18 w-auto
+      h-20 w-auto
       
       opacity-90
     "

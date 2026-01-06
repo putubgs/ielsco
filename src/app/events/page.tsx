@@ -21,7 +21,7 @@ function SGITHighlightCard() {
     <Link
       href="/events/sgit"
       className="
-        group relative overflow-x-hidden rounded-3xl
+        group relative overflow-hidden rounded-3xl
         bg-white text-[#2F4157]
         p-8
         border border-gray-200
@@ -57,7 +57,7 @@ function SGITHighlightCard() {
     width={270}
     height={72}
     className="
-      h-20 w-auto
+      h-18 w-auto
       
       opacity-90
     "

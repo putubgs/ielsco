@@ -520,7 +520,7 @@ export default function Home() {
     <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]"><Link
       href="/welcome/start"
     >
-      Start Now 
+      Start Now 🚀
     </Link>
     </Button>
   </div>

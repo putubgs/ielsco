@@ -6,11 +6,13 @@ import Image from "next/image";
 import CountUp from "react-countup";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import OprecPopup from "@/components/careers/OprecPopup";
 
 
 export default function Home() {
   return (
     <>
+ 
       <Header />
 <div className="flex flex-col w-full gap-[50px] lg:gap-[100px] bg-white">
   {/* Hero Section */}
@@ -539,7 +541,7 @@ export default function Home() {
 </div>
         </div>
       <Footer />
-
+<OprecPopup/>
     </>
   );
 }

@@ -165,9 +165,8 @@ export default function CareersPage() {
           {/* CTA BELOW CAROUSEL */}
 <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
   <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]"><a
-    href="https://forms.gle/DotTzXLZ9vzcF4BJA"
-    target="_blank"
-    rel="noopener noreferrer"
+    href="#division"
+
   >
     Apply for IELS Batch 3
   </a>
@@ -272,7 +271,7 @@ export default function CareersPage() {
         <Timeline />
 
         {/* ===== DIVISIONS ===== */}
-        <section className="py-20 px-4 bg-white">
+        <section id="division" className="py-20 px-4 bg-white">
           <div className="max-w-6xl mx-auto text-center mb-14">
             <h2 className="text-3xl font-extrabold text-[#2F4157] mb-4">
               Explore Divisions
@@ -295,37 +294,138 @@ export default function CareersPage() {
           </div>
         </section>
 
-        {/* ===== CTA ===== */}
-        <section className="py-20 items-center bg-[#2F4157] text-white text-center px-4">
-          <h2 className="text-3xl font-extrabold mb-4">
-            Ready to Grow with IELS?
-          </h2>
-          <p className="text-gray-200 max-w-xl mx-auto mb-8">
-            Join IELS Batch 3 and be part of impactful projects, global
-            collaborations, and a supportive learning-driven team.
-          </p>
+ {/* ===== STRATEGIC PLAN CTA (Refactored) ===== */}
+      <section className="relative bg-[#2f4157] py-20 overflow-hidden">
+        
+        {/* SUBTLE BACKGROUND GLOW */}
+        <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-[#E56668]/20 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-white/10 rounded-full blur-[140px] pointer-events-none" />
 
-       {/* CTA BELOW CAROUSEL */}
-<div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-  <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]"><a
-    href="https://forms.gle/DotTzXLZ9vzcF4BJA"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    Apply for IELS Batch 3
-  </a>
-</Button>
-  <Button asChild className="bg-white text-[#2F4157] font-semibold px-6 py-3 hover:bg-white/80">
-  <Link
-    href="https://ielsco.com/about"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    Learn About IELS
-  </Link></Button>
-  </div>
-                  {/* CONTACT */}
-        <div className="py-10 text-center pb-12">
+        <div className="relative max-w-6xl mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+            {/* LEFT SIDE: VISUAL MOCKUP (Strategic Plan Cover) */}
+            <div className="relative w-full flex items-center justify-center lg:justify-end order-1 lg:order-1">
+              
+              {/* DECORATIVE ELEMENTS BEHIND */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#E56668]/30 to-transparent rounded-full blur-3xl opacity-40 scale-90" />
+              
+              {/* THE CARD / COVER */}
+              <div 
+                className="
+                  relative
+                  w-[80%] sm:w-[60%] lg:w-[80%]
+                  aspect-[16/9]
+                  rounded-2xl
+                  border-4 border-white/10
+                  shadow-[0_20px_50px_rgba(0,0,0,0.5)]
+                  overflow-hidden
+                  transform rotate-[-2deg] hover:rotate-0 transition-transform duration-500
+                  z-10
+                  bg-[#1a2634]
+                "
+              >
+                {/* GANTI SRC INI DENGAN PATH GAMBAR COVER DECK KAMU */}
+                <Image
+                  src="/images/contents/careers/strategic-plan.png" // Placeholder sementara, ganti dengan cover asli
+                  alt="IELS 1-Year Strategic Plan Cover"
+                  fill
+                  className="object-cover opacity-90 hover:opacity-100 transition-opacity"
+                />
+                
+                {/* Overlay text jika belum ada gambar cover asli (Opsional) */}
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40 pointer-events-none">
+                   <p className="text-white font-bold text-xl sm:text-2xl opacity-80 uppercase tracking-widest border-2 border-white px-4 py-2">
+                      Strategic Plan 2026
+                   </p>
+                </div>
+              </div>
+              
+              {/* Floating Badge (Opsional) */}
+              <div className="absolute -bottom-6 -right-4 sm:right-10 bg-white text-[#2F4157] px-4 py-2 rounded-lg font-bold shadow-xl rotate-[5deg] z-20">
+                 💡 Read our vision
+              </div>
+            </div>
+
+            {/* RIGHT SIDE: CONTENT & ACTION */}
+            <div className="text-white text-center lg:text-left order-2 lg:order-2">
+              
+              <div className="inline-block px-3 py-1 bg-[#E56668]/20 text-[#E56668] rounded-full text-xs font-bold tracking-widest uppercase mb-4 border border-[#E56668]/30">
+                Transparent & Visionary
+              </div>
+
+              <h2 className="text-3xl sm:text-4xl font-extrabold leading-tight mb-6">
+                Ready to Grow with IELS? <br/>
+                <span className="text-[#E56668]">Understand Our Direction.</span>
+              </h2>
+
+              <p className="text-white/80 leading-relaxed text-lg mb-8 max-w-xl mx-auto lg:mx-0">
+                Before you apply, we want you to know exactly where we are heading.
+                Read our <b>1-Year Strategic Plan</b> to see our big goals, 
+                how we operate, and where <i>you</i> fit into the picture.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                {/* PRIMARY CTA: READ STRATEGIC PLAN */}
+                <Button 
+                  asChild
+                  className="
+    bg-[#E56668] text-white
+    font-semibold
+    px-6 py-3
+    rounded-full
+    hover:bg-[#C04C4E]
+    transition-all duration-300
+    active:scale-[0.97]
+    shadow-lg hover:shadow-xl
+
+    w-full sm:w-auto
+    max-w-full
+                  "
+                >
+                  <a
+                    href="https://drive.google.com/file/d/1JgTczzvuf6nwpMMkLmMUGO0TrUkkJLXN/view?usp=sharing" // Masukkan Link Canva di sini
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    📄 Read Strategic Plan
+                  </a>
+                </Button>
+
+                {/* SECONDARY CTA: EXPLORE DIVISIONS */}
+                <Button 
+                  asChild
+                  className="
+   bg-white text-[#2F4157]
+    font-semibold
+    px-6 py-3
+    rounded-full
+    hover:bg-white/90
+    transition-all duration-300
+    active:scale-[0.97]
+    shadow-lg hover:shadow-xl
+
+    w-full sm:w-auto
+    max-w-full
+                  "
+                >
+                  <a href="#division">
+                    Explore Divisions
+                  </a>
+                </Button>
+              </div>
+
+              <p className="mt-6 text-sm text-white/50 italic">
+                *We recommend reading the plan before choosing a division.
+              </p>
+
+            </div>
+
+          </div>
+        </div>
+     
+    {/* CONTACT */}
+        <div className="py-10 text-center pb-4">
           <p>
             Questions? Reach us at{" "}
             <a

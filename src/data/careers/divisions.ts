@@ -1,6 +1,14 @@
 // src/data/careers-data.ts
 import { generateSlug } from "@/utils/slug";
 
+export type Principal = {
+  name: string;
+  role: string;
+  image: string;
+  instagram: string;
+  linkedin: string; 
+  message: string;
+}
 export type Role = {
   title: string;
   level: string;
@@ -31,7 +39,9 @@ export type Division = {
   title: string;
   image: string;
   description: string;
+  principal: Principal;
   subDivisions: SubDivision[];
+    
 };
 export const divisions: Division[] = [
   {
@@ -40,6 +50,15 @@ export const divisions: Division[] = [
   image: "/images/contents/careers/banner/operations.jpeg",
   description:
     "For execution-driven individuals who enjoy building systems, managing communities, and turning ideas into real programs and products.",
+  principal:{
+    name: "Arbadza Rido Adzariyat",
+    role: "Principal of Operations & Business",
+    image: "/images/contents/about/arba.png",
+    instagram: "https://instagram.com/arbadzarido",
+    linkedin: "https://linkedin.com/in/arbadzarido",
+    message:
+      "Execution builds trust. We value people who plan carefully, move decisively, and turn systems into reliable outcomes.",
+  }, 
   subDivisions: [
     {
       name: "Project",
@@ -235,6 +254,15 @@ export const divisions: Division[] = [
     image: "/images/contents/careers/banner/growth.jpeg",
     description:
       "For creative and strategic minds who love branding, storytelling, partnerships, and growing meaningful communities.",
+    principal: {
+    name: "Fadhila Qurotul Aini",
+    role: "Principal of Growth & Finance",
+    image: "/images/contents/about/dhila.png",
+    instagram: "https://www.instagram.com/fadhilaqa._/",
+    linkedin: "https://linkedin.com/in/fadhilaqa/",
+    message:
+      "Growth is not about virality, but direction. We seek people who test ideas, read signals, and scale what truly works.",
+  }, 
     subDivisions: [
       {
         name: "Marketing",
@@ -464,6 +492,15 @@ export const divisions: Division[] = [
   image: "/images/contents/careers/banner/finance.jpeg",
   description:
     "For detail-oriented minds who value accountability, structured documentation, and long-term organizational sustainability.",
+  principal: {
+    name: "Fadhila Qurotul Aini",
+    role: "Principal of Growth & Finance",
+    image: "/images/contents/about/dhila.png",
+    instagram: "https://www.instagram.com/fadhilaqa._/",
+    linkedin: "https://linkedin.com/in/fadhilaqa/",
+    message:
+      "Finance is about stewardship, not restriction. We need people who think long-term, stay precise, and protect sustainability.",
+  }, 
   subDivisions: [
     {
       name: "Accounting",
@@ -562,7 +599,16 @@ export const divisions: Division[] = [
   image: "/images/contents/careers/banner/talent.jpeg",
   description:
     "For people-focused individuals who care about growth, performance, well-being, and building a healthy team culture.",
-  subDivisions: [
+  principal: {
+    name: "Syifa Hana Nabila",
+    role: "Principal of Talent",
+    image: "/images/contents/about/hana.png",
+    instagram: "https://www.instagram.com/ssyifahana/",
+    linkedin: "https://www.linkedin.com/in/syifahana/",
+    message:
+    "Talent grows through responsibility and feedback. We support those willing to learn, reflect, and develop others with intention.",
+  },
+    subDivisions: [
     {
       name: "Talent Development",
       objective:
@@ -586,7 +632,7 @@ export const divisions: Division[] = [
             <ul>
               <li>Observant and attentive to behavioral or engagement changes.</li>
               <li>Consistent and reliable in recurring routines.</li>
-                <li>Active Indonesian undergraduate students (Batch 2023–2025) from any major.</li>
+                <li>Active Indonesian undergraduate students batch 2023–2025 from any major (Psychology, education, or social science majors are preferable, but not mandatory).</li>
                 <li>High sense of responsibility and ownership.</li>
             </ul>
           `,
@@ -612,13 +658,14 @@ export const divisions: Division[] = [
           level: "Associate",
           mode: "Remote",
           description:
-            "Support performance management by collecting KPI data, maintaining dashboards, and assisting appraisal documentation.",
+            "Support performance management by collecting KPI data, maintaining dashboards, recruitment and assisting appraisal documentation.",
           jobDescription: `
             <ul>
               <li>Collect and validate KPI and OKR data from all divisions.</li>
               <li>Maintain performance dashboards and tracking tools.</li>
               <li>Support appraisal preparation and documentation.</li>
               <li>Conduct routine performance audits and follow-ups.</li>
+              <li>Support internal recruitment processes.</li>
             </ul>
           `,
           requirements: `
@@ -650,6 +697,15 @@ export const divisions: Division[] = [
   image: "/images/contents/careers/banner/business.jpeg",
   description:
     "For relationship builders who enjoy partnerships, negotiations, and expanding IELS’ impact through strategic external collaborations.",
+  principal:{
+    name: "Arbadza Rido Adzariyat",
+    role: "Principal of Operations & Business",
+    image: "/images/contents/about/arba.png",
+    instagram: "https://instagram.com/arbadzarido",
+    linkedin: "https://linkedin.com/in/arbadzarido",
+    message:
+      "Business is built on alignment and execution. We value people who listen well, act responsibly, and convert partnerships into impact.",
+  }, 
   subDivisions: [
     {
       name: "Academic Partnership",

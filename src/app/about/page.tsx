@@ -4,7 +4,7 @@ import Footer from "@/components/footer";
 import Header from "@/components/header";
 import Image from "next/image";
 import { useState } from "react";
-import { Instagram, Linkedin } from "lucide-react";
+import { Instagram, Linkedin, ExternalLink } from "lucide-react";
 
 type ActiveSection = "vision" | "curriculum" | "impact" | "team";
 
@@ -434,11 +434,40 @@ case "team":
               in one ecosystem, IELS aims to make quality English education and 
               global exposure more accessible to learners across Indonesia.
             </p>
+            {/* ===== TAMBAHAN BUTTON STRATEGIC PLAN ===== */}
+  <div className="mt-2 sm:mt-4 flex justify-center lg:justify-start">
+    <a
+      href="https://drive.google.com/file/d/1JgTczzvuf6nwpMMkLmMUGO0TrUkkJLXN/view?usp=sharing"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="
+        group relative overflow-hidden
+        inline-flex items-center justify-center gap-3
+        bg-[#E56668] text-white
+        px-6 py-3 sm:px-8 sm:py-3.5
+        rounded-full
+        font-bold text-[14px] sm:text-[16px]
+        shadow-md
+        transition-all duration-300
+        hover:bg-[#c94f51] hover:shadow-xl hover:-translate-y-1
+        active:scale-95
+        w-full sm:w-auto
+      "
+    >
+      <span>View IELS 1-Year Strategic Plan</span>
+      <ExternalLink 
+        size={18} 
+        className="transition-transform duration-300 group-hover:rotate-45 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" 
+      />
+    </a>
+  </div>
           </div>
         </div>
         <div className="w-full">
           <div className="block sm:hidden">
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-1 relative">
+
+            
               {/* Animated Background */}
 <div className="relative">
   <div

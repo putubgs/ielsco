@@ -4,13 +4,70 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { divisions } from "@/data/careers/divisions";
 import Timeline from "@/components/careers/Timeline";
 import DivisionCard from "@/components/careers/DivisionCard";
 import { Button } from "@/components/ui/button";
 
+const DEADLINE = new Date("2026-01-31T23:59:59+07:00");
+
+/* ===== COUNTDOWN (FIXED) ===== */
+function CountdownTimer() {
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
+
+  useEffect(() => {
+    setTimeLeft(DEADLINE.getTime() - new Date().getTime());
+
+    const timer = setInterval(() => {
+      setTimeLeft(DEADLINE.getTime() - new Date().getTime());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  if (timeLeft === null) {
+    return null; // Atau bisa return <div>Loading...</div>
+  }
+
+  if (timeLeft <= 0) {
+    return (
+      <span className="text-[#E56668] font-bold text-sm">
+        Recruitment Closed
+      </span>
+    );
+  }
+
+  const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
+  const seconds = Math.floor((timeLeft / 1000) % 60);
+
+  return (
+    <div className="flex gap-3 justify-center">
+      {[
+        ["Days", days],
+        ["Hours", hours],
+        ["Min", minutes],
+        ["Sec", seconds],
+      ].map(([label, value]) => (
+        <div
+          key={label}
+          className="bg-white/20 rounded-xl px-4 py-2 text-center"
+        >
+          {/* Suppress hydration warning jika masih ada selisih kecil */}
+          <div className="text-xl font-extrabold" suppressHydrationWarning>
+            {value}
+          </div>
+          <p className="text-[10px] uppercase tracking-wide text-white">
+            {label}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
 const benefits = [
   {
     icon: "🚀",
@@ -109,7 +166,7 @@ export default function CareersPage() {
         {/* ===== HERO ===== */}
         <section className="text-center py-16 px-4">
           <h1 className="text-4xl font-bold mb-4">
-            IELS MT Open Recruitment Batch 3 💼 
+            IELS Open Recruitment Batch 3 💼 
           </h1>
           <p className="max-w-2xl mx-auto text-base text-gray-200">
             We&apos;re a student-led organization empowering youths for global
@@ -162,6 +219,14 @@ export default function CareersPage() {
               />
             ))}
           </div>
+
+              {/* COUNTDOWN (TOP) */}
+    <div className="mt-10">
+      <p className="text-sm uppercase tracking-widest text-white/70 mb-3">
+        <strong>Recruitment</strong> closes in
+      </p>
+      <CountdownTimer />
+    </div>
           {/* CTA BELOW CAROUSEL */}
 <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
   <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]"><a
@@ -173,9 +238,7 @@ export default function CareersPage() {
 </Button>
   <Button asChild className="bg-white text-[#2F4157] font-semibold px-6 py-3 hover:bg-white/80">
   <Link
-    href="https://ielsco.com/about"
-    target="_blank"
-    rel="noopener noreferrer"
+    href="/about"
   >
     Learn About IELS
   </Link></Button>
@@ -359,7 +422,7 @@ export default function CareersPage() {
                 <span className="text-[#E56668]">Understand Our Direction.</span>
               </h2>
 
-              <p className="text-white/80 leading-relaxed text-lg mb-8 max-w-xl mx-auto lg:mx-0">
+              <p className="text-white/80 leading-relaxed text-sm mb-8 max-w-xl mx-auto lg:mx-0">
                 Before you apply, we want you to know exactly where we are heading.
                 Read our <b>1-Year Strategic Plan</b> to see our big goals, 
                 how we operate, and where <i>you</i> fit into the picture.

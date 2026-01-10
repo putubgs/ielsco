@@ -240,7 +240,7 @@ export default function Home() {
             <div className="flex w-full items-center gap-4 h-full justify-center">
               <div className="text-white text-[24px] lg:text-[32px] items-center justify-center flex flex-col -space-y-2 lg:-space-y-3">
                 <p className="font-bold text-[36px] md:text-[48px]">
-                  <CountUp end={2000} duration={2.5} separator="," enableScrollSpy />+
+                  <CountUp end={2800} duration={2.5} separator="," enableScrollSpy />+
                 </p>
                 <p className="text-[24px] lg:text-[32px]">MEMBERS</p>
               </div>
@@ -248,7 +248,7 @@ export default function Home() {
             <div className="flex flex-col w-full items-center gap-4">
               <div className="text-white flex text-[24px] lg:text-[32px] items-center flex gap-4">
                 <p className="font-bold text-[36px] md:text-[48px]">
-                  <CountUp end={100} duration={2.5} enableScrollSpy />+
+                  <CountUp end={110} duration={2.5} enableScrollSpy />+
                 </p>
                 <p className="text-white text-[20px] md:text-[28px] leading-tight">
                   WINNING <br /> STORIES
@@ -261,7 +261,7 @@ export default function Home() {
             <div className="flex flex-col w-full items-center gap-4">
               <div className="text-white flex text-[24px] lg:text-[32px] items-center flex gap-4">
                 <p className="font-bold text-[36px] md:text-[48px]">
-                  <CountUp end={25} duration={2.5} enableScrollSpy />+
+                  <CountUp end={35} duration={2.5} enableScrollSpy />+
                 </p>
                 <p className="text-white text-[20px] md:text-[28px] leading-tight">
                   GLOBAL <br /> CAREERS

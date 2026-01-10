@@ -9,7 +9,7 @@ export default function DemographySection() {
   const [activeRegion, setActiveRegion] = useState<RegionKey | null>(null);
 
   return (
-    <div className="bg-[#294154] py-16 sm:py-20 px-4 sm:px-6 text-white">
+    <div className="bg-[#294154] py-12 sm:py-16 px-4 sm:px-6 text-white">
       <div className="max-w-6xl mx-auto">
 
         {/* HEADER */}

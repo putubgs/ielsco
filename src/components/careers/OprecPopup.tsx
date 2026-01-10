@@ -8,18 +8,27 @@ import Link from "next/link";
 const DEADLINE = new Date("2026-01-31T23:59:59+07:00");
 const STORAGE_KEY = "iels-oprec-state";
 
-/* ===== COUNTDOWN ===== */
+/* ===== COUNTDOWN (FIXED) ===== */
 function CountdownTimer() {
-  const [timeLeft, setTimeLeft] = useState<number>(
-    DEADLINE.getTime() - new Date().getTime()
-  );
+  // 1. Inisialisasi state dengan null atau 0 untuk menghindari mismatch awal
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
 
   useEffect(() => {
+    // 2. Hitung waktu segera setelah komponen mount di client
+    setTimeLeft(DEADLINE.getTime() - new Date().getTime());
+
     const timer = setInterval(() => {
       setTimeLeft(DEADLINE.getTime() - new Date().getTime());
     }, 1000);
+
     return () => clearInterval(timer);
   }, []);
+
+  // 3. Jangan render apa-apa (atau loading state) sampai client-side calculation siap
+  //    Ini mencegah HTML server (yang statis) bentrok dengan HTML client (yang dinamis)
+  if (timeLeft === null) {
+    return null; // Atau bisa return <div>Loading...</div>
+  }
 
   if (timeLeft <= 0) {
     return (
@@ -46,7 +55,10 @@ function CountdownTimer() {
           key={label}
           className="bg-[#294154]/5 rounded-xl px-4 py-2 text-center"
         >
-          <div className="text-xl font-extrabold">{value}</div>
+          {/* Suppress hydration warning jika masih ada selisih kecil */}
+          <div className="text-xl font-extrabold" suppressHydrationWarning>
+            {value}
+          </div>
           <p className="text-[10px] uppercase tracking-wide text-gray-500">
             {label}
           </p>

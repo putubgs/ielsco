@@ -157,7 +157,7 @@ export default function PartnersPage() {
 
 
 {/* ================= IMPACT AT A GLANCE ================= */}
-<section className="bg-[#294154] py-16 sm:py-20 px-4 sm:px-6 text-white">
+<section className="bg-[#294154] py-12 sm:py-20 px-4 sm:px-6 text-white">
   <div className="max-w-6xl mx-auto">
 
     {/* HEADER */}
@@ -174,7 +174,7 @@ export default function PartnersPage() {
     </div>
 
     {/* IMPACT CARDS */}
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 mb-14 sm:mb-16">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
 
       {/* LEARNERS */}
       <div className="group relative rounded-3xl bg-white text-[#294154] p-6 hover:-translate-y-1 hover:shadow-2xl transition-all">

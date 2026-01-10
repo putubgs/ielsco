@@ -298,7 +298,7 @@ export default function DivisionPage({ params }: DivisionPageProps) {
         </div>
 
         {/* SUPPORTING TEXT */}
-        <p className="text-white/70 text-base sm:text-lg mb-10 leading-relaxed max-w-xl">
+        <p className="text-white/70 text-base mb-10 leading-relaxed max-w-xl">
           Work on real projects, collaborate across teams, and grow under
           structured mentorship. This is not about titles — 
           <b className="text-white"> it&apos;s about building real capability and credibility</b>.
@@ -308,7 +308,7 @@ export default function DivisionPage({ params }: DivisionPageProps) {
         <Button
           asChild
           className="
-            bg-[#E56668] text-white px-6 py-2.5 rounded-full text-lg font-semibold
+            bg-[#E56668] text-white px-6 py-2.5 rounded-full text-base font-semibold
             hover:bg-[#C04C4E] hover:shadow
             transition-all duration-300 active:scale-95
           "

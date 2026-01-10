@@ -55,7 +55,7 @@ const timeline: TimelineItem[] = [
   },
   {
     title: "Onboarding",
-    date: "4 April 2026",
+    date: "6 April 2026",
     desc: "Formal onboarding and start of Batch 3 journey.",
     start: new Date("2026-04-04"),
     end: new Date("2026-04-04"),

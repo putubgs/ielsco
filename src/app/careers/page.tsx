@@ -162,31 +162,74 @@ export default function CareersPage() {
     <>
       <Header />
 
-      <div className="min-h-screen bg-[#3a4b60] text-white">
+      <div className="min-h-screen bg-[#2F4157] text-white">
         {/* ===== HERO ===== */}
-        <section className="text-center py-16 px-4">
-          <h1 className="text-4xl font-bold mb-4">
-            IELS Open Recruitment Batch 3 💼 
-          </h1>
+        <section className="text-center py-10 px-4">
+{/* HEADER TITLE - CONSISTENT LAYOUT (Mobile & Desktop Same Style) */}
+      <div className="flex flex-row items-center justify-center gap-4 sm:gap-6 mb-8 px-2">
+        
+        {/* BAGIAN KIRI: Emoji & Badge */}
+        <div className="relative shrink-0">
+          {/* Emoji Besar */}
+          <span className="text-7xl sm:text-9xl leading-none drop-shadow-sm">
+            💼
+          </span>
+
+          {/* Badge Batch 3 (Stempel Nempel di Bawah Kanan Emoji) */}
+          <div
+            className="
+              absolute
+              -bottom-0 -right-1      /* Posisi menimpa sedikit di kanan bawah */
+               
+              rotate-[-12deg]         /* Miring ke kiri */
+              bg-[#E56668] text-white
+              text-[10px] sm:text-sm font-bold tracking-wider uppercase
+              px-2 py-1 sm:px-4 sm:py-1.5
+              rounded-md sm:rounded-lg
+              shadow-md
+              border-2 border-white   /* Outline putih biar rapi */
+              z-10
+              whitespace-nowrap
+            "
+          >
+            Batch #3
+          </div>
+        </div>
+
+        {/* BAGIAN KANAN: Teks Judul (Rata Kiri) */}
+        <h1 className="text-3xl sm:text-5xl font-extrabold text-white leading-tight text-left">
+          IELS Open <br /> Recruitment
+        </h1>
+      </div>
           <p className="max-w-2xl mx-auto text-base text-gray-200">
-            We&apos;re a student-led organization empowering youths for global
+            We&apos;re a student-led English learning community empowering youths for global
             opportunities. Explore open positions and be part of our journey.
           </p>
 
-          {/* ===== CAROUSEL ===== */}
-          <div className="relative mt-8 flex justify-center">
-            <div className="relative w-[800px] h-[400px] overflow-hidden rounded-2xl shadow-md">
-              {images.map((src, index) => (
-                <Image
-                  key={index}
-                  src={src}
-                  alt={`IELS Image ${index + 1}`}
-                  fill
-                  className={`object-cover transition-opacity duration-700 ease-in-out absolute inset-0 ${
-                    currentImage === index ? "opacity-100" : "opacity-0"
-                  }`}
-                />
-              ))}
+  {/* ===== CAROUSEL ===== */}
+<div className="relative mt-8 flex justify-center">
+  <div className="relative w-[800px] h-[400px] overflow-hidden rounded-2xl shadow-md">
+    {images.map((src, index) => (
+      <div
+        key={index}
+        className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+          currentImage === index ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        {/* Apply grayscale filter to the image.
+            Use 'grayscale' class from Tailwind.
+        */}
+        <Image
+          src={src}
+          alt={`IELS Image ${index + 1}`}
+          fill
+          className="object-cover grayscale" // Tambahkan 'grayscale' di sini
+        />
+        
+        {/* Optional: Dark overlay to match the mood if needed */}
+        {/* <div className="absolute inset-0 bg-black/20 mix-blend-multiply" /> */}
+      </div>
+    ))}
 
               {/* ARROWS */}
               <button

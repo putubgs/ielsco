@@ -5,7 +5,7 @@ import Header from "@/components/header";
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import codesRaw from "@/data/codes.json";
+import { VALID_CODES } from "@/data/test/codes";
 import { Button } from "@/components/ui/button";
 
 type CodeEntry = {
@@ -15,7 +15,7 @@ type CodeEntry = {
   email?: string;
 };
 
-const codes: CodeEntry[] = (codesRaw as unknown) as CodeEntry[];
+const codes: CodeEntry[] = (VALID_CODES as unknown) as CodeEntry[];
 
 export default function TestSelectionPage() {
   const googleFormLink = "https://forms.gle/yFCdzbeR8uMBzM5X8";

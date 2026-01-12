@@ -1,12 +1,14 @@
-[
-  { "id": 1, "code": "IELS-179D-BZW9", "used": false, "Raji Irfan Fauzi": "", "email": "" },
-  { "id": 2, "code": "IELS-1UKW-AQQD", "used": false, "Ichsan Kamil": "", "email": "" },
-  { "id": 3, "code": "IELS-2DHP-HNBI", "used": false, "Haritz Avicenna Valleyanto": "", "email": "" },
-  { "id": 4, "code": "IELS-2LTQ-XOAV", "used": false, "Alora Yolanda": "", "email": "" },
-  { "id": 5, "code": "IELS-2RF5-H6ZT", "used": false, "Rania Maryam ": "", "email": "" },
-  { "id": 6, "code": "IELS-33GF-4K8Y", "used": false, "Ignatius Cahyo Widhiasto": "", "email": "" },
-  { "id": 7, "code": "IELS-3B7S-8VQJ", "used": false, "Ghiyyas Abyan Haryanto ": "", "email": "" },
-  { "id": 8, "code": "IELS-3H6M-V9ZG", "used": false, "Kanaya Salma Putridianti": "", "email": "" },
+// src/data/codes.ts
+
+export const VALID_CODES = [
+  { "id": 1, "code": "IELS-179D-BZW9", "used": false, "name": "", "email": "" },
+  { "id": 2, "code": "IELS-1UKW-AQQD", "used": false, "name": "Ichsan Kamil", "email": "" },
+  { "id": 3, "code": "IELS-2DHP-HNBI", "used": false, "name": "Haritz Avicenna Valleyanto", "email": "" },
+  { "id": 4, "code": "IELS-2LTQ-XOAV", "used": false, "name": "Alora Yolanda", "email": "" },
+  { "id": 5, "code": "IELS-2RF5-H6ZT", "used": false, "name": "Rania Maryam", "email": "" },
+  { "id": 6, "code": "IELS-33GF-4K8Y", "used": false, "name": "Ignatius Cahyo Widhiasto", "email": "" },
+  { "id": 7, "code": "IELS-3B7S-8VQJ", "used": false, "name": "Ghiyyas Abyan Haryanto", "email": "" },
+  { "id": 8, "code": "IELS-3H6M-V9ZG", "used": false, "name": "Kanaya Salma Putridianti", "email": "" },
   { "id": 9, "code": "IELS-3Q2R-8X5C", "used": false, "name": "", "email": "" },
   { "id": 10, "code": "IELS-44K9-P2NM", "used": false, "name": "", "email": "" },
   { "id": 11, "code": "IELS-4C8F-JX2S", "used": false, "name": "", "email": "" },
@@ -83,4 +85,4 @@
   { "id": 82, "code": "IELS-T9F3-R6KB", "used": false, "name": "", "email": "" },
   { "id": 83, "code": "IELS-V1P8-5JQZ", "used": false, "name": "", "email": "" },
   { "id": 84, "code": "IELS-V4M2-9CXT", "used": false, "name": "", "email": "" }
-]
+];

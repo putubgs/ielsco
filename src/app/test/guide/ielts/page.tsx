@@ -4,7 +4,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import codesRaw from "@/data/codes.json";
+import { VALID_CODES } from "@/data/test/codes";
 import { Button } from "@/components/ui/button";
 
 type CurriculumItem = {
@@ -84,7 +84,7 @@ type CodeEntry = {
   email?: string;
 };
 
-const codes: CodeEntry[] = (codesRaw as unknown) as CodeEntry[];
+const codes: CodeEntry[] = (VALID_CODES as unknown) as CodeEntry[];
 
 const DEADLINE = new Date("2026-01-05T23:59:59+07:00");
 

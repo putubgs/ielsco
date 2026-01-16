@@ -10,6 +10,7 @@ import { divisions } from "@/data/careers/divisions";
 import Timeline from "@/components/careers/Timeline";
 import DivisionCard from "@/components/careers/DivisionCard";
 import { Button } from "@/components/ui/button";
+import CareersFAQ from "@/components/careers/CareersFAQ";
 
 const DEADLINE = new Date("2026-01-31T23:59:59+07:00");
 
@@ -205,6 +206,9 @@ export default function CareersPage() {
             We&apos;re a student-led English learning community empowering youths for global
             opportunities. Explore open positions and be part of our journey.
           </p>
+          <br/>
+          <p className="max-w-2xl mx-auto font-bold text-gray-200">
+          📆 Program Period: 9 months (April – December 2026)</p>
 
   {/* ===== CAROUSEL ===== */}
 <div className="relative mt-8 flex justify-center">
@@ -399,6 +403,7 @@ export default function CareersPage() {
             ))}
           </div>
         </section>
+        <CareersFAQ/>
 
  {/* ===== STRATEGIC PLAN CTA (Refactored) ===== */}
       <section className="relative bg-[#2f4157] py-20 overflow-hidden">

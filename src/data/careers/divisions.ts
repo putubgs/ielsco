@@ -509,6 +509,7 @@ export const divisions: Division[] = [
       roles: [
         {
           title: "Accounting Associate",
+          isClosed:true,
           level: "Associate",
           mode: "Remote",
           description:

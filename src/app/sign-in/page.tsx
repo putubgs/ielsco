@@ -1,84 +1,104 @@
 "use client";
 
-import { useState } from "react";
 import AuthLayout from "@/components/auth/AuthLayout";
 import Image from "next/image";
-import Popup from "@/components/ui/popup";
-
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { supabase } from "@/data/supabase";
+import { useRouter } from "next/navigation";
 
 import {
   Form,
   FormField,
   FormItem,
-  FormControl,
   FormLabel,
-  FormMessage,
+  FormControl,
+  FormMessage
 } from "@/components/ui/form";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
 import { Eye, EyeOff } from "lucide-react";
 
-const LoginSchema = z.object({
-  email: z.string().email("Oops! That email doesn’t look right 👀"),
-  password: z.string().min(6, "Your password looks a bit short — try again?"),
+import Popup from "@/components/ui/popup";
+
+const SignInSchema = z.object({
+  email: z.string().email("Hmm… that email doesn't look valid 👀"),
+  password: z.string().min(1, "Password is required")
 });
 
-export default function LoginPage() {
-  const [serverError, setServerError] = useState(""); // inline error
-  const [popup, setPopup] = useState(""); // for Google only
-  const [showPass, setShowPass] = useState(false);
+export default function SignInPage() {
   const [loading, setLoading] = useState(false);
+  const [showPass, setShowPass] = useState(false);
+  const [popup, setPopup] = useState("");
+  const router = useRouter();
 
   const form = useForm({
-    resolver: zodResolver(LoginSchema),
-    defaultValues: { email: "", password: "" },
+    resolver: zodResolver(SignInSchema),
+    defaultValues: {
+      email: "",
+      password: ""
+    }
   });
 
-  type LoginForm = {
-  email: string;
-  password: string;
-};
+  type SignInForm = {
+    email: string;
+    password: string;
+  };
 
-const onSubmit = async (values: LoginForm) => {
+  const onSubmit = async (values: SignInForm) => {
     setLoading(true);
-    setServerError("");
 
-    // ❗ TEMPORARY — DISABLE LOGIN BACKEND
-    setTimeout(() => {
-      setServerError("This email isn’t registered yet :( Try signing up first!");
-      setLoading(false);
-    }, 700);
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: values.email,
+        password: values.password
+      });
 
-    /*
-    UNCOMMENT THIS WHEN BACKEND IS READY
-    ------------------------------------
-
-    const res = await fetch("/api/auth/sign-in", {
-      method: "POST",
-      body: JSON.stringify(values),
-    });
-
-    const json = await res.json();
-
-    if (!res.ok) {
-      if (json.error === "EMAIL_NOT_FOUND") {
-        setServerError("This email isn’t registered yet :( Try signing up first!");
-      } else if (json.error === "WRONG_PASSWORD") {
-        setServerError("That password doesn’t look right — try again?");
-      } else {
-        setServerError("Unexpected issue — try again soon!");
+      if (error) {
+        // Handle specific errors
+        if (error.message.includes("Invalid login credentials")) {
+          setPopup("Invalid email or password. Please try again! 🔐");
+        } else if (error.message.includes("Email not confirmed")) {
+          setPopup("Please verify your email before signing in. Check your inbox! 📧");
+        } else {
+          setPopup(`Error: ${error.message}`);
+        }
+        setLoading(false);
+        return;
       }
-      setLoading(false);
-      return;
-    }
 
-    window.location.href = "/dashboard";
-    */
+      if (data.user) {
+        setPopup("Welcome back! Redirecting... 🎉");
+        setTimeout(() => {
+          router.push("/dashboard"); // Ganti dengan route dashboard Anda
+        }, 1000);
+      }
+    } catch (error: any) {
+      console.error("Sign in error:", error);
+      setPopup("Something went wrong — please try again! 😔");
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`
+        }
+      });
+
+      if (error) {
+        setPopup(`Google sign-in error: ${error.message}`);
+      }
+    } catch (error: any) {
+      console.error("Google sign-in error:", error);
+      setPopup("Google sign-in failed — please try again! 😔");
+    }
   };
 
   return (
@@ -123,14 +143,14 @@ const onSubmit = async (values: LoginForm) => {
                     <div className="relative">
                       <Input
                         type={showPass ? "text" : "password"}
-                        placeholder="Your password"
+                        placeholder="Enter your password"
                         className="border rounded-xl w-full p-3 bg-[#F7F8FA] focus:outline-none focus:ring-2 focus:ring-[#E56668]"
                         {...field}
                       />
                       <button
                         type="button"
-                        onClick={() => setShowPass(!showPass)}
                         className="absolute right-4 top-3 text-gray-500"
+                        onClick={() => setShowPass(!showPass)}
                       >
                         {showPass ? <EyeOff size={20} /> : <Eye size={20} />}
                       </button>
@@ -141,31 +161,26 @@ const onSubmit = async (values: LoginForm) => {
               )}
             />
 
-            {/* INLINE SERVER ERROR */}
-            {serverError && (
-              <p className="text-[#E56668] text-sm text-center font-medium">
-                {serverError}
-              </p>
-            )}
+            {/* FORGOT PASSWORD LINK */}
+            <div className="text-right">
+              <a 
+                href="/forgot-password" 
+                className="text-sm text-[#E56668] hover:underline"
+              >
+                Forgot password?
+              </a>
+            </div>
 
-            {/* SUBMIT */}
+            {/* SIGN IN BUTTON */}
             <Button
-              type="submit"
               disabled={loading}
+              type="submit"
               className="w-full py-3 rounded-full bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] disabled:bg-[#C04C4E]"
             >
-              {loading ? "Checking…" : "Sign In"}
+              {loading ? "Signing in…" : "Sign In"}
             </Button>
           </form>
         </Form>
-
-        {/* FORGOT PASSWORD */}
-        <a
-          href="/sign-in/forgot"
-          className="block text-right text-sm text-[#E56668] hover:underline"
-        >
-          Forgot password?
-        </a>
 
         {/* DIVIDER */}
         <div className="flex items-center gap-3">
@@ -174,22 +189,20 @@ const onSubmit = async (values: LoginForm) => {
           <div className="flex-grow border-t" />
         </div>
 
-        {/* GOOGLE BTN */}
+        {/* GOOGLE SIGN IN */}
         <button
-          onClick={() =>
-            setPopup("Google sign-in is coming soon — stay tuned! 🚀")
-          }
+          onClick={handleGoogleSignIn}
           className="inline-flex items-center justify-center gap-2 rounded-full w-full py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition active:scale-[0.97]"
         >
-          <Image src="/images/contents/general/google.png" width={25} height={25} alt="Google Icon" />
+          <Image src="/images/contents/general/google.png" width={25} height={25} alt="Google" />
           Continue with Google
         </button>
 
         {/* FOOTER */}
         <p className="text-center text-gray-600 pt-2">
-          Don’t have an account?{" "}
+          Don't have an account?{" "}
           <a href="/sign-up" className="text-[#E56668] font-semibold hover:underline">
-            Create one
+            Sign up here
           </a>
         </p>
       </div>

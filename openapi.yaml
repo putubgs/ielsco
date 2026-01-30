@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   description: API spec for IELS membership, test access, events, and Mayar integration.
 servers:
-  - url: https://api.yourdomain.com
+  - url: https://hkubzamchahvdpvojepc.supabase.co
     description: Production
   - url: http://localhost:3000
     description: Local dev

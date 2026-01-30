@@ -1,8 +1,18 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  outputFileTracingRoot: __dirname,
-  /* config options here */
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com', // Domain spesifik error kamu
+      },
+      {
+        protocol: 'https',
+        hostname: '*.googleusercontent.com', // Wildcard biar aman kalau Google ganti server (lh4, lh5, dst)
+      },
+    ],
+  },
 };
 
 export default nextConfig;

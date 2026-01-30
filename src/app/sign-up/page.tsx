@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { supabase } from "@/data/supabase";
+import { useRouter } from "next/navigation";
 
 import {
   Form,
@@ -32,7 +34,7 @@ import Popup from "@/components/ui/popup";
 const SignupSchema = z
   .object({
     fullName: z.string().min(3, "Your name looks too short — try again? 😊"),
-    email: z.string().email("Hmm… that email doesn’t look valid 👀"),
+    email: z.string().email("Hmm… that email doesn't look valid 👀"),
 
     password: z
       .string()
@@ -53,6 +55,7 @@ export default function RegisterPage() {
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [popup, setPopup] = useState("");
+  const router = useRouter();
 
   const form = useForm({
     resolver: zodResolver(SignupSchema),
@@ -65,43 +68,87 @@ export default function RegisterPage() {
   });
 
   type SignupForm = {
-  fullName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
+    fullName: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+  };
 
-const onSubmit = async (values: SignupForm) => {
+  const onSubmit = async (values: SignupForm) => {
     setLoading(true);
 
-    // 👇 TEMPORARY POPUP (hilangkan setelah sistem siap)
-    setTimeout(() => {
-      setPopup(
-        "Sign-up isn’t available yet — we’re still preparing your smooth onboarding experience! 🚀✨"
-      );
-      setLoading(false);
-    }, 700);
+    try {
+      // Sign up dengan Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: values.email,
+        password: values.password,
+        options: {
+          data: {
+            full_name: values.fullName,
+          },
+          emailRedirectTo: `${window.location.origin}/auth/callback`
+        }
+      });
 
-    /*
-    ---------------------------------------------------------------
-    NOTE FOR FUTURE WHEN BACKEND IS READY
-    ---------------------------------------------------------------
+      if (authError) {
+        // Handle specific Supabase errors
+        if (authError.message.includes("already registered")) {
+          setPopup("This email is already registered. Please sign in instead! 🔐");
+        } else {
+          setPopup(`Error: ${authError.message}`);
+        }
+        setLoading(false);
+        return;
+      }
 
-    const res = await fetch("/api/auth/send-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: values.email, purpose: "signup" })
-    });
+      if (authData.user) {
+        // Jika Supabase mengharuskan verifikasi email
+        if (authData.user.identities && authData.user.identities.length === 0) {
+          setPopup("This email is already registered. Please sign in instead! 🔐");
+          setLoading(false);
+          return;
+        }
 
-    const json = await res.json();
-
-    if (json.ok) {
-      window.location.href = `/sign-up/verify?email=${values.email}`;
-    } else {
-      setPopup("Something went wrong — try again!");
+        // Cek apakah perlu konfirmasi email
+        if (!authData.session) {
+          setPopup(
+            "Success! 🎉 Please check your email to verify your account before signing in."
+          );
+          setTimeout(() => {
+            router.push("/sign-in");
+          }, 3000);
+        } else {
+          // Jika auto-confirm diaktifkan di Supabase, langsung redirect
+          setPopup("Account created successfully! Redirecting... 🚀");
+          setTimeout(() => {
+            router.push("/dashboard"); // Ganti dengan route dashboard Anda
+          }, 1500);
+        }
+      }
+    } catch (error: any) {
+      console.error("Signup error:", error);
+      setPopup("Something went wrong — please try again! 😔");
+    } finally {
       setLoading(false);
     }
-    */
+  };
+
+  const handleGoogleSignUp = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`
+        }
+      });
+
+      if (error) {
+        setPopup(`Google sign-up error: ${error.message}`);
+      }
+    } catch (error: any) {
+      console.error("Google signup error:", error);
+      setPopup("Google sign-up failed — please try again! 😔");
+    }
   };
 
   return (
@@ -223,7 +270,7 @@ const onSubmit = async (values: SignupForm) => {
               type="submit"
               className="w-full py-3 rounded-full bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] disabled:bg-[#C04C4E]"
             >
-              {loading ? "Sending OTP…" : "Sign Up"}
+              {loading ? "Creating account…" : "Sign Up"}
             </Button>
           </form>
         </Form>
@@ -235,11 +282,9 @@ const onSubmit = async (values: SignupForm) => {
           <div className="flex-grow border-t" />
         </div>
 
-        {/* GOOGLE SIGN UP (TEMPORARY DISABLED) */}
+        {/* GOOGLE SIGN UP */}
         <button
-          onClick={() =>
-            setPopup("Google sign-up isn’t available yet — but coming very soon! ⚡️")
-          }
+          onClick={handleGoogleSignUp}
           className="inline-flex items-center justify-center gap-2 rounded-full w-full py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition active:scale-[0.97]"
         >
           <Image src="/images/contents/general/google.png" width={25} height={25} alt="Google" />

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Geologica } from "next/font/google";
 import "./globals.css";
 
-// Import komponen Header 
-import Header from "@/components/header";
+// Import Wrapper baru tadi (bukan Header langsung)
+import LayoutWrapper from "@/components/LayoutWrapper";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -28,13 +28,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      {/* Catatan: bg-[#2F4157] adalah background biru tua public.
+         DashboardLayout nanti akan menimpanya dengan background sendiri (min-h-screen bg-gray...).
+      */}
       <body
         className={`${geologica.variable} ${inter.variable} antialiased bg-[#2F4157] font-inter`}
       >
-        {/* Global Header */}
-        <Header />
-
-        <main className="pt-32">{children}</main>
+        {/* Gunakan Wrapper untuk mengatur logika Header & Padding */}
+        <LayoutWrapper>
+          {children}
+        </LayoutWrapper>
       </body>
     </html>
   );

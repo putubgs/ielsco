@@ -15,28 +15,31 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
     /* ✅ ADDITIONS BELOW */
     "baseUrl": ".", // Allow absolute paths like "@/utils/email"
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
     "paths": {
-        "@/*": ["./src/*"]
-      },
-
+      "@/*": [
+        "./src/*"
+      ]
+    },
     "plugins": [
       {
         "name": "next"
       }
     ]
   },
-    "include": [
-      "next-env.d.ts",
-      "src/**/*",
-      ".next/types/**/*.ts"
-, "backend/modules", "backend/lib"      ]
-      ,
+  "include": [
+    "next-env.d.ts",
+    "src/**/*",
+    ".next/types/**/*.ts",
+    "backend/modules",
+    "backend/lib",
+    ".next/dev/types/**/*.ts"
+  ],
   "exclude": [
     "node_modules"
   ]

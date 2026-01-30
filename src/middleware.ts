@@ -1,60 +1,87 @@
 // src/middleware.ts
-import { withAuth } from "next-auth/middleware";
-import { NextResponse } from "next/server";
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
+import { NextResponse, type NextRequest } from 'next/server'
 
-export default withAuth(
-  function middleware(req) {
-    const { nextUrl, nextauth } = req;
-    const isLoggedIn = !!nextauth?.token;
-
-    const pathname = nextUrl.pathname;
-
-    // -----------------------------
-    // 1. PROTECTED ROUTES (login required)
-    // -----------------------------
-    const protectedRoutes = ["/dashboard", "/profile", "/settings"];
-    const isProtected = protectedRoutes.some((p) =>
-      pathname.startsWith(p)
-    );
-
-    if (isProtected && !isLoggedIn) {
-      return NextResponse.redirect(new URL("/login", req.url));
-    }
-
-    // -----------------------------
-    // 2. PUBLIC-ONLY ROUTES (logged in users cannot enter)
-    // -----------------------------
-    const publicOnlyRoutes = [
-      "/login",
-      "/sign-up",
-      "/sign-up/verify",
-      "/welcome/start",
-      "/welcome/result",
-    ];
-    const isPublicOnly = publicOnlyRoutes.includes(pathname);
-
-    if (isPublicOnly && isLoggedIn) {
-      return NextResponse.redirect(new URL("/dashboard", req.url));
-    }
-
-    return NextResponse.next();
-  },
-  {
-    callbacks: {
-      authorized() {
-        return true;
-      },
+export async function middleware(request: NextRequest) {
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
     },
+  })
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return request.cookies.get(name)?.value
+        },
+        set(name: string, value: string, options: CookieOptions) {
+          request.cookies.set({
+            name,
+            value,
+            ...options,
+          })
+          response = NextResponse.next({
+            request: {
+              headers: request.headers,
+            },
+          })
+          response.cookies.set({
+            name,
+            value,
+            ...options,
+          })
+        },
+        remove(name: string, options: CookieOptions) {
+          request.cookies.set({
+            name,
+            value: '',
+            ...options,
+          })
+          response = NextResponse.next({
+            request: {
+              headers: request.headers,
+            },
+          })
+          response.cookies.set({
+            name,
+            value: '',
+            ...options,
+          })
+        },
+      },
+    }
+  )
+
+  // Cek session user
+  const { data: { user } } = await supabase.auth.getUser()
+
+  // ATURAN REDIRECT:
+  
+  // 1. Jika user SUDAH login tapi buka halaman /sign-in atau /sign-up, tendang ke /dashboard
+  if (user && (request.nextUrl.pathname.startsWith('/sign-in') || request.nextUrl.pathname.startsWith('/sign-up'))) {
+    return NextResponse.redirect(new URL('/dashboard', request.url))
   }
-);
+
+  // 2. Jika user BELUM login tapi maksa buka /dashboard, tendang ke /sign-in
+  if (!user && request.nextUrl.pathname.startsWith('/dashboard')) {
+    return NextResponse.redirect(new URL('/sign-in', request.url))
+  }
+
+  return response
+}
 
 export const config = {
   matcher: [
     /*
-     * Run middleware on:
-     * - all app routes except:
-     *   /_next/, /static/, /api/auth/*, /favicon, /images
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - api/auth (auth endpoints must be public)
      */
-    "/((?!_next|static|api/auth|favicon.ico|images).*)",
+    '/((?!_next/static|_next/image|favicon.ico|api/auth).*)',
   ],
-};
+}

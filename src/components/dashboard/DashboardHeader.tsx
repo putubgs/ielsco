@@ -51,7 +51,6 @@ export default function DashboardHeader({ userAvatar, userName }: { userAvatar?:
   const navItems = [
     { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
     { name: "My Schedule", path: "/dashboard/events", icon: CalendarDays },
-    { name: "Community", path: "/dashboard/community", icon: Users },
     { name: "Marketplace", path: "/dashboard/shop", icon: ShoppingBag },
   ];
 

@@ -73,7 +73,7 @@ export default function GoalDashboardWidget({ userId, userTier = "basic" }: Goal
                 onClick={() => setShowWizard(true)}
                 className="
                   flex-1 sm:flex-none
-                  px-8 py-2
+                  px-8 py-2.5
                   bg-[#E56668] text-white 
                   rounded-full font-bold text-sm 
                   shadow-lg shadow-red-900/20
@@ -90,12 +90,12 @@ export default function GoalDashboardWidget({ userId, userTier = "basic" }: Goal
               <Link
                 href="/dashboard/goals"
                 className="
-                  px-8 py-2
+                  px-8 py-2.5
                   bg-white text-[#2F4157]
                   rounded-full font-bold text-sm 
                   border border-white/10
                   transition-all duration-200
-                  hover:bg-white/10
+                  hover:bg-white/90
                   active:scale-[0.96]
                   flex items-center justify-center gap-2
                 "
@@ -306,13 +306,13 @@ export default function GoalDashboardWidget({ userId, userTier = "basic" }: Goal
             className="
               block w-full py-3 
               bg-[#2F4157] text-white text-center 
-              rounded-xl font-bold text-sm
+              rounded-full font-bold text-sm
               transition-all duration-200
               hover:bg-[#3d5570] hover:scale-[1.02]
               active:scale-[0.96]
             "
           >
-            View Full Roadmap →
+            View Full Roadmap
           </Link>
         </div>
       </div>

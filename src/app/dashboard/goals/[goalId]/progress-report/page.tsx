@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { createBrowserClient } from "@supabase/ssr";
+
 import {
   ArrowLeft,
   Download,
@@ -26,10 +27,10 @@ export default function ProgressReportPage() {
   const router = useRouter();
   const goalId = params?.goalId as string;
   
-const supabase = createBrowserClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key"
-);
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
 
   const [userData, setUserData] = useState({ 
     id: "", 
@@ -154,7 +155,7 @@ const supabase = createBrowserClient(
           </div>
 
           {/* Key Metrics Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8 mb-8">
             {/* Overall Progress */}
             <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
               <div className="flex items-center gap-3 mb-3">

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import GoalDashboardWidget from "@/components/goals/GoalDashboardWidget";
+import PricingModal from '@/components/subscription/PricingModal';
 import { createBrowserClient } from "@supabase/ssr";
 import { eventsData } from "@/data/events"; // <--- IMPORT PENTING INI
 import {
@@ -612,7 +613,7 @@ const supabase = createBrowserClient(
                   onClick={handleSignOut}
                   className="
                     w-full flex items-center justify-center gap-2 
-                    p-3 rounded-full font-bold text-sm
+                    py-3 rounded-full font-bold text-sm
                     bg-[#E56668] text-white hover:bg-[#d65557]
                     transition-all duration-200 ease-out
                     hover:scale-[1.02] hover:shadow-md hover:shadow-red-900/10
@@ -636,7 +637,7 @@ const supabase = createBrowserClient(
                     <p className="text-sm text-white/70 mb-4 leading-relaxed">Pro members get access to locked opportunities and priority mentorship.</p>
                     <button 
                       onClick={() => setShowProModal(true)}
-                      className="w-full py-3 rounded-full bg-white text-[#2F4157] font-bold text-sm hover:scale-[1.02] active:scale-[0.98] transition-all"
+                      className="w-full py-2.5 rounded-full bg-white text-[#2F4157] font-bold text-sm hover:scale-[1.02] active:scale-[0.98] transition-all"
                     >
                       Unlock Pro Access
                     </button>
@@ -647,24 +648,10 @@ const supabase = createBrowserClient(
         </div>
       </div>
 
-      {/* --- PRO MODAL --- */}
-      {showProModal && (
-        <div className="fixed inset-0 bg-[#2F4157]/80 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl max-w-sm w-full p-8 relative shadow-2xl animate-in zoom-in-95 duration-200">
-            <button onClick={() => setShowProModal(false)} className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full hover:bg-gray-200 transition text-gray-500">✕</button>
-            <div className="text-center space-y-4">
-              <div className="w-20 h-20 rounded-full bg-red-50 mx-auto flex items-center justify-center"><Crown size={40} className="text-[#E56668]" /></div>
-              <div><h2 className="text-2xl font-bold text-[#2F4157]">Go Pro</h2><p className="text-gray-500 text-sm mt-2">Invest in your career infrastructure.</p></div>
-              <div className="space-y-3 py-4 text-left">
-                {["Verified Portfolio Export", "Exclusive Job Board Access", "Priority Mentorship Booking", "Pro Community Badge"].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3 text-sm text-gray-600"><CheckCircle2 size={16} className="text-green-500 shrink-0" /><span>{item}</span></div>
-                ))}
-              </div>
-              <button className="w-full py-3.5 bg-[#E56668] text-white rounded-full font-bold shadow-lg shadow-red-200 hover:bg-[#d14d4f] hover:scale-[1.02] transition-all">Upgrade for IDR 99k/mo</button>
-            </div>
-          </div>
-        </div>
-      )}
+ {/* Panggil Component Baru di sini */}
+{showProModal && (
+  <PricingModal onClose={() => setShowProModal(false)} />
+)}
 
     </DashboardLayout>
   );

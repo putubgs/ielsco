@@ -1,11 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X, ChevronRight, ChevronLeft, Target, Calendar, Sparkles, Globe, GraduationCap, Briefcase, Check } from "lucide-react";
 import { createGoal, getGoalTemplates } from "@/data/goals";
 import { calculateStudyPlan } from "@/data/progress-calculator";
 import type { GoalTemplate } from "@/types/goals";
+import { createPortal } from "react-dom"; // Tambah ini!
+// ... import lainnya biarkan
 
+
+
+
+  // ... logic handleNext, handleBack, dll biarkan ...
 interface GoalWizardProps {
   userId: string;
   onClose: () => void;
@@ -56,6 +62,8 @@ const COUNTRIES_BY_REGION = {
 };
 
 export default function GoalWizard({ userId, onClose, onSuccess }: GoalWizardProps) {
+    // TAMBAH INI:
+ 
   const [step, setStep] = useState(1);
   const [templates, setTemplates] = useState<GoalTemplate[]>([]);
   
@@ -142,7 +150,17 @@ export default function GoalWizard({ userId, onClose, onSuccess }: GoalWizardPro
     console.error("Error creating goal:", error);
   }
 };
+ const [mounted, setMounted] = useState(false);
 
+  useEffect(() => {
+    setMounted(true);
+    // Opsional: Biar scroll belakang mati pas wizard muncul
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = 'unset'; };
+  }, []);
+
+  if (!mounted) return null;
+  
   const canProceed = () => {
     if (step === 1) return formData.countries.length > 0;
     if (step === 2) return !!formData.purpose;
@@ -151,9 +169,9 @@ export default function GoalWizard({ userId, onClose, onSuccess }: GoalWizardPro
     return true;
   };
 
-  return (
-    <div className="fixed inset-0 bg-[#2F4157]/90 z-[100] flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in zoom-in-95 duration-200">
-      <div className="bg-white rounded-3xl max-w-4xl w-full shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+  return createPortal(
+   <div className="fixed inset-0 bg-[#2F4157]/90 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm animate-in fade-in zoom-in-95 duration-200">
+     <div className="bg-white rounded-none sm:rounded-3xl max-w-4xl w-full shadow-2xl overflow-hidden h-[100dvh] sm:h-auto sm:max-h-[90vh] flex flex-col">
         
         {/* Header */}
         <div className="bg-gradient-to-r from-[#E56668] to-[#C04C4E] p-6 text-white relative overflow-hidden flex-shrink-0">
@@ -192,10 +210,11 @@ export default function GoalWizard({ userId, onClose, onSuccess }: GoalWizardPro
               style={{ width: `${(step / 5) * 100}%` }}
             />
           </div>
+          
         </div>
 
         {/* Content (Scrollable) */}
-        <div className="p-8 overflow-y-auto flex-1">
+       <div className="p-4 sm:p-8 overflow-y-auto overflow-x-hidden flex-1 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
           
           {/* ===== STEP 1: COUNTRY SELECTION (Multi-select) ===== */}
           {step === 1 && (
@@ -215,7 +234,7 @@ export default function GoalWizard({ userId, onClose, onSuccess }: GoalWizardPro
                   <h4 className="text-sm font-bold text-gray-500 uppercase tracking-wide">
                     {region}
                   </h4>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 gap-3">
                     {countries.map((country) => {
                       const isSelected = formData.countries.includes(country.name);
                       const canSelect = formData.countries.length < 3 || isSelected;
@@ -592,10 +611,12 @@ export default function GoalWizard({ userId, onClose, onSuccess }: GoalWizardPro
             >
               <Target size={20} />
               Create My Goal
-            </button>
+            </button> 
+         
           )}
+          
         </div>
       </div>
-    </div>
-  );
+    </div>,
+  document.body);
 }

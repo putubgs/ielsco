@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import TaskList from "@/components/goals/TaskList";
 import TaskSubmission from "@/components/goals/TaskSubmission";
+import MascotInsight from "@/components/dashboard/MascotInsight";
 import { createBrowserClient } from "@supabase/ssr";
 import {
   ArrowLeft,
@@ -43,6 +44,7 @@ const supabase = createBrowserClient(
   });
   const [goal, setGoal] = useState<GoalWithTasks | null>(null);
   const [analytics, setAnalytics] = useState<GoalAnalyticsType | null>(null);
+  
   const [studyPlan, setStudyPlan] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false); // State untuk loading delete
@@ -241,7 +243,6 @@ const supabase = createBrowserClient(
                   </span>
                 </div>
               </div>
-
               {/* Right: Circular Progress */}
               <div className="flex-shrink-0">
                 <div className="relative w-32 h-32">
@@ -275,7 +276,16 @@ const supabase = createBrowserClient(
 
         {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
-          <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
+          
+{analytics && (
+  <MascotInsight 
+     analytics={analytics} 
+     goal={goal} 
+     userName={userData.name} 
+  />
+)}
+
+          <div className="grid lg:grid-cols-3 gap-6 lg:gap-8 mt-8">
             
             {/* LEFT COLUMN: Task List (2/3) */}
             <div className="lg:col-span-2 space-y-6">
@@ -289,7 +299,7 @@ const supabase = createBrowserClient(
 
             {/* RIGHT COLUMN: Sidebar (1/3) */}
             <div className="space-y-6">
-              
+              {/* PANGGIL DI SINI */}
               {/* Daily Study Plan Card */}
               {studyPlan && (
                 <div className="bg-gradient-to-br from-slate-700 via-slate-600 to-slate-700 rounded-2xl p-6 text-white shadow-xl">

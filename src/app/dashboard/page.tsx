@@ -195,10 +195,10 @@ const DashboardSkeleton = () => (
 
 export default function DashboardPage() {
   const router = useRouter();
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key"
+);
 
   // --- STATE DECLARATIONS ---
   const [loading, setLoading] = useState(true);

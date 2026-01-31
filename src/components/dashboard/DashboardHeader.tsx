@@ -27,10 +27,10 @@ export default function DashboardHeader({ userAvatar, userName }: { userAvatar?:
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key"
+);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {

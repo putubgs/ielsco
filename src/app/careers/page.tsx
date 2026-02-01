@@ -12,7 +12,7 @@ import DivisionCard from "@/components/careers/DivisionCard";
 import { Button } from "@/components/ui/button";
 import CareersFAQ from "@/components/careers/CareersFAQ";
 
-const DEADLINE = new Date("2026-01-31T23:59:59+07:00");
+const DEADLINE = new Date("2026-02-05T23:59:59+07:00");
 
 /* ===== COUNTDOWN (FIXED) ===== */
 function CountdownTimer() {
@@ -270,7 +270,7 @@ export default function CareersPage() {
               {/* COUNTDOWN (TOP) */}
     <div className="mt-10">
       <p className="text-sm uppercase tracking-widest text-white/70 mb-3">
-        <strong>Recruitment</strong> closes in
+        <strong>EXTENDED!</strong> Recruitment closes in
       </p>
       <CountdownTimer />
     </div>

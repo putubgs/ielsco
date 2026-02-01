@@ -12,8 +12,8 @@ type TimelineItem = {
 
 const timeline: TimelineItem[] = [
   {
-    title: "Open Recruitment",
-    date: "11–31 January 2026",
+    title: "EXTENDED! Open Recruitment",
+    date: "11 Jan - 5 Feb 2026",
     desc: "Submit your application and choose your preferred division.",
     start: new Date("2026-01-14"),
     end: new Date("2026-01-31"),

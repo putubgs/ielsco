@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 /* ===== CONFIG ===== */
-const DEADLINE = new Date("2026-01-31T23:59:59+07:00");
+const DEADLINE = new Date("2026-02-05T23:59:59+07:00");
 const STORAGE_KEY = "iels-oprec-state";
 
 /* ===== COUNTDOWN (FIXED) ===== */
@@ -166,7 +166,7 @@ export default function OprecPopup() {
 
               <div className="text-center">
                 <p className="text-xs uppercase tracking-widest text-gray-400 mb-2">
-                  Recruitment closes in
+                  <strong>EXTENDED!</strong> Recruitment closes in
                 </p>
                 <CountdownTimer />
               </div>

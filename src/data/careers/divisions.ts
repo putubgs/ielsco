@@ -555,6 +555,7 @@ export const divisions: Division[] = [
       roles: [
         {
           title: "Legal Associate",
+          isClosed:true,
           level: "Associate",
           mode: "Remote",
           description:
@@ -617,6 +618,7 @@ export const divisions: Division[] = [
       roles: [
         {
           title: "Talent Development Associate",
+          isClosed:true,
           level: "Associate",
           mode: "Remote",
           description:
@@ -656,6 +658,7 @@ export const divisions: Division[] = [
       roles: [
         {
           title: "Talent Management Associate",
+          isClosed:true,
           level: "Associate",
           mode: "Remote",
           description:

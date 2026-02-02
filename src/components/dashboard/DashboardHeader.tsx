@@ -8,6 +8,7 @@ import { createBrowserClient } from "@supabase/ssr";
 import { 
   LayoutDashboard, 
   CalendarDays, 
+  Users,
   ShoppingBag, 
   Bell, 
   UserCircle, 
@@ -23,6 +24,7 @@ import {
   CreditCard
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { People } from "@mui/icons-material";
 
 export default function DashboardHeader({ userAvatar, userName }: { userAvatar?: string, userName?: string }) {
   const pathname = usePathname();
@@ -56,7 +58,7 @@ export default function DashboardHeader({ userAvatar, userName }: { userAvatar?:
     { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
     { name: "My Goals", path: "/dashboard/goals", icon: Trophy },
     { name: "My Schedule", path: "/dashboard/events", icon: CalendarDays },
-    { name: "Marketplace", path: "/dashboard/shop", icon: ShoppingBag },
+    { name: "Community", path: "/dashboard/community", icon: Users },
   ];
 
   return (
@@ -121,7 +123,7 @@ export default function DashboardHeader({ userAvatar, userName }: { userAvatar?:
             {/* Cart & Bell */}
             <div className="flex items-center gap-3 border-r border-white/10 pr-5">
               <button className="relative p-2.5 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-all group">
-                <ShoppingBag size={22} className="group-hover:scale-110 transition-transform" />
+                <Users size={22} className="group-hover:scale-110 transition-transform" />
                 <span className="absolute top-2 right-2 w-2 h-2 bg-[#E56668] rounded-full border border-[#2F4157]"></span>
               </button>
               <button className="relative p-2.5 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-all group">

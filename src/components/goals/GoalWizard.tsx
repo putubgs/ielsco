@@ -170,7 +170,7 @@ export default function GoalWizard({ userId, onClose, onSuccess }: GoalWizardPro
   };
 
   return createPortal(
-   <div className="fixed inset-0 bg-[#2F4157]/90 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm animate-in fade-in zoom-in-95 duration-200">
+   <div className="fixed inset-0 bg-[#2F4157]/90 z-[9999] flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm animate-in fade-in zoom-in-95 duration-200">
      <div className="bg-white rounded-none sm:rounded-3xl max-w-4xl w-full shadow-2xl overflow-hidden h-[100dvh] sm:h-auto sm:max-h-[90vh] flex flex-col">
         
         {/* Header */}

@@ -24,7 +24,7 @@ const curriculum: CurriculumItem[] = [
   {
     date: "3 Mar 2026",
     title: "Onboarding & Selection Framework",
-    desc: "Understand the full structure of the Singapore Global Insight Trip, evaluation criteria, and selection mindset. This session aligns your personal objectives with selection expectations.",
+    desc: "Understand the full structure of the Global Impact Fellowship in Singapore, evaluation criteria, and selection mindset. This session aligns your personal objectives with selection expectations.",
     output: "Clear positioning statement & readiness roadmap.",
   },
   {
@@ -126,8 +126,8 @@ export default function SGTripMentoringPage() {
 
         <div className="flex items-center justify-center">
         <Image
-          src="/images/logos/events/sgit.png"
-          alt="Singapore Global Insight Trip"
+          src="/images/logos/events/gif.png"
+          alt="Global Impact Fellowship in Singapore"
           width={270}
           height={72}
           className="
@@ -142,8 +142,8 @@ export default function SGTripMentoringPage() {
 
     <p className="mt-6 max-w-3xl mx-auto text-lg text-white/90 leading-relaxed">
       An intensive 8-session mentoring program to prepare you for project
-      selection, interviews, and presentations for the Singapore Global
-      Insight Trip 2026 — mentored directly by the Founder of IELS.
+      selection, interviews, and presentations for the Global IMpact Fellowship in Singapore
+      2026 — mentored directly by the Founder of IELS.
     </p>
 
  {/* PARTNERS */}
@@ -207,11 +207,11 @@ export default function SGTripMentoringPage() {
  {/* ================= PROGRAM CONTEXT ================= */}
 <section className="max-w-6xl mx-auto px-6 py-20 space-y-6">
   <h2 className="text-3xl font-bold">
-    About the Singapore Global Insight Trip 2026
+    About the Global Impact Fellowship in Singapore 2026
   </h2>
 
   <p className="text-gray-700 max-w-4xl leading-relaxed">
-    Singapore Global Insight Trip is an intensive international exposure program
+    Global Impact Fellowship in Singapore is an intensive international exposure program
     designed by IELS to equip Indonesian students and young professionals with
     global academic awareness, career readiness, and leadership responsibility.
   </p>
@@ -250,7 +250,7 @@ export default function SGTripMentoringPage() {
     "
   >
     <Link
-      href="/events/sgit"
+      href="/events/gif"
     >
       Read More
     </Link>

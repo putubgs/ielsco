@@ -21,19 +21,19 @@ const timeline: TimelineItem[] = [
     desc: "Building academic and professional English readiness for project writing, interviews, and international-level discussions.",
   },
   {
-    phase: "SGIT Selection — Phase 1",
+    phase: "GIF Selection — Phase 1",
     date: "8 Feb – 14 Mar 2026",
     title: "Administration Screening",
     desc: "Initial screening of motivation, background, and readiness to join a global exposure program.",
   },
   {
-    phase: "SGIT Selection — Phase 2",
+    phase: "GIF Selection — Phase 2",
     date: "25 Mar – 4 Apr 2026",
     title: "Essay & Project Submission",
     desc: "Participants submit essays and SDG-aligned project ideas. Mentoring participants receive priority advantage.",
   },
   {
-    phase: "SGIT Selection — Phase 3",
+    phase: "GIF Selection — Phase 3",
     date: "12 – 18 Apr 2026",
     title: "Interview & Project Presentation",
     desc: "Final evaluation through structured interviews and project presentations.",
@@ -42,10 +42,10 @@ const timeline: TimelineItem[] = [
     phase: "Final Announcement",
     date: "22 Apr 2026",
     title: "Selected Participants Revealed",
-    desc: "Official announcement of SGIT 2026 delegates.",
+    desc: "Official announcement of GIF 2026 delegates.",
   },
   {
-    phase: "Singapore Global Insight Trip",
+    phase: "Global Impact Fellowship in Singapore",
     date: "5 – 12 May 2026",
     title: "Academic & Career Immersion",
     desc: "Academic immersion at NUS and career exposure at Glints with structured global learning experience.",
@@ -76,14 +76,12 @@ export default function SGITPage() {
     {/* TITLE */}
 <div className="mb-6">
   <Image
-    src="/images/logos/events/sgit.png"
-    alt="Singapore Global Insight Trip"
+    src="/images/logos/events/gifsg.png"
+    alt="Global Impact Fellowship in Singapore"
     width={270}
     height={72}
     className="
-     h-38 sm:h-55 w-auto object-contain
-      brightness-0 invert
-      opacity-90
+     h-38 sm:h-55 w-auto
     "
     priority
   />
@@ -131,11 +129,11 @@ export default function SGITPage() {
         {/* ================= INTRO ================= */}
         <section className="max-w-5xl mx-auto px-6 py-20 space-y-6">
  <h2 className="text-3xl font-bold">
-    About the Singapore Global Insight Trip 2026
+    About the Global Impact Fellowship in Singapore 2026
   </h2>
 
   <p className="text-gray-700 max-w-4xl leading-relaxed">
-    Singapore Global Insight Trip is an intensive international exposure program
+    Global Impact Fellowship in Singapore is an intensive international exposure program
     designed by IELS to equip Indonesian students and young professionals with
     global academic awareness, career readiness, and leadership responsibility.
   </p>
@@ -157,11 +155,11 @@ export default function SGITPage() {
 
         </section>
 
-        {/* ================= WHY SGIT ================= */}
+        {/* ================= WHY GIF ================= */}
         <section className="bg-[#F7F8FA] py-5">
           <div className="max-w-5xl mx-auto px-6">
             <h2 className="text-3xl font-extrabold mb-6">
-              Why Singapore Global Insight Trip Exists
+              Why Global Impact Fellowship in Singapore Exists
             </h2>
 
             <p className="text-gray-700 leading-relaxed mb-6">
@@ -189,7 +187,7 @@ export default function SGITPage() {
         Core Focus Areas (SDG-Aligned)
       </h2>
       <p className="text-gray-600 max-w-3xl mx-auto">
-        SGIT is designed to create <b>measurable educational and economic impact</b>,
+        GIF is designed to create <b>measurable educational and economic impact</b>,
         aligned with global Sustainable Development Goals.
       </p>
     </div>
@@ -222,7 +220,7 @@ export default function SGITPage() {
 
           <div className="pl-4 space-y-3 text-gray-700 text-sm leading-relaxed">
             <p>
-              SGIT expands access to international education exposure —
+              GIF expands access to international education exposure —
               connecting English learning with real academic environments.
             </p>
             <ul className="space-y-2">
@@ -284,7 +282,7 @@ export default function SGITPage() {
         Program Highlights
       </h2>
       <p className="text-gray-600 max-w-3xl mx-auto">
-        SGIT is designed as a <b>learning + exposure system</b>,
+        GIF is designed as a <b>learning + exposure system</b>,
         not a one-off international visit.
       </p>
     </div>
@@ -477,7 +475,7 @@ export default function SGITPage() {
   >
     <Image
       src="/images/contents/careers/iels_team_2.png"
-      alt="SGIT Mentoring Session"
+      alt="GIF Mentoring Session"
       width={600}
       height={420}
       className="object-cover"
@@ -504,7 +502,7 @@ export default function SGITPage() {
   >
     <Image
       src="/images/contents/careers/iels_team_3.png"
-      alt="SGIT Group Discussion"
+      alt="GIF Group Discussion"
       width={600}
       height={420}
       className="object-cover"
@@ -518,8 +516,8 @@ export default function SGITPage() {
 
   <div className="mb-6">
   <Image
-    src="/images/logos/events/sgit.png"
-    alt="Singapore Global Insight Trip"
+    src="/images/logos/events/gif.png"
+    alt="Global Impact Fellowship in Singapore"
     width={270}
     height={72}
     className="
@@ -533,12 +531,12 @@ export default function SGITPage() {
 
         {/* HEADLINE */}
         <h2 className="text-3xl sm:text-4xl font-extrabold leading-tight mb-6">
-          Want to <span className="text-[#E56668]">Increase Your Chance</span> of SGIT Selection?
+          Want to <span className="text-[#E56668]">Increase Your Chance</span> of GIF Selection?
         </h2>
 
         {/* DESCRIPTION */}
         <p className="text-white/90 leading-relaxed max-w-xl mb-8">
-          Join <b>SGIT Project Prep Mentoring</b> — a founder-led preparation
+          Join <b>GIF Project Prep Mentoring</b> — a founder-led preparation
           program focused on <b>project clarity</b>, <b>English communication</b>,
           and <b>interview readiness</b>.
           <br /><br />
@@ -549,7 +547,7 @@ export default function SGITPage() {
         {/* PROOF POINTS */}
         <ul className="space-y-3 text-sm text-white/80 mb-10">
           <li>• Founder-led mentoring & real project feedback</li>
-          <li>• Priority advantage in SGIT Phase 2</li>
+          <li>• Priority advantage in GIF Phase 2</li>
           <li>• International-standard project & interview prep</li>
         </ul>
 
@@ -571,9 +569,9 @@ export default function SGITPage() {
   "
 >
   <Link
-    href="/events/sgit/mentoring"
+    href="/events/gif/mentoring"
   >
-    Join SGIT Project Prep
+    Join GIF Project Prep
   </Link>
 </Button>
       </div>
@@ -588,7 +586,7 @@ export default function SGITPage() {
 
     <div className="pl-4 space-y-4 text-gray-700">
       <p className="font-semibold text-[#2F4157]">
-        SGIT is a selective and limited-capacity program.
+        GIF is a selective and limited-capacity program.
       </p>
 
       <p className="text-sm leading-relaxed">

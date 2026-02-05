@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button"
 function SGITHighlightCard() {
   return (
     <Link
-      href="/events/sgit"
+      href="/events/gif"
       className="
         group relative overflow-hidden rounded-3xl
         bg-white text-[#2F4157]
@@ -35,7 +35,7 @@ function SGITHighlightCard() {
       <div className="absolute inset-0">
         <Image
           src="/images/contents/stories/member-stories/banner/singapore-banner.png"
-          alt="Singapore Global Insight Trip"
+          alt="Global Impact Fellowship in Singapore"
           fill
           className="object-cover opacity-30 group-hover:scale-105 transition-transform duration-500"
         />
@@ -52,8 +52,8 @@ function SGITHighlightCard() {
           </p>
 <div className="mb-6">
   <Image
-    src="/images/logos/events/sgit.png"
-    alt="Singapore Global Insight Trip"
+    src="/images/logos/events/gif.png"
+    alt="Global Impact Fellowship in Singapore"
     width={270}
     height={72}
     className="

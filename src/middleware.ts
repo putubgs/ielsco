@@ -9,11 +9,10 @@ export async function middleware(request: NextRequest) {
     },
   })
 
- const supabase = createServerClient(
+  const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key",
     {
-       // ... kodingan bawahnya biarin aja sama
       cookies: {
         get(name: string) {
           return request.cookies.get(name)?.value
@@ -81,8 +80,9 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
-     * - api/auth (auth endpoints must be public)
+     * - api/auth (auth endpoints)
+     * - api/test (PENTING: Ini agar Google Sheets bisa masuk tanpa login!)
      */
-    '/((?!_next/static|_next/image|favicon.ico|api/auth).*)',
+    '/((?!_next/static|_next/image|favicon.ico|api/auth|api/test).*)',
   ],
 }

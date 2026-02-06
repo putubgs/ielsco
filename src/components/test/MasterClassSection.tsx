@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { PlayCircle, Clock, BookOpen, CheckCircle2, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Pagination from "@/components/Pagination";
 
 interface MasterClassSectionProps {
   className?: string;
@@ -10,46 +12,69 @@ interface MasterClassSectionProps {
 const masterClassVideos = [
   {
     id: 1,
-    title: "IELTS Writing Task 1 - Complete Guide",
-    description: "Learn how to describe graphs, charts, and diagrams effectively",
-    duration: "45 mins",
-    instructor: "Sarah Johnson",
-    youtubeId: "1IVFRWCpNxE", // Diambil dari link yang kamu kasih
+    title: "Episode 1: IELTS Foundations & Essential Tips",
+    description: "A comprehensive overview of the mental preparation and practical planning needed to succeed in the IELTS test.",
+    duration: "12 mins",
+    instructor: "Christopher Pell",
+    youtubeId: "5BJmUQFt0FI",
     completed: false,
   },
   {
     id: 2,
-    title: "IELTS Writing Task 2 - Essay Structure",
-    description: "Master the art of writing high-scoring IELTS essays",
-    duration: "52 mins",
-    instructor: "Michael Chen",
-    youtubeId: "h_04WjGv7Tc", 
+    title: "Episode 2: The Ultimate Listening Strategy",
+    description: "Master the core techniques required to handle all Listening question types and stay focused during the exam.",
+    duration: "13 mins",
+    instructor: "Christopher Pell",
+    youtubeId: "gfTqr_9BMjs",
     completed: false,
   },
   {
     id: 3,
-    title: "IELTS Speaking Part 1 & 2 - Strategies",
-    description: "Boost your speaking confidence with proven techniques",
-    duration: "38 mins",
-    instructor: "Emma Williams",
-    youtubeId: "sRFEVatCo6A",
+    title: "Episode 3: Reading Tricks & Time Management",
+    description: "Learn how to effectively skim and scan academic texts while avoiding common traps in the Reading section.",
+    duration: "15 mins",
+    instructor: "Christopher Pell",
+    youtubeId: "G8Y2liwGRl8",
     completed: false,
   },
   {
     id: 4,
-    title: "IELTS Listening - Note-taking Skills",
-    description: "Improve your listening score with effective note-taking",
-    duration: "41 mins",
-    instructor: "David Park",
-    youtubeId: "P_v9E_v_EXAMPLE", // Ganti dengan ID real nanti
+    title: "Episode 4: Mastering Writing Task 2",
+    description: "A deep dive into essay structuring, argumentation, and meeting the specific criteria for a Band 7+ score.",
+    duration: "43 mins",
+    instructor: "Christopher Pell",
+    youtubeId: "ROmQsqmeUB8",
+    completed: false,
+  },
+  {
+    id: 5,
+    title: "Episode 5: Speaking Secrets & Confidence",
+    description: "Unlock the secrets to natural delivery and learn how to provide high-level responses in all three Speaking parts.",
+    duration: "11 mins",
+    instructor: "Christopher Pell",
+    youtubeId: "ELxGmf9f_ZM",
     completed: false,
   },
 ];
 
-// Helper untuk generate Thumbnail YouTube HQ
 const getYoutubeThumbnail = (id: string) => `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
 
 export default function MasterClassSection({ className }: MasterClassSectionProps) {
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 2; // Set how many videos to show per page
+
+  // Pagination Logic
+  const offset = currentPage * itemsPerPage;
+  const currentVideos = masterClassVideos.slice(offset, offset + itemsPerPage);
+  const pageCount = Math.ceil(masterClassVideos.length / itemsPerPage);
+
+  const handlePageChange = ({ selected }: { selected: number }) => {
+    setCurrentPage(selected);
+    // Optional: Scroll back to top of section when page changes
+    const element = document.getElementById("master-class-grid");
+    if (element) element.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className={cn("mb-12", className)}>
       {/* Header Section */}
@@ -60,7 +85,7 @@ export default function MasterClassSection({ className }: MasterClassSectionProp
             Premium Access
           </div>
           <h2 className="text-3xl font-bold text-[#304156] font-geologica">
-            IELS Master Class
+            IELTS Master Class
           </h2>
           <p className="text-gray-500 mt-1">
             Expert-led video lessons to boost your IELTS score.
@@ -74,8 +99,8 @@ export default function MasterClassSection({ className }: MasterClassSectionProp
       </div>
 
       {/* Video Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
-        {masterClassVideos.map((video) => (
+      <div id="master-class-grid" className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
+        {currentVideos.map((video) => (
           <div
             key={video.id}
             className="bg-white rounded-2xl border border-[#CDC6BC]/50 shadow-sm hover:shadow-xl transition-all overflow-hidden group flex flex-col"
@@ -91,7 +116,6 @@ export default function MasterClassSection({ className }: MasterClassSectionProp
                 <PlayCircle size={60} className="text-white drop-shadow-2xl" />
               </div>
               
-              {/* Badges */}
               <div className="absolute top-3 right-3 px-3 py-1 bg-[#304156]/80 backdrop-blur-md rounded-lg text-white text-xs font-bold flex items-center gap-1">
                 <Clock size={12} />
                 {video.duration}
@@ -139,6 +163,15 @@ export default function MasterClassSection({ className }: MasterClassSectionProp
           </div>
         ))}
       </div>
+
+      {/* Pagination Component */}
+      {pageCount > 1 && (
+        <Pagination 
+          pageCount={pageCount} 
+          onPageChange={handlePageChange} 
+          currentPage={currentPage} 
+        />
+      )}
 
       {/* Custom IELS Style Banner */}
       <div className="mt-12 p-8 bg-[#304156] rounded-3xl relative overflow-hidden group">

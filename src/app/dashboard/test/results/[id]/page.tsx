@@ -18,25 +18,37 @@ export default function ResultPage({ params }: { params: { id: string } }) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
-  useEffect(() => {
+useEffect(() => {
     const fetchResult = async () => {
-      const { data } = await supabase
-        .from('test_attempts')
-        .select('*')
-        .eq('id', params.id)
-        .single();
+      console.log("Fetching result for ID:", params.id); // Debugging
       
-      if (data) {
-        setResult(data);
-        setLoading(false);
-        // Trigger celebration only if score is decent
-        if (data.overall_score >= 5.0) {
-          confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 }
-          });
+      try {
+        const { data, error } = await supabase
+          .from('test_attempts')
+          .select('*')
+          .eq('id', params.id)
+          .single();
+        
+        if (error) {
+          console.error("Supabase Error:", error);
         }
+
+        if (data) {
+          setResult(data);
+          // Trigger confetti only if score is decent
+          if (data.overall_score >= 5.0) {
+            confetti({
+              particleCount: 100,
+              spread: 70,
+              origin: { y: 0.6 }
+            });
+          }
+        }
+      } catch (err) {
+        console.error("Fetch Error:", err);
+      } finally {
+        // PENTING: Loading dimatikan APAPUN hasilnya (sukses/gagal)
+        setLoading(false);
       }
     };
     fetchResult();

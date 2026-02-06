@@ -39,16 +39,16 @@ export default function PreTestPage() {
           return;
         }
 
-        // Check if user already completed the test
+      // Check if user already completed the // Check if user already completed the test
         const { data: existingAttempt } = await supabase
           .from('test_attempts')
           .select('id, status')
-          .eq('email', authUser.email)
+          // FIX: Tambahkan || '' agar tidak error undefined
+          .ilike('email', authUser.email || '') 
           .eq('status', 'completed')
           .order('created_at', { ascending: false })
           .limit(1)
           .single();
-
         if (existingAttempt) {
           // Redirect immediately if done
           router.replace(`/dashboard/test/results/${existingAttempt.id}`);

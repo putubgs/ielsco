@@ -19,8 +19,10 @@ export default function ResultPage({ params }: { params: { id: string } }) {
   );
 
 useEffect(() => {
+    let isMounted = true; // Mencegah update state kalau komponen sudah diclose
+
     const fetchResult = async () => {
-      console.log("Fetching result for ID:", params.id); // Debugging
+      console.log("Fetching result for ID:", params.id);
       
       try {
         const { data, error } = await supabase
@@ -31,28 +33,38 @@ useEffect(() => {
         
         if (error) {
           console.error("Supabase Error:", error);
+          // Jangan throw error biar finally tetap jalan
         }
 
-        if (data) {
+        if (isMounted && data) {
           setResult(data);
-          // Trigger confetti only if score is decent
+          
+          // Confetti Logic
           if (data.overall_score >= 5.0) {
-            confetti({
-              particleCount: 100,
-              spread: 70,
-              origin: { y: 0.6 }
+            // Import dinamis biar aman di Next.js (Client Side Only)
+            import('canvas-confetti').then((confetti) => {
+               confetti.default({
+                  particleCount: 100,
+                  spread: 70,
+                  origin: { y: 0.6 }
+               });
             });
           }
         }
       } catch (err) {
         console.error("Fetch Error:", err);
       } finally {
-        // PENTING: Loading dimatikan APAPUN hasilnya (sukses/gagal)
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
+
     fetchResult();
-  }, [params.id]);
+
+    // Cleanup function
+    return () => { isMounted = false; };
+  }, [params.id, supabase]);
 
   if (loading) return <LoadingScreen />;
   if (!result) return <div className="p-20 text-center">Result not found.</div>;

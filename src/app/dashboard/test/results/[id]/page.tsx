@@ -6,17 +6,18 @@ import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import Link from "next/link";
 import { 
   Trophy, Headphones, FileText, PenTool, 
-  ChevronRight, Download, Share2, Star,
+  Download, Share2, Star,
   CheckCircle2, TrendingUp, BookOpen, 
-  SearchX, RefreshCcw, Home, ArrowLeft
+  SearchX, RefreshCcw, Home, ArrowLeft, ChevronRight
 } from "lucide-react";
-
-// JANGAN import confetti di sini. Kita pakai dynamic import di bawah.
 
 export default function ResultPage({ params }: { params: { id: string } }) {
   const [result, setResult] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   
+  // Ambil ID dengan aman
+  const attemptId = params?.id;
+
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -26,32 +27,23 @@ export default function ResultPage({ params }: { params: { id: string } }) {
     let isMounted = true; 
 
     const fetchResult = async () => {
-      console.log("Fetching result for ID:", params.id);
-      
+      // JANGAN jalankan kalau ID tidak ada
+      if (!attemptId) {
+        setLoading(false);
+        return;
+      }
+
       try {
         const { data, error } = await supabase
           .from('test_attempts')
           .select('*')
-          .eq('id', params.id)
+          .eq('id', attemptId)
           .single();
         
-        if (error) console.warn("Supabase fetch warning:", error.message);
+        if (error) console.warn("Supabase Error:", error.message);
 
         if (isMounted && data) {
           setResult(data);
-          
-          // Confetti: Load dinamis HANYA di browser (Client Side)
-          if (data.overall_score >= 5.0) {
-            import('canvas-confetti').then((confettiModule) => {
-               const fire = confettiModule.default || confettiModule;
-               fire({
-                  particleCount: 150,
-                  spread: 80,
-                  origin: { y: 0.6 },
-                  colors: ['#E56668', '#2F4157', '#fbbf24']
-               });
-            }).catch(e => console.log("Confetti failed to load", e));
-          }
         }
       } catch (err) {
         console.error("Fetch Error:", err);
@@ -62,13 +54,13 @@ export default function ResultPage({ params }: { params: { id: string } }) {
 
     fetchResult();
     return () => { isMounted = false; };
-  }, [params.id, supabase]);
+  }, [attemptId, supabase]);
 
   // --- 1. LOADING STATE ---
   if (loading) return <LoadingScreen />;
 
-  // --- 2. NOT FOUND STATE ---
-  if (!result) {
+  // --- 2. NOT FOUND / UNDEFINED ID STATE ---
+  if (!result || !attemptId) {
     return (
       <DashboardLayout userName="Student" userTier="basic">
         <div className="min-h-[80vh] flex flex-col items-center justify-center p-4">
@@ -78,14 +70,18 @@ export default function ResultPage({ params }: { params: { id: string } }) {
             </div>
             <h1 className="text-2xl font-bold text-[#2F4157] mb-3">Result Not Found</h1>
             <p className="text-gray-500 mb-8 leading-relaxed">
-              We couldn't find data for Attempt ID <br/>
-              <code className="bg-gray-100 px-2 py-1 rounded text-xs font-mono text-gray-700">{params.id.split('-')[0]}...</code>
+              We couldn't retrieve your IELTS assessment data. <br/>
+              {attemptId ? (
+                 <span>Attempt ID: <code className="bg-gray-100 px-2 py-1 rounded text-xs">{attemptId.substring(0,8)}...</code></span>
+              ) : (
+                 <span className="text-red-500 font-medium">Error: Invalid or Missing ID</span>
+              )}
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
-              <button onClick={() => window.location.reload()} className="flex-1 py-3 px-4 bg-[#2F4157] text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-[#1e2b3a] transition-colors">
+              <button onClick={() => window.location.reload()} className="flex-1 py-3 px-4 bg-[#2F4157] text-white rounded-xl font-bold flex items-center justify-center gap-2">
                 <RefreshCcw size={18} /> Refresh
               </button>
-              <Link href="/dashboard" className="flex-1 py-3 px-4 bg-white border-2 border-gray-200 text-gray-600 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors">
+              <Link href="/dashboard" className="flex-1 py-3 px-4 bg-white border-2 border-gray-200 text-gray-600 rounded-xl font-bold flex items-center justify-center gap-2">
                 <Home size={18} /> Dashboard
               </Link>
             </div>
@@ -97,11 +93,8 @@ export default function ResultPage({ params }: { params: { id: string } }) {
 
   // --- 3. SUCCESS STATE ---
   const feedback = result.writing_feedback || {};
-  
-  // FIX: Jangan pakai Date.now() di sini. Gunakan fallback string statis.
-  const dateDisplay = result.completed_at 
-    ? new Date(result.completed_at).toLocaleDateString() 
-    : "Recent"; 
+  const strengths = Array.isArray(feedback.strengths) ? feedback.strengths : [];
+  const improvements = Array.isArray(feedback.improvements) ? feedback.improvements : [];
 
   return (
     <DashboardLayout userName={result.full_name || "Student"} userTier="pro">
@@ -116,9 +109,8 @@ export default function ResultPage({ params }: { params: { id: string } }) {
             <div>
               <h1 className="text-2xl font-bold text-[#2F4157]">Assessment Report</h1>
               <p className="text-gray-500 text-sm flex items-center gap-2">
-                ID: <span className="font-mono bg-gray-100 px-1 rounded">{params.id.split('-')[0]}</span>
-                <span className="w-1 h-1 rounded-full bg-gray-300"></span>
-                {dateDisplay}
+                ID: <span className="font-mono bg-gray-100 px-1 rounded">{attemptId.substring(0,8)}</span>
+                <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider">Completed</span>
               </p>
             </div>
           </div>
@@ -126,7 +118,7 @@ export default function ResultPage({ params }: { params: { id: string } }) {
             <button className="px-4 py-2 border border-gray-200 rounded-xl text-sm font-bold text-gray-600 flex items-center gap-2 hover:bg-gray-50 transition-colors">
               <Download size={16}/> PDF
             </button>
-            <button className="px-4 py-2 bg-[#2F4157] text-white rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-[#1e2b3a] shadow-lg shadow-blue-900/20 transition-colors">
+            <button className="px-4 py-2 bg-[#2F4157] text-white rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-[#1e2b3a] shadow-lg shadow-blue-900/20">
               <Share2 size={16}/> Share
             </button>
           </div>
@@ -134,7 +126,6 @@ export default function ResultPage({ params }: { params: { id: string } }) {
 
         {/* SCORE CARDS */}
         <div className="grid lg:grid-cols-3 gap-6 mb-8">
-          {/* Main Score */}
           <div className="lg:col-span-1 bg-gradient-to-br from-[#2F4157] to-[#1e2b3a] rounded-3xl p-8 text-white relative overflow-hidden shadow-2xl">
             <div className="relative z-10 flex flex-col h-full justify-between">
               <div>
@@ -152,22 +143,17 @@ export default function ResultPage({ params }: { params: { id: string } }) {
                 </p>
               </div>
             </div>
-            {/* Decor */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
-            <div className="absolute bottom-0 right-0 opacity-10 pointer-events-none transform translate-x-1/4 translate-y-1/4">
-               <Trophy size={300} />
-            </div>
           </div>
 
-          {/* Skills */}
           <div className="lg:col-span-2 grid gap-4">
-             <SkillBar icon={<Headphones size={24} className="text-blue-500"/>} title="Listening" score={result.listening_score} color="bg-blue-500" desc="Spoken English context." />
-             <SkillBar icon={<FileText size={24} className="text-green-500"/>} title="Reading" score={result.reading_score} color="bg-green-500" desc="Complex text analysis." />
-             <SkillBar icon={<PenTool size={24} className="text-purple-500"/>} title="Writing" score={result.writing_score} color="bg-purple-500" desc="Coherence & Grammar." />
+             <SkillBar icon={<Headphones size={24} className="text-blue-500"/>} title="Listening" score={result.listening_score} color="bg-blue-500" desc="Listening comprehension score." />
+             <SkillBar icon={<FileText size={24} className="text-green-500"/>} title="Reading" score={result.reading_score} color="bg-green-500" desc="Reading comprehension score." />
+             <SkillBar icon={<PenTool size={24} className="text-purple-500"/>} title="Writing" score={result.writing_score} color="bg-purple-500" desc="AI assessed writing score." />
           </div>
         </div>
 
-        {/* FEEDBACK & RECS */}
+        {/* FEEDBACK */}
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
             <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
@@ -187,21 +173,21 @@ export default function ResultPage({ params }: { params: { id: string } }) {
                 <div>
                    <h3 className="font-bold text-gray-800 mb-3 flex items-center gap-2"><CheckCircle2 className="text-green-500" size={20}/> Strengths</h3>
                    <div className="grid gap-2">
-                     {(feedback.strengths?.length > 0 ? feedback.strengths : ["Analysis in progress..."]).map((item: string, i: number) => (
+                     {strengths.length > 0 ? strengths.map((item: string, i: number) => (
                        <div key={i} className="flex gap-3 text-gray-600 text-sm bg-green-50/50 p-3 rounded-xl border border-green-100/50">
                          <div className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 shrink-0"/>{item}
                        </div>
-                     ))}
+                     )) : <p className="text-sm text-gray-400 italic">No detailed strengths available.</p>}
                    </div>
                 </div>
                 <div>
                    <h3 className="font-bold text-gray-800 mb-3 flex items-center gap-2"><TrendingUp className="text-blue-500" size={20}/> Improvements</h3>
                    <div className="grid gap-2">
-                     {(feedback.improvements?.length > 0 ? feedback.improvements : ["Analysis in progress..."]).map((item: string, i: number) => (
+                     {improvements.length > 0 ? improvements.map((item: string, i: number) => (
                        <div key={i} className="flex gap-3 text-gray-600 text-sm bg-blue-50/50 p-3 rounded-xl border border-blue-100/50">
                          <div className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2 shrink-0"/>{item}
                        </div>
-                     ))}
+                     )) : <p className="text-sm text-gray-400 italic">No detailed improvements available.</p>}
                    </div>
                 </div>
               </div>
@@ -212,11 +198,11 @@ export default function ResultPage({ params }: { params: { id: string } }) {
              <div className="bg-[#F8FAFC] rounded-3xl p-6 sticky top-24 border border-gray-100">
                 <h3 className="font-bold text-[#2F4157] mb-4 flex items-center gap-2"><BookOpen size={20}/> Recommended</h3>
                 <div className="space-y-3">
-                  <RecommendationCard title="Writing Task 2 Masterclass" type="Course" time="2 Hours" />
-                  <RecommendationCard title="Vocab Builder PDF" type="Resource" time="PDF Guide" />
-                  <RecommendationCard title="Speaking Mock" type="Mentoring" time="15 Mins" />
+                  <RecommendationCard title="Writing Task 2 Masterclass" type="Course" />
+                  <RecommendationCard title="Vocab Builder PDF" type="Resource" />
+                  <RecommendationCard title="Speaking Mock" type="Mentoring" />
                 </div>
-                <button className="w-full mt-6 py-3 bg-white border-2 border-[#E56668] text-[#E56668] rounded-xl font-bold text-sm hover:bg-[#E56668] hover:text-white transition-all">View Study Plan</button>
+                <button className="w-full mt-6 py-3 bg-white border-2 border-[#E56668] text-[#E56668] rounded-xl font-bold text-sm">View Study Plan</button>
              </div>
           </div>
         </div>
@@ -230,8 +216,8 @@ export default function ResultPage({ params }: { params: { id: string } }) {
 function LoadingScreen() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
-      <div className="w-16 h-16 border-4 border-gray-200 rounded-full animate-spin border-t-[#E56668] mb-4"></div>
-      <p className="text-gray-500 font-medium">Analyzing Results...</p>
+      <div className="w-16 h-16 border-4 border-gray-100 rounded-full animate-spin border-t-[#E56668] mb-4"></div>
+      <p className="text-gray-500 font-medium">Fetching Report...</p>
     </div>
   )
 }
@@ -243,16 +229,17 @@ function CEFRBadge({ score }: { score: number }) {
 }
 
 function SkillBar({ icon, title, score, color, desc }: any) {
-  // Safe Access: Kalau score null, anggap 0
   const val = score || 0; 
-  const percentage = (val / 9) * 100;
+  const percentage = Math.min((val / 9) * 100, 100);
   return (
     <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-center h-full">
       <div className="flex justify-between items-start mb-4">
         <div className="flex items-center gap-3"><div className="p-2 bg-gray-50 rounded-xl">{icon}</div><div><h3 className="font-bold text-gray-800">{title}</h3></div></div>
         <div className="text-2xl font-bold text-[#2F4157]">{val}</div>
       </div>
-      <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden mb-3"><div className={`h-full ${color} transition-all duration-1000`} style={{ width: `${percentage}%` }}/></div>
+      <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden mb-3">
+        <div className={`h-full ${color} transition-all duration-1000`} style={{ width: `${percentage}%` }}/>
+      </div>
       <p className="text-xs text-gray-500">{desc}</p>
     </div>
   );
@@ -262,6 +249,6 @@ function CriterionCard({ title, score }: any) {
   return <div className="flex justify-between items-center p-4 bg-gray-50 rounded-xl border border-gray-100"><span className="text-sm font-medium text-gray-700">{title}</span><span className="font-bold text-[#2F4157] bg-white px-3 py-1 rounded-lg shadow-sm border border-gray-100 min-w-[3rem] text-center">{score}</span></div>
 }
 
-function RecommendationCard({ title, type, time }: any) {
-  return <div className="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 cursor-pointer hover:border-blue-200"><div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-xs">{type[0]}</div><div className="flex-1"><h4 className="text-sm font-bold text-gray-700">{title}</h4><p className="text-xs text-gray-400">{type} • {time}</p></div><ChevronRight size={16} className="text-gray-300"/></div>
+function RecommendationCard({ title, type }: any) {
+  return <div className="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 cursor-pointer hover:border-blue-200 transition-colors"><div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-xs">{type[0]}</div><div className="flex-1 text-sm font-bold text-gray-700">{title}</div><ChevronRight size={16} className="text-gray-300"/></div>
 }

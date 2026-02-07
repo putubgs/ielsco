@@ -11,7 +11,7 @@ const model = genAI.getGenerativeModel({
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY! // PENTING: Pakai Service Role Key biar bisa bypass RLS
+  process.env.SUPABASE_SERVICE_ROLE_KEY! 
 );
 
 const INTERNAL_API_KEY = process.env.INTERNAL_API_KEY;
@@ -33,7 +33,6 @@ function convertToIELTSBand(correctAnswers: number): number {
 
 export async function POST(request: NextRequest) {
   try {
-    // 1. Security Check
     const apiKey = request.headers.get('x-api-key');
     if (apiKey !== INTERNAL_API_KEY) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -47,11 +46,9 @@ export async function POST(request: NextRequest) {
 
     console.log(`Processing result for: ${email} (ID: ${attemptId})`);
 
-    // 2. Logic Baru: Cek apakah Attempt ID sudah ada?
     let targetUserId = null;
-    let isLegacy = false;
 
-    // Cek attempt di DB
+    // Cek existing attempt
     const { data: existingAttempt } = await supabase
       .from('test_attempts')
       .select('user_id')
@@ -59,57 +56,53 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (existingAttempt) {
-      // Skenario 1: Normal (User klik Start Test dari web)
       targetUserId = existingAttempt.user_id;
     } else {
-      // Skenario 2: LEGACY USER (Orang lama yg datanya cuma ada di GForm)
-      // Kita cari User ID mereka berdasarkan EMAIL di tabel users
-      isLegacy = true;
+      // Cek user by email
       const { data: user } = await supabase
-        .from('users') // Pastikan tabel public.users ada email
+        .from('users')
         .select('id')
         .eq('email', email)
-        .single();
+        .maybeSingle(); 
       
       if (user) {
         targetUserId = user.id;
-        console.log(`Legacy user found! Linking to User ID: ${user.id}`);
       } else {
-        console.log(`User with email ${email} not found in DB. Skipping.`);
-        // Opsional: Tetap simpan tapi tanpa user_id (null), atau return error
-        // Kita return success aja biar script GSheet gak error, tapi data gak masuk
-        return NextResponse.json({ message: 'Skipped: User email not found in system' });
+        // User belum daftar, biarkan NULL tapi tetap simpan
+        targetUserId = null; 
       }
     }
 
-    // 3. AI Assessment (Writing)
-    const prompt = `
-      You are an IELTS Examiner. Assess these writing tasks.
-      Task 1: ${writingTask1 || "No answer"}
-      Task 2: ${writingTask2 || "No answer"}
-      Return JSON with overall_band (0-9), feedback text, strengths (array), improvements (array).
-    `;
-
+    // AI Assessment
     let writingBand = 5.0;
-    let feedbackData = {};
+    // FIX: Tambahkan ': any' agar TypeScript tidak rewel saat parsing JSON nanti
+    let feedbackData: any = { analysis: "<p>AI analysis pending...</p>" };
 
     try {
-      const result = await model.generateContent(prompt);
-      const assessment = JSON.parse(result.response.text());
-      writingBand = assessment.overall_band || 5.0;
-      feedbackData = assessment;
+      if (writingTask1 || writingTask2) {
+        const prompt = `
+          Act as an IELTS Examiner. Assess these tasks:
+          Task 1: ${writingTask1 || "No answer"}
+          Task 2: ${writingTask2 || "No answer"}
+          Return valid JSON: { "overall_band": number, "task_achievement": number, "coherence_cohesion": number, "lexical_resource": number, "grammar": number, "strengths": ["string"], "improvements": ["string"], "analysis": "HTML string summarizing performance" }
+        `;
+        const result = await model.generateContent(prompt);
+        const text = result.response.text();
+        const cleanedText = text.replace(/```json|```/g, '').trim();
+        
+        feedbackData = JSON.parse(cleanedText);
+        writingBand = feedbackData.overall_band || 5.0;
+      }
     } catch (e) {
-      console.log("AI Error, using fallback score");
+      console.log("AI Generation Error:", e);
     }
 
-    // 4. Calculate Final Score
     const lBand = convertToIELTSBand(listeningScore);
     const rBand = convertToIELTSBand(readingScore);
     const overall = Math.round(((lBand + rBand + writingBand) / 3) * 2) / 2;
 
-    // 5. Save to Database (Upsert: Update kalau ada, Insert kalau gak ada)
     const payload = {
-      id: attemptId, // Pakai ID dari GSheet (bisa UUID asli atau fake UUID legacy)
+      id: attemptId, 
       user_id: targetUserId,
       full_name: fullName,
       email: email,
@@ -127,14 +120,17 @@ export async function POST(request: NextRequest) {
 
     const { error } = await supabase
       .from('test_attempts')
-      .upsert(payload); // UPSERT adalah kunci buat user lama!
+      .upsert(payload);
 
-    if (error) throw error;
+    if (error) {
+        console.error("Supabase Save Error:", error);
+        throw error;
+    }
 
-    return NextResponse.json({ success: true, isLegacy });
+    return NextResponse.json({ success: true, saved: true });
 
   } catch (error: any) {
-    console.error('Error:', error);
+    console.error('Final API Error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

@@ -31,7 +31,7 @@ export async function createGoal(
     template_id?: string;
     timeline_months?: number; 
     // Tambahan untuk logic generator
-    userTier?: 'basic' | 'pro'; 
+    userTier?: 'explorer' | 'insider' | 'visionary'; 
     currentLevel?: number;
     targetLevel?: number;
   }
@@ -73,7 +73,7 @@ const supabase = createBrowserClient(
       goalId: goal.id,
       objective: goalData.objective,
       durationMonths: goalData.timeline_months || 6, // Default 6 bulan
-      userTier: goalData.userTier || 'basic',       // Default basic
+      userTier: goalData.userTier || 'explorer',       // Default basic
       currentLevel: goalData.currentLevel || 5.0,   // Default level (bisa disesuaikan)
       targetLevel: goalData.targetLevel || 7.0      // Default target
     });

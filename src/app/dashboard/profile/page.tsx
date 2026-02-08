@@ -214,7 +214,7 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <DashboardLayout userTier="Basic" userName="Loading..." userAvatar="">
+      <DashboardLayout userTier="explorer" userName="Loading..." userAvatar="">
         <div className="flex items-center justify-center h-screen bg-[#F7F8FA]">
           <Loader2 className="animate-spin text-[#E56668]" size={48} />
         </div>

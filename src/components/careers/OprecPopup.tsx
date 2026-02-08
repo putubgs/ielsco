@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 /* ===== CONFIG ===== */
+const IS_ENABLED = false;
 const DEADLINE = new Date("2026-02-05T23:59:59+07:00");
 const STORAGE_KEY = "iels-oprec-state";
 
@@ -70,6 +71,7 @@ function CountdownTimer() {
 
 /* ===== POPUP ===== */
 export default function OprecPopup() {
+  if (!IS_ENABLED) return null;
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
 

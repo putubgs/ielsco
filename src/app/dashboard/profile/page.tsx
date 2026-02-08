@@ -4,24 +4,46 @@ import { useState, useEffect, useRef } from "react";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { createBrowserClient } from "@supabase/ssr";
 import {
-  User, Mail, Building2, Calendar, Target, Edit2, Save, X, 
-  Crown, Loader2, Camera, MapPin, Phone, Linkedin, Instagram, 
-  Briefcase, GraduationCap, Sparkles, HelpCircle
+  User, Mail, Building2, Calendar, Target, Edit2, Save,
+  Crown, Loader2, Camera, MapPin, Phone, Linkedin, Instagram,
+  Briefcase, GraduationCap, Sparkles, HelpCircle, AlertCircle
 } from "lucide-react";
 import Image from "next/image";
 
-type TierType = "basic" | "pro";
+// --- TYPES ---
+type TierType = "explorer" | "insider" | "visionary";
 
-// --- 🎭 PERSONA GENERATOR (GAMIFICATION V2) ---
-const getUserPersona = (data: any) => {
-  // 1. Cek Tier Level (The Vibe)
-  const isExclusive = data.tier === "exclusive"; // Asumsi kalo nanti ada tier exclusive
-  const isPro = data.tier === "pro";
+interface UserData {
+  id: string;
+  name: string;
+  email: string;
+  tier: TierType;
+  avatar: string;
+  user_id_code: string;
+}
 
-  // 2. Base Title based on Occupation (Gen Z Slang)
-  let title = "Learning Nomad 🎒"; 
+interface FormData {
+  gender: string;
+  birth_date: string;
+  phone: string;
+  domicile: string;
+  occupation: "Student" | "Worker" | "Job Seeker" | "Other";
+  institution_name: string;
+  institution_role: string;
+  instagram: string;
+  linkedin: string;
+  english_level: string;
+  goals: string;
+}
+
+// --- 🎭 PERSONA GENERATOR ---
+const getUserPersona = (data: FormData & { tier: TierType }) => {
+  const isExclusive = data.tier === "visionary";
+  const isPro = data.tier === "insider";
+
+  let title = "Learning Nomad 🎒";
   let desc = "Exploring the world, one word at a time.";
-  let color = "bg-gray-100 text-gray-600 border-gray-200"; // Default Basic
+  let color = "bg-blue-50 text-blue-600 border-blue-100";
 
   if (data.occupation === "Student") {
     title = isPro ? "Academic Weapon 📚" : "Campus Explorer 🎓";
@@ -34,23 +56,18 @@ const getUserPersona = (data: any) => {
     desc = "Manifesting that dream job.";
   }
 
-  // 3. Tier Overrides (Status Symbol)
   if (isExclusive) {
     title = "The Visionary 👑";
     color = "bg-yellow-100 text-yellow-800 border-yellow-200 shadow-sm";
     desc = "Main Character Energy. Leading the way.";
   } else if (isPro) {
-    // Tambahin prefix/suffix keren buat Pro
-    title = `Insider: ${title}`; 
-    color = "bg-purple-100 text-purple-700 border-purple-200 shadow-sm";
-  } else {
-    // Basic / Explorer
-    title = `Explorer: ${title}`;
-    color = "bg-blue-50 text-blue-600 border-blue-100";
+    title = `Insider: ${title}`;
+    color = "bg-[#E56668]/10 text-[#E56668] border-[#E56668]/20 shadow-sm";
   }
 
   return { title, color, desc };
 };
+
 export default function ProfilePage() {
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
@@ -61,38 +78,31 @@ export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
-  // Easter Egg State
+  // Easter Egg
   const [clickCount, setClickCount] = useState(0);
   const [easterEggActive, setEasterEggActive] = useState(false);
 
-  // State Data User
-  const [user, setUser] = useState<any>({
+  // User State
+  const [user, setUser] = useState<UserData>({
     id: "",
     name: "",
     email: "",
-    tier: "basic" as TierType,
+    tier: "explorer",
     avatar: "",
     user_id_code: "IELS-NEW"
   });
 
-  // State Form (Lengkap)
-  const [formData, setFormData] = useState({
-    // Basic
+  // Form State
+  const [formData, setFormData] = useState<FormData>({
     gender: "",
     birth_date: "",
     phone: "",
     domicile: "",
-    
-    // Status Logic
-    occupation: "Student" as "Student" | "Worker" | "Job Seeker" | "Other",
-    institution_name: "", // Nama Kampus / Sekolah / Kantor
-    institution_role: "", // Jurusan / Jabatan
-    
-    // Socials
+    occupation: "Student",
+    institution_name: "",
+    institution_role: "",
     instagram: "",
     linkedin: "",
-    
-    // Learning
     english_level: "",
     goals: ""
   });
@@ -103,15 +113,17 @@ export default function ProfilePage() {
       const { data: { user: authUser } } = await supabase.auth.getUser();
 
       if (authUser) {
-        // Fetch profile data (sesuaikan dengan nama tabel kamu, misal user_profiles)
         const { data: dbUser } = await supabase
-          .from('users') // atau 'user_profiles'
+          .from('users')
           .select(`*, memberships(tier)`)
           .eq('id', authUser.id)
           .single();
 
         const dbTier = dbUser?.memberships?.[0]?.tier;
-        const finalTier: TierType = (dbTier === "pro" || dbTier === "basic") ? dbTier : "basic";
+        // Normalize tier
+        let finalTier: TierType = "explorer";
+        if (dbTier === "insider") finalTier = "insider";
+        if (dbTier === "visionary" || dbTier === "visionary") finalTier = "visionary";
 
         setUser({
           id: authUser.id,
@@ -122,14 +134,13 @@ export default function ProfilePage() {
           user_id_code: dbUser?.user_id_code || "IELS-MEMBER"
         });
 
-        // Populate Form
         setFormData({
           gender: dbUser?.gender || "",
           birth_date: dbUser?.birth_date || "",
           phone: dbUser?.phone || "",
           domicile: dbUser?.domicile || "",
           occupation: dbUser?.occupation || "Student",
-          institution_name: dbUser?.institution_name || dbUser?.institution || "", // Fallback ke field lama
+          institution_name: dbUser?.institution_name || dbUser?.institution || "",
           institution_role: dbUser?.institution_role || "",
           instagram: dbUser?.instagram || "",
           linkedin: dbUser?.linkedin || "",
@@ -141,10 +152,9 @@ export default function ProfilePage() {
     };
 
     fetchUserData();
-  }, []);
+  }, [supabase]);
 
   // --- HANDLERS ---
-
   const handleAvatarClick = () => {
     if (isEditing && fileInputRef.current) {
       fileInputRef.current.click();
@@ -155,7 +165,6 @@ export default function ProfilePage() {
     const file = e.target.files?.[0];
     if (file) {
       alert("Avatar upload logic needs Supabase Storage configured. (File selected: " + file.name + ")");
-      // Di sini nanti logic upload ke Supabase Storage bucket 'avatars'
     }
   };
 
@@ -167,17 +176,14 @@ export default function ProfilePage() {
     }
   };
 
-const handleSave = async () => {
+  const handleSave = async () => {
     setLoading(true);
     try {
-      // 1. Sanitasi Data: Ubah string kosong "" jadi null
-      // Ini trik supaya database tidak error saat kolom kosong
       const sanitize = (val: string) => (val === "" ? null : val);
 
-      // 2. Siapkan payload
       const updates = {
         gender: sanitize(formData.gender),
-        birth_date: sanitize(formData.birth_date), // Kuncinya di sini!
+        birth_date: sanitize(formData.birth_date),
         phone: sanitize(formData.phone),
         domicile: sanitize(formData.domicile),
         occupation: sanitize(formData.occupation),
@@ -187,23 +193,20 @@ const handleSave = async () => {
         linkedin: sanitize(formData.linkedin),
         english_level: sanitize(formData.english_level),
         goals: sanitize(formData.goals),
-        // updated_at: new Date().toISOString(), // Opsional: bagus untuk tracking
+        full_name: user.name, // Update name if editable
+        updated_at: new Date().toISOString(),
       };
 
-      // 3. Kirim ke Supabase
       const { error } = await supabase
         .from('users') 
         .update(updates)
         .eq('id', user.id);
 
       if (error) throw error;
-
       setIsEditing(false);
-      // alert("Profile updated!"); // Opsional
     } catch (err) {
-      console.error("Gagal update profil:", err);
-      // Pesan error yang lebih bersahabat
-      alert("Gagal menyimpan. Pastikan SQL database sudah dijalankan!");
+      console.error("Failed to update profile:", err);
+      alert("Failed to save profile. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -211,8 +214,8 @@ const handleSave = async () => {
 
   if (loading) {
     return (
-      <DashboardLayout userTier="basic" userName="Loading..." userAvatar="">
-        <div className="flex items-center justify-center h-screen">
+      <DashboardLayout userTier="Basic" userName="Loading..." userAvatar="">
+        <div className="flex items-center justify-center h-screen bg-[#F7F8FA]">
           <Loader2 className="animate-spin text-[#E56668]" size={48} />
         </div>
       </DashboardLayout>
@@ -222,12 +225,12 @@ const handleSave = async () => {
   const persona = getUserPersona({ ...formData, tier: user.tier });
 
   return (
-    <DashboardLayout userTier={user.tier} userName={user.name} userAvatar={user.avatar}>
+    <DashboardLayout userTier={user.tier === 'visionary' ? 'visionary' : user.tier === 'insider' ? 'insider' : 'explorer'} userName={user.name} userAvatar={user.avatar}>
       <div className="min-h-screen bg-[#F7F8FA] pb-12">
         
         {/* --- HEADER BANNER --- */}
         <div className="h-48 bg-gradient-to-r from-[#2F4157] via-[#435770] to-[#2F4157] relative">
-          <div className="absolute inset-0 bg-[url('/images/pattern-opacity.png')] opacity-20"></div>
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
         </div>
 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-10">
@@ -242,7 +245,7 @@ const handleSave = async () => {
             <div className="flex-shrink-0 relative group mx-auto md:mx-0">
               <div 
                 onClick={handleAvatarClick}
-                className={`w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-white shadow-2xl overflow-hidden relative bg-gray-200 ${isEditing ? "cursor-pointer hover:opacity-90" : ""}`}
+                className={`w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-white shadow-2xl overflow-hidden relative bg-gray-200 ${isEditing ? "cursor-pointer hover:ring-4 hover:ring-[#E56668]/20 transition-all" : ""}`}
               >
                 {user.avatar ? (
                   <Image src={user.avatar} alt="Profile" fill className="object-cover" />
@@ -254,53 +257,58 @@ const handleSave = async () => {
                 
                 {/* Overlay Edit Icon */}
                 {isEditing && (
-                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
                     <Camera className="text-white" size={32} />
                   </div>
                 )}
               </div>
               <input type="file" ref={fileInputRef} hidden onChange={handleFileChange} accept="image/*" />
-              
- 
-</div>
-
-            
+            </div>
 
             {/* INFO & ACTIONS */}
             <div className="flex-1 w-full">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
                 <div>
-                  <h1 className="text-3xl font-bold text-[#2F4157]">{user.name}</h1>
+                  <div className="flex items-center gap-3">
+                    {isEditing ? (
+                        <input 
+                            type="text" 
+                            value={user.name}
+                            onChange={(e) => setUser({...user, name: e.target.value})}
+                            className="text-2xl md:text-3xl font-bold text-[#2F4157] border-b-2 border-gray-200 focus:border-[#E56668] focus:outline-none bg-transparent w-full"
+                        />
+                    ) : (
+                        <h1 className="text-3xl font-bold text-[#2F4157]">{user.name}</h1>
+                    )}
+                  </div>
+                  
                   <div className="flex flex-wrap items-center gap-2 mt-2">
-                     {/* BADGE TIER (Relatable Version) */}
-                   
-  <span className={`
-    px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border flex items-center gap-1.5
-    ${user.tier === 'pro' 
-      ? 'bg-[#E56668]/10 text-[#E56668] border-[#E56668]/20' 
-      : (user.tier === 'exclusive' 
-          ? 'bg-yellow-50 text-yellow-700 border-yellow-200'
-          : 'bg-blue-50 text-blue-600 border-blue-100')
-    }
-  `}>
-    {user.tier === 'pro' && <Sparkles size={12} fill="currentColor" />}
-    {user.tier === 'exclusive' && <Crown size={12} fill="currentColor" />}
-    {user.tier === 'basic' && <MapPin size={12} />}
-    
-    {/* LOGIC NAMA TIER */}
-    {user.tier === 'exclusive' ? 'The Visionary' : 
-     user.tier === 'pro' ? 'The Insider' : 'The Explorer'}
-  </span>
-   <span className="text-gray-500 text-sm flex items-center gap-1">
+                    {/* BADGE TIER */}
+                    <span className={`
+                      px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border flex items-center gap-1.5
+                      ${user.tier === 'insider' 
+                        ? 'bg-[#E56668]/10 text-[#E56668] border-[#E56668]/20' 
+                        : (user.tier === 'visionary' 
+                          ? 'bg-yellow-50 text-yellow-700 border-yellow-200'
+                          : 'bg-blue-50 text-blue-600 border-blue-100')
+                      }
+                    `}>
+                      {user.tier === 'insider' && <Sparkles size={12} fill="currentColor" />}
+                      {user.tier === 'visionary' && <Crown size={12} fill="currentColor" />}
+                      {user.tier === 'explorer' && <MapPin size={12} />}
+                      
+                      {user.tier === 'visionary' ? 'Visionary' : 
+                       user.tier === 'insider' ? 'Insider' : 'Explorer'}
+                    </span>
+
+                    <span className="text-gray-400 text-sm flex items-center gap-1">
                       <Mail size={14} /> {user.email}
                     </span>
-  {/* USER ID BADGE */}
-  <span className="px-3 py-1 bg-gray-100 text-gray-500 rounded-full text-xs font-mono border border-gray-200">
-    #{user.user_id_code}
-  </span>
-                   
-                    <span className="text-gray-300">•</span>
-
+                    
+                    {/* USER ID BADGE */}
+                    <span className="px-3 py-1 bg-gray-100 text-gray-500 rounded-full text-xs font-mono border border-gray-200">
+                      #{user.user_id_code}
+                    </span>
                   </div>
                 </div>
 
@@ -325,7 +333,7 @@ const handleSave = async () => {
                         onClick={handleSave}
                         className="flex items-center gap-2 px-5 py-2.5 bg-[#E56668] text-white rounded-xl font-bold hover:bg-[#d65557] transition-all shadow-lg shadow-red-200"
                       >
-                        <Save size={16} /> Save
+                        <Save size={16} /> Save Changes
                       </button>
                     </div>
                   )}
@@ -336,16 +344,16 @@ const handleSave = async () => {
               <div 
                 onClick={handlePersonaClick}
                 className={`
-                  inline-flex items-center gap-3 px-4 py-2 rounded-xl cursor-pointer transition-all select-none
-                  ${easterEggActive ? "bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 text-white animate-pulse" : persona.color}
+                  inline-flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all select-none border
+                  ${easterEggActive ? "bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 text-white animate-pulse border-transparent" : persona.color}
                 `}
               >
-                <div className="p-1.5 bg-white/20 rounded-full">
-                  {easterEggActive ? <Crown size={16} /> : <Sparkles size={16} />}
+                <div className={`p-1.5 rounded-full ${easterEggActive ? "bg-white/20" : "bg-white"}`}>
+                  {easterEggActive ? <Crown size={18} /> : <Sparkles size={18} />}
                 </div>
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wider opacity-80">Current Persona</p>
-                  <p className="font-bold text-sm leading-none">{easterEggActive ? "Grandmaster of IELS 👑" : persona.title}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-wider opacity-80">Current Persona</p>
+                  <p className="font-bold text-sm leading-tight">{easterEggActive ? "Grandmaster of IELS 👑" : persona.title}</p>
                 </div>
               </div>
               <p className="text-xs text-gray-400 mt-2 italic pl-1">
@@ -361,7 +369,8 @@ const handleSave = async () => {
             <div className="lg:col-span-2 space-y-8">
               
               {/* 1. BIODATA */}
-              <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+              <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 relative">
+                <div className={`absolute top-0 left-0 w-1 h-full bg-[#E56668] rounded-l-2xl transition-opacity ${isEditing ? 'opacity-100' : 'opacity-0'}`}></div>
                 <h3 className="text-lg font-bold text-[#2F4157] mb-6 flex items-center gap-2">
                   <User className="text-[#E56668]" size={20} /> Personal Information
                 </h3>
@@ -369,7 +378,12 @@ const handleSave = async () => {
                 <div className="grid md:grid-cols-2 gap-6">
                   <InputGroup label="Gender" isEditing={isEditing}>
                     <select 
-                      className="w-full p-3 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#E56668]/20 transition-all"
+                      className={cn(
+                        "w-full p-3 rounded-xl border transition-all appearance-none",
+                        isEditing 
+                            ? "bg-white border-gray-300 focus:ring-2 focus:ring-[#E56668]/20 focus:border-[#E56668]" 
+                            : "bg-gray-50 border-gray-100 text-gray-600"
+                      )}
                       value={formData.gender}
                       onChange={(e) => setFormData({...formData, gender: e.target.value})}
                       disabled={!isEditing}
@@ -385,7 +399,12 @@ const handleSave = async () => {
                     <div className="relative">
                       <input 
                         type="date"
-                        className="w-full p-3 pl-10 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#E56668]/20 transition-all"
+                        className={cn(
+                            "w-full p-3 pl-10 rounded-xl border transition-all",
+                            isEditing 
+                                ? "bg-white border-gray-300 focus:ring-2 focus:ring-[#E56668]/20 focus:border-[#E56668]" 
+                                : "bg-gray-50 border-gray-100 text-gray-600"
+                        )}
                         value={formData.birth_date}
                         onChange={(e) => setFormData({...formData, birth_date: e.target.value})}
                         disabled={!isEditing}
@@ -399,7 +418,12 @@ const handleSave = async () => {
                       <input 
                         type="tel"
                         placeholder="+62..."
-                        className="w-full p-3 pl-10 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#E56668]/20 transition-all"
+                        className={cn(
+                            "w-full p-3 pl-10 rounded-xl border transition-all",
+                            isEditing 
+                                ? "bg-white border-gray-300 focus:ring-2 focus:ring-[#E56668]/20 focus:border-[#E56668]" 
+                                : "bg-gray-50 border-gray-100 text-gray-600"
+                        )}
                         value={formData.phone}
                         onChange={(e) => setFormData({...formData, phone: e.target.value})}
                         disabled={!isEditing}
@@ -413,7 +437,12 @@ const handleSave = async () => {
                       <input 
                         type="text"
                         placeholder="e.g. Jakarta, Indonesia"
-                        className="w-full p-3 pl-10 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#E56668]/20 transition-all"
+                        className={cn(
+                            "w-full p-3 pl-10 rounded-xl border transition-all",
+                            isEditing 
+                                ? "bg-white border-gray-300 focus:ring-2 focus:ring-[#E56668]/20 focus:border-[#E56668]" 
+                                : "bg-gray-50 border-gray-100 text-gray-600"
+                        )}
                         value={formData.domicile}
                         onChange={(e) => setFormData({...formData, domicile: e.target.value})}
                         disabled={!isEditing}
@@ -425,7 +454,8 @@ const handleSave = async () => {
               </section>
 
               {/* 2. ACADEMIC / PROFESSIONAL */}
-              <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+              <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 relative">
+                 <div className={`absolute top-0 left-0 w-1 h-full bg-blue-500 rounded-l-2xl transition-opacity ${isEditing ? 'opacity-100' : 'opacity-0'}`}></div>
                 <h3 className="text-lg font-bold text-[#2F4157] mb-6 flex items-center gap-2">
                   <Briefcase className="text-[#E56668]" size={20} /> Occupation & Education
                 </h3>
@@ -439,11 +469,11 @@ const handleSave = async () => {
                         onClick={() => isEditing && setFormData({...formData, occupation: type as any})}
                         disabled={!isEditing}
                         className={`
-                          py-2 px-4 rounded-xl text-sm font-bold border transition-all
+                          py-3 px-4 rounded-xl text-sm font-bold border transition-all
                           ${formData.occupation === type 
-                            ? "bg-[#2F4157] text-white border-[#2F4157]" 
+                            ? "bg-[#2F4157] text-white border-[#2F4157] shadow-md" 
                             : "bg-white text-gray-500 border-gray-200 hover:bg-gray-50"}
-                          ${!isEditing && formData.occupation !== type ? "opacity-50" : ""}
+                          ${!isEditing && formData.occupation !== type ? "opacity-50 cursor-default" : ""}
                         `}
                       >
                         {type}
@@ -461,7 +491,12 @@ const handleSave = async () => {
                         <input 
                           type="text"
                           placeholder={formData.occupation === "Worker" ? "e.g. GoTo, Google" : "e.g. Universitas Indonesia"}
-                          className="w-full p-3 pl-10 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#E56668]/20 transition-all"
+                          className={cn(
+                            "w-full p-3 pl-10 rounded-xl border transition-all",
+                            isEditing 
+                                ? "bg-white border-gray-300 focus:ring-2 focus:ring-[#E56668]/20 focus:border-[#E56668]" 
+                                : "bg-gray-100 border-transparent text-gray-600"
+                          )}
                           value={formData.institution_name}
                           onChange={(e) => setFormData({...formData, institution_name: e.target.value})}
                           disabled={!isEditing}
@@ -478,7 +513,12 @@ const handleSave = async () => {
                         <input 
                           type="text"
                           placeholder={formData.occupation === "Worker" ? "e.g. Product Manager" : "e.g. International Relations"}
-                          className="w-full p-3 pl-10 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#E56668]/20 transition-all"
+                          className={cn(
+                            "w-full p-3 pl-10 rounded-xl border transition-all",
+                            isEditing 
+                                ? "bg-white border-gray-300 focus:ring-2 focus:ring-[#E56668]/20 focus:border-[#E56668]" 
+                                : "bg-gray-100 border-transparent text-gray-600"
+                          )}
                           value={formData.institution_role}
                           onChange={(e) => setFormData({...formData, institution_role: e.target.value})}
                           disabled={!isEditing}
@@ -496,15 +536,16 @@ const handleSave = async () => {
             <div className="space-y-8">
               
               {/* SOCIALS */}
-              <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+              <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 relative">
+                 <div className={`absolute top-0 left-0 w-1 h-full bg-purple-500 rounded-l-2xl transition-opacity ${isEditing ? 'opacity-100' : 'opacity-0'}`}></div>
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-bold text-[#2F4157] flex items-center gap-2">
                     <Target className="text-[#E56668]" size={20} /> Socials
                   </h3>
                   <div className="group relative">
                     <HelpCircle size={16} className="text-gray-400 cursor-help" />
-                    <div className="absolute right-0 top-6 w-48 bg-[#2F4157] text-white text-xs p-2 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                      Networking features coming soon! Add your profiles to be ready.
+                    <div className="absolute right-0 top-6 w-48 bg-[#2F4157] text-white text-xs p-2 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
+                      Complete your socials to network with other members!
                     </div>
                   </div>
                 </div>
@@ -515,7 +556,12 @@ const handleSave = async () => {
                       <input 
                         type="text"
                         placeholder="@username"
-                        className="w-full p-3 pl-10 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#E56668]/20 transition-all"
+                        className={cn(
+                            "w-full p-3 pl-10 rounded-xl border transition-all",
+                            isEditing 
+                                ? "bg-white border-gray-300 focus:ring-2 focus:ring-[#E56668]/20 focus:border-[#E56668]" 
+                                : "bg-gray-50 border-gray-100 text-gray-600"
+                        )}
                         value={formData.instagram}
                         onChange={(e) => setFormData({...formData, instagram: e.target.value})}
                         disabled={!isEditing}
@@ -529,7 +575,12 @@ const handleSave = async () => {
                       <input 
                         type="text"
                         placeholder="linkedin.com/in/..."
-                        className="w-full p-3 pl-10 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#E56668]/20 transition-all"
+                        className={cn(
+                            "w-full p-3 pl-10 rounded-xl border transition-all",
+                            isEditing 
+                                ? "bg-white border-gray-300 focus:ring-2 focus:ring-[#E56668]/20 focus:border-[#E56668]" 
+                                : "bg-gray-50 border-gray-100 text-gray-600"
+                        )}
                         value={formData.linkedin}
                         onChange={(e) => setFormData({...formData, linkedin: e.target.value})}
                         disabled={!isEditing}
@@ -541,24 +592,61 @@ const handleSave = async () => {
               </section>
 
               {/* LEARNING GOALS (READ ONLY FOR NOW) */}
-              <section className="bg-gradient-to-br from-[#2F4157] to-[#1e2b3a] rounded-2xl shadow-sm border border-[#2F4157] p-6 text-white">
-                <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+              <section className="bg-gradient-to-br from-[#2F4157] to-[#1e2b3a] rounded-2xl shadow-lg border border-[#2F4157] p-6 text-white relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full blur-2xl -mr-6 -mt-6"></div>
+                <h3 className="text-lg font-bold mb-4 flex items-center gap-2 relative z-10">
                   <Target className="text-yellow-400" size={20} /> Learning Profile
                 </h3>
-                <div className="space-y-4">
-                  <div>
-                    <p className="text-white/60 text-xs uppercase tracking-wide mb-1">Current Goal</p>
-                    <p className="font-semibold">{formData.goals || "No active goal set"}</p>
-                  </div>
-                  <div className="h-px bg-white/10" />
-                  <div>
-                    <p className="text-white/60 text-xs uppercase tracking-wide mb-1">Self-Assessed Level</p>
-                    <p className="font-semibold">{formData.english_level || "Not set"}</p>
-                  </div>
-                </div>
-                <button className="w-full mt-6 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-sm font-bold transition-colors">
-                  Update Learning Goals
-                </button>
+                
+                {isEditing ? (
+                    <div className="space-y-4 relative z-10">
+                        <div>
+                            <label className="text-white/60 text-xs uppercase tracking-wide mb-1 block">Current Goal</label>
+                            <input 
+                                type="text"
+                                className="w-full bg-white/10 border border-white/20 rounded-lg p-2 text-white placeholder-white/30 focus:outline-none focus:border-white/50"
+                                placeholder="e.g. Master IELTS Speaking"
+                                value={formData.goals}
+                                onChange={(e) => setFormData({...formData, goals: e.target.value})}
+                            />
+                        </div>
+                        <div>
+                            <label className="text-white/60 text-xs uppercase tracking-wide mb-1 block">English Level</label>
+                            <select 
+                                className="w-full bg-white/10 border border-white/20 rounded-lg p-2 text-white focus:outline-none focus:border-white/50 [&>option]:text-gray-900"
+                                value={formData.english_level}
+                                onChange={(e) => setFormData({...formData, english_level: e.target.value})}
+                            >
+                                <option value="">Select Level</option>
+                                <option value="Beginner">Beginner (A1-A2)</option>
+                                <option value="Intermediate">Intermediate (B1-B2)</option>
+                                <option value="Advanced">Advanced (C1-C2)</option>
+                            </select>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="space-y-4 relative z-10">
+                    <div>
+                        <p className="text-white/60 text-xs uppercase tracking-wide mb-1">Current Goal</p>
+                        <p className="font-semibold text-lg">{formData.goals || "No active goal set"}</p>
+                    </div>
+                    <div className="h-px bg-white/10" />
+                    <div>
+                        <p className="text-white/60 text-xs uppercase tracking-wide mb-1">Self-Assessed Level</p>
+                        <div className="flex items-center gap-2">
+                            <span className="font-semibold">{formData.english_level || "Not set"}</span>
+                            {formData.english_level && <div className="px-2 py-0.5 bg-green-500/20 text-green-300 text-[10px] rounded border border-green-500/30">Verified</div>}
+                        </div>
+                    </div>
+                    </div>
+                )}
+                
+                {!isEditing && (
+                    <div className="mt-6 flex items-center gap-2 text-xs text-white/40">
+                        <AlertCircle size={12} />
+                        <span>Click "Edit Profile" to update goals</span>
+                    </div>
+                )}
               </section>
 
             </div>
@@ -571,8 +659,13 @@ const handleSave = async () => {
 }
 
 // --- HELPER COMPONENT ---
+// Utility for cleaner helper component logic with Tailwind
+function cn(...classes: (string | undefined | null | false)[]) {
+  return classes.filter(Boolean).join(' ');
+}
+
 const InputGroup = ({ label, children, isEditing }: { label: string, children: React.ReactNode, isEditing: boolean }) => (
-  <div className={`transition-opacity duration-300 ${!isEditing ? "opacity-90" : "opacity-100"}`}>
+  <div className={`transition-all duration-300 ${!isEditing ? "opacity-80 hover:opacity-100" : "opacity-100"}`}>
     <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">
       {label}
     </label>

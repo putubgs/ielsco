@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import PricingModal from "@/components/subscription/PricingModal"; // Pastikan import ini ada
 import { createBrowserClient } from "@supabase/ssr";
 import {
   ArrowLeft,
@@ -13,37 +14,47 @@ import {
   CheckCircle2,
   Crown,
   AlertCircle,
-  User,
-  Mail,
-  FileText
+  X
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { getGoalById, bookConsultation, getUpcomingConsultations } from "@/data/goals";
 import type { GoalWithTasks, MentorConsultation } from "@/types/goals";
 
+// --- TIPE DATA ---
+type UserTier = "explorer" | "insider" | "visionary";
+
 export default function ConsultationPage() {
   const params = useParams();
   const router = useRouter();
   const goalId = params?.goalId as string;
-  
 
-const supabase = createBrowserClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key"
-);
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key"
+  );
 
-  const [userData, setUserData] = useState({ 
+  // State User Updated
+  const [userData, setUserData] = useState<{
+    id: string;
+    name: string;
+    tier: UserTier;
+    email: string;
+  }>({ 
     id: "", 
     name: "", 
-    tier: "basic" as "basic" | "pro",
+    tier: "explorer",
     email: ""
   });
+
   const [goal, setGoal] = useState<GoalWithTasks | null>(null);
   const [consultations, setConsultations] = useState<MentorConsultation[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showBookingModal, setShowBookingModal] = useState(false);
   
+  // Modals
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [showPricingModal, setShowPricingModal] = useState(false); // Untuk Upgrade
+
   // Booking form state
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
@@ -67,12 +78,22 @@ const supabase = createBrowserClient(
         .eq("id", user.id)
         .single();
 
-      const tier = dbUser?.memberships?.[0]?.tier === "pro" ? "pro" : "basic";
+      // --- LOGIC MAPPING TIER ---
+      const dbTier = dbUser?.memberships?.[0]?.tier;
+      let uiTier: UserTier = "explorer";
+
+      if (dbTier === "pro") {
+        uiTier = "insider";
+      } else if (dbTier === "premium" || dbTier === "visionary") {
+        uiTier = "visionary";
+      } else {
+        uiTier = "explorer";
+      }
 
       setUserData({
         id: user.id,
         name: user.user_metadata?.full_name || "Learner",
-        tier: tier,
+        tier: uiTier,
         email: user.email || ""
       });
 
@@ -138,9 +159,9 @@ const supabase = createBrowserClient(
     }
   };
 
-  if (loading || !goal) {
+  if (loading) {
     return (
-      <DashboardLayout userTier={userData.tier} userName={userData.name} userAvatar="">
+      <DashboardLayout userTier="explorer" userName="Loading..." userAvatar="">
         <div className="p-8 max-w-7xl mx-auto animate-pulse">
           <div className="h-12 bg-gray-200 rounded-xl w-64 mb-8"></div>
           <div className="h-96 bg-gray-200 rounded-2xl"></div>
@@ -149,13 +170,13 @@ const supabase = createBrowserClient(
     );
   }
 
-  // If user is Basic, show upgrade prompt
-  if (userData.tier === "basic") {
+  // --- LOCKED STATE (EXPLORER) ---
+  if (userData.tier === "explorer") {
     return (
       <DashboardLayout userTier={userData.tier} userName={userData.name} userAvatar="">
         <div className="min-h-screen bg-[#F7F8FA] flex items-center justify-center p-4">
-          <div className="max-w-lg w-full bg-white rounded-3xl p-8 shadow-2xl text-center">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400 to-orange-400 flex items-center justify-center mx-auto mb-6">
+          <div className="max-w-lg w-full bg-white rounded-3xl p-8 shadow-2xl text-center border border-gray-100">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400 to-orange-400 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-orange-200">
               <Crown className="text-white" size={40} />
             </div>
             
@@ -164,10 +185,11 @@ const supabase = createBrowserClient(
             </h2>
             
             <p className="text-gray-600 mb-6 leading-relaxed">
-              Get personalized 1-on-1 guidance from expert mentors. Pro members receive 2 consultations per month to accelerate their learning.
+              Get personalized 1-on-1 guidance from expert mentors. 
+              <span className="font-bold text-[#2F4157]"> Insider & Visionary</span> members receive priority consultations to accelerate learning.
             </p>
             
-            <div className="space-y-3 mb-8 text-left">
+            <div className="space-y-3 mb-8 text-left bg-gray-50 p-6 rounded-2xl">
               {[
                 "30-minute video sessions",
                 "Personalized learning strategy",
@@ -181,18 +203,23 @@ const supabase = createBrowserClient(
               ))}
             </div>
             
-            <button className="w-full py-4 bg-gradient-to-r from-[#E56668] to-[#ff8f91] text-white rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl transition-all">
-              Upgrade to Pro — IDR 99k/month
+            <button 
+              onClick={() => setShowPricingModal(true)}
+              className="w-full py-4 bg-gradient-to-r from-[#E56668] to-[#ff8f91] text-white rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all"
+            >
+              Upgrade Membership
             </button>
             
             <Link
               href={`/dashboard/goals/${goalId}`}
-              className="inline-block mt-4 text-sm text-gray-500 hover:text-gray-700 transition-colors"
+              className="inline-block mt-6 text-sm text-gray-500 hover:text-[#E56668] transition-colors font-medium"
             >
-              Back to Goal
+              Back to Goal Details
             </Link>
           </div>
         </div>
+        {/* Render Modal jika user klik upgrade */}
+        {showPricingModal && <PricingModal onClose={() => setShowPricingModal(false)} />}
       </DashboardLayout>
     );
   }
@@ -208,6 +235,7 @@ const supabase = createBrowserClient(
     { value: "application_help", label: "Application Help" }
   ];
 
+  // --- UNLOCKED STATE (INSIDER / VISIONARY) ---
   return (
     <DashboardLayout userTier={userData.tier} userName={userData.name} userAvatar="">
       <div className="min-h-screen bg-[#F7F8FA]">
@@ -229,13 +257,13 @@ const supabase = createBrowserClient(
                   Mentor Consultations
                 </h1>
                 <p className="text-gray-600">
-                  {goal.objective}
+                  {goal?.objective || "Your Learning Goal"}
                 </p>
               </div>
               
               <button 
                 onClick={() => setShowBookingModal(true)}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-[#E56668] text-white rounded-xl font-semibold hover:bg-[#C04C4E] transition-colors shadow-lg"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-[#E56668] text-white rounded-xl font-semibold hover:bg-[#C04C4E] transition-colors shadow-lg shadow-red-900/10"
               >
                 <Calendar size={18} />
                 Book New Session
@@ -244,51 +272,57 @@ const supabase = createBrowserClient(
           </div>
 
           {/* Info Banner */}
-          <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 mb-8">
-            <div className="flex items-start gap-4">
-              <AlertCircle className="text-blue-600 flex-shrink-0 mt-1" size={24} />
-              <div>
-                <h3 className="font-bold text-blue-900 mb-1">
-                  Pro Benefit: 2 Consultations/Month
-                </h3>
-                <p className="text-sm text-blue-800 leading-relaxed">
-                  As a Pro member, you get 2 free 30-minute consultations per month. 
-                  Book at least 2 weeks in advance. 24-hour cancellation policy applies.
-                </p>
-              </div>
+          <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 mb-8 flex items-start gap-4">
+            <div className="p-2 bg-blue-100 rounded-lg text-blue-600">
+                <Crown size={24} />
+            </div>
+            <div>
+              <h3 className="font-bold text-blue-900 mb-1 capitalize">
+                {userData.tier} Benefit Active
+              </h3>
+              <p className="text-sm text-blue-800 leading-relaxed">
+                As an <span className="font-bold capitalize">{userData.tier}</span> member, you have access to priority consultations. 
+                Book at least 2 weeks in advance. 24-hour cancellation policy applies.
+              </p>
             </div>
           </div>
 
           {/* Upcoming Consultations */}
-          <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm mb-8">
-            <h2 className="text-xl font-bold text-[#2F4157] mb-6">
-              Upcoming Sessions
+          <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm mb-8 min-h-[300px]">
+            <h2 className="text-xl font-bold text-[#2F4157] mb-6 flex items-center gap-2">
+               <Video size={20} className="text-gray-400"/> Upcoming Sessions
             </h2>
             
             {consultations.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
+              <div className="text-center py-12 bg-gray-50/50 rounded-2xl border border-dashed border-gray-200">
+                <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center mx-auto mb-4 shadow-sm">
                   <MessageSquare className="text-gray-400" size={32} />
                 </div>
                 <p className="text-gray-600 font-medium mb-1">
                   No upcoming consultations
                 </p>
-                <p className="text-sm text-gray-500">
-                  Book your first session to get started
+                <p className="text-sm text-gray-500 mb-4">
+                  Ready to accelerate your progress?
                 </p>
+                <button 
+                  onClick={() => setShowBookingModal(true)}
+                  className="text-[#E56668] font-bold text-sm hover:underline"
+                >
+                  Book your first session
+                </button>
               </div>
             ) : (
               <div className="space-y-4">
                 {consultations.map((consultation) => (
                   <div
                     key={consultation.id}
-                    className="p-5 bg-gray-50 rounded-xl border border-gray-100 hover:border-[#E56668]/30 transition-colors"
+                    className="p-5 bg-white rounded-xl border border-gray-200 hover:border-[#E56668] hover:shadow-md transition-all group"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                          <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">
-                            Scheduled
+                          <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full flex items-center gap-1">
+                            <CheckCircle2 size={12}/> Scheduled
                           </span>
                           <span className="text-sm text-gray-500">
                             {consultation.duration_minutes} minutes
@@ -296,7 +330,7 @@ const supabase = createBrowserClient(
                         </div>
                         
                         <div className="flex items-center gap-2 text-[#2F4157] mb-2">
-                          <Calendar size={16} />
+                          <Calendar size={16} className="text-[#E56668]" />
                           <span className="font-semibold">
                             {new Date(consultation.scheduled_at).toLocaleDateString('en-US', {
                               month: 'long',
@@ -304,8 +338,8 @@ const supabase = createBrowserClient(
                               year: 'numeric'
                             })}
                           </span>
-                          <span className="text-gray-400">•</span>
-                          <Clock size={16} />
+                          <span className="text-gray-300">|</span>
+                          <Clock size={16} className="text-[#E56668]" />
                           <span className="font-semibold">
                             {new Date(consultation.scheduled_at).toLocaleTimeString('en-US', {
                               hour: '2-digit',
@@ -319,7 +353,7 @@ const supabase = createBrowserClient(
                             {consultation.discussion_topics.map((topic, i) => (
                               <span
                                 key={i}
-                                className="px-2 py-1 bg-white border border-gray-200 rounded text-xs text-gray-700"
+                                className="px-2 py-1 bg-gray-50 border border-gray-200 rounded text-xs text-gray-600 font-medium"
                               >
                                 {topic.replace('_', ' ')}
                               </span>
@@ -333,7 +367,7 @@ const supabase = createBrowserClient(
                           href={consultation.meeting_link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-4 py-2 bg-[#E56668] text-white rounded-lg font-semibold text-sm hover:bg-[#C04C4E] transition-colors"
+                          className="flex items-center gap-2 px-4 py-2 bg-[#2F4157] text-white rounded-lg font-semibold text-sm hover:bg-[#1e2b3a] transition-colors"
                         >
                           <Video size={16} />
                           Join
@@ -358,13 +392,18 @@ const supabase = createBrowserClient(
             className="bg-white rounded-3xl max-w-2xl w-full shadow-2xl max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-5 rounded-t-3xl z-10">
-              <h3 className="text-2xl font-bold text-[#2F4157]">
-                Book Mentor Consultation
-              </h3>
-              <p className="text-sm text-gray-600 mt-1">
-                Schedule a 30-minute session with your mentor
-              </p>
+            <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-5 rounded-t-3xl z-10 flex justify-between items-center">
+              <div>
+                <h3 className="text-2xl font-bold text-[#2F4157]">
+                  Book Mentor Consultation
+                </h3>
+                <p className="text-sm text-gray-600 mt-1">
+                  Schedule a 30-minute session with your mentor
+                </p>
+              </div>
+              <button onClick={() => setShowBookingModal(false)} className="p-2 hover:bg-gray-100 rounded-full">
+                 <X size={20} className="text-gray-500" />
+              </button>
             </div>
             
             <form onSubmit={handleBookConsultation} className="p-6 space-y-6">
@@ -479,6 +518,9 @@ const supabase = createBrowserClient(
           </div>
         </div>
       )}
+      
+      {/* Pricing Modal Component */}
+      {showPricingModal && <PricingModal onClose={() => setShowPricingModal(false)} />}
     </DashboardLayout>
   );
 }

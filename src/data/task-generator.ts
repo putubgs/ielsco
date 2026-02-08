@@ -7,7 +7,7 @@ export interface TaskBreakdownConfig {
   goalId: string;
   objective: string;
   durationMonths: number;
-  userTier: 'basic' | 'pro';
+  userTier: 'explorer' | 'insider' | 'visionary' ;
   currentLevel: number; // IELTS equivalent
   targetLevel: number;
 }
@@ -57,7 +57,7 @@ export function generateTaskBreakdown(config: TaskBreakdownConfig): GeneratedTas
 /**
  * IELTS Task Breakdown (3-12 months)
  */
-function generateIELTSTasks(months: number, current: number, target: number, tier: 'basic' | 'pro'): GeneratedTask[] {
+function generateIELTSTasks(months: number, current: number, target: number, tier: 'explorer' | 'insider' | 'visionary' ): GeneratedTask[] {
   const tasks: GeneratedTask[] = [];
   const weeksAvailable = months * 4;
   const bandGap = target - current;
@@ -234,7 +234,7 @@ function generateIELTSTasks(months: number, current: number, target: number, tie
 /**
  * Scholarship Task Breakdown
  */
-function generateScholarshipTasks(months: number, tier: 'basic' | 'pro'): GeneratedTask[] {
+function generateScholarshipTasks(months: number, tier: 'explorer' | 'insider' | 'visionary' ): GeneratedTask[] {
   const tasks: GeneratedTask[] = [];
   
   // Test Prep (first 6 months)
@@ -338,7 +338,7 @@ function generateScholarshipTasks(months: number, tier: 'basic' | 'pro'): Genera
 /**
  * Business/Work English Task Breakdown
  */
-function generateBusinessTasks(months: number, tier: 'basic' | 'pro'): GeneratedTask[] {
+function generateBusinessTasks(months: number, tier: 'explorer' | 'insider' | 'visionary'): GeneratedTask[] {
   const tasks: GeneratedTask[] = [];
   
   tasks.push({
@@ -439,7 +439,7 @@ function generateBusinessTasks(months: number, tier: 'basic' | 'pro'): Generated
 /**
  * Conversation Fluency Task Breakdown
  */
-function generateConversationTasks(months: number, tier: 'basic' | 'pro'): GeneratedTask[] {
+function generateConversationTasks(months: number, tier: 'explorer' | 'insider' | 'visionary' ): GeneratedTask[] {
   const tasks: GeneratedTask[] = [];
   
   tasks.push({
@@ -556,12 +556,12 @@ export function normalizeTaskWeights(tasks: GeneratedTask[]): GeneratedTask[] {
 /**
  * Filter tasks based on user tier
  */
-export function filterTasksByTier(tasks: GeneratedTask[], tier: 'basic' | 'pro'): {
+export function filterTasksByTier(tasks: GeneratedTask[], tier: 'explorer' | 'insider' | 'visionary' ): {
   accessible: GeneratedTask[];
   locked: GeneratedTask[];
 } {
-  const accessible = tasks.filter(t => !t.requires_pro || tier === 'pro');
-  const locked = tier === 'basic' ? tasks.filter(t => t.requires_pro) : [];
+  const accessible = tasks.filter(t => !t.requires_pro || tier === 'insider');
+  const locked = tier === 'explorer' ? tasks.filter(t => t.requires_pro) : [];
   
   return { accessible, locked };
 }

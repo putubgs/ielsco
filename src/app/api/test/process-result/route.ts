@@ -78,24 +78,52 @@ export async function POST(request: NextRequest) {
     // FIX: Tambahkan ': any' agar TypeScript tidak rewel saat parsing JSON nanti
     let feedbackData: any = { analysis: "<p>AI analysis pending...</p>" };
 
-    try {
-      if (writingTask1 || writingTask2) {
-        const prompt = `
-          Act as an IELTS Examiner. Assess these tasks:
-          Task 1: ${writingTask1 || "No answer"}
-          Task 2: ${writingTask2 || "No answer"}
-          Return valid JSON: { "overall_band": number, "task_achievement": number, "coherence_cohesion": number, "lexical_resource": number, "grammar": number, "strengths": ["string"], "improvements": ["string"], "analysis": "HTML string summarizing performance" }
-        `;
-        const result = await model.generateContent(prompt);
-        const text = result.response.text();
-        const cleanedText = text.replace(/```json|```/g, '').trim();
-        
-        feedbackData = JSON.parse(cleanedText);
-        writingBand = feedbackData.overall_band || 5.0;
+try {
+  if (writingTask1 || writingTask2) {
+    const prompt = `
+      Act as an expert IELTS Writing Examiner. 
+      Your goal is to provide a rigorous and honest assessment of the following student submissions.
+
+      TASK 1 QUESTION:
+      Letter to a manager about job dissatisfaction. Requirements: Explain dissatisfaction, suggest solutions, request specific action. Min 150 words.
+
+      TASK 2 QUESTION:
+      Topic: Spending public money on healthy lifestyles vs. treating illness. Requirements: Discuss extent of agreement/disagreement with reasons and examples. Min 250 words.
+
+      STUDENT SUBMISSIONS:
+      Task 1: "${writingTask1 || "No answer provided"}"
+      Task 2: "${writingTask2 || "No answer provided"}"
+
+      ASSESSMENT CRITERIA & INSTRUCTIONS:
+      1. CRITICAL VALIDATION: If the student provides an answer that is irrelevant, off-topic, or "gibberish" (ngasal), you MUST be honest. In the "analysis" and "improvements" section, explicitly state that the response does not address the prompt.
+      2. SCORING: Provide scores (0.0 - 9.0) based on Task Response, Coherence/Cohesion, Lexical Resource, and Grammatical Range/Accuracy.
+      3. TASK ACHIEVEMENT: Harshly penalize answers that don't meet the word count or ignore parts of the prompt.
+      4. ANALYSIS: This should be an HTML string. Use <b>tags</b> for emphasis. Break it down into Task 1 and Task 2. If the user was not serious, call it out directly but professionally.
+
+      Return ONLY a valid JSON object with this structure:
+      {
+        "overall_band": number,
+        "task_achievement": number,
+        "coherence_cohesion": number,
+        "lexical_resource": number,
+        "grammar": number,
+        "strengths": ["string"],
+        "improvements": ["string"],
+        "analysis": "HTML string summarizing detailed performance and relevance"
       }
-    } catch (e) {
-      console.log("AI Generation Error:", e);
-    }
+    `;
+const result = await model.generateContent(prompt);
+    const text = result.response.text();
+    const cleanedText = text.replace(/```json|```/g, '').trim();
+    
+    feedbackData = JSON.parse(cleanedText);
+    writingBand = feedbackData.overall_band || 5.0;
+  }
+} catch (e) {
+  console.log("AI Generation Error:", e);
+  // Fallback if AI fails
+  feedbackData = { analysis: "Analysis currently unavailable due to system error." };
+}
 
     const lBand = convertToIELTSBand(listeningScore);
     const rBand = convertToIELTSBand(readingScore);

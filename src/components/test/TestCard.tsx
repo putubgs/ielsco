@@ -1,4 +1,4 @@
-import { Play, CheckCircle2, Lock, Clock, FileText, TrendingUp } from "lucide-react";
+import { Play, CheckCircle2, Lock, Clock, FileText, TrendingUp, BarChart3 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -12,7 +12,7 @@ interface TestCardProps {
   testType: 'pre-test' | 'post-test';
   isLocked?: boolean;
   lockReason?: string;
-  href?: string;
+  href?: string; // This will now handle both the test link and the result link
 }
 
 export default function TestCard({
@@ -31,9 +31,8 @@ export default function TestCard({
   const getStatusBadge = () => {
     if (isLocked) {
       return (
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-100 text-gray-500 text-xs font-bold rounded-full">
-          <Lock size={12} />
-          Locked
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-100 text-gray-500 text-[10px] font-black uppercase tracking-widest rounded-full">
+          <Lock size={12} /> Locked
         </span>
       );
     }
@@ -41,59 +40,57 @@ export default function TestCard({
     switch (status) {
       case 'completed':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full">
-            <CheckCircle2 size={12} />
-            Completed
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-700 text-[10px] font-black uppercase tracking-widest rounded-full">
+            <CheckCircle2 size={12} /> Finished
           </span>
         );
       case 'in_progress':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-full">
-            <Clock size={12} />
-            In Progress
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-100 text-blue-700 text-[10px] font-black uppercase tracking-widest rounded-full">
+            <Clock size={12} /> In Progress
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-orange-100 text-orange-700 text-xs font-bold rounded-full">
-            <Play size={12} />
-            Ready
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-orange-100 text-orange-700 text-[10px] font-black uppercase tracking-widest rounded-full">
+            <Play size={12} /> Ready to Start
           </span>
         );
     }
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 8.0) return 'text-green-600';
-    if (score >= 7.0) return 'text-blue-600';
-    if (score >= 6.0) return 'text-orange-600';
-    return 'text-red-600';
+    if (score >= 7.5) return 'text-green-600';
+    if (score >= 6.5) return 'text-[#304156]';
+    return 'text-[#E56668]';
   };
 
-  const CardContent = (
+  return (
     <div className={cn(
-      "bg-white rounded-2xl p-6 border shadow-sm h-full relative overflow-hidden transition-all",
+      "bg-white rounded-[32px] p-8 border shadow-sm h-full relative overflow-hidden transition-all duration-300",
       isLocked 
-        ? "border-gray-200 opacity-75" 
+        ? "border-gray-200 opacity-75 grayscale" 
         : status === 'completed'
-        ? "border-green-200 hover:shadow-lg"
-        : "border-gray-100 hover:shadow-lg hover:border-[#E56668]/30"
+        ? "border-green-200 hover:shadow-xl hover:border-green-400"
+        : "border-[#CDC6BC]/40 hover:shadow-xl hover:border-[#CB2129]/30"
     )}>
+      
       {/* Lock Overlay */}
       {isLocked && (
-        <div className="absolute inset-0 bg-gray-900/5 backdrop-blur-[1px] z-10 flex items-center justify-center">
-          <div className="bg-white rounded-2xl p-6 shadow-xl border-2 border-gray-200 text-center max-w-xs">
-            <Lock className="mx-auto text-gray-400 mb-3" size={32} />
-            <p className="font-bold text-gray-700 mb-2">Test Locked</p>
-            <p className="text-sm text-gray-600">{lockReason}</p>
+        <div className="absolute inset-0 bg-[#304156]/5 backdrop-blur-[2px] z-10 flex items-center justify-center p-6">
+          <div className="bg-white rounded-3xl p-8 shadow-2xl border border-gray-100 text-center max-w-xs animate-in fade-in zoom-in">
+            <Lock className="mx-auto text-[#E56668] mb-4" size={40} />
+            <p className="font-black text-[#E56668] uppercase tracking-tighter mb-2">Module Locked</p>
+            <p className="text-xs text-[#577E90] font-medium leading-relaxed">{lockReason}</p>
           </div>
         </div>
       )}
 
-      {/* Header */}
-      <div className="flex items-start justify-between mb-4">
+      {/* Content Header */}
+      <div className="flex items-start justify-between mb-6">
         <div className="flex-1">
-          <h3 className="text-xl font-bold text-[#2F4157] mb-2">
+          <p className="text-[10px] font-black text-[#577E90] uppercase tracking-[0.2em] mb-2">Assessment Module</p>
+          <h3 className="text-2xl font-black text-[#304156] leading-tight mb-3">
             {title}
           </h3>
           {getStatusBadge()}
@@ -101,76 +98,72 @@ export default function TestCard({
         
         {status === 'completed' && score !== undefined && (
           <div className="text-right">
-            <p className="text-xs text-gray-500 mb-1">Overall Score</p>
-            <p className={cn("text-3xl font-bold", getScoreColor(score))}>
+            <p className="text-[10px] font-black text-[#577E90] uppercase tracking-widest mb-1">Band Score</p>
+            <p className={cn("text-4xl font-black italic tracking-tighter", getScoreColor(score))}>
               {score.toFixed(1)}
             </p>
           </div>
         )}
       </div>
 
-      {/* Description */}
-      <p className="text-gray-600 text-sm mb-6 leading-relaxed">
+      <p className="text-[#577E90] text-sm mb-8 leading-relaxed font-medium">
         {description}
       </p>
 
-      {/* Test Info */}
-      <div className="grid grid-cols-2 gap-4 mb-6">
-        <div className="flex items-center gap-2 text-sm text-gray-700">
-          <Clock size={16} className="text-gray-400" />
+      {/* Icons Info */}
+      <div className="flex gap-6 mb-10 pb-6 border-b border-gray-50">
+        <div className="flex items-center gap-2 text-xs font-bold text-[#304156]">
+          <Clock size={16} className="text-[#E56668]" />
           <span>{duration}</span>
         </div>
-        <div className="flex items-center gap-2 text-sm text-gray-700">
-          <FileText size={16} className="text-gray-400" />
-          <span>{sections} sections</span>
+        <div className="flex items-center gap-2 text-xs font-bold text-[#304156]">
+          <FileText size={16} className="text-[#E56668]" />
+          <span>{sections} Sections</span>
         </div>
       </div>
 
-      {/* CTA Button */}
+      {/* THE UPDATED CTA SECTION */}
       {!isLocked && (
         <div>
-          {status === 'completed' ? (
-            <button
-              disabled
-              className="w-full py-3 bg-gray-100 text-gray-500 rounded-xl font-bold cursor-not-allowed flex items-center justify-center gap-2"
-            >
-              <CheckCircle2 size={18} />
-              Test Completed
-            </button>
-          ) : href ? (
+          {href ? (
             <Link
               href={href}
-              className="block w-full py-3 bg-[#E56668] text-white rounded-xl font-bold hover:bg-[#C04C4E] transition-colors shadow-lg text-center flex items-center justify-center gap-2"
+              className={cn(
+                "block w-full py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all shadow-lg text-center flex items-center justify-center gap-3",
+                status === 'completed'
+                  ? "bg-[#304156] text-white hover:bg-[#253344] shadow-blue-900/10"
+                  : "bg-[#E56668] text-white hover:bg-[#E56668]/90 shadow-red-900/10 hover:scale-[1.02]"
+              )}
             >
-              <Play size={18} />
-              {status === 'in_progress' ? 'Continue Test' : 'Start Test'}
+              {status === 'completed' ? (
+                <>
+                  <BarChart3 size={18} />
+                  View Analysis Report
+                </>
+              ) : (
+                <>
+                  <Play size={18} fill="currentColor" />
+                  {status === 'in_progress' ? 'Continue Journey' : 'Begin Assessment'}
+                </>
+              )}
             </Link>
           ) : (
-            <button
-              disabled
-              className="w-full py-3 bg-gray-200 text-gray-500 rounded-xl font-bold cursor-not-allowed"
-            >
-              Not Available
-            </button>
+            <div className="w-full py-4 bg-gray-100 text-[#E56668] rounded-2xl font-black text-xs uppercase tracking-widest text-center italic">
+              Module Unavailable
+            </div>
           )}
         </div>
       )}
 
-      {/* Score Trend (if completed) */}
-      {status === 'completed' && score !== undefined && (
-        <div className="mt-4 pt-4 border-t border-gray-100">
-          <div className="flex items-center gap-2 text-sm">
-            <TrendingUp size={14} className="text-green-500" />
-            <span className="text-gray-600">
-              {testType === 'post-test' && score >= 7.0 
-                ? 'Excellent improvement!' 
-                : 'View detailed breakdown'}
-            </span>
-          </div>
+      {/* Decorative Bottom Tag */}
+      {status === 'completed' && (
+        <div className="mt-6 flex items-center justify-center gap-2">
+          <TrendingUp size={14} className="text-green-500" />
+          <span className="text-[10px] font-black text-[#577E90] uppercase tracking-widest">
+            Detailed performance breakdown available
+          </span>
         </div>
       )}
     </div>
   );
-
-  return CardContent;
 }

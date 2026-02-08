@@ -22,6 +22,9 @@ import Link from "next/link";
 import { getGoalById, getGoalAnalytics } from "@/data/goals";
 import type { GoalWithTasks, GoalAnalytics } from "@/types/goals";
 
+// --- TIPE DATA ---
+type UserTier = "explorer" | "insider" | "visionary";
+
 export default function ProgressReportPage() {
   const params = useParams();
   const router = useRouter();
@@ -32,11 +35,17 @@ export default function ProgressReportPage() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
-  const [userData, setUserData] = useState({ 
+  // 1. Update State Definition
+  const [userData, setUserData] = useState<{
+    id: string;
+    name: string;
+    tier: UserTier;
+  }>({ 
     id: "", 
     name: "", 
-    tier: "basic" as "basic" | "pro" 
+    tier: "explorer" // Default value
   });
+
   const [goal, setGoal] = useState<GoalWithTasks | null>(null);
   const [analytics, setAnalytics] = useState<GoalAnalytics | null>(null);
   const [loading, setLoading] = useState(true);
@@ -57,12 +66,22 @@ export default function ProgressReportPage() {
         .eq("id", user.id)
         .single();
 
-      const tier = dbUser?.memberships?.[0]?.tier === "pro" ? "pro" : "basic";
+      // 2. Logic Mapping Tier
+      const dbTier = dbUser?.memberships?.[0]?.tier;
+      let uiTier: UserTier = "explorer";
+
+      if (dbTier === "pro") {
+        uiTier = "insider";
+      } else if (dbTier === "premium" || dbTier === "visionary") {
+        uiTier = "visionary";
+      } else {
+        uiTier = "explorer";
+      }
 
       setUserData({
         id: user.id,
         name: user.user_metadata?.full_name || "Learner",
-        tier: tier
+        tier: uiTier
       });
 
       if (goalId) {
@@ -86,7 +105,7 @@ export default function ProgressReportPage() {
 
   if (loading || !goal || !analytics) {
     return (
-      <DashboardLayout userTier={userData.tier} userName={userData.name} userAvatar="">
+      <DashboardLayout userTier="explorer" userName="Loading..." userAvatar="">
         <div className="p-8 max-w-7xl mx-auto animate-pulse">
           <div className="h-12 bg-gray-200 rounded-xl w-64 mb-8"></div>
           <div className="grid grid-cols-3 gap-6 mb-8">
@@ -117,6 +136,7 @@ export default function ProgressReportPage() {
   const isAheadOfSchedule = progressDelta >= 0;
 
   return (
+    // 3. Pass userData.tier ke Layout
     <DashboardLayout userTier={userData.tier} userName={userData.name} userAvatar="">
       <div className="min-h-screen bg-[#F7F8FA]">
         <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">

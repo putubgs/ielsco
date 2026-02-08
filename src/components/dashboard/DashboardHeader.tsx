@@ -9,7 +9,6 @@ import {
   LayoutDashboard, 
   CalendarDays, 
   Users,
-  ShoppingBag, 
   ShoppingCart,
   Bell, 
   UserCircle, 
@@ -21,17 +20,26 @@ import {
   Trophy,
   User,
   HelpCircle,
-  MessageSquarePlus,
   CreditCard,
   BookOpen,
   Library,
-  Store, // Icon baru untuk Marketplace/Store
+  Store,
   FileText,
-  GraduationCap
+  GraduationCap,
+  Sparkles // Icon baru untuk Visionary Tier
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export default function DashboardHeader({ userAvatar, userName }: { userAvatar?: string, userName?: string }) {
+// Tambahkan prop userTier di sini
+export default function DashboardHeader({ 
+  userAvatar, 
+  userName,
+  userTier = "explorer" // Default tier
+}: { 
+  userAvatar?: string, 
+  userName?: string,
+  userTier?: "explorer" | "insider" | "visionary"
+}) {
   const pathname = usePathname();
   const router = useRouter();
   
@@ -64,6 +72,30 @@ export default function DashboardHeader({ userAvatar, userName }: { userAvatar?:
     router.refresh();
   };
 
+  // --- LOGIC BADGE TIER (NEW) ---
+  const getTierBadge = (tier: string) => {
+    switch(tier) {
+      case "visionary":
+        return (
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-200 text-[10px] font-bold border border-purple-500/30 uppercase tracking-wide">
+            <Sparkles size={10} className="text-purple-300" /> VISIONARY
+          </span>
+        );
+      case "insider":
+        return (
+          <span className="inline-block px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-200 text-[10px] font-bold border border-blue-500/30 uppercase tracking-wide">
+            INSIDER
+          </span>
+        );
+      default: // explorer
+        return (
+          <span className="inline-block px-2 py-0.5 rounded-full bg-gray-500/20 text-gray-300 text-[10px] font-bold border border-gray-500/30 uppercase tracking-wide">
+            Explorer
+          </span>
+        );
+    }
+  };
+
   // === STRUKTUR MENU UTAMA (Desktop) ===
   const navItems = [
     { 
@@ -72,12 +104,12 @@ export default function DashboardHeader({ userAvatar, userName }: { userAvatar?:
       icon: LayoutDashboard 
     },
     { 
-      name: "My Goals", // ✅ MVP FEATURE (RESTORED)
+      name: "My Goals", 
       path: "/dashboard/goals", 
       icon: Trophy 
     },
     { 
-      name: "My Learning", // ✅ Renamed from Schedule
+      name: "My Learning", 
       path: "/dashboard/learning",
       icon: BookOpen,
       children: [
@@ -96,7 +128,7 @@ export default function DashboardHeader({ userAvatar, userName }: { userAvatar?:
 
   return (
     <header className="sticky top-0 z-40 w-full bg-[#2F4157] shadow-lg border-b border-white/10 transition-all duration-300">
-      <div className="w-full px-4 sm:px-8 lg:px-[100px] py-6 lg:py-9"> 
+      <div className="w-full px-6 sm:px-8 lg:px-[100px] py-6 lg:py-8"> {/* Adjusted padding slightly */}
         <div className="flex items-center justify-between">
           
           {/* 1. LOGO (LEFT) */}
@@ -105,13 +137,13 @@ export default function DashboardHeader({ userAvatar, userName }: { userAvatar?:
                 <Image 
                   src="/images/logos/iels_white.png" 
                   alt="IELS" 
-                  width={60} 
-                  height={60} 
-                  className="lg:w-[60px]" 
+                  width={50} 
+                  height={50} 
+                  className="lg:w-[50px]" 
                 />
                 <div className="hidden lg:flex flex-col text-white">
                   <span className="font-bold text-lg leading-none tracking-tight">
-                    Dashboard [BETA]
+                    Dashboard
                   </span>
                   <span className="text-[10px] text-white/60 tracking-wider uppercase mt-0.5">
                     Learning Space
@@ -123,12 +155,11 @@ export default function DashboardHeader({ userAvatar, userName }: { userAvatar?:
           {/* 2. NAVIGATION (CENTER - DESKTOP ONLY) */}
           <nav className="hidden md:flex items-center gap-1 justify-center flex-1 px-4">
             {navItems.map((item) => {
-
-  const isDirectPath = item.path === "/dashboard" 
-    ? pathname === "/dashboard" 
-    : pathname?.startsWith(item.path);
-  const isChildActive = item.children?.some(child => pathname?.startsWith(child.path));
-  const isActive = isDirectPath || isChildActive;
+              const isDirectPath = item.path === "/dashboard" 
+                ? pathname === "/dashboard" 
+                : pathname?.startsWith(item.path);
+              const isChildActive = item.children?.some(child => pathname?.startsWith(child.path));
+              const isActive = isDirectPath || isChildActive;
               
               const Icon = item.icon;
               const hasChildren = item.children && item.children.length > 0;
@@ -154,11 +185,11 @@ export default function DashboardHeader({ userAvatar, userName }: { userAvatar?:
                     {hasChildren && <ChevronDown size={14} className="mt-0.5 opacity-70" />}
                   </Link>
 
-                  {/* DROPDOWN MENU (For My Learning) */}
+                  {/* DROPDOWN MENU */}
                   {hasChildren && (
                     <div 
                       className={cn(
-                        "absolute left-1/2 -translate-x-1/2 pt-4 w-52 z-50 transition-all duration-200 origin-top",
+                        "absolute left-1/2 -translate-x-1/2 pt-4 w-56 z-50 transition-all duration-200 origin-top",
                         activeDropdown === item.name 
                           ? "opacity-100 translate-y-0 visible" 
                           : "opacity-0 -translate-y-2 invisible"
@@ -183,46 +214,43 @@ export default function DashboardHeader({ userAvatar, userName }: { userAvatar?:
             })}
           </nav>
 
-          {/* 3. RIGHT ACTIONS (Marketplace, Cart, Bell, Profile) */}
+          {/* 3. RIGHT ACTIONS */}
           <div className="flex items-center gap-4 lg:gap-6 z-50">
             
             <div className="flex items-center gap-2 border-r border-white/10 pr-4">
-              
-              {/* ✅ MARKETPLACE BUTTON (Icon Only) */}
+              {/* MARKETPLACE */}
               <Link href="/dashboard/shop" className="hidden sm:block">
-                <button 
-                  className="relative p-2.5 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-all group"
-                  title="Marketplace"
-                >
+                <button className="relative p-2.5 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-all group" title="Marketplace">
                   <Store size={22} className="group-hover:text-[#E56668] transition-colors" />
                 </button>
               </Link>
 
-              {/* CART BUTTON */}
+              {/* CART */}
               <Link href="/dashboard/cart">
                 <button className="relative p-2.5 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-all group">
                   <ShoppingCart size={22} className="group-hover:scale-105 transition-transform" />
-                  {/* Badge count example */}
-                  {/* <span className="absolute top-2 right-2 w-2 h-2 bg-[#E56668] rounded-full border border-[#2F4157]"></span> */}
                 </button>
               </Link>
 
-              {/* NOTIFICATION BELL */}
+              {/* NOTIF */}
               <button className="relative p-2.5 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-all group">
                 <Bell size={22} className="group-hover:rotate-12 transition-transform" />
                 <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
               </button>
             </div>
 
-            {/* Profile Dropdown */}
+            {/* PROFILE DROPDOWN */}
             <div className="relative" ref={profileRef}>
               <button 
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
-                className="flex items-center gap-3 group focus:outline-none"
+                className="flex items-center gap-3 group focus:outline-none text-left"
               >
                 <div className="hidden lg:flex flex-col items-end">
                     <span className="text-sm font-bold text-white leading-none">{userName?.split(" ")[0]}</span>
-                    <span className="text-[11px] text-gray-400 mt-0.5 group-hover:text-[#E56668] transition-colors">Member</span>
+                    {/* TAMPILKAN BADGE DI SINI (DESKTOP) */}
+                    <div className="mt-1 opacity-90 hover:opacity-100 transition-opacity">
+                      {getTierBadge(userTier)}
+                    </div>
                 </div>
                 <div className="relative">
                   {userAvatar ? (
@@ -248,14 +276,18 @@ export default function DashboardHeader({ userAvatar, userName }: { userAvatar?:
               {isProfileOpen && (
                 <div className="absolute right-0 mt-4 w-72 bg-white rounded-2xl shadow-2xl py-2 border border-gray-100 transform transition-all origin-top-right z-50 animate-in fade-in zoom-in-95 duration-100">
                   <div className="px-5 py-4 border-b border-gray-100 bg-gray-50/50 rounded-t-2xl flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-[#2F4157] flex items-center justify-center text-white font-bold text-lg">
+                    <div className="h-10 w-10 rounded-full bg-[#2F4157] flex items-center justify-center text-white font-bold text-lg shrink-0">
                       {userName?.charAt(0)}
                     </div>
-                    <div className="overflow-hidden">
+                    <div className="overflow-hidden w-full">
                       <p className="text-sm font-bold text-[#2F4157] truncate">{userName}</p>
-                      <Link href="/dashboard/profile" className="text-xs text-[#E56668] hover:underline font-medium flex items-center gap-1">
-                        View Profile
-                      </Link>
+                      {/* Badge di Menu Dropdown juga biar jelas */}
+                      <div className="mt-1 scale-90 origin-left">
+                        {getTierBadge(userTier).props.children} {/* Reuse text/icon only but with dark text style logic below if needed, or just use raw badge */}
+                        <span className="text-[10px] font-bold text-gray-500 border border-gray-200 bg-white px-2 py-0.5 rounded-full uppercase tracking-wide">
+                          {userTier}
+                        </span>
+                      </div>
                     </div>
                   </div>
                   
@@ -301,7 +333,17 @@ export default function DashboardHeader({ userAvatar, userName }: { userAvatar?:
       {isMobileOpen && (
         <div className="md:hidden bg-[#263546] border-t border-white/10 p-4 shadow-inner absolute w-full left-0 z-40 max-h-[90vh] overflow-y-auto">
            <div className="space-y-2">
-             {/* Tambahan Manual Marketplace di Mobile karena di atas cuma icon */}
+             {/* Mobile User Info w/ Badge */}
+             <div className="flex items-center gap-3 px-4 py-4 border-b border-white/10 mb-2">
+                <div className="h-10 w-10 rounded-full bg-[#2F4157] border border-white/20 flex items-center justify-center text-white font-bold">
+                  {userName?.charAt(0)}
+                </div>
+                <div>
+                  <p className="text-white font-bold">{userName}</p>
+                  <div className="mt-1">{getTierBadge(userTier)}</div>
+                </div>
+             </div>
+
              <Link href="/dashboard/shop" onClick={() => setIsMobileOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:bg-white/5">
                 <Store size={20} className="text-[#E56668]" />
                 Marketplace (Shop)

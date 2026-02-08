@@ -3,25 +3,32 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
-import { Target, Plus, AlertCircle, Trash2 } from "lucide-react";
+import { Target, Plus, AlertCircle } from "lucide-react";
 import { createBrowserClient } from "@supabase/ssr";
-import { getUserGoals, deleteGoal } from "@/data/goals"; // Import deleteGoal
-import type { Goal } from "@/types/goals";
+import { getUserGoals, deleteGoal } from "@/data/goals"; 
 import GoalCard from "@/components/goals/GoalCard";
 import GoalWizard from "@/components/goals/GoalWizard";
+import type { Goal } from "@/types/goals"; // Pastikan import ini benar
 
 export default function GoalsPage() {
   const router = useRouter();
-const supabase = createBrowserClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key"
-);
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key"
+  );
 
   // State
-  const [goals, setGoals] = useState<Goal[]>([]);
+  const [goals, setGoals] = useState<any[]>([]); // Gunakan any[] sementara jika tipe Goal belum fix, atau Goal[] jika sudah
   const [loading, setLoading] = useState(true);
   const [showWizard, setShowWizard] = useState(false);
-  const [userData, setUserData] = useState({ id: "", name: "", tier: "basic" as "basic" | "pro" });
+  
+  // ⚠️ FIX: Update tipe state userTier agar sesuai dengan DashboardLayout
+  const [userData, setUserData] = useState({ 
+    id: "", 
+    name: "", 
+    tier: "explorer" as "explorer" | "insider" | "visionary", // Default ke explorer
+    avatar: "" 
+  });
 
   const fetchGoals = async (userId: string) => {
     const userGoals = await getUserGoals(userId);
@@ -40,18 +47,34 @@ const supabase = createBrowserClient(
         return;
       }
 
-      // 2. Ambil Profil Tambahan
+      const avatarUrl = user.user_metadata?.avatar_url || "";
+
+      // 2. Ambil Profil Tambahan from DB
       const { data: dbUser } = await supabase
         .from("users")
         .select(`*, memberships(tier)`)
         .eq("id", user.id)
         .single();
 
+      // ⚠️ FIX: Logic Mapping dari Database (basic/pro) ke UI (explorer/insider/visionary)
+      let uiTier: "explorer" | "insider" | "visionary" = "explorer";
+      
+      const dbTier = dbUser?.memberships?.[0]?.tier; // Misal di DB isinya 'pro' atau 'basic'
+
+      if (dbTier === "pro") {
+        uiTier = "insider"; // Mapping: Pro -> Insider
+      } else if (dbTier === "premium" || dbTier === "visionary") {
+        uiTier = "visionary"; // Mapping: Premium -> Visionary
+      } else {
+        uiTier = "explorer"; // Default: Basic -> Explorer
+      }
+
       // Set Data User
       setUserData({
         id: user.id,
         name: user.user_metadata?.full_name || "Learner",
-        tier: dbUser?.memberships?.[0]?.tier === "pro" ? "pro" : "basic"
+        tier: uiTier, // Gunakan hasil mapping
+        avatar: avatarUrl
       });
 
       // 3. Fetch Goals
@@ -72,7 +95,7 @@ const supabase = createBrowserClient(
     setLoading(false);
   };
 
-  // Handle Delete (Fitur Baru)
+  // Handle Delete
   const handleDeleteGoal = async (goalId: string) => {
     if (confirm("Are you sure you want to delete this goal? This cannot be undone.")) {
       setLoading(true);
@@ -85,9 +108,13 @@ const supabase = createBrowserClient(
   };
 
   return (
-    <DashboardLayout userTier={userData.tier} userName={userData.name} userAvatar={undefined}>
+    <DashboardLayout 
+      userName={userData.name} 
+      userTier={userData.tier} // Sekarang tipenya sudah cocok ("explorer" | "insider" | "visionary")
+      userAvatar={userData.avatar}
+    >
       
-      {/* ===== GOALS HERO SECTION (Container Sendiri) ===== */}
+      {/* ===== GOALS HERO SECTION ===== */}
       <div className="relative overflow-hidden w-full bg-[#F7F8FA] border-b border-gray-200">
         <div className="relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center py-12 px-6">
 
@@ -132,7 +159,7 @@ const supabase = createBrowserClient(
       {/* ===== END HERO SECTION ===== */}
 
 
-      {/* ===== GOALS LIST SECTION (Container Terpisah agar Rapi) ===== */}
+      {/* ===== GOALS LIST SECTION ===== */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-8">
         
         {loading ? (
@@ -151,7 +178,7 @@ const supabase = createBrowserClient(
               <GoalCard 
                 key={goal.id} 
                 goal={goal} 
-                onDelete={() => handleDeleteGoal(goal.id)} // Pass fungsi delete
+                onDelete={() => handleDeleteGoal(goal.id)}
               />
             ))}
           </div>

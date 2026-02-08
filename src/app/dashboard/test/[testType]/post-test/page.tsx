@@ -6,21 +6,19 @@ import { useRouter } from "next/navigation";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { 
   Clock, FileText, Headphones, PenTool, AlertTriangle,
-  CheckCircle2, Loader2, ArrowRight, ShieldCheck, PlayCircle,
-  Eye, Trophy
+  CheckCircle2, Loader2, ShieldCheck, PlayCircle,
+  Eye, Trophy, Target
 } from "lucide-react";
 
-// ✅ FIX 1: Definisikan tipe UserTier yang sesuai dengan DashboardLayout
 type UserTier = "explorer" | "insider" | "visionary";
 
-// Define simple type for attempt
 type AttemptType = {
   id: string;
   status: string;
   overall_score?: number;
 };
 
-export default function PreTestPage() {
+export default function PostTestPage() {
   const router = useRouter();
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -33,14 +31,9 @@ export default function PreTestPage() {
   const [checking, setChecking] = useState(false);
   const [isCheckingHistory, setIsCheckingHistory] = useState(true);
   const [user, setUser] = useState<any>(null);
-  
-  // ✅ FIX 2: State userData menggunakan UserTier yang benar
-  const [userData, setUserData] = useState({ 
-    name: "", 
-    tier: "explorer" as UserTier 
-  });
+  const [userData, setUserData] = useState({ name: "", tier: "explorer" as UserTier });
 
-  // --- 1. USER & HISTORY CHECK ---
+  // --- 1. USER & POST-TEST HISTORY CHECK ---
   useEffect(() => {
     const checkUserAndHistory = async () => {
       try {
@@ -51,39 +44,35 @@ export default function PreTestPage() {
           return;
         }
 
-        // Check if user already completed the test
+        // Specifically check for POST_TEST completion
         const { data: existingAttempt } = await supabase
           .from('test_attempts')
           .select('id, status, overall_score')
           .eq('user_id', authUser.id)
-          .eq('test_type', 'pre_test')
+          .eq('test_type', 'post_test') // Filtered for Post-Test
           .eq('status', 'completed')
           .order('created_at', { ascending: false })
           .limit(1)
-          .single();
+          .maybeSingle();
 
         if (existingAttempt) {
           setCompletedAttempt(existingAttempt);
           setAttemptId(existingAttempt.id);
         }
 
-        // Load user profile
         const { data: dbUser } = await supabase
           .from('users')
           .select(`*, memberships(tier)`)
           .eq('id', authUser.id)
           .single();
 
-        // ✅ FIX 3: Mapping logic dari DB (mungkin masih old values) ke New Tier System
         const dbTier = dbUser?.memberships?.[0]?.tier;
         let uiTier: UserTier = "explorer";
 
-        if (dbTier === "premium" || dbTier === "visionary") {
+        if (dbTier === "visionary") {
           uiTier = "visionary";
-        } else if (dbTier === "pro" || dbTier === "insider") {
+        } else if (dbTier === "insider" || dbTier === "pro") {
           uiTier = "insider";
-        } else {
-          uiTier = "explorer";
         }
 
         setUser(authUser);
@@ -93,9 +82,8 @@ export default function PreTestPage() {
         });
         
         setIsCheckingHistory(false);
-
       } catch (error) {
-        console.error("Error checking user:", error);
+        console.error("Error checking post-test history:", error);
         setIsCheckingHistory(false);
       }
     };
@@ -103,10 +91,8 @@ export default function PreTestPage() {
     checkUserAndHistory();
   }, [supabase, router]);
 
-  // ✅ FIX 4: Hapus function helper 'getLayoutTier' yang bikin error
-
-  // --- 2. START TEST ACTION ---
-  const startTest = async () => {
+  // --- 2. START POST-TEST ACTION ---
+  const startPostTest = async () => {
     if (!user) return;
     
     if (completedAttempt) {
@@ -120,7 +106,7 @@ export default function PreTestPage() {
         .from('test_attempts')
         .insert({
           user_id: user.id,
-          test_type: 'pre_test',
+          test_type: 'post_test', // Recorded as Post-Test
           status: 'in_progress',
           email: user.email,
           full_name: userData.name 
@@ -130,23 +116,19 @@ export default function PreTestPage() {
 
       if (error) throw error;
       setAttemptId(data.id);
-      
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      
     } catch (err) {
-      alert('Could not start test. Please check your connection.');
+      alert('Post-test will be started on 13 February 2026');
     } finally {
       setLoading(false);
     }
   };
 
-  // --- 3. CHECK RESULT ACTION ---
   const checkResults = async () => {
     if (completedAttempt) {
         router.push(`/dashboard/test/results/${completedAttempt.id}`);
         return;
     }
-
     if (!attemptId) return;
     setChecking(true);
     try {
@@ -159,210 +141,151 @@ export default function PreTestPage() {
       if (data?.status === 'completed') {
         router.push(`/dashboard/test/results/${attemptId}`);
       } else {
-        alert('Your results are being processed. Please wait a moment and try again.');
+        alert('Your results are being processed. Please try again in a moment.');
       }
     } finally {
       setChecking(false);
     }
   };
 
-  const GFORM_URL = process.env.NEXT_PUBLIC_PRETEST_FORM_URL!;
-  const ENTRY_ID = process.env.NEXT_PUBLIC_PRETEST_ENTRY_ID!;
+  const GFORM_URL = process.env.NEXT_PUBLIC_POSTTEST_FORM_URL!;
+  const ENTRY_ID = process.env.NEXT_PUBLIC_POSTTEST_ENTRY_ID!;
   const formUrl = attemptId 
     ? `${GFORM_URL}?${ENTRY_ID}=${attemptId}&embedded=true` 
     : `${GFORM_URL}?embedded=true`; 
 
-  // --- UI: LOADING STATE ---
   if (isCheckingHistory) {
     return (
-      // ✅ FIX 5: Pass userData.tier langsung
       <DashboardLayout userTier={userData.tier} userName={userData.name}>
         <div className="flex flex-col items-center justify-center min-h-[60vh]">
           <Loader2 className="animate-spin text-[#E56668] mb-4" size={40} />
-          <p className="text-gray-500 font-medium">Checking your eligibility...</p>
+          <p className="text-gray-500 font-medium">Validating your final assessment...</p>
         </div>
       </DashboardLayout>
     );
   }
 
-  // --- UI: PRE-TEST LANDING (Belum Start & Belum Complete) ---
   if (!attemptId && !completedAttempt) {
     return (
-      // ✅ FIX 6: Pass userData.tier langsung
       <DashboardLayout userTier={userData.tier} userName={userData.name}>
         <div className="max-w-5xl mx-auto p-4 sm:p-8">
           
-          {/* Hero Section */}
-          <div className="bg-gradient-to-br from-[#2F4157] to-[#1e2b3a] rounded-3xl p-8 sm:p-12 text-white mb-10 shadow-xl relative overflow-hidden">
+          <div className="bg-gradient-to-br from-[#304156] to-[#1a2635] rounded-3xl p-8 sm:p-12 text-white mb-10 shadow-xl relative overflow-hidden">
             <div className="relative z-10 max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-xs font-bold uppercase tracking-wider mb-4 border border-white/20">
-                <ShieldCheck size={12} /> Official IELS Assessment
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E56668]/20 text-[#E56668] text-xs font-bold uppercase tracking-wider mb-4 border border-[#E56668]/30">
+                <Target size={12} /> Final Benchmarking
               </div>
               <h1 className="text-3xl sm:text-5xl font-bold mb-4 leading-tight font-geologica">
-                IELTS Diagnostic <br/>Pre-Test
+                IELTS Graduation <br/>Post-Test
               </h1>
               <p className="text-lg text-gray-300 mb-8 leading-relaxed">
-                Take this comprehensive assessment to discover your current English proficiency. 
-                Get an estimated Band Score and personalized AI feedback instantly.
+                Congratulations on completing the IELS journey! This final assessment measures your growth
+                and provides your final band score estimate. Finish strong!
               </p>
               
               <button 
-                onClick={startTest} 
+                onClick={startPostTest} 
                 disabled={loading}
-                className="group bg-[#E56668] hover:bg-[#d64547] text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg shadow-red-900/20 transition-all flex items-center gap-3 active:scale-95"
+                className="group bg-[#E56668] hover:bg-[#d64547] text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg transition-all flex items-center gap-3 active:scale-95"
               >
                 {loading ? <Loader2 className="animate-spin" /> : <PlayCircle className="fill-white text-[#E56668]" />}
-                Start Assessment Now
+                Start Final Assessment
               </button>
-            </div>
-            
-            <div className="absolute right-0 bottom-0 opacity-10 pointer-events-none">
-              <Headphones size={300} />
             </div>
           </div>
 
-          {/* Test Structure Cards */}
           <div className="grid md:grid-cols-3 gap-6 mb-12">
             <FeatureCard 
               icon={<Headphones className="text-blue-500" size={24}/>}
-              title="Listening Section"
-              desc="4 sections, 40 questions based on real audio scenarios."
+              title="Listening Final"
+              desc="Full-length 40 questions to test your refined listening skills."
               meta="~30 Minutes"
               bg="bg-blue-50"
             />
             <FeatureCard 
               icon={<FileText className="text-green-500" size={24}/>}
-              title="Reading Section"
-              desc="3 long texts ranging from descriptive to factual."
+              title="Reading Final"
+              desc="Complex academic texts to evaluate your advanced reading techniques."
               meta="~60 Minutes"
               bg="bg-green-50"
             />
             <FeatureCard 
               icon={<PenTool className="text-purple-500" size={24}/>}
-              title="Writing Section"
-              desc="Task 1 & Task 2 assessed by our Advanced AI Engine."
+              title="Writing Final"
+              desc="Task 1 & 2. Apply everything you learned in the Master Class."
               meta="~60 Minutes"
               bg="bg-purple-50"
             />
           </div>
 
           <InstructionsBox />
-
         </div>
       </DashboardLayout>
     );
   }
 
-  // --- UI: ACTIVE TEST / REVIEW MODE ---
   const isReviewMode = !!completedAttempt;
 
   return (
-    // ✅ FIX 7: Pass userData.tier langsung
     <DashboardLayout userTier={userData.tier} userName={userData.name}>
       <div className="min-h-screen bg-gray-50 pb-20">
         
-        {/* Sticky Header */}
-        <div className={`text-white p-4 sticky top-0 z-50 shadow-lg backdrop-blur-md bg-opacity-95 transition-colors ${isReviewMode ? 'bg-green-700' : 'bg-[#2F4157]'}`}>
+        <div className={`text-white p-4 sticky top-0 z-50 shadow-lg backdrop-blur-md bg-opacity-95 transition-colors ${isReviewMode ? 'bg-indigo-700' : 'bg-[#304156]'}`}>
           <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              {isReviewMode ? (
-                 <CheckCircle2 className="text-white" size={24} />
-              ) : (
-                 <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
-              )}
-              
+              {isReviewMode ? <CheckCircle2 size={24} /> : <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />}
               <div>
-                <p className="font-bold text-sm">
-                    {isReviewMode ? "Assessment Completed" : "Test in Progress"}
-                </p>
-                <p className="text-xs text-gray-300 font-mono">
-                    ID: {completedAttempt?.id || attemptId}
-                </p>
+                <p className="font-bold text-sm">{isReviewMode ? "Post-Test Completed" : "Final Test in Progress"}</p>
+                <p className="text-xs text-gray-300 font-mono">Attempt ID: {completedAttempt?.id || attemptId}</p>
               </div>
             </div>
 
-            {/* Action Buttons */}
             <div className="flex gap-3">
                 {isReviewMode ? (
                     <button 
                         onClick={checkResults}
-                        className="bg-white text-green-700 hover:bg-gray-100 px-6 py-2.5 rounded-lg font-bold text-sm shadow-md transition-all flex items-center gap-2"
+                        className="bg-white text-indigo-700 hover:bg-gray-100 px-6 py-2.5 rounded-lg font-bold text-sm shadow-md transition-all flex items-center gap-2"
                     >
-                        <Trophy size={16} />
-                        View Full Analysis
+                      <Trophy size={16} /> View Graduation Analysis
                     </button>
                 ) : (
                     <button 
                         onClick={checkResults} 
                         disabled={checking}
-                        className="bg-[#E56668] hover:bg-[#d64547] text-white px-6 py-2.5 rounded-lg font-bold text-sm shadow-md transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-wait"
+                        className="bg-[#E56668] hover:bg-[#d64547] text-white px-6 py-2.5 rounded-lg font-bold text-sm shadow-md transition-all flex items-center gap-2 disabled:opacity-50"
                     >
-                        {checking ? <Loader2 className="animate-spin" size={16} /> : <CheckCircle2 size={16} />}
-                        I Have Submitted
+                      {checking ? <Loader2 className="animate-spin" size={16} /> : <CheckCircle2 size={16} />}
+                      I Have Submitted My Final Test
                     </button>
                 )}
             </div>
           </div>
         </div>
 
-        {/* Content Container */}
         <div className="max-w-5xl mx-auto px-4 py-8">
-          
-          {/* Review Mode Banner */}
           {isReviewMode && (
-             <div className="bg-white border border-green-200 rounded-2xl p-6 mb-8 shadow-sm">
+             <div className="bg-white border border-indigo-200 rounded-2xl p-6 mb-8 shadow-sm">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                     <div className="flex items-start gap-4">
-                        <div className="bg-green-100 p-3 rounded-xl">
-                            <Eye className="text-green-600" size={32} />
-                        </div>
+                        <div className="bg-indigo-100 p-3 rounded-xl"><Eye className="text-indigo-600" size={32} /></div>
                         <div>
-                            <h2 className="text-xl font-bold text-[#2F4157]">Reviewing Questions</h2>
-                            <p className="text-gray-600 max-w-lg mt-1">
-                                You are viewing the form in review mode. You can check the questions again to compare with your analysis result.
-                                <br/><span className="text-sm text-red-500 italic">*Resubmitting this form will not change your previous score.</span>
+                            <h2 className="text-xl font-bold text-[#2F4157]">Post-Test Review</h2>
+                            <p className="text-gray-600 max-w-lg mt-1 text-sm">
+                               You are viewing your final graduation assessment. Use this to compare with your Pre-Test baseline.
                             </p>
                         </div>
                     </div>
                     <div className="text-right">
-                        <p className="text-sm text-gray-500 uppercase tracking-wide font-bold">Your Score</p>
-                        <p className="text-4xl font-bold text-green-600">{completedAttempt.overall_score || "-"}</p>
+                        <p className="text-xs text-gray-500 uppercase tracking-wide font-bold">Final Score</p>
+                        <p className="text-4xl font-bold text-indigo-600">{completedAttempt.overall_score || "-"}</p>
                     </div>
                 </div>
              </div>
           )}
 
-          {/* Alert Banner (Only for Active Test) */}
-          {!isReviewMode && (
-            <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6 flex gap-3 animate-in fade-in slide-in-from-top-4">
-                <div className="bg-blue-100 p-2 rounded-lg h-fit">
-                <ShieldCheck className="text-blue-600" size={20} />
-                </div>
-                <div className="text-sm text-blue-800">
-                <p className="font-bold mb-1">System Connected</p>
-                <p>Your results will be automatically synced. Please fill out the form below carefully.</p>
-                </div>
-            </div>
-          )}
-
-          {/* Form Iframe */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden min-h-[800px] relative">
-             {/* Overlay warning for Review Mode */}
-             {isReviewMode && (
-                 <div className="bg-yellow-50 text-yellow-800 text-xs text-center py-2 font-medium border-b border-yellow-100">
-                    👁️ You are viewing this form in Read-Only / Reference mode.
-                 </div>
-             )}
-             
-             <iframe 
-               src={formUrl} 
-               width="100%" 
-               height="4500px" 
-               frameBorder="0" 
-               className="w-full"
-               title="IELTS Pre-Test Form"
-             >
-               Loading assessment form...
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden min-h-[800px]">
+             <iframe src={formUrl} width="100%" height="4500px" frameBorder="0" className="w-full" title="IELS Post-Test Form">
+                Loading assessment form...
              </iframe>
           </div>
         </div>
@@ -370,8 +293,6 @@ export default function PreTestPage() {
     </DashboardLayout>
   );
 }
-
-// --- SUB-COMPONENTS ---
 
 function FeatureCard({ icon, title, desc, meta, bg }: any) {
   return (
@@ -390,14 +311,13 @@ function InstructionsBox() {
     return (
         <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
             <h3 className="text-xl font-bold text-[#2F4157] mb-6 flex items-center gap-2">
-              <AlertTriangle className="text-amber-500" />
-              Critical Instructions
+              <AlertTriangle className="text-amber-500" /> Critical Instructions
             </h3>
             <div className="space-y-4">
-              <InstructionStep num="1" text="Ensure you have a stable internet connection. The test cannot be paused." />
-              <InstructionStep num="2" text="Do NOT refresh the page once the test starts, or you may lose progress." />
-              <InstructionStep num="3" text="The 'Attempt ID' field at the bottom is auto-filled. Do not modify it." />
-              <InstructionStep num="4" text="After clicking Submit on the form, click 'I Have Submitted' at the top of this page." />
+              <InstructionStep num="1" text="This is your final benchmark. Find a quiet space for 3 uninterrupted hours." />
+              <InstructionStep num="2" text="Apply all strategies from your IELS Master Class lessons." />
+              <InstructionStep num="3" text="Double-check your email and Attempt ID at the end of the form." />
+              <InstructionStep num="4" text="Click 'I Have Submitted' above only after completing the Google Form." />
             </div>
         </div>
     )
@@ -406,10 +326,10 @@ function InstructionsBox() {
 function InstructionStep({ num, text }: { num: string, text: string }) {
   return (
     <div className="flex items-start gap-4 p-3 hover:bg-gray-50 rounded-lg transition-colors">
-      <div className="w-8 h-8 rounded-full bg-[#2F4157] text-white flex items-center justify-center font-bold text-sm flex-shrink-0">
+      <div className="w-8 h-8 rounded-full bg-[#304156] text-white flex items-center justify-center font-bold text-sm flex-shrink-0">
         {num}
       </div>
-      <p className="text-gray-700 font-medium pt-1">{text}</p>
+      <p className="text-gray-700 font-medium pt-1 text-sm">{text}</p>
     </div>
   );
 }

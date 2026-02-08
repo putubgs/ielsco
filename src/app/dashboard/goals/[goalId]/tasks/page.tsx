@@ -8,34 +8,45 @@ import TaskSubmission from "@/components/goals/TaskSubmission";
 import { createBrowserClient } from "@supabase/ssr";
 import {
   ArrowLeft,
-  Filter,
   Download,
   BookOpen,
   FileText,
   Video,
   Headphones,
-  ExternalLink
+  ExternalLink,
+  Lock,
+  Crown
 } from "lucide-react";
 import Link from "next/link";
 import { getGoalById, toggleTaskCompletion, submitTaskForReview } from "@/data/goals";
 import { getPersonalizedAssignments, getPersonalizedMaterials } from "@/data/assignments-materials";
 import type { GoalWithTasks } from "@/types/goals";
+// ✅ FIX 1: Tambahkan import cn
+import { cn } from "@/lib/utils";
+
+// --- TIPE DATA BARU ---
+type UserTier = "explorer" | "insider" | "visionary";
 
 export default function TasksPage() {
   const params = useParams();
   const router = useRouter();
   const goalId = params?.goalId as string;
   
-const supabase = createBrowserClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key"
-);
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key"
+  );
 
-  const [userData, setUserData] = useState({ 
+  const [userData, setUserData] = useState<{
+    id: string;
+    name: string;
+    tier: UserTier;
+  }>({ 
     id: "", 
     name: "", 
-    tier: "basic" as "basic" | "pro" 
+    tier: "explorer" 
   });
+
   const [goal, setGoal] = useState<GoalWithTasks | null>(null);
   const [loading, setLoading] = useState(true);
   const [submissionModalTask, setSubmissionModalTask] = useState<string | null>(null);
@@ -57,12 +68,22 @@ const supabase = createBrowserClient(
         .eq("id", user.id)
         .single();
 
-      const tier = dbUser?.memberships?.[0]?.tier === "pro" ? "pro" : "basic";
+      // Logic Mapping Tier
+      const dbTier = dbUser?.memberships?.[0]?.tier;
+      let uiTier: UserTier = "explorer";
+
+      if (dbTier === "pro") {
+        uiTier = "insider";
+      } else if (dbTier === "premium" || dbTier === "visionary") {
+        uiTier = "visionary";
+      } else {
+        uiTier = "explorer";
+      }
 
       setUserData({
         id: user.id,
         name: user.user_metadata?.full_name || "Learner",
-        tier: tier
+        tier: uiTier
       });
 
       if (goalId) {
@@ -96,7 +117,7 @@ const supabase = createBrowserClient(
 
   if (loading || !goal) {
     return (
-      <DashboardLayout userTier={userData.tier} userName={userData.name} userAvatar="">
+      <DashboardLayout userTier="explorer" userName="Loading..." userAvatar="">
         <div className="p-8 max-w-7xl mx-auto animate-pulse">
           <div className="h-12 bg-gray-200 rounded-xl w-64 mb-8"></div>
           <div className="h-96 bg-gray-200 rounded-2xl"></div>
@@ -105,8 +126,8 @@ const supabase = createBrowserClient(
     );
   }
 
-  const assignments = getPersonalizedAssignments(goal.objective, 10);
-  const materials = getPersonalizedMaterials(goal.objective, userData.tier);
+  const materials = getPersonalizedMaterials(goal.objective, userData.tier as any); 
+  
   const currentTask = submissionModalTask 
     ? goal.tasks.find(t => t.id === submissionModalTask) 
     : null;
@@ -145,7 +166,7 @@ const supabase = createBrowserClient(
                 </p>
               </div>
               
-              <button className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 text-[#2F4157] rounded-xl font-semibold hover:bg-gray-50 transition-colors">
+              <button className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 text-[#2F4157] rounded-xl font-semibold hover:bg-gray-50 transition-colors shadow-sm">
                 <Download size={18} />
                 Export Task List
               </button>
@@ -153,13 +174,13 @@ const supabase = createBrowserClient(
           </div>
 
           {/* Tabs */}
-          <div className="flex bg-white border border-gray-200 p-1 rounded-xl mb-6 w-fit">
+          <div className="flex bg-white border border-gray-200 p-1.5 rounded-xl mb-6 w-fit shadow-sm">
             <button
               onClick={() => setActiveTab("tasks")}
               className={`px-6 py-2.5 rounded-lg font-semibold transition-all ${
                 activeTab === "tasks"
-                  ? "bg-[#E56668] text-white shadow-sm"
-                  : "text-gray-600 hover:text-gray-800"
+                  ? "bg-[#E56668] text-white shadow-md"
+                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
               }`}
             >
               All Tasks ({goal.tasks.length})
@@ -168,8 +189,8 @@ const supabase = createBrowserClient(
               onClick={() => setActiveTab("materials")}
               className={`px-6 py-2.5 rounded-lg font-semibold transition-all ${
                 activeTab === "materials"
-                  ? "bg-[#E56668] text-white shadow-sm"
-                  : "text-gray-600 hover:text-gray-800"
+                  ? "bg-[#E56668] text-white shadow-md"
+                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
               }`}
             >
               Learning Materials ({materials.length})
@@ -180,7 +201,9 @@ const supabase = createBrowserClient(
           {activeTab === "tasks" ? (
             <TaskList
               tasks={goal.tasks}
-              userTier={userData.tier}
+              // ✅ FIX 2: Mapping Visionary -> Insider untuk TaskList component
+              // Karena component TaskList belum support 'visionary', kita anggap dia 'insider'
+              userTier={userData.tier === "visionary" ? "insider" : userData.tier}
               onToggleTask={handleToggleTask}
               onSubmitTask={(taskId) => setSubmissionModalTask(taskId)}
             />
@@ -191,41 +214,55 @@ const supabase = createBrowserClient(
                   Recommended Learning Materials
                 </h2>
                 <p className="text-sm text-gray-600 mb-6">
-                  Curated resources to support your {goal.objective} journey
+                  Curated resources to support your {goal.objective} journey. 
+                  <span className="text-[#E56668] font-bold"> Insider</span> & 
+                  <span className="text-purple-600 font-bold"> Visionary</span> members get full access.
                 </p>
                 
                 <div className="grid gap-4">
                   {materials.map((material) => (
                     <div
                       key={material.id}
-                      className="group p-4 bg-gray-50 hover:bg-gray-100 rounded-xl border border-gray-100 hover:border-[#E56668]/30 transition-all"
+                      className={cn(
+                        "group p-4 bg-gray-50 rounded-xl border border-gray-100 transition-all",
+                        !material.isLocked ? "hover:bg-gray-100 hover:border-[#E56668]/30" : "opacity-80"
+                      )}
                     >
                       <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-white border border-gray-200 flex items-center justify-center text-[#E56668] flex-shrink-0">
-                          {getMaterialIcon(material.type)}
+                        <div className={cn(
+                          "w-12 h-12 rounded-xl border flex items-center justify-center flex-shrink-0 transition-colors",
+                          material.isLocked 
+                            ? "bg-gray-100 border-gray-200 text-gray-400" 
+                            : "bg-white border-gray-200 text-[#E56668] group-hover:border-[#E56668]"
+                        )}>
+                          {material.isLocked ? <Lock size={16}/> : getMaterialIcon(material.type)}
                         </div>
                         
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-3 mb-1">
-                            <h3 className="font-bold text-[#2F4157] group-hover:text-[#E56668] transition-colors">
+                            <h3 className={cn(
+                              "font-bold transition-colors",
+                              material.isLocked ? "text-gray-500" : "text-[#2F4157] group-hover:text-[#E56668]"
+                            )}>
                               {material.title}
                             </h3>
+                            
                             {material.isLocked && (
-                              <span className="px-2 py-0.5 bg-yellow-100 text-yellow-700 text-xs font-bold rounded">
-                                Pro
+                              <span className="flex items-center gap-1 px-2 py-0.5 bg-gradient-to-r from-yellow-100 to-orange-100 text-orange-700 border border-orange-200 text-[10px] font-bold uppercase tracking-wide rounded">
+                                <Crown size={10} /> Premium
                               </span>
                             )}
                           </div>
                           
-                          <p className="text-sm text-gray-600 mb-2">
+                          <p className="text-sm text-gray-600 mb-2 line-clamp-2">
                             {material.description}
                           </p>
                           
                           <div className="flex items-center gap-3 text-xs">
-                            <span className="px-2 py-1 bg-white border border-gray-200 rounded text-gray-600 font-medium">
+                            <span className="px-2 py-1 bg-white border border-gray-200 rounded text-gray-600 font-medium capitalize">
                               {material.type}
                             </span>
-                            <span className="px-2 py-1 bg-white border border-gray-200 rounded text-gray-600 font-medium">
+                            <span className="px-2 py-1 bg-white border border-gray-200 rounded text-gray-600 font-medium capitalize">
                               {material.difficulty}
                             </span>
                             {material.duration && (
@@ -241,11 +278,17 @@ const supabase = createBrowserClient(
                             href={material.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-1 px-4 py-2 bg-[#E56668] text-white rounded-lg font-semibold text-sm hover:bg-[#C04C4E] transition-colors"
+                            className="flex items-center gap-1 px-4 py-2 bg-[#E56668] text-white rounded-lg font-semibold text-sm hover:bg-[#C04C4E] transition-colors shadow-sm"
                           >
                             Access
                             <ExternalLink size={14} />
                           </a>
+                        )}
+                        
+                        {material.isLocked && (
+                           <button className="flex items-center gap-1 px-4 py-2 bg-gray-200 text-gray-500 rounded-lg font-semibold text-sm cursor-not-allowed">
+                             Locked
+                           </button>
                         )}
                       </div>
                     </div>

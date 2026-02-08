@@ -10,10 +10,10 @@ import { cn } from "@/lib/utils";
 
 interface GoalDashboardWidgetProps {
   userId: string;
-  userTier?: "basic" | "pro";
+  userTier?: "explorer" | "insider" | "visionary";
 }
 
-export default function GoalDashboardWidget({ userId, userTier = "basic" }: GoalDashboardWidgetProps) {
+export default function GoalDashboardWidget({ userId, userTier = "explorer" }: GoalDashboardWidgetProps) {
   const [summary, setSummary] = useState<GoalSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [showWizard, setShowWizard] = useState(false);
@@ -105,7 +105,7 @@ export default function GoalDashboardWidget({ userId, userTier = "basic" }: Goal
             </div>
 
    {/* --- PRO FEATURE CARD (WHITE SHAPE - FIXED FULL WIDTH) --- */}
-            {userTier === "basic" && (
+            {userTier === "explorer" && (
               <div className="mt-8 w-full"> {/* Wrapper div w-full */}
                 <div className="p-5 bg-white rounded-2xl shadow-lg border border-gray-100 w-full relative overflow-hidden group/card">
                   

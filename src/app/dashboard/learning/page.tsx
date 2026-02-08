@@ -54,7 +54,7 @@ const ACTIVE_LEARNING: ActiveLearningItem[] = [
 ];
 
 export default function LearningSpacePage() {
-  const [userData, setUserData] = useState({ name: "", avatar: "", tier: "basic" });
+  const [userData, setUserData] = useState({ name: "", avatar: "", tier: "explorer" });
   const [loading, setLoading] = useState(true);
 
   const supabase = createBrowserClient(
@@ -69,7 +69,7 @@ export default function LearningSpacePage() {
         setUserData({
           name: user.user_metadata.full_name || "Member",
           avatar: user.user_metadata.avatar_url,
-          tier: "basic" 
+          tier: "explorer" 
         });
       }
       setLoading(false);

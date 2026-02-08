@@ -20,7 +20,7 @@ import type { GoalTask } from "@/types/goals";
 
 interface TaskCardProps {
   task: GoalTask;
-  userTier: "basic" | "pro";
+  userTier: "explorer" | "insider" | "visionary";
   onToggle?: (taskId: string) => void;
   onSubmit?: (taskId: string) => void;
   onViewMaterials?: (taskId: string) => void;
@@ -36,7 +36,7 @@ export default function TaskCard({
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   
   // Check if task is locked (Pro only for Basic users)
-  const isLocked = task.requires_verification && userTier === "basic";
+  const isLocked = task.requires_verification && userTier === "explorer";
   const canInteract = !isLocked && (task.task_type === "self_track" || !task.is_completed);
   
   // Get task type styling

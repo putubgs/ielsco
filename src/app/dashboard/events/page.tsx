@@ -137,7 +137,7 @@ const supabase = createBrowserClient(
   const heroEvent = mergedEvents.find(e => !e.is_past);
 
   return (
-    <DashboardLayout userTier="basic" userName="" userAvatar="">
+    <DashboardLayout userTier="explorer" userName="" userAvatar="">
       <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-10">
         
         {/* --- HEADER & STATS --- */}

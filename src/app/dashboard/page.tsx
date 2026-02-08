@@ -46,11 +46,12 @@ type ActiveGoal = {
   tasks: GoalTask[];
 } | null;
 
+// --- TYPES (Updated) ---
 type DashboardData = {
   user: {
     id: string;
     name: string;
-    tier: "basic" | "pro";
+    tier: "explorer" | "insider" | "visionary"; // <--- GANTI INI
     avatar: string;
     institution: string;
     batch: string;
@@ -61,10 +62,11 @@ type DashboardData = {
     hours: number;
     streak: number;
   };
-  activeGoal: ActiveGoal; // <--- INI YG KURANG TADI
+  activeGoal: ActiveGoal;
   upcomingEvents: any[];
   recentActivity: any[];
 };
+
 // --- MICRO COMPONENTS ---
 
 const StatCard = ({ label, value, icon: Icon, variant, delay }: any) => {
@@ -195,6 +197,10 @@ const DashboardSkeleton = () => (
 // --- MAIN PAGE COMPONENT ---
 
 export default function DashboardPage() {
+  
+// ... (di dalam component DashboardPage) ...
+
+
   const router = useRouter();
 const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
@@ -207,7 +213,7 @@ const supabase = createBrowserClient(
   
 // Dashboard Data State
   const [data, setData] = useState<DashboardData>({
-    user: { id: "", name: "", tier: "basic", avatar: "", institution: "-", batch: "-" },
+    user: { id: "", name: "", tier: "explorer", avatar: "", institution: "-", batch: "-" },
     stats: { events_attended: 0, contributions: 0, hours: 0, streak: 0 },
     activeGoal: null, // <--- TAMBAHKAN INI
     upcomingEvents: [],
@@ -304,17 +310,31 @@ const supabase = createBrowserClient(
       // Statistik harus berdasarkan data valid yang tercatat di sistem
       const eventsAttendedCount = registrations?.filter(r => r.attended).length || 0;
       const learningHours = eventsAttendedCount * 2; // Asumsi 1 event = 2 jam
+ // ... logic fetch events sebelumnya ...
+
+      // --- LOGIC MAPPING TIER BARU ---
+      const dbTier = dbUser?.memberships?.[0]?.tier;
+      let uiTier: "explorer" | "insider" | "visionary" = "explorer";
+
+      if (dbTier === "pro") {
+        uiTier = "insider"; // Mapping lama "pro" ke "insider"
+      } else if (dbTier === "premium" || dbTier === "visionary") {
+        uiTier = "visionary";
+      } else {
+        uiTier = "explorer";
+      }
       
       // Update State Dashboard
       setData({
         user: {
           id: authUser.id,
           name: dbUser?.full_name || authUser.user_metadata?.full_name || "Learner",
-          tier: dbUser?.memberships?.[0]?.tier === "pro" ? "pro" : "basic",
+          tier: uiTier, // <--- PAKAI HASIL MAPPING DI ATAS
           avatar: authUser.user_metadata?.avatar_url || "",
           institution: dbUser?.user_profiles?.[0]?.institution || "IELS Community",
           batch: dbUser?.user_profiles?.[0]?.batch || "2026 Cohort"
         },
+        // ... sisa properti stats, activeGoal, dll biarkan sama ...
         stats: {
           events_attended: eventsAttendedCount,
           contributions: 0, // Bisa diupdate nanti
@@ -343,16 +363,25 @@ const supabase = createBrowserClient(
 
   if (loading) {
     return (
-      <DashboardLayout userTier="basic" userName="Loading..." userAvatar="">
+      <DashboardLayout userTier="explorer" userName="Loading..." userAvatar="">
         <DashboardSkeleton />
       </DashboardLayout>
     );
   }
 
-  const isPro = data.user.tier === "pro";
+// ... (sebelum return) ...
+
+  const isExplorer = data.user.tier === "explorer";
+  const isInsider = data.user.tier === "insider";
+  const isVisionary = data.user.tier === "visionary";
+  
+  // Helper: Punya akses premium? (Insider ATAU Visionary)
+  const hasPremiumAccess = isInsider || isVisionary; 
 
   return (
+    // Pastikan userTier dikirim ke Layout
     <DashboardLayout userTier={data.user.tier} userName={data.user.name} userAvatar={data.user.avatar}>
+      
       <div className="p-4 lg:p-8 max-w-7xl mx-auto space-y-8">
         
         {/* --- 1. HERO SECTION --- */}
@@ -365,9 +394,9 @@ const supabase = createBrowserClient(
               <div className="flex items-center gap-2 mb-2">
                 <span className={cn(
                   "px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border",
-                  isPro ? "bg-white/10 border-white/20 text-yellow-300" : "bg-white/10 border-white/20 text-gray-300"
+                  isExplorer ? "bg-white/10 border-white/20 text-yellow-300" : "bg-white/10 border-white/20 text-gray-300"
                 )}>
-                  {isPro ? "Pro Learner" : "Basic Member"}
+                  {isExplorer ? "Pro Learner" : "Basic Member"}
                 </span>
                 <span className="text-white/40 text-xs">•</span>
                 <span className="text-white/60 text-xs font-medium tracking-wide">{data.user.batch}</span>
@@ -380,7 +409,7 @@ const supabase = createBrowserClient(
               </p>
             </div>
             <div className="flex items-center gap-3">
-              {!isPro && (
+              {!isExplorer && (
                 <button 
                   onClick={() => setShowProModal(true)}
                   className="
@@ -604,8 +633,8 @@ const supabase = createBrowserClient(
               <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4">Command Center</h3>
               <div className="space-y-3">
                 <ActionButton icon={Target} label="My Goals" subLabel="Track your learning journey" href="/dashboard/goals" />
-                <ActionButton icon={Star} label="My Portfolio" subLabel="Manage your verifiable CV" href="/dashboard/portfolio" isLocked={!isPro} onClick={() => setShowProModal(true)} />
-                <ActionButton icon={Calendar} label="Book Mentorship" subLabel="1-on-1 with experts" href="/dashboard/mentorship" isLocked={!isPro} onClick={() => setShowProModal(true)} />
+                <ActionButton icon={Star} label="My Portfolio" subLabel="Manage your verifiable CV" href="/dashboard/portfolio" isLocked={!isExplorer} onClick={() => setShowProModal(true)} />
+                <ActionButton icon={Calendar} label="Book Mentorship" subLabel="1-on-1 with experts" href="/dashboard/mentorship" isLocked={!isExplorer} onClick={() => setShowProModal(true)} />
                 <ActionButton icon={MoreHorizontal} label="Resources Hub" subLabel="Access guidelines & tools" href="/dashboard/resources" />
               </div>
               <div className="mt-6 pt-6 border-t border-gray-100">
@@ -625,10 +654,10 @@ const supabase = createBrowserClient(
               </div>
             </div>
 
-            {/* Pro Promo */}
-            {!isPro && (
-              <div className="relative overflow-hidden rounded-2xl bg-[#2F4157] text-white p-6 shadow-xl">
-                 <div className="absolute top-0 right-0 w-32 h-32 bg-[#E56668] blur-[60px] opacity-40 rounded-full" />
+ {/* Pro Promo Card */}
+            {!isExplorer && (
+              <div className="relative overflow-hidden rounded-2xl bg-[#2F4157] text-white p-6 shadow-xl group cursor-pointer" onClick={() => setShowProModal(true)}>
+                 <div className="absolute top-0 right-0 w-32 h-32 bg-[#E56668] blur-[60px] opacity-40 rounded-full group-hover:opacity-60 transition-opacity" />
                  <div className="relative z-10">
                     <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center mb-4 backdrop-blur-sm">
                       <Crown className="text-yellow-400" size={20} />
@@ -636,7 +665,6 @@ const supabase = createBrowserClient(
                     <h3 className="font-bold text-lg mb-2">Why limit your growth?</h3>
                     <p className="text-sm text-white/70 mb-4 leading-relaxed">Pro members get access to locked opportunities and priority mentorship.</p>
                     <button 
-                      onClick={() => setShowProModal(true)}
                       className="w-full py-2.5 rounded-full bg-white text-[#2F4157] font-bold text-sm hover:scale-[1.02] active:scale-[0.98] transition-all"
                     >
                       Unlock Pro Access
@@ -648,10 +676,10 @@ const supabase = createBrowserClient(
         </div>
       </div>
 
- {/* Panggil Component Baru di sini */}
-{showProModal && (
-  <PricingModal onClose={() => setShowProModal(false)} />
-)}
+      {/* --- MODAL DI RENDER DI SINI (SEBELUM TUTUP LAYOUT) --- */}
+      {showProModal && (
+        <PricingModal onClose={() => setShowProModal(false)} />
+      )}
 
     </DashboardLayout>
   );

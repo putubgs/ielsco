@@ -270,26 +270,10 @@ export default function CareersPage() {
               {/* COUNTDOWN (TOP) */}
     <div className="mt-10">
       <p className="text-sm uppercase tracking-widest text-white/70 mb-3">
-        <strong>EXTENDED!</strong> Recruitment closes in
       </p>
       <CountdownTimer />
     </div>
-          {/* CTA BELOW CAROUSEL */}
-<div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-  <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 hover:bg-[#C04C4E]"><a
-    href="#division"
-
-  >
-    Apply for IELS Batch 3
-  </a>
-</Button>
-  <Button asChild className="bg-white text-[#2F4157] font-semibold px-6 py-3 hover:bg-white/80">
-  <Link
-    href="/about"
-  >
-    Learn About IELS
-  </Link></Button>
-</div>
+      
 </section>
 
     <section className="bg-white py-24 px-4">

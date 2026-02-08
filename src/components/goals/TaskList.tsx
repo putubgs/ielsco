@@ -8,7 +8,7 @@ import type { GoalTask } from "@/types/goals";
 
 interface TaskListProps {
   tasks: GoalTask[];
-  userTier: "basic" | "pro";
+  userTier: "explorer" | "insider";
   onToggleTask?: (taskId: string) => void;
   onSubmitTask?: (taskId: string) => void;
   onViewMaterials?: (taskId: string) => void;
@@ -34,7 +34,7 @@ export default function TaskList({
     const completed = tasks.filter(t => t.is_completed).length;
     const pending = total - completed;
     const proOnly = tasks.filter(t => t.requires_verification).length;
-    const locked = userTier === "basic" ? proOnly : 0;
+    const locked = userTier === "explorer" ? proOnly : 0;
     
     return { total, completed, pending, proOnly, locked };
   }, [tasks, userTier]);
@@ -186,7 +186,7 @@ export default function TaskList({
       </div>
       
       {/* Locked Tasks Warning (Basic users) */}
-      {userTier === "basic" && stats.locked > 0 && (
+      {userTier === "explorer" && stats.locked > 0 && (
         <div className="p-4 bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl">
           <div className="flex items-start gap-3">
             <Crown className="text-[#E56668] flex-shrink-0 mt-0.5" size={20} />

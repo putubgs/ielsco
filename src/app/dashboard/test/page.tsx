@@ -5,19 +5,15 @@ import { useRouter } from "next/navigation";
 import { createBrowserClient } from "@supabase/ssr";
 import { 
   AlertCircle, 
-  FileText, 
+  PlayCircle, 
   Sparkles, 
   Lock, 
-  Trophy,
-  Activity,
-  Loader2,
-  CheckCircle2
+  Bell,
 } from "lucide-react";
 
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import RegistrationStatusCard from "@/components/test/RegistrationStatusCard"; 
 import TestCard from "@/components/test/TestCard";
-import TestResultCard from "@/components/test/TestResultCard";
 import ResourceLibrary from "@/components/test/ResourceLibrary";
 import MasterClassSection from "@/components/test/MasterClassSection";
 
@@ -194,47 +190,53 @@ export default function IELSTestDashboard() {
   return (
     <DashboardLayout userTier={userData.tier} userName={userData.name} userAvatar={userData.avatar}>
       <div className="min-h-screen pb-24 bg-[#FDFDFD]">
-        
         {/* 1. Hero Section */}
-        <div className="relative bg-[#2F4157] text-white overflow-hidden">
-           {/* Background Decoration */}
-           <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-           
-           <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12 lg:py-16 relative z-10">
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
-                <div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/10 text-xs font-medium mb-4 backdrop-blur-sm">
-                    <Sparkles size={12} className="text-yellow-400" />
-                    <span>Official Assessment Portal</span>
-                  </div>
-                  <h1 className="text-3xl lg:text-5xl font-bold font-geologica mb-3">
-                    Your {registration.test_type.toUpperCase()} Journey
-                  </h1>
-                  <p className="text-gray-300 max-w-xl text-lg">
-                    Track your progress, access premium materials, and achieve your target score.
-                  </p>
-                </div>
-                
-                
-                <div className="flex gap-4">
-                  <div className="bg-white/5 backdrop-blur-xl px-8 py-5 rounded-[24px] border border-white/10 text-center min-w-[140px]">
-                    <p className="text-[10px] text-white/40 uppercase font-black tracking-widest mb-1">Status</p>
-                    <p className="font-black text-green-400 uppercase text-sm tracking-widest">Active</p>
-                  </div>
-                  {(preTest?.overall_score || preTest?.ielts_band) && (
-                    <div className="bg-white/5 backdrop-blur-xl px-8 py-5 rounded-[24px] border border-white/10 text-center min-w-[140px]">
-                      <p className="text-[10px] text-white/40 uppercase font-black tracking-widest mb-1">Current Band</p>
-                      <p className="font-black text-[#CB2129] text-2xl tracking-tighter">
-                        {preTest?.overall_score || preTest?.ielts_band}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-           </div>
+<div className="relative bg-[#2F4157] text-white overflow-hidden">
+  {/* Background Decoration */}
+  <div className="absolute top-0 right-0 w-64 h-64 sm:w-96 sm:h-96 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+
+  <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12 lg:py-16 relative z-10">
+    {/* Parent Flex: col & center on mobile | row & justify on desktop */}
+    <div className="flex flex-col md:flex-row justify-between items-center md:items-end gap-10">
+      
+      {/* LEFT CONTENT: Text & Badge */}
+      <div className="flex flex-col items-center md:items-start text-center md:text-left">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/10 text-[10px] sm:text-xs font-medium mb-4 backdrop-blur-sm">
+          <Sparkles size={12} className="text-yellow-400" />
+          <span className="uppercase tracking-wider">Official Assessment Portal</span>
+        </div>
+        
+        <h1 className="text-3xl lg:text-5xl font-bold font-geologica mb-3 tracking-tight leading-tight">
+          Your {registration.test_type.toUpperCase()} Journey
+        </h1>
+        
+        <p className="text-gray-300 max-w-xl text-sm sm:text-lg leading-relaxed">
+          Track your progress, access premium materials, and achieve your target score.
+        </p>
+      </div>
+
+      {/* RIGHT CONTENT: Stats Cards */}
+      {/* justify-center on mobile | justify-end on desktop */}
+      <div className="flex flex-row flex-wrap justify-center md:justify-end gap-3 sm:gap-4 w-full md:w-auto">
+        <div className="bg-white/5 backdrop-blur-xl px-6 py-4 sm:px-8 sm:py-5 rounded-[24px] border border-white/10 text-center min-w-[130px] sm:min-w-[140px] flex-1 sm:flex-none">
+          <p className="text-[9px] sm:text-[10px] text-white/40 uppercase font-black tracking-widest mb-1">Status</p>
+          <p className="font-black text-green-400 uppercase text-xs sm:text-sm tracking-widest">Active</p>
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 -mt-12 relative z-20 space-y-16">
+        {(preTest?.overall_score || preTest?.ielts_band) && (
+          <div className="bg-white/5 backdrop-blur-xl px-6 py-4 sm:px-8 sm:py-5 rounded-[24px] border border-white/10 text-center min-w-[130px] sm:min-w-[140px] flex-1 sm:flex-none">
+            <p className="text-[9px] sm:text-[10px] text-white/40 uppercase font-black tracking-widest mb-1">Current Band</p>
+            <p className="font-black text-[#CB2129] text-xl sm:text-2xl tracking-tighter">
+              {preTest?.overall_score || preTest?.ielts_band}
+            </p>
+          </div>
+        )}
+      </div>
+
+    </div>
+  </div>
+</div>
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 -mt-6 relative z-20 space-y-16">
           
           {/* 2. Registration Status */}
           <RegistrationStatusCard registration={registration} />
@@ -293,34 +295,62 @@ export default function IELSTestDashboard() {
             </div>
           </section>
 
+{/* 5. Resources & Training (IELTS Exclusive) */}
+{isIELTS && (
+  <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-16">
+    
+    {/* LEFT COLUMN: Master Class & Resources */}
+    <div className="lg:col-span-2 space-y-12 sm:space-y-16">
+      
+      {/* 1. Master Class - Fully visible, but constrained to prevent overflow */}
+      <div className="space-y-6">
+        <div className="flex items-center gap-4 border-b border-[#CDC6BC]/30 pb-4">
+          <h3 className="text-xl sm:text-2xl font-bold text-[#304156] tracking-tight font-geologica">
+            IELTS Master Class
+          </h3>
+          <div className="h-px flex-1 bg-[#CDC6BC]/30 hidden md:block" />
+        </div>
+        
+        {/* Anti-Offside Wrapper: Ensuring videos don't leak out */}
+        <div className="w-full max-w-full overflow-hidden px-1">
+          <MasterClassSection />
+        </div>
+      </div>
 
-          {/* 5. Resources & Training (IELTS Specific) */}
-          {isIELTS && (
-             <div className="grid lg:grid-cols-3 gap-12">
-                <div className="lg:col-span-2 space-y-16">
-                   <MasterClassSection />
-                   <ResourceLibrary />
-                </div>
+      {/* 2. Resource Library */}
+      <div className="space-y-6">
+        <div className="flex items-center gap-4 border-b border-[#CDC6BC]/30 pb-4">
+          <h3 className="text-xl sm:text-2xl font-bold text-[#304156] tracking-tight font-geologica">
+            IELTS Resources
+          </h3>
+          <div className="h-px flex-1 bg-[#CDC6BC]/30 hidden md:block" />
+        </div>
+        
+        <div className="w-full max-w-full overflow-hidden px-1">
+          <ResourceLibrary />
+        </div>
+      </div>
+    </div>
+              {/* RIGHT COLUMN: Sidebar Content */}
+              <aside className="space-y-8">
                 
-                {/* Right Sidebar */}
-                <aside className="space-y-8">
-                   <div className="bg-[#F6F3EF] p-8 rounded-[32px] border border-[#CDC6BC]/40 shadow-sm sticky top-24">
-                      <h3 className="text-xs font-black text-[#577E90] uppercase tracking-[0.3em] mb-8 border-b border-[#CDC6BC]/50 pb-4">
-                        Upcoming Ecosystems
-                      </h3>
-                      <div className="space-y-4">
-                        {['TOEFL iBT', 'TOEIC Mastery', 'SAT Digital'].map((item) => (
-                          <div key={item} className="p-5 bg-white rounded-2xl border border-[#CDC6BC]/20 flex justify-between items-center opacity-40">
-                            <span className="font-bold text-[#304156] text-sm">{item}</span>
-                            <Lock size={14} className="text-[#CDC6BC]" />
-                          </div>
-                        ))}
-                      </div>
-                   </div>
-                </aside>
-             </div>
-          )}
 
+                {/* Upcoming Ecosystems */}
+                <div className="bg-[#F6F3EF] p-6 sm:p-8 rounded-[32px] border border-[#CDC6BC]/40 shadow-sm lg:sticky lg:top-24">
+                  <h3 className="text-[10px] font-black text-[#577E90] uppercase tracking-[0.2em] mb-8 border-b border-[#CDC6BC]/50 pb-4">Upcoming Systems</h3>
+                  <div className="space-y-3">
+                    {['TOEFL iBT', 'TOEIC Mastery', 'SAT Digital'].map((item) => (
+                      <div key={item} className="p-4 bg-white rounded-2xl border border-[#CDC6BC]/20 flex justify-between items-center opacity-40">
+                        <span className="font-bold text-[#304156] text-[11px] uppercase">{item}</span>
+                        <Lock size={12} className="text-[#CDC6BC]" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </aside>
+
+            </div>
+          )}
         </div>
       </div>
     </DashboardLayout>

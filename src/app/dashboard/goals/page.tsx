@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
-import { Target, Plus, AlertCircle } from "lucide-react";
+import { Target, Plus, AlertCircle, Activity } from "lucide-react";
 import { createBrowserClient } from "@supabase/ssr";
 import { getUserGoals, deleteGoal } from "@/data/goals"; 
 import GoalCard from "@/components/goals/GoalCard";
@@ -113,51 +113,65 @@ export default function GoalsPage() {
       userTier={userData.tier} // Sekarang tipenya sudah cocok ("explorer" | "insider" | "visionary")
       userAvatar={userData.avatar}
     >
+      {/* ===== GOALS HERO SECTION (OPTIMIZED) ===== */}
+<div className="relative bg-[#2F4157] text-white overflow-hidden py-8 lg:py-12 px-4 sm:px-8 lg:px-12">
+  {/* Background Decoration */}
+  <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+  <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#E56668]/5 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 pointer-events-none" />
+
+  <div className="max-w-7xl mx-auto relative z-10">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
       
-      {/* ===== GOALS HERO SECTION ===== */}
-      <div className="relative overflow-hidden w-full bg-[#F7F8FA] border-b border-gray-200">
-        <div className="relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center py-12 px-6">
-
-          {/* LEFT: TEXT CONTENT */}
-          <div className="lg:col-span-7 space-y-6">
-            <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight text-[#2F4157]">
-              My Learning Goals
-            </h1>
-            <p className="text-lg text-gray-700 max-w-2xl leading-relaxed">
-              This is your personal commitment space. Set clear goals, track real progress, 
-              and let consistency shape your academic and professional journey.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 mt-6">
-              <button
-                onClick={() => setShowWizard(true)}
-                className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-[#E56668] text-white font-semibold shadow-md transition-all hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
-              >
-                <Plus size={18} /> Set a New Goal
-              </button>
-              <button className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-[#294154] text-white font-semibold transition-all hover:bg-[#21363f] active:scale-[0.98]">
-                <Target size={18} /> Why Goals Matter
-              </button>
-            </div>
-          </div>
-
-          {/* RIGHT: MASCOT */}
-          <div className="lg:col-span-5 order-first lg:order-last flex justify-center lg:justify-end relative">
-            <div className="relative w-[280px] sm:w-[350px] lg:w-[450px]">
-              <img
-                src="/images/contents/general/hi!.svg"
-                alt="IELS mascot"
-                className="w-full h-auto object-contain drop-shadow-xl"
-              />
-            </div>
-          </div>
+      {/* LEFT: Heading & Description (60%) */}
+      <div className="lg:col-span-7 flex flex-col items-center text-center md:items-start md:text-left space-y-4">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/10 text-[10px] font-black uppercase tracking-[0.2em] text-[#E56668]">
+          <Target size={14} />
+          <span>Commitment Space</span>
         </div>
-
-        {/* Decorative Shapes */}
-        <div className="absolute -top-24 -right-24 w-72 h-72 bg-[#2F4157]/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#E56668]/10 rounded-full blur-3xl pointer-events-none" />
+        
+        <h1 className="text-3xl sm:text-4xl font-black font-geologica tracking-tighter leading-none">
+          My Learning <br className="hidden sm:block" /> Goals & Vision
+        </h1>
+        
+        <p className="text-gray-300 text-sm sm:text-base leading-relaxed max-w-xl mx-auto md:mx-0 font-medium opacity-80">
+          Set clear objectives, track real-time progress, and let consistency 
+          shape your academic journey.
+        </p>
       </div>
-      {/* ===== END HERO SECTION ===== */}
 
+      {/* RIGHT: Quick Actions & Stats (40%) - Mengisi "Zero Space" di kanan */}
+      <div className="lg:col-span-5 flex flex-col items-center md:items-end gap-4 w-full">
+        <div className="w-full sm:max-w-xs space-y-3">
+          <button
+            onClick={() => setShowWizard(true)}
+            className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-2xl bg-[#E56668] text-white font-black uppercase tracking-widest text-xs shadow-xl shadow-red-900/20 transition-all hover:scale-[1.02] active:scale-95"
+          >
+            <Plus size={18} strokeWidth={3} />
+            Set a New Goal
+          </button>
+          
+          <div className="grid grid-cols-2 gap-3">
+             <div className="bg-white/5 backdrop-blur-md border border-white/10 p-4 rounded-2xl text-center">
+                <p className="text-[9px] font-black uppercase tracking-widest text-white/40 mb-1">Active</p>
+                <p className="text-xl font-black leading-none">02</p>
+             </div>
+             <div className="bg-white/5 backdrop-blur-md border border-white/10 p-4 rounded-2xl text-center">
+                <p className="text-[9px] font-black uppercase tracking-widest text-white/40 mb-1">Completed</p>
+                <p className="text-xl font-black leading-none text-green-400">14</p>
+             </div>
+          </div>
+
+          <button className="w-full py-3 bg-white/5 border border-white/10 text-white font-black uppercase tracking-widest text-[10px] rounded-xl hover:bg-white/10 transition-all flex items-center justify-center gap-2">
+            <Activity size={14} />
+            View Analysis History
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{/* ===== END HERO SECTION ===== */}
 
       {/* ===== GOALS LIST SECTION ===== */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-8">

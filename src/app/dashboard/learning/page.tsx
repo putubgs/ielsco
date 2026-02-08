@@ -81,39 +81,45 @@ export default function LearningSpacePage() {
     <DashboardLayout userName={userData.name} userAvatar={userData.avatar} userTier={userData.tier as any}>
       <div className="min-h-screen bg-[#F7F8FA] pb-20">
         
-        {/* === HERO SECTION (Personalized) === */}
-        <div className="bg-[#2F4157] text-white pt-10 pb-24 px-4 lg:px-12 relative overflow-hidden">
-          {/* Decorative Background */}
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#E56668]/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 pointer-events-none" />
-          
-          <div className="max-w-7xl mx-auto relative z-10">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <div>
-                <div className="flex items-center gap-2 text-[#E56668] font-bold text-sm tracking-wider uppercase mb-2">
-                  <Sparkles size={16} />
-                  My Learning Space
-                </div>
-                <h1 className="text-3xl lg:text-4xl font-bold font-geologica mb-3">
-                  Welcome back, {userData.name.split(" ")[0]}! 👋
-                </h1>
-                <p className="text-gray-300 max-w-xl text-lg leading-relaxed">
-                  Ready to continue your progress? You have <strong className="text-white">2 active activities</strong> waiting for you today.
-                </p>
-              </div>
-              
-              {/* Quick Action Button */}
-              <Link 
-                href="/dashboard/goals"
-                className="hidden md:flex items-center gap-2 px-5 py-3 bg-white/10 backdrop-blur-md border border-white/10 hover:bg-white/20 rounded-xl transition-all font-medium"
-              >
-                <CheckCircle2 size={18} className="text-[#E56668]" />
-                View My Goals
-              </Link>
-            </div>
-          </div>
+{/* === HERO SECTION (Personalized) === */}
+<div className="bg-[#2F4157] text-white pt-10 pb-20 sm:pb-24 px-4 lg:px-12 relative overflow-hidden">
+  {/* Decorative Background */}
+  <div className="absolute top-0 right-0 w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+  <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#E56668]/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 pointer-events-none" />
+  
+  <div className="max-w-7xl mx-auto relative z-10">
+    {/* Menggunakan items-center text-center untuk mobile, md:items-end md:text-left untuk desktop */}
+    <div className="flex flex-col items-center text-center md:flex-row md:items-end md:text-left justify-between gap-6">
+      <div className="w-full">
+        {/* Badge: justify-center di mobile, md:justify-start di desktop */}
+        <div className="flex items-center justify-center md:justify-start gap-2 text-[#E56668] font-bold text-sm tracking-wider uppercase mb-3">
+          <Sparkles size={16} />
+          My Learning Space
         </div>
-
+        
+        <h1 className="text-3xl lg:text-4xl font-black font-geologica mb-3 tracking-tighter">
+          Hey, {userData.name.split(" ")[0]}! 👋
+        </h1>
+        
+        {/* mx-auto di mobile agar max-w-xl tetap di tengah */}
+        <p className="text-gray-300 max-w-xl text-base sm:text-lg leading-relaxed mx-auto md:mx-0">
+          Ready to continue your progress? You have <strong className="text-white">2 active activities</strong> waiting for you today.
+        </p>
+      </div>
+      
+      {/* Quick Action Button - Muncul di center pada mobile, end pada desktop */}
+      <div className="w-full md:w-auto flex justify-center md:justify-end">
+        <Link 
+          href="/dashboard/goals"
+          className="flex items-center gap-2 px-6 py-3.5 bg-white/10 backdrop-blur-md border border-white/10 hover:bg-[#E56668] rounded-2xl transition-all font-bold text-sm shadow-xl"
+        >
+          <CheckCircle2 size={18} className="text-[#E56668] group-hover:text-white" />
+          View My Goals
+        </Link>
+      </div>
+    </div>
+  </div>
+</div>
         <div className="max-w-7xl mx-auto px-4 lg:px-12 -mt-16 relative z-20 space-y-12">
           
           {/* === SECTION 1: ACTIVE LEARNING TRACKER === */}

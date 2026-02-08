@@ -238,113 +238,108 @@ export default function SettingsPage() {
             <main className="flex-1 bg-white rounded-3xl border-2 border-gray-100 shadow-2xl p-8">
               
   
-              
-              {/* Preferences Tab */}
-              {activeTab === "preferences" && (
-                <div className="space-y-8 animate-in fade-in slide-in-from-right-3">
-                  <div className="border-b border-gray-100 pb-6">
-                    <h2 className="text-2xl font-bold text-[#2F4157] flex items-center gap-2">
-                      <Globe className="text-[#E56668]" size={24} />
-                      App Preferences
-                    </h2>
-                    <p className="text-gray-500 text-sm mt-1">Customize your IELS experience</p>
-                  </div>
+ {/* Preferences Tab */}
+{activeTab === "preferences" && (
+  <div className="space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-right-3 px-1">
+    <div className="border-b border-gray-100 pb-6">
+      <h2 className="text-xl sm:text-2xl font-bold text-[#2F4157] flex items-center gap-2">
+        <Globe className="text-[#E56668]" size={24} />
+        App Preferences
+      </h2>
+      <p className="text-gray-500 text-sm mt-1">Customize your IELS experience</p>
+    </div>
 
-                  <div className="space-y-4">
-                    {/* Language */}
-                    <div className="p-6 bg-gradient-to-br from-blue-50 to-purple-50/30 rounded-2xl border border-blue-100">
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex items-start gap-4 flex-1">
-                          <div className="p-3 bg-white rounded-xl shadow-sm">
-                            <Languages className="text-[#2F4157]" size={20} />
-                          </div>
-                          <div>
-                            <p className="font-bold text-[#2F4157] mb-1">Language</p>
-                            <p className="text-sm text-gray-600">
-                              Choose your preferred language for the dashboard
-                            </p>
-                          </div>
-                        </div>
-                        <select 
-                          value={language}
-                          onChange={(e) => setLanguage(e.target.value)}
-                          className="bg-white border-2 border-gray-200 rounded-xl px-4 py-2.5 text-sm font-bold outline-none focus:border-[#E56668] transition-colors min-w-[180px]"
-                        >
-                          <option value="en">🇬🇧 English (UK)</option>
-                          <option value="id">🇮🇩 Bahasa Indonesia</option>
-                        </select>
-                      </div>
-                    </div>
+    <div className="space-y-4">
+      {/* 1. Language - Stack on Mobile, Row on Tablet/Desktop */}
+      <div className="p-4 sm:p-6 bg-gradient-to-br from-blue-50 to-purple-50/30 rounded-2xl border border-blue-100">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+          <div className="flex items-start gap-4 flex-1">
+            <div className="p-3 bg-white rounded-xl shadow-sm shrink-0">
+              <Languages className="text-[#2F4157]" size={20} />
+            </div>
+            <div>
+              <p className="font-bold text-[#2F4157] mb-1">Language</p>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Choose your preferred language for the dashboard
+              </p>
+            </div>
+          </div>
+          
+          {/* w-full on mobile, min-w-180 on desktop */}
+          <select 
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+            className="w-full sm:w-auto bg-white border-2 border-gray-200 rounded-xl px-4 py-2.5 text-sm font-bold outline-none focus:border-[#E56668] transition-colors sm:min-w-[180px]"
+          >
+            <option value="en">🇬🇧 English (UK)</option>
+            <option value="id">🇮🇩 Bahasa Indonesia</option>
+          </select>
+        </div>
+      </div>
 
-                    {/* Timezone */}
-                    <div className="p-6 bg-gradient-to-br from-green-50 to-emerald-50/30 rounded-2xl border border-green-100">
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex items-start gap-4 flex-1">
-                          <div className="p-3 bg-white rounded-xl shadow-sm">
-                            <Clock className="text-[#2F4157]" size={20} />
-                          </div>
-                          <div>
-                            <p className="font-bold text-[#2F4157] mb-1">Timezone</p>
-                            <p className="text-sm text-gray-600">
-                              Sync schedules with your local time
-                            </p>
-                          </div>
-                        </div>
-                        <select 
-                          value={timezone}
-                          onChange={(e) => setTimezone(e.target.value)}
-                          className="bg-white border-2 border-gray-200 rounded-xl px-4 py-2.5 text-sm font-bold outline-none focus:border-[#E56668] transition-colors min-w-[180px]"
-                        >
-                          <option value="WIB">WIB (UTC+7)</option>
-                          <option value="WITA">WITA (UTC+8)</option>
-                          <option value="WIT">WIT (UTC+9)</option>
-                        </select>
-                      </div>
-                    </div>
+      {/* 2. Timezone - Stack on Mobile */}
+      <div className="p-4 sm:p-6 bg-gradient-to-br from-green-50 to-emerald-50/30 rounded-2xl border border-green-100">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+          <div className="flex items-start gap-4 flex-1">
+            <div className="p-3 bg-white rounded-xl shadow-sm shrink-0">
+              <Clock className="text-[#2F4157]" size={20} />
+            </div>
+            <div>
+              <p className="font-bold text-[#2F4157] mb-1">Timezone</p>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Sync schedules with your local time
+              </p>
+            </div>
+          </div>
+          
+          <select 
+            value={timezone}
+            onChange={(e) => setTimezone(e.target.value)}
+            className="w-full sm:w-auto bg-white border-2 border-gray-200 rounded-xl px-4 py-2.5 text-sm font-bold outline-none focus:border-[#E56668] transition-colors sm:min-w-[180px]"
+          >
+            <option value="WIB">WIB (UTC+7)</option>
+            <option value="WITA">WITA (UTC+8)</option>
+            <option value="WIT">WIT (UTC+9)</option>
+          </select>
+        </div>
+      </div>
 
-                    {/* Dark Mode (Coming Soon) */}
-                    <div className="p-6 bg-gradient-to-br from-gray-50 to-slate-50/30 rounded-2xl border border-gray-100 opacity-60">
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex items-start gap-4 flex-1">
-                          <div className="p-3 bg-white rounded-xl shadow-sm">
-                            <Moon className="text-[#2F4157]" size={20} />
-                          </div>
-                          <div>
-                            <p className="font-bold text-[#2F4157] mb-1">Dark Mode</p>
-                            <p className="text-sm text-gray-600">
-                              Easier on the eyes during late night study
-                            </p>
-                          </div>
-                        </div>
-                        <div className="relative">
-                          <div className="w-12 h-6 bg-gray-200 rounded-full cursor-not-allowed" />
-                          <span className="absolute -bottom-6 right-0 text-xs font-bold text-gray-400 uppercase whitespace-nowrap">
-                            Coming Soon
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+      {/* 3. Dark Mode - Coming Soon */}
+      <div className="p-4 sm:p-6 bg-gradient-to-br from-gray-50 to-slate-50/30 rounded-2xl border border-gray-100 opacity-70">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+          <div className="flex items-start gap-4 flex-1">
+            <div className="p-3 bg-white rounded-xl shadow-sm shrink-0">
+              <Moon className="text-[#2F4157]" size={20} />
+            </div>
+            <div>
+              <p className="font-bold text-[#2F4157] mb-1">Dark Mode</p>
+              <p className="text-sm text-gray-600">Easier on the eyes during late night study</p>
+            </div>
+          </div>
+          
+          <div className="relative w-full sm:w-auto flex justify-end sm:block">
+            <div className="w-12 h-6 bg-gray-200 rounded-full cursor-not-allowed" />
+            <span className="absolute -bottom-5 right-0 text-[10px] font-black text-[#577E90] uppercase tracking-wider">
+              Coming Soon
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
 
-                  <button
-                    onClick={handleSavePreferences}
-                    disabled={saving}
-                    className="w-full sm:w-auto px-8 py-4 bg-[#E56668] text-white rounded-xl font-bold hover:bg-[#d65557] transition-all shadow-lg shadow-red-900/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                  >
-                    {saving ? (
-                      <>
-                        <Loader2 className="animate-spin" size={18} />
-                        Saving...
-                      </>
-                    ) : (
-                      <>
-                        <Check size={18} />
-                        Save Preferences
-                      </>
-                    )}
-                  </button>
-                </div>
-              )}
+    {/* Save Button */}
+    <div className="pt-4">
+      <button
+        onClick={handleSavePreferences}
+        disabled={saving}
+        className="w-full sm:w-auto px-10 py-4 bg-[#CB2129] text-white rounded-xl font-bold hover:bg-[#A81B22] transition-all shadow-lg shadow-red-900/10 disabled:opacity-50 flex items-center justify-center gap-2"
+      >
+        {saving ? <Loader2 className="animate-spin" size={18} /> : <Check size={18} />}
+        {saving ? "Saving Changes..." : "Save Preferences"}
+      </button>
+    </div>
+  </div>
+)}
 
               {/* Security Tab */}
               {activeTab === "security" && (

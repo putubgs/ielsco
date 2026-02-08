@@ -143,7 +143,7 @@ export default function ResultPage({ params }: { params: Promise<{ id: string }>
                 <RefreshCcw size={18} /> Try Again
               </button>
               <Link 
-                href="/dashboard" 
+                href="/dashboard/test" 
                 className="flex-1 py-3 px-6 bg-white border-2 border-gray-300 text-gray-700 rounded-xl font-bold flex items-center justify-center gap-2 hover:border-[#E56668] hover:text-[#E56668] transition-all"
               >
                 <Home size={18} /> Dashboard
@@ -205,7 +205,7 @@ export default function ResultPage({ params }: { params: Promise<{ id: string }>
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-6">
           <div className="flex items-center gap-4">
             <Link 
-              href="/dashboard" 
+              href="/dashboard/test" 
               className="p-3 hover:bg-gray-100 rounded-xl transition-all group"
             >
               <ArrowLeft size={24} className="text-gray-400 group-hover:text-[#E56668] transition-colors"/>

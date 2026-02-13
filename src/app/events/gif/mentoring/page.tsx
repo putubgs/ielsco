@@ -17,12 +17,6 @@ type CurriculumItem = {
 
 const curriculum: CurriculumItem[] = [
   {
-    date: "10 Jan 2026",
-    title: "IELTS Master Class",
-    desc: "As part of this mentoring journey, all mentees are required to follow the IELTS Master Class in January 2026.",
-    output: "Academic English readiness.",
-  },
-  {
     date: "3 Mar 2026",
     title: "Onboarding & Selection Framework",
     desc: "Understand the full structure of the Global Impact Fellowship, evaluation criteria, and selection mindset.",
@@ -179,7 +173,7 @@ export default function SGTripMentoringPage() {
           {/* COUNTDOWN (TOP) */}
           <div className="mt-10">
             <p className="text-sm uppercase tracking-widest text-white/70 mb-3">
-              <strong>EXTENDED!</strong> Registration closes in
+              <strong>Early Bird Ends In:</strong>
             </p>
             <CountdownTimer />
           </div>
@@ -401,60 +395,111 @@ export default function SGTripMentoringPage() {
                </div>
             </div>
          </div>
-      </section>
-{/* ================= INVESTMENT CARD ================= */}
-      <section className="max-w-6xl mx-auto px-6 pb-20">
-        <div className="bg-[#294154] text-white rounded-3xl p-12 text-center space-y-6 relative overflow-hidden">
-          {/* Decor */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+      </section>{/* ================= INVESTMENT SECTION (SPLIT LAYOUT) ================= */}
+      <section className="w-full bg-[#294154] py-24 px-6 relative overflow-hidden">
+        
+        {/* Background Decor (Blur Orbs) */}
+        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-white/5 rounded-full blur-[120px] pointer-events-none -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-[#E56668]/10 rounded-full blur-[100px] pointer-events-none translate-x-1/3 translate-y-1/3"></div>
 
-          <h2 className="text-3xl font-extrabold mb-6 relative z-10">
-            Ready to Fast-Track Your Global Impact?
-          </h2>
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            
+            {/* COLUMN 1: TEXT & URGENCY (LEFT) */}
+            <div className="text-left space-y-8 order-2 lg:order-1">
+              <div>
+                <div className="inline-block bg-[#E56668]/20 border border-[#E56668]/30 text-[#ff8f91] px-4 py-1.5 rounded-full text-sm font-bold mb-6 tracking-wide uppercase">
+                  Limited Time Offer
+                </div>
+                <h2 className="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-6">
+                  Ready to Fast-Track <br/>
+                  Your <span className="text-[#E56668]">Global Impact?</span>
+                </h2>
+                <p className="text-gray-300 text-lg leading-relaxed max-w-lg">
+                  Don't start from zero. Secure your spot in the mentoring program to get <strong>Direct Entry to the Final Phase</strong> and lifetime access to our incubation ecosystem.
+                </p>
+              </div>
 
-          <div className="bg-white text-[#294154] rounded-2xl p-8 shadow-xl max-w-xl mx-auto relative z-10 transform hover:scale-105 transition-transform duration-300 border-4 border-[#E56668]/10">
-            {/* EARLY BIRD BADGE */}
-            <div className="absolute top-0 right-0 bg-[#E56668] text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-lg">
-              EARLY BIRD ENDS 16 JAN
+              {/* Countdown moved here for Context */}
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm max-w-md">
+                <p className="uppercase tracking-widest text-xs text-white/70 mb-4 font-bold flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                  Early Bird Ends In:
+                </p>
+                <CountdownTimer />
+              </div>
+
+              {/* Secondary Button */}
+              <div className="pt-4">
+                 <Button asChild className="bg-white border text-[#2F4157] font-semibold px-6 py-3 h-auto text-lg rounded-full hover:bg-white/90 w-full sm:w-auto transition-all">
+                  <Link href="https://wa.me/6288297253491" target="_blank">
+                    Have Questions? Chat Us
+                  </Link>
+                </Button>
+              </div>s
             </div>
 
-            <p className="uppercase text-xs tracking-widest text-gray-500 mb-4">Investment</p>
-            
-            {/* PRICING VISUALIZATION */}
-            <div className="flex flex-col items-center justify-center mb-6">
-              <span className="text-gray-400 text-lg font-medium line-through decoration-red-400 decoration-2">
-                IDR 500,000
-              </span>
-              <div className="flex items-baseline gap-1">
-                <span className="text-sm font-bold text-[#E56668]">IDR</span>
-                <span className="text-5xl font-extrabold text-[#2F4157]">400,000</span>
+            {/* COLUMN 2: PRICING CARD (RIGHT) - FLOATING & TILTED */}
+            <div className="order-1 lg:order-2 flex justify-center lg:justify-end relative">
+              
+              {/* Decorative Elements behind card */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#E56668] to-orange-400 rounded-[2rem] blur-xl opacity-20 transform rotate-6 scale-95"></div>
+
+              {/* THE CARD */}
+              <div className="bg-white text-[#294154] rounded-[2rem] p-8 md:p-10 shadow-2xl relative transform transition-all duration-500 hover:scale-[1.02] hover:-rotate-1 border-4 border-white/10 w-full max-w-md">
+                
+                {/* Badge */}
+                <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-[#2F4157] text-white text-sm font-bold px-6 py-2 rounded-full shadow-lg border-2 border-white/20 whitespace-nowrap">
+                  Most Popular Choice
+                </div>
+
+                <div className="text-center mt-4">
+                  <p className="uppercase text-xs tracking-[0.2em] text-gray-400 mb-6 font-bold">Total Investment</p>
+                  
+                  {/* Price Block */}
+                  <div className="flex flex-col items-center justify-center mb-8">
+                    <span className="text-gray-400 text-xl font-medium line-through decoration-red-400 decoration-2 mb-2">
+                      IDR 500,000
+                    </span>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-xl font-bold text-[#E56668] -translate-y-4">IDR</span>
+                      <span className="text-7xl font-extrabold text-[#2F4157] tracking-tighter">400k</span>
+                    </div>
+                    <span className="text-xs text-green-600 font-bold bg-green-100 px-3 py-1 rounded-full mt-2">
+                      Save IDR 100k Today
+                    </span>
+                  </div>
+
+                  {/* Features List */}
+                  <ul className="text-left space-y-4 mb-8 border-t border-gray-100 pt-6">
+                    <li className="flex items-start gap-3 text-sm text-gray-600">
+                      <CheckCircle className="w-5 h-5 text-[#E56668] shrink-0" />
+                      <span><strong>8 Founder-led</strong> mentoring sessions</span>
+                    </li>
+                    <li className="flex items-start gap-3 text-sm text-gray-600">
+                      <CheckCircle className="w-5 h-5 text-[#E56668] shrink-0" />
+                      <span><strong>Fast-Track Ticket</strong> (Skip Phase 1 & 2)</span>
+                    </li>
+                    <li className="flex items-start gap-3 text-sm text-gray-600">
+                      <CheckCircle className="w-5 h-5 text-[#E56668] shrink-0" />
+                      <span>Lifetime <strong>Incubation Access</strong></span>
+                    </li>
+                  </ul>
+
+                  {/* Main CTA */}
+                  <Button asChild className="w-full bg-[#E56668] text-white font-bold py-3 h-auto text-xl rounded-full hover:bg-[#C04C4E] shadow-[0_10px_20px_rgba(229,102,104,0.3)] hover:shadow-[0_15px_30px_rgba(229,102,104,0.5)] transition-all transform hover:-translate-y-1">
+                    <Link href="https://forms.gle/D4DMBFshr1JeydZC9" target="_blank">
+                      Claim Early Bird Now
+                    </Link>
+                  </Button>
+                  
+                  <p className="text-xs text-gray-400 mt-4">
+                    *Offer valid until Feb 16, 2026
+                  </p>
+                </div>
               </div>
             </div>
 
-            <p className="text-gray-600 leading-relaxed text-sm md:text-base border-t border-gray-100 pt-4 mt-2">
-              Lock in this price before the regular rate applies. Includes 8 founder-led sessions, 
-              <strong> Direct Entry to Final Phase</strong>, recordings, and lifetime incubation access.
-            </p>
-          </div>
-
-          <div className="mt-12 relative z-10">
-            <p className="uppercase tracking-widest text-sm text-white/70 mb-3">
-              <strong>ACT FAST!</strong> Early bird closes in
-            </p>
-            <CountdownTimer />
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10 relative z-10">
-            <Button asChild className="bg-[#E56668] text-white font-semibold px-8 py-3 h-auto text-lg rounded-full hover:bg-[#C04C4E] shadow-lg hover:shadow-red-500/30">
-              <Link href="https://forms.gle/D4DMBFshr1JeydZC9" target="_blank">
-                Claim Early Bird (Fast Track)
-              </Link>
-            </Button>
-            <Button asChild className="bg-white text-[#294154] font-semibold px-8 py-3 h-auto text-lg rounded-full hover:bg-gray-100">
-              <Link href="https://wa.me/6288297253491" target="_blank">
-                Ask Before Applying
-              </Link>
-            </Button>
           </div>
         </div>
       </section>

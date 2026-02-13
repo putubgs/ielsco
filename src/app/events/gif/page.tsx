@@ -1,5 +1,5 @@
 "use client";
-import { BookOpen, Briefcase, ArrowRight, CheckCircle, XCircle, Calendar, ShieldCheck, Gem, Users } from 'lucide-react';
+import { BookOpen, Briefcase, Clock, Search, Rocket, FileText, ArrowRight, CheckCircle, XCircle, Calendar, ShieldCheck, Gem, Users } from 'lucide-react';
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Image from "next/image";
@@ -96,8 +96,8 @@ export default function SGITPage() {
 
         {/* SUBHEADLINE */}
         <p className="text-base md:text-lg text-gray-200 max-w-xl mx-auto leading-relaxed mb-8 font-light">
-          An intensive academic residency & leadership accelerator. 
-          <span className="block mt-1 text-white/80 font-medium">Not a sightseeing trip—a journey to build Indonesia's future.</span>
+          A high-stakes leadership and project incubation for future leaders to design and execute meaningful projects for Indonesia.
+         
         </p>
 
         {/* FUNDING BADGES - Padding diperkecil */}
@@ -191,14 +191,17 @@ export default function SGITPage() {
                 {[
                   "NUS Campus Accommodation",
                   "All Meals & Transport in SG",
-                  "Program & Workshop Fees",
-                  "Visa & Travel Insurance"
+                  "Program & Workshop Fees"
+                  
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3 text-gray-700">
                     <CheckCircle className="w-5 h-5 text-[#2F4157] shrink-0" />
                     <span className="text-sm font-medium">{item}</span>
                   </li>
                 ))}
+                <li className="flex items-start gap-3 text-gray-400 line-through decoration-gray-400">
+                  <XCircle className="w-5 h-5 text-gray-300 shrink-0" />
+                  <span className="text-sm">"Visa & Travel Insurance"</span></li>
                 <li className="flex items-start gap-3 text-gray-400 line-through decoration-gray-400">
                   <XCircle className="w-5 h-5 text-gray-300 shrink-0" />
                   <span className="text-sm">Round-trip Flights (Self-Funded)</span>
@@ -258,7 +261,6 @@ export default function SGITPage() {
           </div>
         </div>
       </section>
-
       {/* ================= DUAL TRACK LEARNING ================= */}
       <section className="py-12 px-6">
         <div className="max-w-6xl mx-auto">
@@ -492,7 +494,107 @@ export default function SGITPage() {
     official instructions will be shared with selected participants.
   </p>
 </section>
+<section className="py-12 px-6">
+      <div className="max-w-6xl mx-auto">
+        
+        {/* HEADER SECTION */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 bg-blue-50 text-[#2F4157] px-4 py-1.5 rounded-full text-sm font-bold mb-4 border border-blue-100">
+            <Clock className="w-4 h-4 text-[#E56668]" />
+            <span>Post-Residency Phase</span>
+          </div>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[#2F4157] mb-4">
+            The Real Impact Happens <span className="text-[#E56668]">Back Home</span>
+          </h2>
+          <p className="text-gray-600 max-w-3xl mx-auto text-lg leading-relaxed">
+            The Singapore trip is just the spark. Upon returning to Indonesia, Fellows enter a 
+            <strong> 6-month incubation period</strong> facilitated by IELS to turn their insights into tangible outcomes.
+          </p>
+        </div>
 
+        {/* CONTENT GRID */}
+        <div className="grid md:grid-cols-2 gap-8">
+
+          {/* CARD 1: PROJECT REALIZATION */}
+          <div className="relative bg-white rounded-3xl p-8 border border-gray-200 shadow-sm hover:shadow-xl hover:border-[#E56668]/30 transition-all duration-300 group">
+            
+            {/* ICON HEADER */}
+            <div className="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-[#E56668] transition-colors duration-300">
+              <Rocket className="w-8 h-8 text-[#E56668] group-hover:text-white transition-colors" />
+            </div>
+
+            <h3 className="text-2xl font-bold text-[#2F4157] mb-3">Project Realization</h3>
+            <p className="text-gray-600 mb-6 leading-relaxed">
+              Fellows must execute the social project they proposed during the incubation. 
+              This is where ideas meet reality—solving real problems in local communities (SDG 4 or 8).
+            </p>
+
+            {/* IELS SUPPORT BLOCK */}
+            <div className="bg-[#F7F8FA] rounded-xl p-5 border border-gray-100">
+              <div className="flex items-center gap-2 mb-3">
+                <ShieldCheck className="w-5 h-5 text-[#2F4157]" />
+                <span className="text-sm font-bold text-[#2F4157] uppercase tracking-wide">Facilitated by IELS</span>
+              </div>
+              <ul className="space-y-2">
+                <li className="flex items-start gap-2 text-sm text-gray-600">
+                  <span className="text-[#E56668] mt-1">•</span>
+                  <span>Access to IELS community pool (2,800+ members) as project audience.</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm text-gray-600">
+                  <span className="text-[#E56668] mt-1">•</span>
+                  <span>Monthly progress monitoring & mentorship.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* CARD 2: ACADEMIC RESEARCH */}
+          <div className="relative bg-white rounded-3xl p-8 border border-gray-200 shadow-sm hover:shadow-xl hover:border-[#E56668]/30 transition-all duration-300 group">
+            
+            {/* ICON HEADER */}
+            <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-[#2F4157] transition-colors duration-300">
+              <FileText className="w-8 h-8 text-[#2F4157] group-hover:text-white transition-colors" />
+            </div>
+
+            <h3 className="text-2xl font-bold text-[#2F4157] mb-3">Academic Research</h3>
+            <p className="text-gray-600 mb-6 leading-relaxed">
+              Fellows conduct field research based on the frameworks learned at NUS. 
+              The goal is to publish evidence-based findings on Indonesia's education or employment challenges.
+            </p>
+
+            {/* IELS SUPPORT BLOCK */}
+            <div className="bg-[#F7F8FA] rounded-xl p-5 border border-gray-100">
+              <div className="flex items-center gap-2 mb-3">
+                <Search className="w-5 h-5 text-[#2F4157]" />
+                <span className="text-sm font-bold text-[#2F4157] uppercase tracking-wide">Facilitated by IELS</span>
+              </div>
+              <ul className="space-y-2">
+                <li className="flex items-start gap-2 text-sm text-gray-600">
+                  <span className="text-[#E56668] mt-1">•</span>
+                  <span>Guidance on data processing & paper structure.</span>
+                </li>
+                <li className="flex items-start gap-2 text-sm text-gray-600">
+                  <span className="text-[#E56668] mt-1">•</span>
+                  <span>Opportunity to publish in the IELS Knowledge Hub.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+
+        {/* TIMELINE VISUALIZATION (Optional footer) */}
+        <div className="mt-12 flex flex-col md:flex-row items-center justify-center gap-4 text-center text-sm text-gray-500 bg-gray-50 p-4 rounded-2xl border border-dashed border-gray-300">
+           <span className="font-semibold text-[#2F4157]">Timeline:</span>
+           <span>May (Singapore Trip)</span>
+           <span className="text-gray-300 hidden md:block">→</span>
+           <span className="font-bold text-[#E56668]">June - Nov (Execution in Indonesia)</span>
+           <span className="text-gray-300 hidden md:block">→</span>
+           <span>Dec (Final Impact Report)</span>
+        </div>
+
+      </div>
+    </section>
 {/* ================= CLOSING CTA ================= */}
       <section className="py-12 px-6 text-center">
         <div className="max-w-3xl mx-auto">

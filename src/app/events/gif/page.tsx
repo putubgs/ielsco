@@ -1,5 +1,5 @@
 "use client";
-
+import { BookOpen, Briefcase, ArrowRight, CheckCircle, XCircle, Calendar, ShieldCheck, Gem, Users } from 'lucide-react';
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Image from "next/image";
@@ -14,33 +14,28 @@ type TimelineItem = {
 };
 
 const timeline: TimelineItem[] = [
-  {
-    phase: "English & Academic Preparation",
-    date: "10 Jan – 7 Feb 2026",
-    title: "IELTS Master Class",
-    desc: "Building academic and professional English readiness for project writing, interviews, and international-level discussions.",
-  },
+
   {
     phase: "GIF Selection — Phase 1",
-    date: "8 Feb – 14 Mar 2026",
+    date: "16 Feb – 23 Mar 2026",
     title: "Administration Screening",
     desc: "Initial screening of motivation, background, and readiness to join a global exposure program.",
   },
   {
     phase: "GIF Selection — Phase 2",
-    date: "25 Mar – 4 Apr 2026",
+    date: "4 – 11 Apr 2026",
     title: "Essay & Project Submission",
     desc: "Participants submit essays and SDG-aligned project ideas. Mentoring participants receive priority advantage.",
   },
   {
     phase: "GIF Selection — Phase 3",
-    date: "12 – 18 Apr 2026",
+    date: "15 – 22 Apr 2026",
     title: "Interview & Project Presentation",
     desc: "Final evaluation through structured interviews and project presentations.",
   },
   {
     phase: "Final Announcement",
-    date: "22 Apr 2026",
+    date: "25 Apr 2026",
     title: "Selected Participants Revealed",
     desc: "Official announcement of GIF 2026 delegates.",
   },
@@ -58,133 +53,278 @@ export default function SGITPage() {
 
       
 
-        {/* ================= HERO ================= */}
-<section className="relative overflow-hidden">
+  <section className="relative min-h-[65vh] flex items-center justify-center overflow-hidden bg-[#2F4157]">
+      <div className="absolute inset-0 bg-[url('/images/contents/stories/member-stories/banner/singapore-banner.png')] bg-cover bg-center" />
+      {/* BACKGROUND IMAGE & OVERLAY */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/images/backgrounds/singapore-bg.jpg" 
+          alt="Singapore Skyline"
+          fill
+          className="object-cover object-center"
+          priority
+        />
+        {/* Gradient Overlay tetap ada supaya teks jelas */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#2F4157]/90 via-[#2F4157]/85 to-[#1a2533]/95" />
+      </div>
 
-  {/* BACKGROUND IMAGE */}
-  <div className="absolute inset-0 bg-[url('/images/contents/stories/member-stories/banner/singapore-banner.png')] bg-cover bg-center" />
-  <div className="absolute inset-0 bg-gradient-to-b from-[#2F4157]/90 via-[#2F4157]/85 to-[#1f2d3d]/95" />
+      {/* CONTENT CONTAINER */}
+      <div className="relative z-10 max-w-4xl mx-auto px-6 py-12 text-center">
+        
+        {/* LOGO EVENT - Diperkecil */}
+        <div className="flex justify-center mb-6">
+          <div className="relative">
+            <div className="absolute inset-0 bg-[#E56668] blur-[30px] opacity-20 rounded-full"></div>
+            <Image
+              src="/images/logos/events/gifsg.png"
+              alt="Global Impact Fellowship in Singapore"
+              width={200}
+              height={80}
+              // UBAHAN 2: Ukuran logo lebih compact
+              className="relative h-auto w-[240px] md:w-[280px] drop-shadow-xl"
+              priority
+            />
+          </div>
+        </div>
 
-  <div className="relative max-w-6xl mx-auto px-6 py-15">
+        {/* HEADLINE - Font size dikurangi */}
+        {/* UBAHAN 3: text-4xl jadi 3xl, md:text-6xl jadi 5xl */}
+        <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white mb-4 leading-tight">
+          Bridging Indonesian Potential <br className="hidden md:block" />
+          with <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E56668] to-orange-400">Global Excellence.</span>
+        </h1>
 
-    {/* BADGE */}
-    <div className="inline-flex items-center gap-2 bg-[#E56668]/20 text-[#FFD7D8] border border-[#E56668]/40 px-4 py-2 rounded-full text-sm font-semibold mb-6">
-      <span className="w-2 h-2 bg-[#E56668] rounded-full animate-pulse" />
-      COMING SOON! Registration Opens — February 2026
-    </div>
+        {/* SUBHEADLINE */}
+        <p className="text-base md:text-lg text-gray-200 max-w-xl mx-auto leading-relaxed mb-8 font-light">
+          An intensive academic residency & leadership accelerator. 
+          <span className="block mt-1 text-white/80 font-medium">Not a sightseeing trip—a journey to build Indonesia's future.</span>
+        </p>
 
-    {/* TITLE */}
-<div className="mb-6">
-  <Image
-    src="/images/logos/events/gifsg.png"
-    alt="Global Impact Fellowship in Singapore"
-    width={270}
-    height={72}
-    className="
-     h-38 sm:h-55 w-auto
-    "
-    priority
-  />
-</div>
+        {/* FUNDING BADGES - Padding diperkecil */}
+        <div className="flex flex-wrap justify-center gap-3 mb-8">
+          <div className="px-4 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md flex items-center gap-2 text-xs md:text-sm text-white font-medium shadow-sm">
+            <CheckCircle className="w-4 h-4 text-[#E56668]" /> 
+            <span>10 Fully Funded</span>
+          </div>
+          <div className="px-4 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md flex items-center gap-2 text-xs md:text-sm text-white font-medium shadow-sm">
+            <CheckCircle className="w-4 h-4 text-[#E56668]" /> 
+            <span>10 Partially Funded</span>
+          </div>
+        </div>
 
-    {/* TAGLINE */}
-    <p className="mt-6 text-lg text-white/90 max-w-3xl">
-      From Global Exposure to Local Impact
-    </p>
+        {/* CTA BUTTON - Lebih ramping */}
+        <div className="flex flex-col items-center gap-3">
+         <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 rounded-full hover:bg-[#C04C4E] shadow-lg">
+                      <Link href="/events/gif">Apply - 16 Feb 2026  <ArrowRight className="w-5 h-5"/></Link>
+                    </Button> 
+          
+          <span className="text-xs text-gray-400 font-medium tracking-wide uppercase">
+            Limited & Selective Program
+          </span>
+        </div>
 
-    {/* DESCRIPTION */}
-    <p className="mt-4 text-white/80 max-w-3xl leading-relaxed">
-      A flagship international exposure program by IELS — designed to prepare
-      Indonesian students and young professionals to access global education
-      and career ecosystems, and translate that exposure into real impact
-      back home.
-    </p>
+      </div>
+    </section>
 
-    {/* CTA */}
-    <div className="mt-10 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-      <button
-      disabled
-        className="
-          bg-[#E56668] text-white
-          hover:bg-[#C04C4E]
-          px-10 py-3
-          rounded-full
-          font-semibold
-          shadow-lg hover:shadow-xl
-          transition-all duration-300
-          active:scale-[0.97] cursor-not-allowed w-full sm:w-auto
-    max-w-full
-        "
-      >
-        Register — Feb 2026
-      </button>
-
-      <span className="text-sm text-white/70">
-        Limited & selective program
-      </span>
-    </div>
-  </div>
-</section>
-
-        {/* ================= INTRO ================= */}
-        <section className="max-w-5xl mx-auto px-6 py-20 space-y-6">
- <h2 className="text-3xl font-bold">
-    About the Global Impact Fellowship in Singapore 2026
-  </h2>
-
-  <p className="text-gray-700 max-w-4xl leading-relaxed">
-    Global Impact Fellowship in Singapore is an intensive international exposure program
-    designed by IELS to equip Indonesian students and young professionals with
-    global academic awareness, career readiness, and leadership responsibility.
-  </p>
-
-  <p className="text-gray-700 max-w-4xl leading-relaxed">
-    This program is <strong>not a sightseeing trip</strong>. It is a learning-
-    and impact-driven journey that connects participants directly with
-    Singapore&apos;s world-class academic ecosystem and global career landscape—
-    while preparing them to bring tangible outcomes back to Indonesia.
-  </p>
-
-  <p className="text-gray-700 max-w-4xl leading-relaxed">
-    Through structured campus immersion at the{" "}
-    <strong>National University of Singapore (NUS)</strong> and a career-focused
-    company visit to <strong>Glints</strong>, participants will explore how
-    English proficiency, global mindset, and real-world skills intersect in top
-    universities and international workplaces.
-  </p>
-
-        </section>
-
-        {/* ================= WHY GIF ================= */}
-        <section className="bg-[#F7F8FA] py-5">
-          <div className="max-w-5xl mx-auto px-6">
-            <h2 className="text-3xl font-extrabold mb-6">
-              Why Global Impact Fellowship in Singapore Exists
+     {/* ================= FUNDING & QUOTA (THE HIGHLIGHT) ================= */}
+      <section className="py-12 px-6 from-white to-gray-50">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-extrabold text-[#2F4157] mb-4">
+              Merit-Based. Transparent. <br/> <span className="text-[#E56668]">No Hidden Business Models.</span>
             </h2>
-
-            <p className="text-gray-700 leading-relaxed mb-6">
-              Many Indonesian students and young professionals have the potential
-              to compete globally — but lack access to international academic
-              environments, global career standards, and opportunities to use
-              English meaningfully.
+            <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              Unlike commercial programs where "1 Fully Funded" seat is subsidized by hundreds of paid participants, 
+              <strong> GIF is genuinely sponsored</strong>. We invest in 20 leaders who have the potential to change Indonesia.
             </p>
+          </div>
 
-            <ul className="space-y-3 text-gray-700">
-              <li>• Understanding global academic & career expectations</li>
-              <li>• Strengthening English as a working skill</li>
-              <li>• Translating exposure into community-level impact</li>
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* FULLY FUNDED CARD */}
+            <div className="relative bg-white rounded-3xl p-8 border-2 border-[#E56668] shadow-2xl transform hover:-translate-y-2 transition-all duration-300">
+              <div className="absolute top-0 right-0 bg-[#E56668] text-white text-xs font-bold px-4 py-1.5 rounded-bl-2xl rounded-tr-2xl uppercase tracking-wider">
+                Top 10 Candidates
+              </div>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-3 bg-red-50 rounded-xl text-[#E56668]">
+                  <Gem className="w-8 h-8" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-[#2F4157]">Fully Funded</h3>
+                  <p className="text-sm text-gray-500">10 Seats Available</p>
+                </div>
+              </div>
+              <ul className="space-y-3 mb-8">
+                {[
+                  "Round-trip Flights (Jakarta - SG)",
+                  "NUS Campus Accommodation",
+                  "All Meals & Transport in SG",
+                  "Program & Workshop Fees",
+                  "Visa & Travel Insurance"
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-gray-700">
+                    <CheckCircle className="w-5 h-5 text-[#E56668] shrink-0" />
+                    <span className="text-sm font-medium">{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="text-center bg-red-50 text-[#E56668] py-2 rounded-lg text-sm font-bold">
+                $0 Cost for Delegates
+              </div>
+            </div>
+
+            {/* PARTIALLY FUNDED CARD */}
+            <div className="relative bg-white rounded-3xl p-8 border border-gray-200 shadow-lg hover:border-[#2F4157]/30 transform hover:-translate-y-2 transition-all duration-300">
+              <div className="absolute top-0 right-0 bg-[#2F4157] text-white text-xs font-bold px-4 py-1.5 rounded-bl-2xl rounded-tr-2xl uppercase tracking-wider">
+                Next Top 10 Candidates
+              </div>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-3 bg-blue-50 rounded-xl text-[#2F4157]">
+                  <Users className="w-8 h-8" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-[#2F4157]">Partially Funded</h3>
+                  <p className="text-sm text-gray-500">10 Seats Available</p>
+                </div>
+              </div>
+              <ul className="space-y-3 mb-8">
+                {[
+                  "NUS Campus Accommodation",
+                  "All Meals & Transport in SG",
+                  "Program & Workshop Fees",
+                  "Visa & Travel Insurance"
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-gray-700">
+                    <CheckCircle className="w-5 h-5 text-[#2F4157] shrink-0" />
+                    <span className="text-sm font-medium">{item}</span>
+                  </li>
+                ))}
+                <li className="flex items-start gap-3 text-gray-400 line-through decoration-gray-400">
+                  <XCircle className="w-5 h-5 text-gray-300 shrink-0" />
+                  <span className="text-sm">Round-trip Flights (Self-Funded)</span>
+                </li>
+              </ul>
+              <div className="text-center bg-gray-100 text-gray-600 py-2 rounded-lg text-sm font-bold">
+                Flights Covered by Delegate
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ================= WHAT IS GIF (Definition) ================= */}
+      <section className="max-w-5xl mx-auto px-6 py-12">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="space-y-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#2F4157]">
+              More Than Just <br/> A Visit.
+            </h2>
+            <div className="h-1 w-20 bg-[#E56668] rounded-full"></div>
+            <p className="text-gray-600 text-lg leading-relaxed">
+              The Global Impact Fellowship (GIF) is designed to equip Indonesian students with 
+              <strong> global academic awareness</strong>, <strong>career readiness</strong>, and <strong>leadership responsibility</strong>.
+            </p>
+            <p className="text-gray-600 leading-relaxed">
+              We connect participants directly with Singapore’s world-class ecosystem—through 
+              <strong> National University of Singapore (NUS)</strong> and <strong>Glints</strong>—to explore how English proficiency and real-world skills intersect in top universities.
+            </p>
+          </div>
+          
+          {/* Comparison Card */}
+          <div className="bg-gray-50 p-8 rounded-3xl border border-gray-100 shadow-xl relative overflow-hidden group hover:border-[#E56668]/30 transition-all">
+            <div className="absolute top-0 right-0 bg-[#2F4157] text-white text-xs font-bold px-3 py-1 rounded-bl-xl">
+              THE IELS STANDARD
+            </div>
+            <h3 className="text-xl font-bold text-[#2F4157] mb-6">What Makes GIF Different?</h3>
+            
+            <ul className="space-y-4">
+              <li className="flex items-start gap-3 opacity-50">
+                <XCircle className="w-5 h-5 text-gray-400 mt-1 shrink-0" />
+                <span className="text-gray-500 line-through decoration-gray-400">Just a sightseeing tour</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <CheckCircle className="w-5 h-5 text-[#E56668] mt-1 shrink-0" />
+                <span className="text-gray-700 font-medium">Mandatory Academic Research & SDG Project</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <CheckCircle className="w-5 h-5 text-[#E56668] mt-1 shrink-0" />
+                <span className="text-gray-700 font-medium">Accountability to post-trip outcomes</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <CheckCircle className="w-5 h-5 text-[#E56668] mt-1 shrink-0" />
+                <span className="text-gray-700 font-medium">Long-term ecosystem guidance by IELS</span>
+              </li>
             </ul>
           </div>
-        </section>
+        </div>
+      </section>
+
+      {/* ================= DUAL TRACK LEARNING ================= */}
+      <section className="py-12 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-extrabold text-[#2F4157] mb-4">Dual-Track Learning Ecosystem</h2>
+            <p className="text-gray-600">Benchmarking against the best in Academia and Industry.</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* NUS Track */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 group">
+              <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#2F4157] transition-colors">
+                <BookOpen className="w-6 h-6 text-[#2F4157] group-hover:text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-[#2F4157] mb-2">Academic Excellence</h3>
+              <p className="text-sm font-semibold text-[#E56668] mb-4 tracking-wide uppercase">National University of Singapore (NUS)</p>
+              <p className="text-gray-600 mb-6">
+                Fellows conduct applied research inspired by Singapore’s education system.
+              </p>
+              <ul className="space-y-3">
+                <li className="flex gap-3 text-sm text-gray-700">
+                  <span className="text-[#E56668]">•</span> Innovation culture & research rigor
+                </li>
+                <li className="flex gap-3 text-sm text-gray-700">
+                  <span className="text-[#E56668]">•</span> English as an academic mobility tool
+                </li>
+                <li className="flex gap-3 text-sm text-gray-700">
+                  <span className="text-[#E56668]">•</span> Output: <strong>Research Paper</strong>
+                </li>
+              </ul>
+            </div>
+
+            {/* Glints Track */}
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 group">
+              <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#E56668] transition-colors">
+                <Briefcase className="w-6 h-6 text-[#E56668] group-hover:text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-[#2F4157] mb-2">Career Readiness</h3>
+              <p className="text-sm font-semibold text-[#E56668] mb-4 tracking-wide uppercase">Glints Singapore HQ</p>
+              <p className="text-gray-600 mb-6">
+                Fellows analyze how global hiring ecosystems operate in Southeast Asia.
+              </p>
+              <ul className="space-y-3">
+                <li className="flex gap-3 text-sm text-gray-700">
+                  <span className="text-[#E56668]">•</span> International employability standards
+                </li>
+                <li className="flex gap-3 text-sm text-gray-700">
+                  <span className="text-[#E56668]">•</span> Remote work & regional career paths
+                </li>
+                <li className="flex gap-3 text-sm text-gray-700">
+                  <span className="text-[#E56668]">•</span> Output: <strong>Career Roadmap</strong>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
 
  {/* ================= SDG FOCUS ================= */}
-<section className="py-24 px-6">
+<section className="py-12 px-6">
   <div className="max-w-6xl mx-auto">
 
     {/* HEADER */}
     <div className="text-center mb-20">
       <h2 className="text-3xl md:text-4xl font-extrabold text-[#2F4157] mb-4">
-        Core Focus Areas (SDG-Aligned)
+        Core Focus Areas
       </h2>
       <p className="text-gray-600 max-w-3xl mx-auto">
         GIF is designed to create <b>measurable educational and economic impact</b>,
@@ -272,98 +412,9 @@ export default function SGITPage() {
     </div>
   </div>
 </section>
-{/* ================= PROGRAM HIGHLIGHTS ================= */}
-<section className="bg-[#F7F8FA] py-10 px-6">
-  <div className="max-w-6xl mx-auto">
-
-    {/* HEADER */}
-    <div className="text-center mb-20">
-      <h2 className="text-3xl md:text-4xl font-extrabold text-[#2F4157] mb-4">
-        Program Highlights
-      </h2>
-      <p className="text-gray-600 max-w-3xl mx-auto">
-        GIF is designed as a <b>learning + exposure system</b>,
-        not a one-off international visit.
-      </p>
-    </div>
-
-    {/* GRID */}
-    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-
-      {[
-        {
-          icon: "🎓",
-          title: "Academic Immersion @ NUS",
-          proof: "World-class academic exposure",
-          points: [
-            "Campus immersion & guided exploration",
-            "Academic dialogue & student interaction",
-            "Understanding global learning culture",
-          ],
-        },
-        {
-          icon: "💼",
-          title: "Career Exposure @ Glints",
-          proof: "Real-world employability insight",
-          points: [
-            "Global & regional hiring standards",
-            "English for professional communication",
-            "Remote & international career pathways",
-          ],
-        },
-        {
-          icon: "🌍",
-          title: "English in Real Contexts",
-          proof: "Beyond classrooms & test scores",
-          points: [
-            "Professional discussions in English",
-            "Project presentations & explanations",
-            "Confidence-building through real usage",
-          ],
-        },
-      ].map((item, i) => (
-        <div
-          key={i}
-          className="
-            relative rounded-3xl border bg-white p-7
-            transition-all duration-300
-            hover:-translate-y-1 hover:shadow-2xl hover:border-[#E56668]/60
-          "
-        >
-          {/* ACCENT BAR */}
-          <div className="absolute left-0 top-6 bottom-6 w-1 rounded-full bg-[#E56668]" />
-
-          <div className="pl-4 flex flex-col gap-4">
-
-            {/* HEADER */}
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">{item.icon}</span>
-              <h3 className="text-xl font-bold text-[#2F4157]">
-                {item.title}
-              </h3>
-            </div>
-
-            {/* PROOF */}
-            <p className="text-sm font-semibold text-[#E56668]">
-              {item.proof}
-            </p>
-
-            {/* DETAILS */}
-            <ul className="text-sm text-gray-600 space-y-2 leading-relaxed">
-              {item.points.map((p, idx) => (
-                <li key={idx}>• {p}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      ))}
-
-    </div>
-  </div>
-</section>
 
  {/* ================= PROGRAM STRUCTURE & TIMELINE ================= */}
-<section className="bg-[#F7F8FA] py-10 overflow-hidden">
+<section className="py-10 overflow-hidden">
 
   {/* HEADER */}
   <div className="text-center mb-10 px-6">
@@ -442,6 +493,22 @@ export default function SGITPage() {
   </p>
 </section>
 
+{/* ================= CLOSING CTA ================= */}
+      <section className="py-12 px-6 text-center">
+        <div className="max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 bg-green-50 text-green-700 px-4 py-1.5 rounded-full text-sm font-bold mb-6">
+            <ShieldCheck className="w-4 h-4" /> 20 Exclusive Seats Available
+          </div>
+          <h2 className="text-3xl font-bold text-[#2F4157] mb-6">Ready to Bridge the Gap?</h2>
+          <p className="text-gray-600 mb-8 leading-relaxed max-w-2xl mx-auto">
+            This is a merit-based selection process. We are looking for the top 20 emerging leaders who are ready to research, lead, and implement real change in Indonesia.
+          </p>
+         
+                    <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 rounded-full hover:bg-[#C04C4E] shadow-lg">
+                      <Link href="/events/gif">Apply for Scholarship <ArrowRight className="w-5 h-5"/></Link>
+                    </Button> 
+        </div>
+      </section>
 {/* ================= MENTORSHIP CTA ================= */}
 <section className="relative bg-[#2f4157] py-15 overflow-hidden">
   

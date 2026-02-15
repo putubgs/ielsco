@@ -186,7 +186,7 @@ export default function GIFDashboardPage() {
                   />
                   <div className="h-8 w-px bg-white/30"></div>
                   <div className="bg-white/10 px-3 py-1 rounded-full border border-white/20 text-xs font-bold text-white tracking-widest">
-                    BATCH 2026
+                    BATCH 1
                   </div>
                 </div>
 
@@ -736,7 +736,7 @@ export default function GIFDashboardPage() {
                         </h3>
                         <ul className="space-y-4">
                           {[
-                            "4-week structured mentoring sessions",
+                            "5-session structured mentoring sessions",
                             "1-on-1 project proposal review",
                             "Exclusive resources & templates",
                             "Recording access for all sessions"

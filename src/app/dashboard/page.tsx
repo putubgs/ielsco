@@ -603,7 +603,7 @@ const supabase = createBrowserClient(
                 </div>
               )}
             </div>
-            {/* RECENT ACTIVITY */}
+            {/* RECENT ACTIVITY 
             <div>
               <h2 className="text-xl font-bold text-[#2F4157] mb-5">Learning Log</h2>
               <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-2">
@@ -621,7 +621,7 @@ const supabase = createBrowserClient(
                   <p className="text-center py-6 text-sm text-gray-400">No recent activity recorded.</p>
                 )}
               </div>
-            </div>
+            </div>*/}
 
           </div>
 
@@ -673,34 +673,36 @@ const supabase = createBrowserClient(
               </div>
             )}
           </div>
-        </div>
-        {/* --- 4. GIF SINGAPORE PROMO SECTION (NEW) --- */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#2F4157] to-[#1e3a8a] text-white shadow-2xl group ring-1 ring-white/10">
+        </div>{/* --- 4. GIF SINGAPORE PROMO SECTION (UPDATED PALETTE) --- */}
+        {/* Gradient Linear -> #2F4055 #914D4D #304156 */}
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#2F4055] via-[#914D4D] to-[#304156] text-white shadow-2xl group ring-1 ring-white/10 font-geologica">
           
-          {/* Background Decor Effects */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#E56668] opacity-10 blur-[80px] rounded-full translate-x-1/3 -translate-y-1/3 group-hover:opacity-20 transition-opacity duration-500" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-white opacity-5 blur-[60px] rounded-full -translate-x-1/3 translate-y-1/3" />
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 mix-blend-overlay" />
+          {/* Background Decor Effects (Aligned with Palette) */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#914D4D] opacity-20 blur-[80px] rounded-full translate-x-1/3 -translate-y-1/3 group-hover:opacity-30 transition-opacity duration-500" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#304156] opacity-30 blur-[60px] rounded-full -translate-x-1/3 translate-y-1/3" />
+          {/* Subtle Pattern Overlay */}
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay" />
 
           <div className="relative z-10 p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-8">
             
             {/* Left Content */}
             <div className="flex flex-col md:flex-row items-center md:items-start gap-6 text-center md:text-left flex-1">
               
-              {/* Logo Container with Glassmorphism */}
-              <div className="w-24 h-24 md:w-28 md:h-28 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20 shrink-0 p-3 shadow-lg transform group-hover:scale-105 transition-transform duration-300">
-                 {/* Gunakan img standard agar aspect ratio aman, atau Next/Image jika sudah config */}
-                 <img 
-                   src="/images/logos/events/gifsg.png" 
-                   alt="GIF Singapore" 
-                   className="w-full h-full object-contain drop-shadow-md filter brightness-0 invert" 
-                   // Note: brightness-0 invert membuat logo jadi putih bersih jika logo aslinya gelap. 
-                   // Hapus class filter jika ingin warna asli logo.
-                 />
-              </div>
+{/* Logo Container with Glassmorphism */}
+<div className="w-32 h-32 md:w-40 md:h-40 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20 shrink-0 p-4 shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+    <img 
+        src="/images/logos/events/gifsgp.png" 
+        alt="GIF Singapore" 
+        className="max-w-full max-h-full object-contain drop-shadow-md" 
+        /* Note: Filter brightness-0 invert dihapus agar warna asli logo muncul.
+           Pindah class centering (flex items-center justify-center) ke parent <div>.
+        */
+    />
+</div>
 
               <div className="space-y-3 max-w-2xl">
-                 <div className="inline-flex items-center gap-2 bg-[#E56668] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest mx-auto md:mx-0 shadow-lg shadow-red-900/20">
+                 {/* Badge: Muted Red Background */}
+                 <div className="inline-flex items-center gap-2 bg-[#914D4D] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest mx-auto md:mx-0 shadow-lg shadow-[#914D4D]/20 border border-white/20">
                    <span className="relative flex h-2 w-2">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
@@ -708,13 +710,13 @@ const supabase = createBrowserClient(
                    Registration Open
                  </div>
                  
-                 <h3 className="text-2xl md:text-3xl font-extrabold leading-tight">
-                   Ready for Singapore? <span className="text-[#E56668]">🇸🇬</span>
+                 <h3 className="text-2xl md:text-3xl font-black leading-tight">
+                   Ready for Singapore? <span className="text-[#FFD1D1]">🇸🇬</span>
                  </h3>
                  
-                 <p className="text-blue-100 text-sm md:text-base leading-relaxed">
-                   Join <strong>Global Impact Fellowship 2026</strong>. Benchmark langsung ke <strong>NUS & Glints HQ</strong>. 
-                   Dapatkan kesempatan <span className="text-yellow-300 font-bold underline decoration-yellow-300/30 underline-offset-4">Fully Funded</span> & mentoring eksklusif dari Founder IELS.
+                 <p className="text-white/90 text-sm md:text-base leading-relaxed font-light">
+                   Join <strong>Global Impact Fellowship 2026</strong>. Benchmark directly to <strong>NUS & Glints HQ</strong>. 
+                   Get a chance for <span className="text-[#FFD1D1] font-bold underline decoration-[#FFD1D1]/50 underline-offset-4">Fully Funded</span> & exclusive mentoring from IELS Founders.
                  </p>
               </div>
             </div>
@@ -722,16 +724,17 @@ const supabase = createBrowserClient(
             {/* Right Action */}
             <div className="shrink-0 w-full md:w-auto">
                <Link href="/dashboard/gif" className="block w-full">
-                 <button className="w-full md:w-auto group/btn relative px-8 py-4 bg-white text-[#2F4157] font-bold rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-3 overflow-hidden">
+                 <button className="w-full md:w-auto group/btn relative px-8 py-3 bg-white text-[#304156] font-bold rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-3 overflow-hidden">
                     <span className="uppercase tracking-wide text-sm relative z-10">Start Application</span>
-                    <div className="bg-[#2F4157] text-white p-1.5 rounded-full group-hover/btn:bg-[#E56668] transition-colors relative z-10">
+                    {/* Icon Circle: NightFall Blue -> Muted Red on Hover */}
+                    <div className="bg-[#304156] text-white p-1.5 rounded-full group-hover/btn:bg-[#914D4D] transition-colors relative z-10">
                       <ArrowRight size={16} />
                     </div>
                     {/* Hover Shine Effect */}
                     <div className="absolute top-0 -left-[100%] w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12 group-hover/btn:animate-shine" />
                  </button>
                </Link>
-               <p className="text-white/40 text-[10px] text-center mt-3 font-medium">
+               <p className="text-white/60 text-[10px] text-center mt-3 font-medium tracking-wide">
                  *Limited slots available for Fast Track
                </p>
             </div>

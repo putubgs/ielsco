@@ -152,14 +152,20 @@ return (
            </Link>
         </div>
 
-        {/* 2. NAVIGATION (CENTER - DESKTOP ONLY) */}
+ {/* 2. NAVIGATION (CENTER - DESKTOP ONLY) */}
         <nav className="hidden md:flex items-center gap-1 justify-center flex-1 px-4">
           {navItems.map((item) => {
-            const isDirectPath = item.path === "/dashboard" 
-              ? pathname === "/dashboard" 
-              : pathname?.startsWith(item.path);
+            
+            // Logic Active State
+            const isDashboardRoot = item.path === "/dashboard" && pathname === "/dashboard";
+            const isStandardActive = item.path !== "/dashboard" && pathname?.startsWith(item.path);
             const isChildActive = item.children?.some(child => pathname?.startsWith(child.path));
-            const isActive = isDirectPath || isChildActive;
+            
+            // SPECIAL CASE FOR GIF:
+            // Jika pathname diawali /dashboard/gif, maka menu "My Learning" dianggap aktif.
+            const isGifActive = item.name === "My Learning" && pathname?.startsWith("/dashboard/gif");
+
+            const isActive = isDashboardRoot || isStandardActive || isChildActive || isGifActive;
             
             const Icon = item.icon;
             const hasChildren = item.children && item.children.length > 0;
@@ -196,16 +202,25 @@ return (
                     )}
                   >
                     <div className="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden p-1.5">
-                      {item.children?.map((child) => (
-                        <Link
-                          key={child.name}
-                          href={child.path}
-                          className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-[#2F4157] rounded-lg transition-colors group/child"
-                        >
-                          <child.icon size={16} className="text-gray-400 group-hover/child:text-[#E56668]" />
-                          {child.name}
-                        </Link>
-                      ))}
+                      {item.children?.map((child) => {
+                        // Optional: Jika mau GIF men-highlight salah satu child (misal My Schedule)
+                        // const isChildLinkActive = pathname?.startsWith(child.path) || (child.name === "My Schedule" && pathname?.startsWith("/dashboard/gif"));
+                        const isChildLinkActive = pathname?.startsWith(child.path);
+
+                        return (
+                          <Link
+                            key={child.name}
+                            href={child.path}
+                            className={cn(
+                                "flex items-center gap-3 px-4 py-2.5 text-sm rounded-lg transition-colors group/child",
+                                isChildLinkActive ? "bg-gray-50 text-[#2F4157] font-bold" : "text-gray-600 hover:bg-gray-50 hover:text-[#2F4157]"
+                            )}
+                          >
+                            <child.icon size={16} className={cn(isChildLinkActive ? "text-[#E56668]" : "text-gray-400 group-hover/child:text-[#E56668]")} />
+                            {child.name}
+                          </Link>
+                        )
+                      })}
                     </div>
                   </div>
                 )}

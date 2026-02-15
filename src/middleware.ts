@@ -3,71 +3,58 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
+  // 1. Inisialisasi Response awal
   let response = NextResponse.next({
     request: {
       headers: request.headers,
     },
   })
 
+  // 2. Setup Supabase Client untuk Middleware
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key",
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         get(name: string) {
           return request.cookies.get(name)?.value
         },
         set(name: string, value: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value,
-            ...options,
-          })
+          request.cookies.set({ name, value, ...options })
           response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
+            request: { headers: request.headers },
           })
-          response.cookies.set({
-            name,
-            value,
-            ...options,
-          })
+          response.cookies.set({ name, value, ...options })
         },
         remove(name: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value: '',
-            ...options,
-          })
+          request.cookies.set({ name, value: '', ...options })
           response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
+            request: { headers: request.headers },
           })
-          response.cookies.set({
-            name,
-            value: '',
-            ...options,
-          })
+          response.cookies.set({ name, value: '', ...options })
         },
       },
     }
   )
 
-  // Cek session user
+  // 3. PENTING: getUser() akan memvalidasi token & me-refresh session cookie jika perlu.
+  // Tanpa ini, session akan dianggap hilang/expired saat navigasi.
   const { data: { user } } = await supabase.auth.getUser()
 
-  // ATURAN REDIRECT:
-  
-  // 1. Jika user SUDAH login tapi buka halaman /sign-in atau /sign-up, tendang ke /dashboard
+  // 4. ATURAN REDIRECT
+
+  // Jika user SUDAH login tapi buka /sign-in atau /sign-up -> Redirect ke Dashboard
   if (user && (request.nextUrl.pathname.startsWith('/sign-in') || request.nextUrl.pathname.startsWith('/sign-up'))) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
-  // 2. Jika user BELUM login tapi maksa buka /dashboard, tendang ke /sign-in
+  // Jika user BELUM login tapi buka halaman yang dilindungi (selain auth page) -> Redirect ke Sign-In
+  // PENTING: Kita simpan URL tujuan di parameter '?next=' agar setelah login bisa balik lagi.
   if (!user && request.nextUrl.pathname.startsWith('/dashboard')) {
-    return NextResponse.redirect(new URL('/sign-in', request.url))
+    const signInUrl = new URL('/sign-in', request.url)
+    // Simpan tujuan awal user (misal: /dashboard/gif)
+    signInUrl.searchParams.set('next', request.nextUrl.pathname)
+    return NextResponse.redirect(signInUrl)
   }
 
   return response
@@ -75,14 +62,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - api/auth (auth endpoints)
-     * - api/test (PENTING: Ini agar Google Sheets bisa masuk tanpa login!)
-     */
     '/((?!_next/static|_next/image|favicon.ico|api/auth|api/test).*)',
   ],
 }

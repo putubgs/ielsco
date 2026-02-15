@@ -16,7 +16,7 @@ type TimelineItem = {
 const timeline: TimelineItem[] = [
   {
     phase: "GIF Selection — Phase 1",
-    date: "16 Feb – 23 Mar 2026",
+    date: "15 Feb – 23 Mar 2026",
     title: "Administration Screening",
     desc: "Initial screening of motivation, background, and readiness to join a global exposure program.",
   },
@@ -112,7 +112,7 @@ export default function SGITPage() {
           {/* CTA BUTTON - Using Accent Color */}
           <div className="flex flex-col items-center gap-3">
              <Button asChild className="bg-[#914D4D] text-white font-semibold px-6 py-3 rounded-full hover:bg-[#7a3e3e] shadow-lg shadow-[#914D4D]/20 transition-all">
-                <Link href="/dashboard/gif">Apply Now!  <ArrowRight className="w-5 h-5"/></Link>
+                <Link href="/dashboard/gif">Apply For FUlly Funded!  <ArrowRight className="w-5 h-5"/></Link>
              </Button> 
             
             <span className="text-xs text-gray-300 font-medium tracking-wide uppercase">
@@ -573,7 +573,7 @@ export default function SGITPage() {
             This is a merit-based selection process. We are looking for the top 20 emerging leaders who are ready to research, lead, and implement real change in Indonesia.
           </p>
           <Button asChild className="bg-[#914D4D] text-white font-semibold px-6 py-3 rounded-full hover:bg-[#7a3e3e] shadow-lg">
-             <Link href="/dashboard/gif">Apply for Scholarship <ArrowRight className="w-5 h-5"/></Link>
+             <Link href="/dashboard/gif">Apply for Fully Funded <ArrowRight className="w-5 h-5"/></Link>
           </Button> 
         </div>
       </section>

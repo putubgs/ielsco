@@ -109,7 +109,7 @@ const PricingModal = ({ onClose }: { onClose: () => void }) => {
               </button>
             </div>
 
-            {/* TIER 2: INSIDER (PREMIUM) */}
+        {/* TIER 2: INSIDER (PREMIUM) */}
             <div className="bg-white rounded-3xl p-6 border-2 border-[#8B5CF6] shadow-xl relative transform md:-translate-y-2">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#8B5CF6] text-white px-3 py-1 rounded-full text-[10px] font-bold shadow-sm uppercase tracking-wide">
                 Most Popular
@@ -140,10 +140,16 @@ const PricingModal = ({ onClose }: { onClose: () => void }) => {
                 <FeatureItem text="Insider Discord Channels" />
                 <FeatureItem text="Verified Insider Badge" />
               </ul>
+              
+              {/* UPDATED BUTTON FOR INSIDER */}
               <button 
                 onClick={() => {
-                  // TODO: Integrate with payment flow
-                  alert(`Redirecting to payment for Insider ${billingCycle}...`);
+                  // Direct to Mayar Payment Link
+                  const paymentUrl = billingCycle === 'monthly' 
+                    ? 'https://ielsco.myr.id/m/iels-lounge-premium' // Monthly Link
+                    : 'https://ielsco.myr.id/m/iels-lounge-premium'; // Ganti dengan Link Tahunan jika ada
+                  
+                  window.open(paymentUrl, '_blank');
                 }}
                 className="w-full py-2.5 rounded-xl bg-[#8B5CF6] text-white font-bold hover:bg-[#7C3AED] hover:shadow-lg transition transform active:scale-95 text-sm"
               >
@@ -174,9 +180,13 @@ const PricingModal = ({ onClose }: { onClose: () => void }) => {
                 <FeatureItem text="Exclusive Gold Badge" darkTheme />
                 <FeatureItem text="All Future Features Unlocked" darkTheme />
               </ul>
+
+              {/* UPDATED BUTTON FOR VISIONARY */}
               <button 
                 onClick={() => {
-                  alert('Redirecting to Visionary payment...');
+                  // Direct to Mayar Payment Link for Visionary
+                  // Ganti URL ini dengan link checkout Mayar khusus paket Visionary/Lifetime
+                  window.open('https://ielsco.myr.id/m/iels-lounge-premium', '_blank'); 
                 }}
                 className="w-full py-2.5 rounded-xl bg-yellow-400 text-[#2F4157] font-bold hover:bg-yellow-500 hover:shadow-lg hover:shadow-yellow-400/20 active:scale-95 transition relative z-10 text-sm"
               >

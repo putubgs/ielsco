@@ -195,7 +195,7 @@ export default function GIFDashboardPage() {
                     Hello, {getFirstName(userProfile?.full_name || 'Learner')}! 👋
                   </h1>
                   <p className="text-white/90 text-lg leading-relaxed font-light">
-                    Welcome to your <span className="font-bold text-[#FFD1D1]">GIF Singapore 2026</span> application hub.
+                    Welcome to your <span className="font-bold text-[#FFD1D1]">GIF in Singapore 2026</span> application hub.
                     Prepare yourself for a transformative journey at NUS.
                   </p>
                 </div>
@@ -275,7 +275,7 @@ export default function GIFDashboardPage() {
                             </div>
                             <span className="text-sm font-medium">Location</span>
                         </div>
-                        <span className="text-sm font-bold text-right">Singapore, NUS</span>
+                        <span className="text-sm font-bold text-right">NUS, Singapore</span>
                       </div>
 
                       <div className="flex items-center justify-between text-white border-b border-white/10 pb-3">
@@ -302,13 +302,11 @@ export default function GIFDashboardPage() {
                   </div>
                 </div>
               </div>
-            </div>
-{/* --- BOTTOM BANNER (DEADLINE & CTA) --- */}
-            {/* 1. Gunakan items-stretch agar tinggi kiri & kanan sama persis */}
-            <div className="mt-10 flex flex-col md:flex-row gap-4 items-stretch">
+            </div>{/* --- BOTTOM BANNER (DEADLINE & CTA) --- */}
+            {/* 1. Ganti items-stretch jadi items-center agar align tengah secara vertikal */}
+            <div className="mt-10 flex flex-col md:flex-row gap-4 items-center">
                 
                 {/* Deadline Info */}
-                {/* 2. Gunakan py-3 (bukan p-4) agar box tidak terlalu tinggi/gemuk */}
                 <div className="w-full md:flex-1 bg-[#304156]/40 rounded-2xl px-5 py-3 flex items-center gap-4 border border-white/10 backdrop-blur-sm">
                     <div className="bg-[#914D4D] p-2.5 rounded-xl shadow-lg animate-pulse flex-shrink-0">
                         <Clock className="w-6 h-6 text-white" />
@@ -324,8 +322,8 @@ export default function GIFDashboardPage() {
 
                 {/* Read More Button */}
                 <Link href="https://ielsco.com/events/gif" target="_blank" className="w-full md:w-auto">
-                    {/* 3. Gunakan h-full agar tingginya otomatis mengikuti box di sebelahnya */}
-                    <Button className="w-full h-full px-8 rounded-2xl bg-white hover:bg-gray-100 text-[#304156] font-bold text-base shadow-xl hover:shadow-2xl transition-all group flex items-center justify-center">
+                    {/* 2. Gunakan py-3, h-auto (bawaan), dan hapus h-full/min-h */}
+                    <Button className="w-full md:w-auto py-3 px-8 rounded-2xl bg-white hover:bg-gray-100 text-[#304156] font-bold text-base shadow-xl hover:shadow-2xl transition-all group flex items-center justify-center">
                         Program Details
                         <ExternalLink className="w-5 h-5 ml-2 text-[#914D4D] group-hover:scale-110 transition-transform" />
                     </Button>
@@ -474,7 +472,7 @@ export default function GIFDashboardPage() {
                     className={cn(
                       "w-full py-3 rounded-xl font-bold shadow-md hover:shadow-xl transition-all group relative overflow-hidden",
                       regData?.phase1_status === 'submitted' 
-                        ? "bg-[#914D4D] hover:bg-[#7a3e3e] text-white"
+                        ? "bg-[#304156] hover:bg-[#2F4055] text-white"
                         : "bg-[#304156] hover:bg-[#2F4055] text-white"
                     )}
                   >
@@ -651,7 +649,7 @@ export default function GIFDashboardPage() {
                 ) : (
                   <Button 
                     onClick={() => window.open("https://ielsco.myr.id/m/iels-lounge-premium", "_blank")}
-                    className="w-full py-3 rounded-xl font-bold bg-gradient-to-r from-[#2F4055] to-[#304156] hover:to-[#2F4055] text-white shadow-md hover:shadow-xl transition-all group"
+                    className="w-full py-3 rounded-xl font-bold bg-gradient-to-br from-[#2F4055] to-[#914D4D] hover:to-gradient-to-br from-[#2F4055] to-[#914D4D]/90 text-white shadow-md hover:shadow-xl transition-all group"
                   >
                     <span className="flex items-center justify-center">
                       {regData?.lounge_status === 'submitted' ? 'Access Lounge' : 'Enroll Now (Rp 50k)'}

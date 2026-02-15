@@ -197,7 +197,7 @@ export default function EssayProjectPage() {
                   Auto-Completed via Mentoring
                 </span>
               ) : isSubmitted ? (
-                <span className="bg-green-400/90 text-[#304156] px-4 py-1.5 rounded-full text-sm font-bold shadow-sm">
+                <span className="bg-green-50 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1 shadow-sm border border-green-100">
                   <CheckCircle className="w-4 h-4 inline mr-1" />
                   Submitted
                 </span>
@@ -709,27 +709,37 @@ export default function EssayProjectPage() {
               </div>
             </div>
           )}
-        </div>{/* Help Section - Updated to NightFall Blue Theme */}
-        <div className="bg-[#304156]/5 rounded-2xl border border-[#304156]/20 p-6">
-          <div className="flex items-start gap-4">
-            <div className="bg-[#304156]/10 p-3 rounded-xl">
-              <Info className="w-6 h-6 text-[#304156]" />
+        </div>\
+        {/* Help Section - Updated Layout */}
+        <div className="bg-[#304156]/5 rounded-2xl border border-[#304156]/20 p-6 font-geologica">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+            
+            {/* Icon & Text Group */}
+            <div className="flex items-start gap-4 flex-1">
+              <div className="bg-[#304156]/10 p-3 rounded-xl flex-shrink-0">
+                <Info className="w-6 h-6 text-[#304156]" />
+              </div>
+              <div>
+                <h3 className="font-bold text-[#304156] mb-1">Need Help?</h3>
+                <p className="text-sm text-[#304156]/80 leading-relaxed">
+                  If you have questions about the essay or project proposal requirements, contact our team.
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 className="font-bold text-[#304156] mb-2">Need Help?</h3>
-              <p className="text-sm text-[#304156]/80 mb-4">
-                If you have questions about the essay or project proposal requirements, contact our team.
-              </p>
-              <Link href="https://wa.me/6288297253491" target="_blank">
-                <Button className="bg-[#304156] w-full py-3 hover:bg-[#2F4055] text-white">
+
+            {/* Button Group */}
+            <div className="w-full md:w-auto mt-4 md:mt-0">
+              <Link href="https://wa.me/6288297253491" target="_blank" className="block w-full">
+                {/* Menggunakan py-3, w-full, dan rounded-xl agar sesuai style sebelumnya */}
+                <Button className="w-full md:w-auto min-w-[200px] py-3 px-6 rounded-xl font-bold bg-[#304156] hover:bg-[#2F4055] text-white shadow-md transition-all flex items-center justify-center gap-2">
                   Contact via WhatsApp
-                  <ExternalLink className="w-4 h-4 ml-2" />
+                  <ExternalLink className="w-4 h-4" />
                 </Button>
               </Link>
             </div>
+
           </div>
         </div>
-
       </div>
     </DashboardLayout>
   );

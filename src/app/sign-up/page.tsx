@@ -133,12 +133,25 @@ export default function RegisterPage() {
     }
   };
 
-  const handleGoogleSignUp = async () => {
+ const handleGoogleSignUp = async () => {
     try {
+      // 1. Ambil URL dasar (localhost atau ielsco.com)
+      const origin = window.location.origin;
+      
+      // 2. Tentukan tujuan setelah daftar (misal ke dashboard langsung)
+      const nextUrl = "/dashboard"; 
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`
+          // PENTING: Pake /api/auth/callback biar konsisten sama route handler yang udah kita benerin
+          // Jangan lupa bawa param ?next=
+          redirectTo: `${origin}/api/auth/callback?next=${nextUrl}`,
+          
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
         }
       });
 

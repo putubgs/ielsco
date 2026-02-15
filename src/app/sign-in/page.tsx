@@ -93,11 +93,17 @@ function SignInContent() {
 
   const handleGoogleSignIn = async () => {
     try {
+      // PENTING: Kembali gunakan window.location.origin agar dinamis.
+      // Kalau di localhost -> jadi http://localhost:3000
+      // Kalau di prod -> jadi https://ielsco.com
+      const origin = window.location.origin;
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/api/auth/callback?next=${nextUrl}`,
-          // Opsional: Paksa prompt login biar keliatan flow-nya
+          // Arahkan ke /api/auth/callback (Sesuai yang sudah didaftarkan di Supabase)
+          redirectTo: `${origin}/api/auth/callback?next=${nextUrl}`,
+          
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
@@ -105,9 +111,8 @@ function SignInContent() {
         }
       });
 
-      if (error) {
-        setPopup(`Google sign-in error: ${error.message}`);
-      }
+      if (error) throw error;
+      
     } catch (error: any) {
       console.error("Google sign-in error:", error);
       setPopup("Google sign-in failed — please try again! 😔");

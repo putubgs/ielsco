@@ -614,7 +614,7 @@ export default function GIFDashboardPage() {
                 </div>
                 <div className="bg-white rounded-lg p-2 text-center border border-gray-200">
                   <div className="text-xs text-gray-500 font-medium mb-1">Use Promo Code</div>
-                  <div className="font-mono font-black text-lg text-[#304156] tracking-wider">SGTRIP</div>
+                  <div className="font-mono font-black text-lg text-[#304156] tracking-wider">GIFSG</div>
                 </div>
               </div>
 

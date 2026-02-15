@@ -4,14 +4,17 @@ import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url)
-  const code = searchParams.get('code')
-  // Jika ada parameter "next", kita redirect ke sana, kalau tidak ke /dashboard
-  const next = searchParams.get('next') ?? '/dashboard'
+  // 1. Ambil URL, Code, dan Origin dari request Google
+  const requestUrl = new URL(request.url)
+  const code = requestUrl.searchParams.get('code')
+  const origin = requestUrl.origin
+  
+  // 2. Ambil parameter 'next' (Tujuan akhir).
+  // Jika tidak ada 'next', default ke '/dashboard'.
+  const next = requestUrl.searchParams.get('next') || '/dashboard'
 
   if (code) {
-    // PERUBAHAN PENTING DI SINI:
-    // Tambahkan 'await' sebelum cookies()
+    // Await cookies() sesuai Next.js terbaru
     const cookieStore = await cookies()
 
     const supabase = createServerClient(
@@ -32,13 +35,25 @@ export async function GET(request: Request) {
       }
     )
     
+    // 3. Tukar "Code" dari Google dengan "Session" Supabase
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     
     if (!error) {
-      return NextResponse.redirect(`${origin}${next}`)
+      // 4. SUKSES! Redirect user ke tujuan awal (next).
+      // Kita bersihkan URL dari parameter 'code' agar bersih.
+      
+      // Construct URL tujuan dengan aman
+      const forwardedHost = request.headers.get('x-forwarded-host') // Untuk handle proxy/vercel
+      const isLocal = origin.includes('localhost')
+      
+      // Jika di production (Vercel), gunakan forwardedHost jika ada, atau origin biasa
+      const base = isLocal ? origin : (forwardedHost ? `https://${forwardedHost}` : origin)
+      
+      // Redirect ke halaman tujuan
+      return NextResponse.redirect(`${base}${next}`)
     }
   }
 
-  // Jika gagal, kembalikan ke halaman error
+  // 5. GAGAL? Kembalikan ke halaman error auth
   return NextResponse.redirect(`${origin}/auth/auth-code-error`)
 }

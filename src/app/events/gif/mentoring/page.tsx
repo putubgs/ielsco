@@ -15,58 +15,48 @@ type CurriculumItem = {
   output: string;
 };
 
+
 const curriculum: CurriculumItem[] = [
   {
-    date: "3 Mar 2026",
-    title: "Onboarding & Selection Framework",
-    desc: "Understand the full structure of the Global Impact Fellowship, evaluation criteria, and selection mindset.",
-    output: "Readiness roadmap.",
+    date: "25 Mar 2026",
+    title: "Session 01: Micro-Problem Identification",
+    desc: "Narrowing down broad education issues into a specific, data-backed problem statement focused on SDG 4 (Quality Education).",
+    output: "Validated SDG 4 problem statement.",
   },
   {
-    date: "7 Mar 2026",
-    title: "Project Ideation (SDG 4 & SDG 8)",
-    desc: "Develop and evaluate project ideas aligned with Quality Education and Decent Work, tested for feasibility.",
-    output: "One validated project direction.",
+    date: "29 Mar 2026",
+    title: "Session 02: Building the MVP - Solution Architecture",
+    desc: "Designing a Minimum Viable Project. Learning how to build a creative yet feasible solution framework for absolute beginners.",
+    output: "Initial project concept note.",
   },
   {
-    date: "10 Mar 2026",
-    title: "Problem Framing & Impact Logic",
-    desc: "Sharpen your problem statement and build an impact logic evaluators can clearly trust.",
-    output: "Impact logic model.",
+    date: "02 Apr 2026",
+    title: "Session 03: Operational Blueprint",
+    desc: "Mapping out the technical 'how-to' of your project. Creating a step-by-step workflow, timeline, and resource requirements.",
+    output: "Technical operational flowchart.",
   },
   {
-    date: "14 Mar 2026",
-    title: "Project Deck Structuring",
-    desc: "Structure your project into a clear, persuasive deck using international presentation standards.",
-    output: "Complete draft of project deck.",
+    date: "06 Apr 2026",
+    title: "Session 04: Impact Logic & Measurement",
+    desc: "Learning the Theory of Change. Defining how your project creates real impact and how to measure success using clear indicators.",
+    output: "Impact M&E framework.",
   },
   {
-    date: "17 Mar 2026",
-    title: "Deck Review & Refinement",
-    desc: "Deep review on logic, clarity, and persuasion to elevate your deck to submission-ready quality.",
-    output: "Refined final deck.",
+    date: "09 Apr 2026",
+    title: "Session 05: Stress-Testing & Final Refinement",
+    desc: "Final logic check and risk mitigation. Sharpening the technical project specs to ensure it's bulletproof for final selection.",
+    output: "Final project specification.",
   },
   {
-    date: "24 Mar 2026",
-    title: "Interview Preparation",
-    desc: "Mock interviews and structured answer frameworks for personal motivation and project defense.",
-    output: "Interview answer bank.",
-  },
-  {
-    date: "28 Mar 2026",
-    title: "Presentation Simulation",
-    desc: "Live simulation of project presentation with Q&A handling and performance feedback.",
-    output: "Presentation-ready confidence.",
-  },
-  {
-    date: "31 Mar 2026",
-    title: "Final Review & Closing",
-    desc: "Final readiness evaluation and strategic advice before entering selection.",
-    output: "Ready for Final Selection.",
+    date: "11 Apr 2026",
+    title: "DEADLINE: Final Project Deck Submission",
+    desc: "The final gate. Submitting your complete project deck and technical specs for the Global Impact Fellowship selection.",
+    output: "Submitted Golden Ticket application.",
   },
 ];
 
-const DEADLINE = new Date("2026-02-16T23:59:59+07:00");
+
+const DEADLINE = new Date("2026-02-28T23:59:59+07:00");
 
 function CountdownTimer() {
   const [timeLeft, setTimeLeft] = useState<number>(
@@ -81,7 +71,7 @@ function CountdownTimer() {
   }, []);
 
   if (timeLeft <= 0) {
-    return <span className="text-[#E56668] font-bold">Registration Closed</span>;
+    return <span className="text-[#914D4D] font-bold">Registration Closed</span>;
   }
 
   const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
@@ -93,9 +83,9 @@ function CountdownTimer() {
     <div className="flex gap-3 justify-center text-center">
       {[["Days", days], ["Hours", hours], ["Min", minutes], ["Sec", seconds]].map(
         ([label, value]) => (
-          <div key={label} className="bg-white/50 rounded-xl px-4 py-2">
-            <div className="text-2xl font-extrabold">{value}</div>
-            <p className="text-xs uppercase tracking-wide text-white/70">
+          <div key={label} className="bg-white/20 backdrop-blur-md rounded-xl px-4 py-2 border border-white/10">
+            <div className="text-2xl font-extrabold text-white">{value}</div>
+            <p className="text-xs uppercase tracking-wide text-white/80">
               {label}
             </p>
           </div>
@@ -107,17 +97,19 @@ function CountdownTimer() {
 
 export default function SGTripMentoringPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-white to-[#eaf2ff] text-[#294154] font-geologica">
+    <main className="min-h-screen bg-white text-[#304156] font-geologica">
       <Header />
 
       {/* ================= HERO ================= */}
       <section className="relative overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 bg-[url('/images/contents/stories/member-stories/banner/singapore-banner.png')] bg-cover bg-center" />
-        <div className="absolute inset-0 bg-[#2F4157]/80" />
+        
+        {/* OVERLAY: Gradient Linear -> #2F4055 #914D4D */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#2F4055] to-[#914D4D] opacity-90" />
 
         {/* CONTENT */}
-        <div className="relative max-w-6xl mx-auto px-6 pt-8 pb-12 lg:pt-18 lg:pb-18-mt-0 text-white text-center">
+        <div className="relative max-w-6xl mx-auto px-6 pt-8 pb-12 lg:pt-18 lg:pb-18 text-white text-center">
           
           <div className="flex items-center justify-center">
             <Image
@@ -131,12 +123,12 @@ export default function SGTripMentoringPage() {
           </div>
           
           <h1 className="text-2xl lg:text-3xl font-semibold leading-tight mb-4 mt-4">
-            <span className="text-[#E56668]">Project Prep Mentoring</span>
+            <span className="text-white drop-shadow-md">Project Prep Mentoring</span>
           </h1>
 
           {/* PRIVILEGE BADGE */}
-          <div className="inline-flex items-center gap-2 bg-yellow-500/20 border border-yellow-400/50 rounded-full px-4 py-1.5 mb-4 text-yellow-200 text-sm font-semibold tracking-wide">
-            <Zap className="w-4 h-4 fill-yellow-200" />
+          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-4 text-white text-sm font-semibold tracking-wide backdrop-blur-sm">
+            <Zap className="w-4 h-4 fill-white text-white" />
             Fast-Track to Final Selection
           </div>
 
@@ -145,30 +137,6 @@ export default function SGTripMentoringPage() {
             the Global Impact Fellowship in Singapore 2026. <br/>
             <strong>Skip the essay screening and go straight to Project Presentation.</strong>
           </p>
-
-       {/* PARTNERS (DI-HIDE DULU) */}
-{/* <div className="mt-8 text-center">
-  <p className="text-xs text-white/70 mb-2 tracking-widest uppercase">
-    Exposure & Ecosystem Partners
-  </p>
-  <div className="inline-flex items-center justify-center bg-white/50 backdrop-blur-sm rounded-xl px-4 py-2">
-    <div className="flex items-center gap-5">
-      <Image
-        src="/images/contents/stories/partner-updates/nusenterprise.png"
-        alt="NUS"
-        width={80}
-        height={30}
-      />
-      <Image
-        src="/images/contents/stories/partner-updates/glintshq.png"
-        alt="Glints"
-        width={80}
-        height={30}
-      />
-    </div>
-  </div>
-</div> 
-*/}
 
           {/* COUNTDOWN (TOP) */}
           <div className="mt-10">
@@ -180,12 +148,12 @@ export default function SGTripMentoringPage() {
 
           {/* CTA */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
-            <Button asChild className="bg-[#E56668] text-white font-semibold px-8 py-3 hover:bg-[#C04C4E] shadow-lg shadow-red-900/20">
+            <Button asChild className="bg-white text-[#914D4D] font-bold px-8 py-3 hover:bg-gray-100 shadow-xl">
               <Link href="https://forms.gle/D4DMBFshr1JeydZC9" target="_blank">
                 Apply for Mentoring
               </Link>
             </Button>
-            <Button asChild className="bg-white text-[#294154] font-semibold px-8 py-3 hover:bg-gray-200">
+            <Button asChild className="bg-transparent border border-white/40 text-white font-semibold px-8 py-3 hover:bg-white/10">
               <Link href="https://wa.me/6288297253491" target="_blank">
                 Ask Before Applying
               </Link>
@@ -198,7 +166,7 @@ export default function SGTripMentoringPage() {
       <section className="max-w-6xl mx-auto px-6 py-16 -mt-10 relative z-20">
         <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
           <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#2F4157]">The "Golden Ticket" Privilege</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-[#304156]">The "Golden Ticket" Privilege</h2>
             <p className="text-gray-600 mt-2">Mentoring participants bypass the early elimination rounds.</p>
           </div>
 
@@ -210,31 +178,31 @@ export default function SGTripMentoringPage() {
               <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-xl border border-gray-200">
                 <div className="bg-gray-200 p-2 rounded-full"><XCircle className="w-5 h-5 text-gray-500"/></div>
                 <div>
-                  <p className="font-bold text-gray-700">Phase 1: Admin Screening</p>
+                  <p className="font-bold text-gray-700">Phase 1: Administration Screening</p>
                   <p className="text-xs text-gray-500">CV & Documents Check</p>
                 </div>
               </div>
               <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-xl border border-gray-200">
                 <div className="bg-gray-200 p-2 rounded-full"><XCircle className="w-5 h-5 text-gray-500"/></div>
                 <div>
-                  <p className="font-bold text-gray-700">Phase 2: Essay Selection</p>
-                  <p className="text-xs text-gray-500">Writing & Motivation Test</p>
+                  <p className="font-bold text-gray-700">Phase 2: Essay & Project Submission</p>
+                  <p className="text-xs text-gray-500">Project Clarity Motivation</p>
                 </div>
               </div>
                <div className="flex items-center gap-4 bg-gray-100 p-4 rounded-xl border border-gray-200 border-dashed">
                 <div className="bg-gray-300 p-2 rounded-full"><Rocket className="w-5 h-5 text-gray-500"/></div>
                 <div>
-                  <p className="font-bold text-gray-600">Phase 3: Final Presentation</p>
+                  <p className="font-bold text-gray-600">Phase 3: Project Presentation</p>
                 </div>
               </div>
             </div>
 
             {/* FAST TRACK ROUTE */}
             <div className="relative space-y-4">
-              <div className="absolute -top-4 -right-4 bg-[#E56668] text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg transform rotate-6">
+              <div className="absolute -top-4 -right-4 bg-[#914D4D] text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg transform rotate-6">
                 FAST TRACK
               </div>
-              <h3 className="text-center font-bold text-[#E56668] uppercase tracking-widest text-sm">Mentoring Graduate</h3>
+              <h3 className="text-center font-bold text-[#914D4D] uppercase tracking-widest text-sm">Mentoring Graduate</h3>
               
               <div className="flex items-center gap-4 bg-green-50 p-4 rounded-xl border border-green-200">
                 <div className="bg-green-100 p-2 rounded-full"><CheckCircle className="w-5 h-5 text-green-600"/></div>
@@ -244,11 +212,12 @@ export default function SGTripMentoringPage() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 bg-[#2F4157] p-5 rounded-xl border border-[#2F4157] shadow-lg transform scale-105">
+              {/* NightFall Blue Card */}
+              <div className="flex items-center gap-4 bg-[#304156] p-5 rounded-xl border border-[#304156] shadow-lg transform scale-105">
                 <div className="bg-white/20 p-2 rounded-full"><Rocket className="w-6 h-6 text-white"/></div>
                 <div>
                   <p className="font-bold text-white text-lg">Direct to Phase 3</p>
-                  <p className="text-xs text-gray-300">Project Presentation & Interview</p>
+                  <p className="text-xs text-gray-300">Project Presentation</p>
                 </div>
               </div>
               <p className="text-center text-xs text-gray-500 mt-2">
@@ -262,31 +231,31 @@ export default function SGTripMentoringPage() {
 
       {/* ================= PROGRAM CONTEXT ================= */}
       <section className="max-w-6xl mx-auto px-6 py-10 space-y-6">
-        <h2 className="text-3xl font-bold">
+        <h2 className="text-3xl font-bold text-[#304156]">
           About the Global Impact Fellowship in Singapore 2026
         </h2>
 
-        <p className="text-gray-700 max-w-4xl leading-relaxed">
+        <p className="text-[#304156]/80 max-w-4xl leading-relaxed">
           Global Impact Fellowship in Singapore is an intensive international exposure program
           designed by IELS to equip Indonesian students and young professionals with
           global academic awareness, career readiness, and leadership responsibility.
         </p>
 
-        <p className="text-gray-700 max-w-4xl leading-relaxed">
+        <p className="text-[#304156]/80 max-w-4xl leading-relaxed">
           This program is <strong>not a sightseeing trip</strong>. It is a learning-
           and impact-driven journey that connects participants directly with
           Singapore&apos;s world-class academic ecosystem through <strong>NUS</strong> and <strong>Glints</strong>.
         </p>
 
         <div className="pt-5">
-          <Button asChild className="bg-[#E56668] text-white font-semibold px-6 py-3 rounded-full hover:bg-[#C04C4E] shadow-lg">
+          <Button asChild className="bg-[#914D4D] text-white font-semibold px-6 py-3 rounded-full hover:bg-[#7a3e3e] shadow-lg">
             <Link href="/events/gif">Read Full Program Details</Link>
           </Button> 
         </div>
       </section>
 
       {/* ================= WHAT YOU WILL GET ================= */}
-      <section className="bg-white rounded-2xl p-10 max-w-6xl mx-auto border border-[#294154]/8 shadow-sm">
+      <section className="bg-white rounded-2xl p-10 max-w-6xl mx-auto border border-[#304156]/10 shadow-sm">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
           <Image
             src="/images/contents/careers/iels_team_2.png"
@@ -297,25 +266,25 @@ export default function SGTripMentoringPage() {
           />
 
           <div>
-            <h3 className="text-2xl font-bold mb-6">
+            <h3 className="text-2xl font-bold mb-6 text-[#304156]">
               What You Will Gain From This Mentoring
             </h3>
 
-            <ul className="space-y-4 text-gray-700 leading-relaxed">
+            <ul className="space-y-4 text-[#304156]/80 leading-relaxed">
               <li>
-                <strong>Project Direction:</strong> A strong, SDG-aligned project
+                <strong className="text-[#304156]">Project Direction:</strong> A strong, SDG-aligned project
                 idea refined for feasibility and relevance.
               </li>
               <li>
-                <strong>International Deck:</strong> A project presentation
+                <strong className="text-[#304156]">International Deck:</strong> A project presentation
                 structured to meet institutional expectations.
               </li>
               <li>
-                <strong>Interview Readiness:</strong> Clear personal narrative
+                <strong className="text-[#304156]">Interview Readiness:</strong> Clear personal narrative
                 and project defense strategy.
               </li>
               <li>
-                <strong>Private Support:</strong> Session recordings, optional
+                <strong className="text-[#304156]">Private Support:</strong> Session recordings, optional
                 1-on-1 booking, and private consultation access.
               </li>
             </ul>
@@ -324,9 +293,9 @@ export default function SGTripMentoringPage() {
       </section>
 
       {/* ================= CURRICULUM ================= */}
-      <section className="bg-[#F7F8FA] py-12 overflow-hidden">
+      <section className="py-12 overflow-hidden">
         <div className="text-center mb-12 px-6">
-          <h2 className="text-3xl font-extrabold text-[#2F4157] mb-3">
+          <h2 className="text-3xl font-extrabold text-[#304156] mb-3">
             Mentoring Curriculum & Timeline
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
@@ -336,15 +305,15 @@ export default function SGTripMentoringPage() {
         </div>
 
         <div className="relative max-w-[1400px] mx-auto">
-          <div className="absolute left-0 right-0 top-1/2 h-[6px] bg-[#E56668]/30 rounded-full -translate-y-1/2" />
+          <div className="absolute left-0 right-0 top-1/2 h-[6px] bg-[#914D4D]/20 rounded-full -translate-y-1/2" />
           <div className="overflow-x-auto scrollbar-none px-12">
             <div className="flex gap-8 w-max py-6 mx-auto">
               {curriculum.map((item, i) => (
                 <div key={i} className="relative min-w-[300px] max-w-[300px] rounded-3xl bg-white p-6 border border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-                  <p className="text-sm font-semibold text-[#E56668] mb-2">{item.date}</p>
-                  <h3 className="text-lg font-bold text-[#2F4157] mb-3">{item.title}</h3>
+                  <p className="text-sm font-semibold text-[#914D4D] mb-2">{item.date}</p>
+                  <h3 className="text-lg font-bold text-[#304156] mb-3">{item.title}</h3>
                   <p className="text-sm text-gray-600 leading-relaxed mb-4">{item.desc}</p>
-                  <div className="text-sm font-semibold text-[#2F4157]">
+                  <div className="text-sm font-semibold text-[#304156]">
                     Output:
                     <span className="block mt-1 font-normal text-gray-600">{item.output}</span>
                   </div>
@@ -363,44 +332,47 @@ export default function SGTripMentoringPage() {
       {/* ================= SAFETY NET (NO RISK) ================= */}
       <section className="py-12 px-6 border-t border-gray-100">
          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <h2 className="text-3xl font-bold text-[#2F4157]">
+            <h2 className="text-3xl font-bold text-[#304156]">
                Is It Worth It If I Don't Get Selected?
             </h2>
             <p className="text-gray-600 text-lg">
-               Absolutely. We designed this mentoring to be a <span className="text-[#E56668] font-bold">"No-Wasted-Effort"</span> investment.
+               Absolutely. We designed this mentoring to be a <span className="text-[#914D4D] font-bold">"No-Wasted-Effort"</span> investment.
                Even if you are not selected for the Singapore trip, you still receive:
             </p>
 
             <div className="grid md:grid-cols-3 gap-6 text-left">
                <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
-                  <ShieldCheck className="w-8 h-8 text-[#E56668] mb-4" />
-                  <h4 className="font-bold text-[#2F4157] mb-2">Project Realization</h4>
+                  <ShieldCheck className="w-8 h-8 text-[#914D4D] mb-4" />
+                  <h4 className="font-bold text-[#304156] mb-2">Project Realization</h4>
                   <p className="text-sm text-gray-600">
                      Your SDG Project will still be supported! You will join the "Project Realization" phase in Indonesia, getting exposure and community support.
                   </p>
                </div>
                <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
-                  <Star className="w-8 h-8 text-[#E56668] mb-4" />
-                  <h4 className="font-bold text-[#2F4157] mb-2">Priority for Next Batch</h4>
+                  <Star className="w-8 h-8 text-[#914D4D] mb-4" />
+                  <h4 className="font-bold text-[#304156] mb-2">Priority for Next Batch</h4>
                   <p className="text-sm text-gray-600">
                      Mentoring graduates get "Priority Status" for the next GIF cohort later this year. You won't start from zero.
                   </p>
                </div>
                <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
-                  <Rocket className="w-8 h-8 text-[#E56668] mb-4" />
-                  <h4 className="font-bold text-[#2F4157] mb-2">NUS-Standard Skillset</h4>
+                  <Rocket className="w-8 h-8 text-[#914D4D] mb-4" />
+                  <h4 className="font-bold text-[#304156] mb-2">NUS-Standard Skillset</h4>
                   <p className="text-sm text-gray-600">
                      The frameworks you learn (Problem Tree, Impact Logic, Pitching) are based on NUS standards—skills you keep for your career forever.
                   </p>
                </div>
             </div>
          </div>
-      </section>{/* ================= INVESTMENT SECTION (SPLIT LAYOUT) ================= */}
-      <section className="w-full bg-[#294154] py-24 px-6 relative overflow-hidden">
+      </section>
+
+      {/* ================= INVESTMENT SECTION (SPLIT LAYOUT) ================= */}
+      {/* BACKGROUND: Gradient Linear -> #2F4055 #914D4D #304156 */}
+      <section className="w-full bg-gradient-to-br from-[#2F4055] via-[#914D4D] to-[#304156] py-24 px-6 relative overflow-hidden">
         
         {/* Background Decor (Blur Orbs) */}
         <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-white/5 rounded-full blur-[120px] pointer-events-none -translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-[#E56668]/10 rounded-full blur-[100px] pointer-events-none translate-x-1/3 translate-y-1/3"></div>
+        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-black/20 rounded-full blur-[100px] pointer-events-none translate-x-1/3 translate-y-1/3"></div>
 
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -408,22 +380,22 @@ export default function SGTripMentoringPage() {
             {/* COLUMN 1: TEXT & URGENCY (LEFT) */}
             <div className="text-left space-y-8 order-2 lg:order-1">
               <div>
-                <div className="inline-block bg-[#E56668]/20 border border-[#E56668]/30 text-[#ff8f91] px-4 py-1.5 rounded-full text-sm font-bold mb-6 tracking-wide uppercase">
+                <div className="inline-block bg-white/10 border border-white/20 text-white px-4 py-1.5 rounded-full text-sm font-bold mb-6 tracking-wide uppercase">
                   Limited Time Offer
                 </div>
                 <h2 className="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-6">
                   Ready to Fast-Track <br/>
-                  Your <span className="text-[#E56668]">Global Impact?</span>
+                  Your <span className="text-[#ffcccc]">Global Impact?</span>
                 </h2>
-                <p className="text-gray-300 text-lg leading-relaxed max-w-lg">
+                <p className="text-white/80 text-lg leading-relaxed max-w-lg">
                   Don't start from zero. Secure your spot in the mentoring program to get <strong>Direct Entry to the Final Phase</strong> and lifetime access to our incubation ecosystem.
                 </p>
               </div>
 
               {/* Countdown moved here for Context */}
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm max-w-md">
+              <div className="bg-white/10 border border-white/10 rounded-2xl p-6 backdrop-blur-sm max-w-md">
                 <p className="uppercase tracking-widest text-xs text-white/70 mb-4 font-bold flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                  <span className="w-2 h-2 rounded-full bg-[#E56668] animate-pulse"></span>
                   Early Bird Ends In:
                 </p>
                 <CountdownTimer />
@@ -431,25 +403,25 @@ export default function SGTripMentoringPage() {
 
               {/* Secondary Button */}
               <div className="pt-4">
-                 <Button asChild className="bg-white border text-[#2F4157] font-semibold px-6 py-3 h-auto text-lg rounded-full hover:bg-white/90 w-full sm:w-auto transition-all">
+                 <Button asChild className="bg-white border text-[#304156] font-semibold px-6 py-3 h-auto text-lg rounded-full hover:bg-white/90 w-full sm:w-auto transition-all">
                   <Link href="https://wa.me/6288297253491" target="_blank">
                     Have Questions? Chat Us
                   </Link>
                 </Button>
-              </div>s
+              </div>
             </div>
 
             {/* COLUMN 2: PRICING CARD (RIGHT) - FLOATING & TILTED */}
             <div className="order-1 lg:order-2 flex justify-center lg:justify-end relative">
               
               {/* Decorative Elements behind card */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#E56668] to-orange-400 rounded-[2rem] blur-xl opacity-20 transform rotate-6 scale-95"></div>
+              <div className="absolute inset-0 bg-white/10 rounded-[2rem] blur-xl opacity-20 transform rotate-6 scale-95"></div>
 
               {/* THE CARD */}
-              <div className="bg-white text-[#294154] rounded-[2rem] p-8 md:p-10 shadow-2xl relative transform transition-all duration-500 hover:scale-[1.02] hover:-rotate-1 border-4 border-white/10 w-full max-w-md">
+              <div className="bg-white text-[#304156] rounded-[2rem] p-8 md:p-10 shadow-2xl relative transform transition-all duration-500 hover:scale-[1.02] hover:-rotate-1 border-4 border-white/10 w-full max-w-md">
                 
                 {/* Badge */}
-                <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-[#2F4157] text-white text-sm font-bold px-6 py-2 rounded-full shadow-lg border-2 border-white/20 whitespace-nowrap">
+                <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-[#304156] text-white text-sm font-bold px-6 py-2 rounded-full shadow-lg border-2 border-white/20 whitespace-nowrap">
                   Most Popular Choice
                 </div>
 
@@ -458,14 +430,14 @@ export default function SGTripMentoringPage() {
                   
                   {/* Price Block */}
                   <div className="flex flex-col items-center justify-center mb-8">
-                    <span className="text-gray-400 text-xl font-medium line-through decoration-red-400 decoration-2 mb-2">
+                    <span className="text-gray-400 text-xl font-medium line-through decoration-[#914D4D] decoration-2 mb-2">
                       IDR 500,000
                     </span>
                     <div className="flex items-baseline gap-1">
-                      <span className="text-xl font-bold text-[#E56668] -translate-y-4">IDR</span>
-                      <span className="text-7xl font-extrabold text-[#2F4157] tracking-tighter">400k</span>
+                      <span className="text-xl font-bold text-[#914D4D] -translate-y-4">IDR</span>
+                      <span className="text-7xl font-extrabold text-[#304156] tracking-tighter">400k</span>
                     </div>
-                    <span className="text-xs text-green-600 font-bold bg-green-100 px-3 py-1 rounded-full mt-2">
+                    <span className="text-xs text-green-700 font-bold bg-green-100 px-3 py-1 rounded-full mt-2">
                       Save IDR 100k Today
                     </span>
                   </div>
@@ -473,28 +445,28 @@ export default function SGTripMentoringPage() {
                   {/* Features List */}
                   <ul className="text-left space-y-4 mb-8 border-t border-gray-100 pt-6">
                     <li className="flex items-start gap-3 text-sm text-gray-600">
-                      <CheckCircle className="w-5 h-5 text-[#E56668] shrink-0" />
+                      <CheckCircle className="w-5 h-5 text-[#914D4D] shrink-0" />
                       <span><strong>8 Founder-led</strong> mentoring sessions</span>
                     </li>
                     <li className="flex items-start gap-3 text-sm text-gray-600">
-                      <CheckCircle className="w-5 h-5 text-[#E56668] shrink-0" />
+                      <CheckCircle className="w-5 h-5 text-[#914D4D] shrink-0" />
                       <span><strong>Fast-Track Ticket</strong> (Skip Phase 1 & 2)</span>
                     </li>
                     <li className="flex items-start gap-3 text-sm text-gray-600">
-                      <CheckCircle className="w-5 h-5 text-[#E56668] shrink-0" />
+                      <CheckCircle className="w-5 h-5 text-[#914D4D] shrink-0" />
                       <span>Lifetime <strong>Incubation Access</strong></span>
                     </li>
                   </ul>
 
                   {/* Main CTA */}
-                  <Button asChild className="w-full bg-[#E56668] text-white font-bold py-3 h-auto text-xl rounded-full hover:bg-[#C04C4E] shadow-[0_10px_20px_rgba(229,102,104,0.3)] hover:shadow-[0_15px_30px_rgba(229,102,104,0.5)] transition-all transform hover:-translate-y-1">
+                  <Button asChild className="w-full bg-[#914D4D] text-white font-bold py-3 h-auto text-xl rounded-full hover:bg-[#7a3e3e] shadow-[0_10px_20px_rgba(145,77,77,0.3)] hover:shadow-[0_15px_30px_rgba(145,77,77,0.5)] transition-all transform hover:-translate-y-1">
                     <Link href="https://forms.gle/D4DMBFshr1JeydZC9" target="_blank">
                       Claim Early Bird Now
                     </Link>
                   </Button>
                   
                   <p className="text-xs text-gray-400 mt-4">
-                    *Offer valid until Feb 16, 2026
+                    *Offer valid until Feb 28, 2026
                   </p>
                 </div>
               </div>

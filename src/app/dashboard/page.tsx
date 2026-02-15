@@ -674,6 +674,70 @@ const supabase = createBrowserClient(
             )}
           </div>
         </div>
+        {/* --- 4. GIF SINGAPORE PROMO SECTION (NEW) --- */}
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#2F4157] to-[#1e3a8a] text-white shadow-2xl group ring-1 ring-white/10">
+          
+          {/* Background Decor Effects */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#E56668] opacity-10 blur-[80px] rounded-full translate-x-1/3 -translate-y-1/3 group-hover:opacity-20 transition-opacity duration-500" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-white opacity-5 blur-[60px] rounded-full -translate-x-1/3 translate-y-1/3" />
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 mix-blend-overlay" />
+
+          <div className="relative z-10 p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-8">
+            
+            {/* Left Content */}
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-6 text-center md:text-left flex-1">
+              
+              {/* Logo Container with Glassmorphism */}
+              <div className="w-24 h-24 md:w-28 md:h-28 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20 shrink-0 p-3 shadow-lg transform group-hover:scale-105 transition-transform duration-300">
+                 {/* Gunakan img standard agar aspect ratio aman, atau Next/Image jika sudah config */}
+                 <img 
+                   src="/images/logos/events/gifsg.png" 
+                   alt="GIF Singapore" 
+                   className="w-full h-full object-contain drop-shadow-md filter brightness-0 invert" 
+                   // Note: brightness-0 invert membuat logo jadi putih bersih jika logo aslinya gelap. 
+                   // Hapus class filter jika ingin warna asli logo.
+                 />
+              </div>
+
+              <div className="space-y-3 max-w-2xl">
+                 <div className="inline-flex items-center gap-2 bg-[#E56668] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest mx-auto md:mx-0 shadow-lg shadow-red-900/20">
+                   <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                   </span>
+                   Registration Open
+                 </div>
+                 
+                 <h3 className="text-2xl md:text-3xl font-extrabold leading-tight">
+                   Ready for Singapore? <span className="text-[#E56668]">🇸🇬</span>
+                 </h3>
+                 
+                 <p className="text-blue-100 text-sm md:text-base leading-relaxed">
+                   Join <strong>Global Impact Fellowship 2026</strong>. Benchmark langsung ke <strong>NUS & Glints HQ</strong>. 
+                   Dapatkan kesempatan <span className="text-yellow-300 font-bold underline decoration-yellow-300/30 underline-offset-4">Fully Funded</span> & mentoring eksklusif dari Founder IELS.
+                 </p>
+              </div>
+            </div>
+
+            {/* Right Action */}
+            <div className="shrink-0 w-full md:w-auto">
+               <Link href="/dashboard/gif" className="block w-full">
+                 <button className="w-full md:w-auto group/btn relative px-8 py-4 bg-white text-[#2F4157] font-bold rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-3 overflow-hidden">
+                    <span className="uppercase tracking-wide text-sm relative z-10">Start Application</span>
+                    <div className="bg-[#2F4157] text-white p-1.5 rounded-full group-hover/btn:bg-[#E56668] transition-colors relative z-10">
+                      <ArrowRight size={16} />
+                    </div>
+                    {/* Hover Shine Effect */}
+                    <div className="absolute top-0 -left-[100%] w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12 group-hover/btn:animate-shine" />
+                 </button>
+               </Link>
+               <p className="text-white/40 text-[10px] text-center mt-3 font-medium">
+                 *Limited slots available for Fast Track
+               </p>
+            </div>
+
+          </div>
+        </div>
       </div>
 
       {/* --- MODAL DI RENDER DI SINI (SEBELUM TUTUP LAYOUT) --- */}

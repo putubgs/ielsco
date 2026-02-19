@@ -254,44 +254,82 @@ export default function SGTripMentoringPage() {
         </div>
       </section>
 
-      {/* ================= WHAT YOU WILL GET ================= */}
-      <section className="bg-white rounded-2xl p-10 max-w-6xl mx-auto border border-[#304156]/10 shadow-sm">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-          <Image
-            src="/images/contents/careers/iels_team_2.png"
-            alt="Mentoring Session"
-            width={520}
-            height={360}
-            className="rounded-2xl object-cover"
-          />
+  {/* ================= WHAT YOU WILL GET ================= */}
+      <section className="relative w-full max-w-6xl mx-auto py-16 px-6">
+        
+        {/* Decorative Geometric Blocks (Mimicking the Poster) */}
+        <div className="absolute left-0 md:left-2 top-32 w-16 md:w-24 h-32 bg-[#304156] -z-10 shadow-lg rounded-r-xl md:rounded-xl"></div>
+        <div className="absolute right-8 md:right-12 -bottom-4 w-48 md:w-64 h-24 bg-[#4a3b4e] -z-10 shadow-lg rounded-xl hidden md:block"></div>
 
-          <div>
-            <h3 className="text-2xl font-bold mb-6 text-[#304156]">
-              What You Will Gain From This Mentoring
-            </h3>
+        <div className="bg-[#FFFFFF] rounded-[2.5rem] p-10 md:p-16 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-100 relative overflow-hidden">
+          
+          {/* Subtle background texture/watermark */}
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-5 pointer-events-none" />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gray-50 rounded-full blur-3xl -z-10 translate-x-1/2 -translate-y-1/2 opacity-70"></div>
 
-            <ul className="space-y-4 text-[#304156]/80 leading-relaxed">
-              <li>
-                <strong className="text-[#304156]">Project Direction:</strong> A strong, SDG-aligned project
-                idea refined for feasibility and relevance.
-              </li>
-              <li>
-                <strong className="text-[#304156]">International Deck:</strong> A project presentation
-                structured to meet institutional expectations.
-              </li>
-              <li>
-                <strong className="text-[#304156]">Interview Readiness:</strong> Clear personal narrative
-                and project defense strategy.
-              </li>
-              <li>
-                <strong className="text-[#304156]">Private Support:</strong> Session recordings, optional
-                1-on-1 booking, and private consultation access.
-              </li>
-            </ul>
+          {/* Heading */}
+          <h2 className="text-4xl md:text-5xl font-extrabold text-[#304156] mb-16 leading-tight max-w-2xl relative z-10">
+            What Will <span className="text-[#914D4D]">You Get</span><br />
+            from This Mentoring ?
+          </h2>
+
+          {/* 2-Column Grid for Items */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12 relative z-10">
+            
+            {/* LEFT COLUMN */}
+            <div className="space-y-10">
+              {/* Item 1 */}
+              <div className="relative pl-6">
+                <div className="absolute left-0 top-1.5 w-1.5 h-6 bg-[#914D4D] rounded-full"></div>
+                <h3 className="text-2xl font-bold text-[#304156] mb-3">Strategic Clarity</h3>
+                <p className="text-[#304156]/80 text-lg leading-relaxed">
+                  A precise, data-backed micro-problem with clear root cause.
+                </p>
+              </div>
+
+              {/* Item 2 */}
+              <div className="relative pl-6">
+                <div className="absolute left-0 top-1.5 w-1.5 h-6 bg-[#304156] rounded-full"></div>
+                <h3 className="text-2xl font-bold text-[#304156] mb-3">Project Direction</h3>
+                <p className="text-[#304156]/80 text-lg leading-relaxed">
+                  A strong, SDG-aligned project idea refined for feasibility and relevance
+                </p>
+              </div>
+
+              {/* Item 3 */}
+              <div className="relative pl-6">
+                <div className="absolute left-0 top-1.5 w-1.5 h-6 bg-[#914D4D] rounded-full"></div>
+                <h3 className="text-2xl font-bold text-[#304156] mb-3">Executable Framework</h3>
+                <p className="text-[#304156]/80 text-lg leading-relaxed">
+                  A realistic MVP and structured operational plan
+                </p>
+              </div>
+            </div>
+
+            {/* RIGHT COLUMN */}
+            <div className="space-y-10 md:mt-2">
+              {/* Item 4 */}
+              <div className="relative pl-6">
+                <div className="absolute left-0 top-1.5 w-1.5 h-6 bg-[#304156] rounded-full"></div>
+                <h3 className="text-2xl font-bold text-[#304156] mb-3">Measurable Impact</h3>
+                <p className="text-[#304156]/80 text-lg leading-relaxed">
+                  A defensible project design with clear indicators, M&E tools, and scalability logic.
+                </p>
+              </div>
+
+              {/* Item 5 */}
+              <div className="relative pl-6">
+                <div className="absolute left-0 top-1.5 w-1.5 h-6 bg-[#914D4D] rounded-full"></div>
+                <h3 className="text-2xl font-bold text-[#304156] mb-3">Private Support</h3>
+                <p className="text-[#304156]/80 text-lg leading-relaxed">
+                  Session recordings, optional 1-on-1 booking, and private consultation access.
+                </p>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
-
       {/* ================= CURRICULUM ================= */}
       <section className="py-12 overflow-hidden">
         <div className="text-center mb-12 px-6">

@@ -5,33 +5,28 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { 
-  Home, 
+  ArrowLeft, 
   Info, 
-  BookOpen, 
-  Grid, 
+  Calendar, 
+  Target, 
+  Rocket,
+  FileText,
+  Sparkles,
+  Mic,
+  GraduationCap,
   LogIn, 
   Menu, 
   X, 
-  ChevronDown,
-  Coffee,
-  GraduationCap,
-  FileCheck,
-  Calendar,
-  School,
-  Library,
-  Sparkles
+  ChevronDown
 } from "lucide-react";
 
-export default function Header() {
+export default function GIFHeader() {
   const pathname = usePathname();
 
   // --- LOGIKA PENYEMBUNYIAN ---
-  if (pathname?.startsWith("/dashboard")) {
-    return null;
-  }
-  // Sembunyiin header utama kalau lagi di halaman GIF (karena udah pake GIFHeader)
-  if (pathname?.startsWith("/events/gif")) {
-    return null;
+  // Sembunyikan header jika user sudah masuk ke area dashboard (kecuali ingin tetap ditampilkan di /dashboard/gif)
+  if (pathname?.startsWith("/dashboard") && pathname !== "/dashboard/gif") {
+    return null; 
   }
   // ---------------------------
 
@@ -39,25 +34,29 @@ export default function Header() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   const navItems = [
-    { name: "Home", path: "/", icon: Home },
-    { name: "About", path: "/about", icon: Info },
-    { name: "Stories", path: "/stories", icon: BookOpen },
+    { name: "About GIF", path: "/events/gif", icon: Info },
+    { name: "Agenda", path: "/events/gif/itinerary", icon: Calendar },
     {
-      name: "Products",
-      path: "/products",
-      icon: Grid,
+      name: "Project Output",
+      path: "#",
+      icon: Target,
       children: [
-        { name: "IELS Lounge", path: "/iels-lounge", icon: Coffee },
-        { name: "IELS Courses", path: "/products/courses", icon: GraduationCap },
-        { name: "IELS English Test", path: "/test", icon: FileCheck },
-        { name: "IELS Events", path: "/events", icon: Calendar },
-        { name: "IELS for Schools", path: "/products/schools", icon: School },
-        { name: "E-books & Recordings", path: "/products/resources", icon: Library },
+        { name: "Project Realization", path: "/events/gif/project", icon: Rocket },
+        { name: "Academic Research", path: "/events/gif/research", icon: FileText },
       ],
     },
     {
-      name: "Sign in!",
-      path: "/sign-in",
+      name: "Preparation",
+      path: "#",
+      icon: Sparkles,
+      children: [
+        { name: "Insight Talk", path: "/events/gif/talk", icon: Mic },
+        { name: "Prep Mentoring", path: "/events/gif/mentoring", icon: GraduationCap },
+      ],
+    },
+    {
+      name: "Register",
+      path: "/dashboard/gif",
       isStart: true,
       icon: LogIn
     },
@@ -67,7 +66,7 @@ export default function Header() {
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   return (
-    <div className="fixed top-0 left-0 right-0 w-full bg-[#2F4157] flex items-center justify-between py-6 lg:py-10 px-4 sm:px-8 lg:px-[100px] z-50 shadow-md">
+    <div className="fixed top-0 left-0 right-0 w-full bg-[#2F4157] flex items-center justify-between py-6 lg:py-10 px-4 sm:px-8 lg:px-[100px] z-[100] shadow-md">
       {/* Logo */}
       <Link
         href="/"
@@ -81,18 +80,21 @@ export default function Header() {
           className="lg:w-[75px]"
           alt="IELS Logo White"
         />
-        <div className="flex flex-col text-white text-[14px] lg:text-[16px]">
-          <p>Inclusive English</p>
-          <p className="-mt-1">Learning Space</p>
-        </div>
+        <Image
+          src="/images/logos/events/gif.png"
+          width={60}
+          height={60}
+          className="w-[120px] brightness-0 invert opacity-100"
+          alt="IELS Logo White"
+        />
       </Link>
 
-      {/* ---------------- TABLET & DESKTOP NAV ---------------- */}
-      <div className="hidden md:flex items-center text-white gap-2">
+      {/* ---------------- DESKTOP NAV (Only visible on XL screens / 1280px+) ---------------- */}
+      <div className="hidden xl:flex items-center text-white gap-2">
         {navItems.map((item) => {
           const Icon = item.icon;
 
-          // 1. Handle "Sign in!" (Start Button)
+          // 1. Handle "Register" (Start Button)
           if (item.isStart) {
             return (
               <Link
@@ -106,10 +108,10 @@ export default function Header() {
             );
           }
 
-          // 2. Handle Dropdown (Products)
+          // 2. Handle Dropdown (Project Output & Preparation)
           if (item.children) {
             const isOpen = openDropdown === item.name;
-            const isActive = pathname?.startsWith(item.path) || pathname?.startsWith("/test") || pathname?.startsWith("/iels-lounge");
+            const isActive = item.children.some(child => pathname === child.path);
 
             return (
               <div 
@@ -123,10 +125,10 @@ export default function Header() {
                   }`}
                 >
                   {/* Nama Menu Utama */}
-                  <Link href={item.path} className="flex items-center gap-2 pl-5 py-2.5 pr-1">
+                  <div className="flex items-center gap-2 pl-5 py-2.5 pr-1">
                     <Icon size={18} />
                     {item.name}
-                  </Link>
+                  </div>
 
                   {/* Tombol Panah */}
                   <button
@@ -147,7 +149,7 @@ export default function Header() {
                 {/* Menu Dropdown */}
                 <div
                   className={`absolute left-0 mt-2 w-64 rounded-2xl bg-white text-[#2F4157] shadow-xl z-[60] transition-all duration-200 border border-gray-100 overflow-hidden
-                    ${isOpen ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible lg:group-hover:opacity-100 lg:group-hover:translate-y-0 lg:group-hover:visible"}
+                    ${isOpen ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible group-hover:opacity-100 group-hover:translate-y-0 group-hover:visible"}
                   `}
                 >
                   <div className="py-2">
@@ -190,20 +192,20 @@ export default function Header() {
         })}
       </div>
 
-      {/* Mobile hamburger */}
+      {/* Mobile/Tablet hamburger (Visible on iPad/Tablet and below) */}
       <button
         onClick={toggleMobileMenu}
-        className="md:hidden flex flex-col items-center justify-center w-10 h-10 text-white"
+        className="xl:hidden flex flex-col items-center justify-center w-10 h-10 text-white"
         aria-label="Toggle menu"
       >
         {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
       </button>
 
       {/* Mobile overlay */}
-      {isMobileMenuOpen && <div className="md:hidden fixed inset-0 bg-black/60 z-40 backdrop-blur-sm" onClick={closeMobileMenu} />}
+      {isMobileMenuOpen && <div className="xl:hidden fixed inset-0 bg-black/60 z-40 backdrop-blur-sm" onClick={closeMobileMenu} />}
 
-      {/* MOBILE MENU */}
-      <div className={`md:hidden fixed top-0 right-0 h-full w-[80%] max-w-sm bg-[#2F4157] z-50 transition-transform duration-300 shadow-2xl ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
+      {/* MOBILE MENU (Tablet & Mobile) */}
+      <div className={`xl:hidden fixed top-0 right-0 h-full w-[80%] max-w-sm bg-[#2F4157] z-50 transition-transform duration-300 shadow-2xl ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
         
         {/* Mobile Header */}
         <div className="p-6 border-b border-white/10 flex justify-between items-center">
@@ -236,23 +238,20 @@ export default function Header() {
             // Dropdown Items (Mobile)
             if (item.children) {
               const isOpen = openDropdown === item.name;
-              const isActive = pathname?.startsWith("/products");
+              const isActive = item.children.some(child => pathname === child.path);
               
               return (
                 <div key={item.name} className="overflow-hidden">
                   <div className={`rounded-xl transition-colors ${isActive ? "bg-white/10" : ""}`}>
                     <div className="flex items-center justify-between pr-2">
-                      <Link
-                        href={item.path}
-                        onClick={closeMobileMenu}
-                        className="flex-1 flex items-center gap-3 px-4 py-3 text-white font-medium"
-                      >
+                      <div className="flex-1 flex items-center gap-3 px-4 py-3 text-white font-medium">
                         <Icon size={20} className={isActive ? "text-[#E56668]" : "text-gray-300"} />
                         {item.name}
-                      </Link>
+                      </div>
+                      {/* Tombol Panah (Bisa ditap di iPad/Mobile) */}
                       <button
                         onClick={() => setOpenDropdown(isOpen ? null : item.name)}
-                        className="p-3 text-white/70"
+                        className="p-3 text-white/70 hover:text-white"
                       >
                         <ChevronDown size={18} className={`transition-transform ${isOpen ? "rotate-180" : ""}`} />
                       </button>
@@ -262,12 +261,15 @@ export default function Header() {
                     <div className={`space-y-1 pl-4 pr-2 overflow-hidden transition-all duration-300 ${isOpen ? "max-h-96 pb-2" : "max-h-0"}`}>
                       {item.children.map((child) => {
                         const ChildIcon = child.icon;
+                        const isChildActive = pathname === child.path;
                         return (
                           <Link
                             key={child.path}
                             href={child.path}
                             onClick={closeMobileMenu}
-                            className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-white/80 hover:bg-white/10 hover:text-white transition-colors"
+                            className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-colors ${
+                              isChildActive ? "bg-[#E56668]/20 text-[#ffb3b4]" : "text-white/80 hover:bg-white/10 hover:text-white"
+                            }`}
                           >
                             <ChildIcon size={16} />
                             {child.name}

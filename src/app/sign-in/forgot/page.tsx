@@ -1,19 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { createBrowserClient } from "@supabase/ssr"; // Atau import dari @/data/supabase kalau sudah ada
+import { createBrowserClient } from "@supabase/ssr";
 import Link from "next/link";
-import { ArrowLeft, Loader2, Mail } from "lucide-react";
+import { ArrowLeft, Loader2, Mail, AlertCircle, CheckCircle2 } from "lucide-react";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState<{ type: "error" | "success"; msg: string } | null>(null);
 
-  // Inisialisasi Supabase (Pake fallback biar aman dari error build Vercel kemarin)
   const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key"
+    process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
   );
 
   async function handleResetPassword(e: React.FormEvent) {
@@ -21,10 +20,10 @@ export default function ForgotPasswordPage() {
     setLoading(true);
     setFeedback(null);
 
-    // Logic Langsung ke Supabase (Gak perlu API Route)
+    // LOGIC FIX: Arahkan ke callback router dulu biar session-nya kebentuk aman, 
+    // baru dilempar ke halaman new-password.
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      // Ganti link ini ke halaman update password kamu nanti
-      redirectTo: `${window.location.origin}/update-password`,
+      redirectTo: `${window.location.origin}/api/auth/callback?next=/sign-in/forgot/new-password`,
     });
 
     if (error) {
@@ -35,63 +34,76 @@ export default function ForgotPasswordPage() {
 
     setFeedback({ 
       type: "success", 
-      msg: "Check your email! We've sent a password reset link. 📧" 
+      msg: "Check your email! We've sent a secure password reset link. 📧" 
     });
     setLoading(false);
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F7F8FA] p-6">
-      <div className="bg-white p-8 rounded-3xl shadow-xl w-full max-w-md space-y-6 border border-gray-100">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#F7F8FA] px-4 py-10 font-sans">
+      <div className="w-full max-w-md">
         
         {/* Back Button */}
-        <Link href="/sign-in" className="flex items-center text-sm text-gray-500 hover:text-[#2F4157] transition-colors w-fit">
-          <ArrowLeft size={16} className="mr-2" /> Back to Sign In
+        <Link 
+          href="/sign-in" 
+          className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-[#294154] transition-colors mb-6 group"
+        >
+          <ArrowLeft size={16} className="mr-2 group-hover:-translate-x-1 transition-transform" /> 
+          Back to Sign In
         </Link>
 
-        <div className="text-center space-y-2">
-          <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Mail className="text-[#E56668]" size={28} />
-          </div>
-          <h2 className="text-2xl font-bold text-[#2F4157]">
-            Forgot Password?
-          </h2>
-          <p className="text-gray-500 text-sm">
-            No worries! Enter your email and we'll send you reset instructions.
-          </p>
-        </div>
-
-        <form onSubmit={handleResetPassword} className="space-y-4">
-          <div>
-             <label className="block text-sm font-medium text-[#2F4157] mb-1.5">Email Address</label>
-             <input
-              required
-              type="email"
-              className="border border-gray-200 rounded-xl w-full p-3 bg-white focus:outline-none focus:ring-2 focus:ring-[#E56668]/20 focus:border-[#E56668] transition-all"
-              placeholder="name@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-
-          {feedback && (
-            <div className={`p-3 rounded-lg text-sm font-medium text-center ${
-              feedback.type === "error" 
-                ? "bg-red-50 text-red-600 border border-red-100" 
-                : "bg-green-50 text-green-700 border border-green-100"
-            }`}>
-              {feedback.msg}
+        {/* Main Card */}
+        <div className="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-[#EAEAEA] space-y-8">
+          
+          <div className="text-center space-y-3">
+            <div className="w-16 h-16 bg-[#FFF5F5] rounded-full flex items-center justify-center mx-auto text-[#E56668]">
+              <Mail size={28} />
             </div>
-          )}
+            <h2 className="text-2xl font-extrabold text-[#294154]">
+              Forgot Password?
+            </h2>
+            <p className="text-gray-500 text-sm leading-relaxed">
+              No worries! Enter your email and we'll send you instructions to reset your key to the IELS dashboard.
+            </p>
+          </div>
 
-          <button
-            disabled={loading}
-            type="submit"
-            className="w-full py-3 rounded-full bg-[#E56668] text-white font-bold hover:bg-[#C04C4E] disabled:bg-[#ffb3b4] disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
-          >
-            {loading ? <Loader2 className="animate-spin" size={20} /> : "Send Reset Link"}
-          </button>
-        </form>
+          <form onSubmit={handleResetPassword} className="space-y-6">
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-[#294154] ml-1">
+                Email Address
+              </label>
+              <input
+                required
+                type="email"
+                className="w-full rounded-xl border border-gray-200 bg-[#F7F8FA] px-4 py-3.5 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#E56668]/20 focus:border-[#E56668] transition-all text-[#294154]"
+                placeholder="name@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                suppressHydrationWarning
+              />
+            </div>
+
+            {feedback && (
+              <div className={`p-4 rounded-xl flex items-start gap-3 text-sm ${
+                feedback.type === "error" 
+                  ? "bg-red-50 text-red-700 border border-red-100" 
+                  : "bg-green-50 text-green-700 border border-green-100"
+              }`}>
+                {feedback.type === "error" ? <AlertCircle size={20} className="shrink-0"/> : <CheckCircle2 size={20} className="shrink-0"/>}
+                <p className="font-medium">{feedback.msg}</p>
+              </div>
+            )}
+
+            <button
+              disabled={loading}
+              type="submit"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#E56668] py-3.5 text-white font-bold transition-all duration-200 hover:scale-[1.02] hover:shadow-lg active:scale-[0.96] active:brightness-95 disabled:pointer-events-none disabled:opacity-50"
+              suppressHydrationWarning
+            >
+              {loading ? <Loader2 className="animate-spin" size={20} /> : "Send Reset Link"}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

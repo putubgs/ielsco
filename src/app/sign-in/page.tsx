@@ -182,7 +182,7 @@ function SignInContent() {
             {/* FORGOT PASSWORD LINK */}
             <div className="text-right">
               <a 
-                href="/forgot-password" 
+                href="/sign-in/forgot" 
                 className="text-sm text-[#E56668] hover:underline"
               >
                 Forgot password?

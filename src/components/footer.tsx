@@ -44,7 +44,8 @@ export default function Footer() {
               { name: "Testimonials", url: "/iels-lounge#testimonials" },
               { name: "Research", url: "/#" },
               { name: "Courses", url: "/products/courses" },
-              { name: "IELS Guidelines", url: "/#" },
+              { name: "Privacy Policy", url: "/privacy-policy" },
+              { name: "Terms of Service", url: "/terms-of-service" },
               { name: "Contact Us", url: "https://wa.me/6285770024261", target:"_blank" },
             ].map((item) => (
               <Link

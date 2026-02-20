@@ -33,6 +33,12 @@ export default function Header() {
   if (pathname?.startsWith("/events/gif")) {
     return null;
   }
+  if (pathname?.startsWith("/privacy-policy")) {
+    return null;
+  }
+  if (pathname?.startsWith("/terms-of-service")) {
+    return null;
+  }
   // ---------------------------
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

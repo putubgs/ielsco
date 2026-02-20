@@ -3,598 +3,384 @@
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import Image from "next/image";
-import { useState } from "react";
-import { Instagram, Linkedin, ExternalLink } from "lucide-react";
-
-type ActiveSection = "vision" | "curriculum" | "impact" | "team";
+import {
+  Instagram,
+  Linkedin,
+  ExternalLink,
+  Globe2,
+  Target,
+  Users,
+  Compass,
+  ArrowRight,
+  CheckCircle2,
+  XCircle,
+} from "lucide-react";
 
 export default function About() {
-  const [activeSection, setActiveSection] = useState<ActiveSection>("vision");
-  const [slideDirection, setSlideDirection] = useState<"left" | "right">(
-    "right"
-  );
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [isButtonAnimating, setIsButtonAnimating] = useState(false);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const principals = [
-  {
-    name: "Arbadza Rido Adzariyat",
-    role: "Principal of Operations & Business",
-    image: "/images/contents/about/arba.png",
-    instagram: "https://instagram.com/arbadzarido",
-    linkedin: "https://linkedin.com/in/arbadzarido",
-  },
-  {
-    name: "Fadhila Qurotul Aini",
-    role: "Principal of Growth & Finance",
-    image: "/images/contents/about/dhila.png",
-    instagram: "https://www.instagram.com/fadhilaqa._/",
-    linkedin: "https://linkedin.com/in/fadhilaqa/",
-  },
-  {
-    name: "Syifa Hana Nabila",
-    role: "Principal of Talent",
-    image: "/images/contents/about/hana.png",
-    instagram: "https://www.instagram.com/ssyifahana/",
-    linkedin: "https://www.linkedin.com/in/syifahana/",
-  },
-];
-  const handleSectionChange = (newSection: ActiveSection) => {
-    if (newSection === activeSection) return;
-
-    const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
-
-    if (isMobile) {
-      if (isAnimating) return;
-
-      const sections: ActiveSection[] = ["vision", "curriculum", "impact", "team"];
-      const currentIndex = sections.indexOf(activeSection);
-      const newIndex = sections.indexOf(newSection);
-
-      if (newIndex > currentIndex) {
-        setSlideDirection("left");
-      } else {
-        setSlideDirection("right");
-      }
-
-      setIsAnimating(true);
-      setIsButtonAnimating(true);
-      setActiveSection(newSection);
-
-      setTimeout(() => {
-        setIsAnimating(false);
-        setIsButtonAnimating(false);
-      }, 300);
-    } else {
-      setActiveSection(newSection);
-    }
-  };
-
-  const getActiveIndex = () => {
-    const sections: ActiveSection[] = ["vision", "curriculum", "impact", "team"];
-    return sections.indexOf(activeSection);
-  };
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const onTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
-
-    if (isLeftSwipe || isRightSwipe) {
-      const sections: ActiveSection[] = ["vision", "curriculum", "impact", "team"];
-      const currentIndex = sections.indexOf(activeSection);
-
-      if (isLeftSwipe && currentIndex < sections.length - 1) {
-        handleSectionChange(sections[currentIndex + 1]);
-      } else if (isRightSwipe && currentIndex > 0) {
-        handleSectionChange(sections[currentIndex - 1]);
-      }
-    }
-  };
-
-  const getContent = () => {
-    switch (activeSection) {
-      case "vision":
-        return (
-          <div className="space-y-4 sm:space-y-6">
-            <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-              <div className="flex-1">
-                <h3 className="font-bold text-[20px] sm:text-[22px] lg:text-[24px] mb-3">
-                  Our Vision
-                </h3>
-                <p className="text-[14px] sm:text-[15px] text-justify leading-relaxed">
-                  To become a goal-driven English learning ecosystem that enables learners 
-                  across Indonesia to clearly track, achieve, and sustain real-world outcomes—ranging 
-                  from English proficiency and academic success to global opportunities such 
-                  as exchanges, scholarships, internships, and remote work—regardless of 
-                  their background or location.
-                </p>
-              </div>
-              <div className="flex-1">
-                <h3 className="font-bold text-[20px] sm:text-[22px] lg:text-[24px] mb-3">
-                  Our Mission
-                </h3>
-                <p className="text-[14px] sm:text-[15px] text-justify mb-4 leading-relaxed">
-                  IELS is committed to making English learning practical, measurable, and accessible by:
-                </p>
-                <ol className="text-[14px] sm:text-[15px] space-y-2 list-decimal list-inside leading-relaxed">
-                  <li>Building an active and supportive learning community that encourages consistency, accountability, and peer growth.</li>
-                  <li>Guiding learners through structured and personalized learning journeys aligned with their individual goals.</li>
-                  <li>
-                    Providing clear progress tracking, feedback, and recommendations to help learners move from learning to real outcomes.
-                  </li>
-                  <li>
-                    Expanding access to global exposure and opportunities while reducing educational and socio-economic barriers through affordable and scalable programs.
-                  </li>
-                </ol>
-              </div>
-            </div>
-          </div>
-        );
-      case "curriculum":
-        return (
-          <div className="space-y-4 sm:space-y-6">
-            <h2 className="font-bold text-[20px] sm:text-[22px] lg:text-[24px]">
-              Our Outcome-Driven Learning Tracks
-            </h2>
-            <div className="space-y-4 sm:space-y-6">
-              <p className="text-[14px] sm:text-[15px] text-justify leading-relaxed">
-                IELS designs its learning programs around real goals, not generic English proficiency. Our approach focuses on helping learners use English for specific outcomes—such as academic success, professional growth, and global participation—by aligning language development with what learners actually need to achieve.
-</p><p className="text-[14px] sm:text-[15px] text-justify leading-relaxed">
-Instead of separating English into isolated skills, IELS integrates learning with clear objectives, progress tracking, and real-world application, ensuring that learners understand why they are learning and how each step moves them closer to their target.
-              </p>
-              <div className="space-y-4">
-                <div>
-                  <h3 className="font-semibold text-[16px] sm:text-[17px] lg:text-[18px] mb-3">
-                    IELS Learning Tracks
-                  </h3>
-                  <ul className="text-[14px] sm:text-[15px] space-y-2 list-disc list-inside leading-relaxed">
-                    <li>
-                      <strong>Academic Track</strong>{" "}
-                      This track focuses on academic communication, test readiness (IELTS/TOEFL), research and writing skills, and the confidence needed to perform in global academic environments.
-                    </li>
-                    <li>
-                      <strong>Professional & Global Track</strong>{" "}
-                      This track emphasizes practical workplace communication, interviews, professional writing, digital collaboration, networking, and cross-cultural communication—especially for remote and global contexts.
-                    </li>
-                    <p className="text-[14px] sm:text-[15px] text-justify leading-relaxed">
-                      Across all tracks, learners are guided through structured journeys with milestones, feedback, and measurable progress—so learning English is not just about improvement, but about reaching a clear outcome.
-                    </p>
-                  </ul>
-                </div>
-                <div>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-      case "impact":
-        return (
-          <div className="space-y-4 sm:space-y-6">
-            <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-              <div className="flex-1 space-y-4 sm:space-y-6">
-                <div>
-                  <h3 className="font-bold text-[20px] sm:text-[22px] lg:text-[24px] mb-3">
-                    What We Value
-                  </h3>
-                  <p className="text-[14px] sm:text-[15px] mb-3 leading-relaxed">
-                    We are guided by values that shape how we design learning, build systems, and grow our community:
-                  </p>
-                  <ul className="text-[14px] sm:text-[15px] space-y-2 list-disc list-inside leading-relaxed">
-                    <li>
-                      <strong>Accessibility with Purpose</strong> 
-                     <p>We believe quality English education should be reachable for learners across Indonesia. IELS is committed to keeping learning affordable and flexible—while still providing clear structure, direction, and measurable progress.
-                   </p> </li>
-                    <li>
-                      <strong>Outcome-Driven Learning</strong> 
-                      <p>We focus on results, not just participation. Every program, activity, and product is designed to help learners move closer to a specific goal through structured journeys, progress tracking, and real-world application.
-                    </p></li>
-                    <li>
-                      <strong>Community as a System</strong> 
-                      <p>IELS believes growth happens faster and more sustainably in community. We cultivate an active learning environment where learners stay consistent, support each other, and evolve into contributors who create impact beyond themselves.
-                   </p> </li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="font-bold text-[20px] sm:text-[22px] lg:text-[24px] mb-3">
-                    Who We Serve
-                  </h3>
-                  <p className="text-[14px] sm:text-[15px] mb-3 leading-relaxed">
-                    IELS is built for individuals and institutions that value progress, clarity, and long-term impact.
-                  </p>
-                  <ul className="text-[14px] sm:text-[15px] space-y-2 list-disc list-inside leading-relaxed">
-                    <li>
-                      Indonesian students and young professionals who want to
-                      improve their English skills for study abroad, job
-                      readiness, and career advancement.
-                    </li>
-                    <li>
-                      Educational institutions and schools seeking
-                      comprehensive, scalable English programs that align with
-                      their academic and international goals.
-                    </li>
-                    <li>
-                      Organizations and partners looking for a meaningful way to
-                      invest in future-ready talent and connect with engaged
-                      youth communities.
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div className="flex-1">
-                <h3 className="font-bold text-[20px] sm:text-[22px] lg:text-[24px] mb-3">
-                  Our Value Proposition
-                </h3>
-                <p className="text-[14px] sm:text-[15px] mb-4 leading-relaxed">
-                  IELS delivers value by turning English learning into a <strong>clear, trackable, and outcome-oriented journey.</strong>
-                </p>
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="font-semibold text-[15px] sm:text-[16px] mb-2">
-                      For Students:
-                    </h4>
-                    <ul className="text-[14px] sm:text-[15px] space-y-2 list-disc list-inside leading-relaxed">
-                      <li>
-                        An affordable, accessible, and engaging English learning
-                        experience that goes beyond the classroom.
-                      </li>
-                      <li>
-                        Opportunities to practice real-life English and connect
-                        with global learning and career opportunities.
-                      </li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-[15px] sm:text-[16px] mb-2">
-                      For Institutions:
-                    </h4>
-                    <ul className="text-[14px] sm:text-[15px] space-y-2 list-disc list-inside leading-relaxed">
-                      <li>
-                        Scalable and effective English programs that require
-                        minimal operational setup.
-                      </li>
-                      <li>
-                        A curriculum aligned with scholarship criteria and job
-                        readiness for student success.
-                      </li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-[15px] sm:text-[16px] mb-2">
-                      For Partners:
-                    </h4>
-                    <ul className="text-[14px] sm:text-[15px] space-y-2 list-disc list-inside leading-relaxed">
-                      <li>
-                        Access to a pipeline of high-potential, upskilled
-                        students across Indonesia.
-                      </li>
-                      <li>
-                        Strategic brand visibility and community engagement
-                        through meaningful partnerships in education and youth
-                        empowerment.
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-case "team":
-  return (
-<div className="space-y-10 sm:space-y-12">
-  <h2 className="font-bold text-2xl sm:text-3xl text-center">
-    Organizational Team
-  </h2>
-
-  <p className="text-[15px] sm:text-base text-gray-600 text-center max-w-3xl mx-auto leading-relaxed">
-    Behind every initiative of IELS is a strong and passionate team.
-    Together, we are committed to building a platform that connects
-    Indonesian students with global opportunities.
-  </p>
-
-  <h3 className="font-semibold text-xl sm:text-2xl text-center mt-10">
-    Principals
-  </h3>
-
-  <div className="flex justify-center">
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl">
-      {principals.map((p) => (
-        <div
-          key={p.name}
-          className="
-            group bg-[#F8F8F8] rounded-2xl p-6
-            flex flex-col items-center text-center
-            shadow-sm transition-all duration-300
-            hover:-translate-y-1 hover:shadow-lg
-          "
-        >
-          {/* Avatar */}
-          <img
-            src={p.image}
-            alt={p.name}
-            className="
-              w-36 h-36 rounded-full object-cover mb-4
-              transition-transform duration-300
-              group-hover:scale-105
-            "
-          />
-
-          {/* Name */}
-          <h4 className="font-bold text-lg sm:text-xl text-[#2F4157]">
-            {p.name}
-          </h4>
-
-          {/* Role */}
-          <p className="text-sm sm:text-base text-gray-600 mb-4">
-            {p.role}
-          </p>
-
-          {/* Socials */}
-          <div className="flex gap-4">
-            <a
-              href={p.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="
-                p-2 rounded-full bg-white
-                text-gray-500 hover:text-[#E56668]
-                hover:shadow transition
-              "
-              aria-label="Instagram"
-            >
-              <Instagram size={18} />
-            </a>
-
-            <a
-              href={p.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="
-                p-2 rounded-full bg-white
-                text-gray-500 hover:text-[#0A66C2]
-                hover:shadow transition
-              "
-              aria-label="LinkedIn"
-            >
-              <Linkedin size={18} />
-            </a>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-</div>
-
-        );
-
-      default:
-        return null;
-    }
-  };
+    {
+      name: "Arbadza Rido Adzariyat",
+      role: "Principal of Operations & Business",
+      image: "/images/contents/about/arba.png",
+      instagram: "https://instagram.com/arbadzarido",
+      linkedin: "https://linkedin.com/in/arbadzarido",
+    },
+    {
+      name: "Fadhila Qurotul Aini",
+      role: "Principal of Growth & Finance",
+      image: "/images/contents/about/dhila.png",
+      instagram: "https://www.instagram.com/fadhilaqa._/",
+      linkedin: "https://linkedin.com/in/fadhilaqa/",
+    },
+    {
+      name: "Syifa Hana Nabila",
+      role: "Principal of Talent",
+      image: "/images/contents/about/hana.png",
+      instagram: "https://www.instagram.com/ssyifahana/",
+      linkedin: "https://www.linkedin.com/in/syifahana/",
+    },
+  ];
 
   return (
-    <div>
+    <div className="bg-white min-h-screen text-[#2F4157] font-sans selection:bg-[#E56668] selection:text-white">
       <Header />
-      <div className="px-4 sm:px-8 md:px-[75px] gap-4 sm:gap-6 flex flex-col pb-8 sm:pb-12">
-        <div className="bg-white flex flex-col lg:flex-row w-full rounded-[20px] sm:rounded-[30px] p-6 sm:p-8 lg:p-12 lg:px-[50px] items-center gap-6 sm:gap-8 lg:gap-12">
-          <div className="flex flex-col w-full items-center">
-            <Image
-              src="/images/logos/iels_blue.png"
-              width={408}
-              height={408}
-              alt="IELS Logo Blue"
-              className="max-w-[200px] sm:max-w-[250px] lg:max-w-[308px] w-full h-auto"
-            />
-            <div className="flex items-center gap-3 sm:gap-5">
-              <Image
-                src="/images/contents/general/greeting.png"
-                width={200}
-                height={200}
-                alt="Greeting"
-                className="w-[120px] h-auto sm:w-[150px] lg:w-[200px]"
-              />
-              <div className="flex flex-col text-[#2F4157] text-[18px] sm:text-[20px] lg:text-[24px] font-bold">
-                <p>Inclusive English</p>
-                <p className="-mt-1">Learning Space</p>
-              </div>
-            </div>
+
+      {/* =========================================
+          1️⃣ THE PROBLEM (HERO SECTION)
+      ========================================= */}
+      <section className="pt-32 pb-20 sm:pt-40 sm:pb-28 px-6 max-w-5xl mx-auto text-center">
+        <div className="flex justify-center mb-8">
+          <Image
+            src="/images/logos/iels_blue.png"
+            width={200}
+            height={200}
+            alt="IELS Logo"
+            className="w-[120px] sm:w-[160px] h-auto object-contain"
+          />
+        </div>
+
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mb-8">
+          Indonesia has millions of <br className="hidden sm:block" />
+          talented students. <br />
+          <span className="text-[#E56668]">But talent alone is not enough.</span>
+        </h1>
+
+        <div className="max-w-3xl mx-auto space-y-6 text-base sm:text-lg text-gray-600 leading-relaxed">
+          <p>
+            Many students have dreams to study abroad, work in global companies, win
+            scholarships, or build international careers — yet they lack access, structure,
+            and the right environment to turn those dreams into reality.
+          </p>
+          <p className="font-semibold text-xl sm:text-2xl text-[#2F4157] mt-8">
+            English is often seen as a subject. <br />
+            But in reality, <span className="text-[#E56668]">English is access.</span>
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-6 font-bold text-[#2F4157] text-lg mt-4">
+            <span className="flex items-center justify-center gap-2">
+              <Globe2 size={20} className="text-[#E56668]" /> Access to information.
+            </span>
+            <span className="flex items-center justify-center gap-2">
+              <Target size={20} className="text-[#E56668]" /> Access to opportunities.
+            </span>
+            <span className="flex items-center justify-center gap-2">
+              <Compass size={20} className="text-[#E56668]" /> Access to the world.
+            </span>
           </div>
-          <div className="flex flex-col w-full text-[#2F4157] gap-4 sm:gap-6">
-            <h1 className="font-bold text-[20px] sm:text-[22px] lg:text-[24px] text-center lg:text-left">
-              About IELS
-            </h1>
-            <p className="text-[14px] sm:text-[15px] text-justify">
-              IELS (Inclusive English Learning Space) is a goal-driven English learning 
-              community designed to help Indonesian students and young professionals 
-              achieve real, measurable outcomes. IELS supports learners in setting 
-              clear English-related goals—such as improving fluency, achieving test 
-              scores, joining exchange programs, or accessing global opportunities—then 
-              guides them through structured learning journeys with progress tracking, 
-              mentorship, and community support.
+          <p className="pt-6 font-medium">That gap is what IELS exists to solve.</p>
+        </div>
+      </section>
+
+      {/* =========================================
+          2️⃣ OUR BELIEF (NIGHTFALL BACKGROUND)
+      ========================================= */}
+      <section className="bg-[#2F4157] text-white py-20 sm:py-28 px-6 rounded-t-[40px] sm:rounded-t-[60px]">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <p className="uppercase tracking-widest text-[#E56668] text-sm font-bold mb-3">
+              Our Belief
             </p>
-            <p className="text-[14px] sm:text-[15px] text-justify">
-              Rather than focusing only on lessons or certificates, IELS focuses 
-              on progress and outcomes. Through affordable programs, daily community 
-              engagement, and access to real opportunities, IELS helps learners stay 
-              consistent, understand where they are in their journey, and know what 
-              steps to take next. By combining learning, tracking, and empowerment 
-              in one ecosystem, IELS aims to make quality English education and 
-              global exposure more accessible to learners across Indonesia.
+            <h2 className="text-3xl sm:text-4xl font-extrabold mb-6">
+              Ambitious students deserve more than classes.
+            </h2>
+            <p className="text-lg text-white/80">They deserve an ecosystem that pushes them forward.</p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { title: "Clarity", desc: "In their goals and life direction." },
+              { title: "Structure", desc: "A clear development path to follow." },
+              { title: "Mentorship", desc: "From people who have walked the journey." },
+              { title: "Community", desc: "An environment that pushes them forward." },
+            ].map((item, idx) => (
+              <div key={idx} className="bg-white/10 p-6 rounded-2xl border border-white/10 backdrop-blur-sm">
+                <div className="w-10 h-10 rounded-full bg-[#E56668] flex items-center justify-center font-bold text-lg mb-4">
+                  {idx + 1}
+                </div>
+                <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                <p className="text-white/70 text-sm">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-16 text-center max-w-2xl mx-auto border-t border-white/20 pt-10">
+            <p className="text-xl sm:text-2xl font-semibold leading-relaxed">
+              We believe English is not the final goal. <br />
+              <span className="text-[#E56668]">
+                It is the bridge toward global academic and professional opportunities.
+              </span>
             </p>
-            {/* ===== TAMBAHAN BUTTON STRATEGIC PLAN ===== */}
-  <div className="mt-2 sm:mt-4 flex justify-center lg:justify-start">
-    <a
-      href="https://drive.google.com/file/d/1JgTczzvuf6nwpMMkLmMUGO0TrUkkJLXN/view?usp=sharing"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="
-        group relative overflow-hidden
-        inline-flex items-center justify-center gap-3
-        bg-[#E56668] text-white
-        px-6 py-3 sm:px-8 sm:py-3.5
-        rounded-full
-        font-bold text-[14px] sm:text-[16px]
-        shadow-md
-        transition-all duration-300
-        hover:bg-[#c94f51] hover:shadow-xl hover:-translate-y-1
-        active:scale-95
-        w-full sm:w-auto
-      "
-    >
-      <span>View IELS 1-Year Strategic Plan</span>
-      <ExternalLink 
-        size={18} 
-        className="transition-transform duration-300 group-hover:rotate-45 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" 
-      />
-    </a>
-  </div>
           </div>
         </div>
-        <div className="w-full">
-          <div className="block sm:hidden">
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-1 relative">
+      </section>
 
-            
-              {/* Animated Background */}
-<div className="relative">
-  <div
-    className={`absolute top-1 bottom-1 bg-[#E56668] rounded-xl shadow-lg transition-transform duration-300 ease-in-out ${
-      isButtonAnimating ? "opacity-80" : "opacity-100"
-    }`}
-    style={{
-      width: "25%", // 4 buttons = 25% each
-      transform: `translateX(${getActiveIndex() * 100}%)`,
-    }}
-  />
+      {/* =========================================
+          3️⃣ WHAT IS IELS?
+      ========================================= */}
+      <section className="py-20 sm:py-28 px-6 max-w-4xl mx-auto text-center">
+        <p className="uppercase tracking-widest text-gray-400 text-sm font-bold mb-3">
+          What Is IELS?
+        </p>
+        <h2 className="text-3xl sm:text-4xl font-extrabold mb-8 leading-tight">
+          A goal-driven English development ecosystem designed for ambitious Indonesian students.
+        </h2>
+        <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+          We combine structured English growth, mentorship, leadership exposure, and
+          opportunity preparation into one integrated journey.
+        </p>
+        <div className="bg-[#F7F8FA] p-6 sm:p-8 rounded-3xl border border-gray-100 inline-block mb-10">
+          <p className="font-bold text-xl sm:text-2xl">
+            This is not just about improving speaking skills. <br />
+            <span className="text-[#E56668]">This is about building students who are globally ready.</span>
+          </p>
+        </div>
 
-  {/* Navigation Buttons */}
-  <div className="grid grid-cols-4 gap-1 relative z-10">
-    <button
-      onClick={() => handleSectionChange("vision")}
-      className={`py-3 px-2 rounded-xl text-[14px] font-medium transition-colors duration-300 ${
-        activeSection === "vision"
-          ? "text-white"
-          : "text-white/80 hover:text-white hover:bg-white/20"
-      }`}
-    >
-                  Vision & Mission
-                </button>
-                <button
-                  onClick={() => handleSectionChange("curriculum")}
-                  className={`py-3 px-2 rounded-xl text-[14px] font-medium transition-colors duration-300 ${
-                    activeSection === "curriculum"
-                      ? "text-white"
-                      : "text-white/80 hover:text-white hover:bg-white/20"
-                  }`}
-                >
-                  Curriculum
-                </button>
-                <button
-                  onClick={() => handleSectionChange("impact")}
-                  className={`py-3 px-2 rounded-xl text-[14px] font-medium transition-colors duration-300 ${
-                    activeSection === "impact"
-                      ? "text-white"
-                      : "text-white/80 hover:text-white hover:bg-white/20"
-                  }`}
-                >
-                  Impact & Value
-                </button>
-               <button
-                 onClick={() => handleSectionChange("team")}
-                 className={`py-3 px-2 rounded-xl text-[14px] font-medium transition-colors duration-300 ${
-                   activeSection === "team"
-                     ? "text-white"
-                     : "text-white/80 hover:text-white hover:bg-white/20"
-                  }`}
-                >
-                  Team
-                </button>
+        {/* STRATEGIC PLAN CTA */}
+        <div>
+          <a
+            href="https://drive.google.com/file/d/1JgTczzvuf6nwpMMkLmMUGO0TrUkkJLXN/view?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="
+              inline-flex items-center justify-center gap-3
+              bg-[#E56668] text-white
+              px-8 py-4
+              rounded-2xl
+              font-bold text-base sm:text-lg
+              shadow-lg shadow-[#E56668]/30
+              transition-all duration-300
+              hover:bg-[#c94f51] hover:-translate-y-1 hover:shadow-xl
+              active:scale-95
+              w-full sm:w-auto
+            "
+          >
+            Read Our 1-Year Strategic Plan
+            <ExternalLink size={20} />
+          </a>
+        </div>
+      </section>
+
+      {/* =========================================
+          4️⃣ HOW WE WORK (PATHWAY)
+      ========================================= */}
+      <section className="bg-[#F7F8FA] py-20 sm:py-28 px-6">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <p className="uppercase tracking-widest text-[#E56668] text-sm font-bold mb-3">
+              How We Work
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold mb-4">
+              Growth at IELS is intentional, not random.
+            </h2>
+            <p className="text-gray-600">IELS is built around a structured growth pathway.</p>
+          </div>
+
+          {/* Timeline Flow */}
+          <div className="flex flex-col lg:flex-row items-center lg:items-stretch gap-4 sm:gap-6 justify-center">
+            {[
+              { step: "Clarity", text: "Define your global goals." },
+              { step: "Development", text: "Strengthen English & professional skills." },
+              { step: "Exposure", text: "Prepare for scholarships, remote work, etc." },
+              { step: "Opportunity", text: "Access real international opportunities." },
+              { step: "Alumni Impact", text: "Return as mentors and contributors." },
+            ].map((item, idx) => (
+              <div key={idx} className="flex flex-col lg:flex-row items-center gap-4 w-full lg:w-auto">
+                <div className="bg-white border border-gray-200 rounded-2xl p-6 text-center shadow-sm w-full lg:w-48 h-full flex flex-col justify-center">
+                  <h4 className="font-bold text-lg text-[#2F4157] mb-2">{item.step}</h4>
+                  <p className="text-sm text-gray-500">{item.text}</p>
+                </div>
+                {/* Arrow - hidden on last item */}
+                {idx !== 4 && (
+                  <ArrowRight className="hidden lg:block text-gray-300 shrink-0" size={24} />
+                )}
+                {/* Mobile down arrow */}
+                {idx !== 4 && (
+                  <div className="block lg:hidden w-px h-6 bg-gray-300"></div>
+                )}
               </div>
-            </div>
-            </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            {/* Swipe Hint */}
-            <div className="text-center mt-3 text-white/60 text-sm">
-              💡 Swipe content left/right to navigate
+      {/* =========================================
+          5️⃣ WHO IS IELS FOR?
+      ========================================= */}
+      <section className="py-20 sm:py-28 px-6 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <p className="uppercase tracking-widest text-gray-400 text-sm font-bold mb-3">
+              Who Is IELS For?
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold mb-8 leading-tight">
+              For ambitious, growth-oriented students.
+            </h2>
+            <ul className="space-y-4">
+              {[
+                "Have big academic or career aspirations",
+                "Want global exposure",
+                "Are ready to commit to consistent development",
+                "Believe that English is a tool to unlock bigger opportunities",
+              ].map((text, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <CheckCircle2 className="text-[#E56668] shrink-0 mt-1" size={20} />
+                  <span className="text-gray-700 font-medium">{text}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="bg-[#2F4157] text-white p-8 sm:p-12 rounded-[32px] text-center shadow-xl">
+            <XCircle className="text-white/30 mx-auto mb-6" size={48} />
+            <h3 className="text-2xl font-bold mb-4">We are not for everyone.</h3>
+            <p className="text-white/80 text-lg">
+              If you are just looking for a casual English chat without a clear goal, 
+              we might not be the right fit. <br /><br />
+              <span className="font-bold text-white">And that’s intentional.</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================
+          6️⃣ THE BIGGER VISION
+      ========================================= */}
+      <section className="bg-[#E56668] text-white py-20 sm:py-28 px-6 text-center">
+        <div className="max-w-4xl mx-auto">
+          <p className="uppercase tracking-widest text-white/80 text-sm font-bold mb-3">
+            The Bigger Vision
+          </p>
+          <h2 className="text-3xl sm:text-5xl font-extrabold mb-8 leading-tight">
+            Our vision is to build a generation of globally competitive Indonesian leaders.
+          </h2>
+          <p className="text-lg sm:text-xl text-white/90 mb-12 max-w-2xl mx-auto">
+            We aim to create thousands of alumni who study abroad, work in global
+            companies, lead international projects, and contribute back to Indonesia.
+          </p>
+          
+          <div className="bg-[#c94f51] rounded-3xl p-8 sm:p-10 inline-block">
+            <h3 className="text-2xl sm:text-3xl font-bold leading-relaxed">
+              IELS is not just building English skills. <br />
+              We are building access. <br />
+              We are building exposure. <br />
+              We are building global readiness.
+            </h3>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================
+          7️⃣ THE TEAM
+      ========================================= */}
+      <section className="py-20 sm:py-28 px-6 bg-white">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <p className="uppercase tracking-widest text-gray-400 text-sm font-bold mb-3">
+              Organizational Team
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold mb-4">
+              Meet the Principals
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Behind every initiative of IELS is a strong and passionate team committed 
+              to building a platform that connects Indonesian students with global opportunities.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {principals.map((p) => (
+              <div
+                key={p.name}
+                className="
+                  group bg-[#F7F8FA] rounded-[32px] p-8
+                  flex flex-col items-center text-center
+                  border border-gray-100
+                  transition-all duration-300
+                  hover:-translate-y-2 hover:shadow-xl hover:shadow-[#2F4157]/5
+                "
+              >
+                {/* Avatar */}
+                <div className="relative mb-6">
+                  <div className="absolute inset-0 bg-[#E56668] rounded-full blur-lg opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                  <Image
+                    src={p.image}
+                    alt={p.name}
+                    width={144}
+                    height={144}
+                    className="
+                      w-36 h-36 rounded-full object-cover relative z-10
+                      transition-transform duration-300
+                      group-hover:scale-105 border-4 border-white shadow-sm
+                    "
+                  />
+                </div>
+
+                {/* Name */}
+                <h4 className="font-bold text-xl text-[#2F4157] mb-1">
+                  {p.name}
+                </h4>
+
+                {/* Role */}
+                <p className="text-sm text-[#E56668] font-semibold mb-6 uppercase tracking-wider">
+                  {p.role}
+                </p>
+
+                {/* Socials */}
+                <div className="flex gap-4 mt-auto">
+                  <a
+                    href={p.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="
+                      p-3 rounded-2xl bg-white border border-gray-200
+                      text-gray-500 hover:text-white hover:bg-[#E56668] hover:border-[#E56668]
+                      transition-all duration-200 active:scale-95
+                    "
+                    aria-label="Instagram"
+                  >
+                    <Instagram size={20} />
+                  </a>
+
+                  <a
+                    href={p.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="
+                      p-3 rounded-2xl bg-white border border-gray-200
+                      text-gray-500 hover:text-white hover:bg-[#0A66C2] hover:border-[#0A66C2]
+                      transition-all duration-200 active:scale-95
+                    "
+                    aria-label="LinkedIn"
+                  >
+                    <Linkedin size={20} />
+                  </a>
+                </div>
               </div>
-            </div>
-
-          <div className="hidden sm:flex gap-5 justify-center md:justify-start">
-            <button
-              onClick={() => handleSectionChange("vision")}
-              className={`rounded-full px-7 py-2 text-[20px] cursor-pointer transition-all duration-200 font-medium ${
-                activeSection === "vision"
-                  ? "bg-[#E56668] text-white shadow-lg"
-                  : "border-2 border-white text-white hover:bg-white hover:text-[#2F4157] hover:shadow-md"
-              }`}
-            >
-              Vision & Mission
-            </button>
-            <button
-              onClick={() => handleSectionChange("curriculum")}
-              className={`rounded-full px-7 py-2 text-[20px] cursor-pointer transition-all duration-200 font-medium ${
-                activeSection === "curriculum"
-                  ? "bg-[#E56668] text-white shadow-lg"
-                  : "border-2 border-white text-white hover:bg-white hover:text-[#2F4157] hover:shadow-md"
-              }`}
-            >
-              Curriculum
-            </button>
-            <button
-              onClick={() => handleSectionChange("impact")}
-              className={`rounded-full px-7 py-2 text-[20px] cursor-pointer transition-all duration-200 font-medium ${
-                activeSection === "impact"
-                  ? "bg-[#E56668] text-white shadow-lg"
-                  : "border-2 border-white text-white hover:bg-white hover:text-[#2F4157] hover:shadow-md"
-              }`}
-            >
-              Impact & Value
-            </button>
-            <button
-              onClick={() => handleSectionChange("team")}
-              className={`rounded-full px-7 py-2 text-[20px] cursor-pointer transition-all duration-200 font-medium ${
-                activeSection === "team"
-                  ? "bg-[#E56668] text-white shadow-lg"
-                  : "border-2 border-white text-white hover:bg-white hover:text-[#2F4157] hover:shadow-md"
-              }`}
-            >
-              Team
-            </button>
+            ))}
           </div>
         </div>
-        <div className="bg-white w-full rounded-[20px] sm:rounded-[30px] p-6 sm:p-8 lg:p-12 lg:px-[50px] text-[#2F4157] shadow-lg overflow-hidden">
-          <div
-            className={`sm:transition-none transition-transform duration-300 ease-in-out ${
-              isAnimating
-                ? slideDirection === "left"
-                  ? "translate-x-full opacity-0 sm:translate-x-0 sm:opacity-100"
-                  : "-translate-x-full opacity-0 sm:translate-x-0 sm:opacity-100"
-                : "translate-x-0 opacity-100"
-            }`}
+      </section>
 
-            onTouchStart={onTouchStart}
-            onTouchMove={onTouchMove}
-            onTouchEnd={onTouchEnd}
-            >
-            {getContent()}
-          </div>
-        </div>
-      </div>
       <Footer />
     </div>
-
   );
 }

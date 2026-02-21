@@ -9,7 +9,6 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   // 1. Definisikan list path yang harus bener-bener bersih (Tanpa Padding Atas)
   const noPaddingPaths = [
     "/dashboard",
-    "/events/gif",
     "/privacy-policy",
     "/terms-of-service",
     "/sign-in",
@@ -27,7 +26,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
       */}
       <Header />
       
-      <main className={shouldRemovePadding ? "pt-0" : "pt-28"}>
+      <main className={shouldRemovePadding ? "pt-0" : "pt-30"}>
         {children}
       </main>
     </>

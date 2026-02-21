@@ -5,9 +5,10 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, Suspense } from "react"; // Tambahkan import Suspense
+import { useState, Suspense } from "react";
 import { supabase } from "@/data/supabase";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link"; // INI YANG TADI LUPA DI-IMPORT
 
 import {
   Form,
@@ -29,7 +30,6 @@ const SignInSchema = z.object({
   password: z.string().min(1, "Password is required")
 });
 
-// 1. Pindahkan semua logika utama ke komponen ini (bukan export default)
 function SignInContent() {
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
@@ -37,8 +37,6 @@ function SignInContent() {
   
   const router = useRouter();
   const searchParams = useSearchParams();
-  
-  // Ambil URL tujuan dari parameter 'next', default ke '/dashboard'
   const nextUrl = searchParams.get("next") || "/dashboard";
 
   const form = useForm({
@@ -49,14 +47,8 @@ function SignInContent() {
     }
   });
 
-  type SignInForm = {
-    email: string;
-    password: string;
-  };
-
-  const onSubmit = async (values: SignInForm) => {
+  const onSubmit = async (values: z.infer<typeof SignInSchema>) => {
     setLoading(true);
-
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: values.email,
@@ -77,15 +69,12 @@ function SignInContent() {
 
       if (data.user) {
         setPopup("Welcome back! Redirecting... 🎉");
-        
         router.refresh(); 
-        
         setTimeout(() => {
           router.push(nextUrl); 
         }, 1000);
       }
     } catch (error: any) {
-      console.error("Sign in error:", error);
       setPopup("Something went wrong — please try again! 😔");
       setLoading(false);
     }
@@ -93,28 +82,15 @@ function SignInContent() {
 
   const handleGoogleSignIn = async () => {
     try {
-      // PENTING: Kembali gunakan window.location.origin agar dinamis.
-      // Kalau di localhost -> jadi http://localhost:3000
-      // Kalau di prod -> jadi https://ielsco.com
       const origin = window.location.origin;
-      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          // Arahkan ke /api/auth/callback (Sesuai yang sudah didaftarkan di Supabase)
           redirectTo: `${origin}/api/auth/callback?next=${nextUrl}`,
-          
-          queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
-          },
         }
       });
-
       if (error) throw error;
-      
     } catch (error: any) {
-      console.error("Google sign-in error:", error);
       setPopup("Google sign-in failed — please try again! 😔");
     }
   };
@@ -126,20 +102,16 @@ function SignInContent() {
       <div className="space-y-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-
-            {/* EMAIL */}
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold text-[#2F4157]">
-                    Email
-                  </FormLabel>
+                  <FormLabel className="font-semibold text-[#2F4157]">Email</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="example@mail.com"
-                      className="border rounded-xl w-full p-3 bg-[#F7F8FA] focus:outline-none focus:ring-2 focus:ring-[#E56668]"
+                      className="border rounded-xl w-full p-3 bg-[#F7F8FA] focus:ring-2 focus:ring-[#E56668]"
                       {...field}
                     />
                   </FormControl>
@@ -148,21 +120,18 @@ function SignInContent() {
               )}
             />
 
-            {/* PASSWORD */}
             <FormField
               control={form.control}
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold text-[#2F4157]">
-                    Password
-                  </FormLabel>
+                  <FormLabel className="font-semibold text-[#2F4157]">Password</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
                         type={showPass ? "text" : "password"}
                         placeholder="Enter your password"
-                        className="border rounded-xl w-full p-3 bg-[#F7F8FA] focus:outline-none focus:ring-2 focus:ring-[#E56668]"
+                        className="border rounded-xl w-full p-3 bg-[#F7F8FA] focus:ring-2 focus:ring-[#E56668]"
                         {...field}
                       />
                       <button
@@ -179,56 +148,64 @@ function SignInContent() {
               )}
             />
 
-            {/* FORGOT PASSWORD LINK */}
             <div className="text-right">
-              <a 
-                href="/sign-in/forgot" 
-                className="text-sm text-[#E56668] hover:underline"
-              >
+              <Link href="/sign-in/forgot" className="text-sm text-[#E56668] hover:underline font-medium">
                 Forgot password?
-              </a>
+              </Link>
             </div>
 
-            {/* SIGN IN BUTTON */}
             <Button
               disabled={loading}
               type="submit"
-              className="w-full py-3 rounded-full bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] disabled:bg-[#C04C4E]"
+              className="w-full py-3 rounded-full bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition-all"
             >
               {loading ? "Signing in…" : "Sign In"}
             </Button>
           </form>
         </Form>
 
-        {/* DIVIDER */}
         <div className="flex items-center gap-3">
           <div className="flex-grow border-t" />
           <span className="text-gray-500 text-sm">or</span>
           <div className="flex-grow border-t" />
         </div>
 
-        {/* GOOGLE SIGN IN */}
         <button
           onClick={handleGoogleSignIn}
-          className="inline-flex items-center justify-center gap-2 rounded-full w-full py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition active:scale-[0.97]"
+          className="inline-flex items-center justify-center gap-3 rounded-full w-full py-3 bg-[#294154] text-white font-semibold hover:bg-[#21363f] transition active:scale-[0.97]"
         >
-          <Image src="/images/contents/general/google.png" width={25} height={25} alt="Google" />
+          <Image src="/images/contents/general/google.png" width={20} height={20} alt="Google" />
           Continue with Google
         </button>
 
-        {/* FOOTER */}
         <p className="text-center text-gray-600 pt-2">
-          Don't have an account?{" "}
-          <a href="/sign-up" className="text-[#E56668] font-semibold hover:underline">
+          Don&apos;t have an account?{" "}
+          <Link href="/sign-up" className="text-[#E56668] font-bold hover:underline">
             Sign up here
-          </a>
+          </Link>
         </p>
+
+        {/* PRIVACY POLICY & TERMS FOOTER (Sekarang udah di dalem fungsi, aman!) */}
+        <div className="pt-6 text-center text-[11px] text-gray-400 leading-relaxed space-y-1 border-t border-gray-100">
+          <p>
+            By signing in to IELS, you agree to our{" "}
+            <Link href="/terms-of-service" className="underline hover:text-gray-600">Terms</Link>{" "}
+            and{" "}
+            <Link href="/privacy-policy" className="underline hover:text-gray-600">Privacy Policy</Link>.
+          </p>
+          <p>
+            This site is protected by reCAPTCHA Enterprise and the Google{" "}
+            <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer" className="underline hover:text-gray-600">Privacy Policy</a>{" "}
+            and{" "}
+            <a href="https://policies.google.com/terms" target="_blank" rel="noreferrer" className="underline hover:text-gray-600">Terms of Service</a>{" "}
+            apply.
+          </p>
+        </div>
       </div>
     </>
   );
 }
 
-// 2. Export Default sebagai Wrapper Suspense
 export default function SignInPage() {
   return (
     <AuthLayout>

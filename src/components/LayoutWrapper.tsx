@@ -6,21 +6,28 @@ import Header from "@/components/header";
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   
-  // Cek apakah sedang di halaman dashboard
-  const isDashboard = pathname?.startsWith("/dashboard");
+  // 1. Definisikan list path yang harus bener-bener bersih (Tanpa Padding Atas)
+  const noPaddingPaths = [
+    "/dashboard",
+    "/events/gif",
+    "/privacy-policy",
+    "/terms-of-service",
+    "/sign-in",
+    "/sign-up",
+    "/api/auth"
+  ];
 
-  // JIKA DASHBOARD:
-  // Render konten langsung tanpa Header public & tanpa padding atas.
-  if (isDashboard) {
-    return <>{children}</>;
-  }
+  // 2. Cek apakah pathname saat ini masuk dalam list di atas
+  const shouldRemovePadding = noPaddingPaths.some((path) => pathname?.startsWith(path));
 
-  // JIKA BUKAN DASHBOARD (Public Website):
-  // Render Header Public + Main content dengan padding atas (biar gak ketutup header).
   return (
     <>
+      {/* Header otomatis hilang sendiri karena logic internal di header.tsx 
+         sudah kita set untuk return null pada path yang sama.
+      */}
       <Header />
-      <main className="pt-32">
+      
+      <main className={shouldRemovePadding ? "pt-0" : "pt-28"}>
         {children}
       </main>
     </>

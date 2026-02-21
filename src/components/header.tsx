@@ -23,7 +23,26 @@ import {
 } from "lucide-react";
 
 export default function Header() {
-  const pathname = usePathname();
+    const pathname = usePathname();
+  // Di dalam komponen Header kamu
+const hiddenPaths = [
+  "/dashboard",
+  "/events/gif",
+  "/privacy-policy",
+  "/terms-of-service",
+  "/sign-in",
+  "/sign-up", // Tambahkan ini!
+  "/api/auth"
+];
+
+// Cek apakah pathname saat ini diawali oleh salah satu list di atas
+const isHidden = hiddenPaths.some((path) => pathname?.startsWith(path));
+
+if (isHidden) {
+  return null;
+}
+  
+
 
   // --- LOGIKA PENYEMBUNYIAN ---
   if (pathname?.startsWith("/dashboard")) {
@@ -37,6 +56,9 @@ export default function Header() {
     return null;
   }
   if (pathname?.startsWith("/terms-of-service")) {
+    return null;
+  }
+    if (pathname?.startsWith("/sign-in")) {
     return null;
   }
   // ---------------------------

@@ -1,93 +1,158 @@
-// IELS Goals - Advanced Progress Calculation System
-// Realistic formulas based on language acquisition research & IELS data
+// IELS Goals - Progress Calculation System
+// CEFR-based, research-backed formulas
 
 import type { Goal, GoalTask } from '@/types/goals';
 
 // ============================================
-// LEARNING VELOCITY CONSTANTS (Research-based)
+// CEFR LEVEL SYSTEM
 // ============================================
 
-// Based on Common European Framework of Reference (CEFR) & IELTS research
-const SKILL_IMPROVEMENT_RATES = {
-  // Minutes needed per 0.5 band improvement (IELTS)
-  ielts: {
-    reading: 25 * 60,      // 25 hours for 0.5 band (1500 mins)
-    writing: 35 * 60,      // 35 hours for 0.5 band (2100 mins)
-    speaking: 30 * 60,     // 30 hours for 0.5 band (1800 mins)
-    listening: 20 * 60     // 20 hours for 0.5 band (1200 mins)
-  },
-  
-  // Minutes needed per 5-point improvement (TOEFL iBT)
-  toefl: {
-    reading: 22 * 60,      // 22 hours for 5 points (1320 mins)
-    writing: 30 * 60,      // 30 hours for 5 points (1800 mins)
-    speaking: 28 * 60,     // 28 hours for 5 points (1680 mins)
-    listening: 18 * 60     // 18 hours for 5 points (1080 mins)
-  },
-  
-  // CEFR Level progression (hours needed)
-  conversation: {
-    a1_to_a2: 150 * 60,    // 150 hours (9000 mins) - Beginner → Elementary
-    a2_to_b1: 200 * 60,    // 200 hours (12000 mins) - Elementary → Intermediate
-    b1_to_b2: 250 * 60,    // 250 hours (15000 mins) - Intermediate → Upper-Intermediate
-    b2_to_c1: 300 * 60,    // 300 hours (18000 mins) - Upper → Advanced
-    c1_to_c2: 400 * 60     // 400 hours (24000 mins) - Advanced → Mastery
-  },
-  
-  // Professional English contexts
-  professional: {
-    basic: 120 * 60,       // 120 hours (7200 mins) - Basic business fluency
-    advanced: 180 * 60,    // 180 hours (10800 mins) - Professional mastery
-    industry_specific: 90 * 60  // 90 hours (5400 mins) - Industry vocab on top of basic
-  }
+export type CEFRLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+
+export const CEFR_TO_IELTS: Record<CEFRLevel, number> = {
+  A1: 1.0,
+  A2: 3.0,
+  B1: 4.5,
+  B2: 5.5,
+  C1: 7.0,
+  C2: 8.5,
 };
 
-// Activity effectiveness multipliers (based on active learning research)
-const ACTIVITY_EFFECTIVENESS = {
-  speaking_club: 1.8,        // 1 hour speaking club = 1.8 hours self-study
-  mentor_session: 2.5,       // 1 hour with mentor = 2.5 hours self-study
-  self_study: 1.0,           // Baseline
-  passive_listening: 0.6,    // Podcasts, videos without exercises
-  reading_materials: 0.8,    // Reading without active practice
-  writing_practice: 1.4,     // Active writing with feedback
-  test_practice: 1.6         // Mock tests & review
+export function ieltsToCEFR(band: number): CEFRLevel {
+  if (band < 3.0) return 'A1';
+  if (band < 4.5) return 'A2';
+  if (band < 5.5) return 'B1';
+  if (band < 7.0) return 'B2';
+  if (band < 8.5) return 'C1';
+  return 'C2';
+}
+
+export const CEFR_LABELS: Record<CEFRLevel, string> = {
+  A1: 'A1 — Beginner',
+  A2: 'A2 — Elementary',
+  B1: 'B1 — Intermediate',
+  B2: 'B2 — Upper Intermediate',
+  C1: 'C1 — Advanced',
+  C2: 'C2 — Mastery',
 };
 
-// Speaking Club Schedule (IELS Lounge)
-const SPEAKING_CLUB_SCHEDULE = {
-  days_per_week: 3,          // Monday, Wednesday, Friday
-  minutes_per_session: 90,   // 1.5 hours per session
-  weekly_total: 270          // 3 × 90 mins = 4.5 hours/week
+const CEFR_INDEX: Record<CEFRLevel, number> = {
+  A1: 0, A2: 1, B1: 2, B2: 3, C1: 4, C2: 5,
 };
+
+export function cefrGap(from: CEFRLevel, to: CEFRLevel): number {
+  return CEFR_INDEX[to] - CEFR_INDEX[from];
+}
+
+// ============================================
+// RESEARCH-BASED HOUR BENCHMARKS
+// ============================================
+
+const CEFR_HOURS_PER_LEVEL: Record<string, number> = {
+  'A1_A2': 150,
+  'A2_B1': 200,
+  'B1_B2': 300,
+  'B2_C1': 400,
+  'C1_C2': 600,
+};
+
+export function totalHoursNeeded(from: CEFRLevel, to: CEFRLevel): number {
+  const fromIdx  = CEFR_INDEX[from];
+  const toIdx    = CEFR_INDEX[to];
+  if (toIdx <= fromIdx) return 0;
+
+  const allLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as CEFRLevel[];
+  const keys = allLevels.slice(fromIdx, toIdx).map(
+    (l, i) => `${l}_${allLevels[fromIdx + i + 1]}`
+  );
+  return keys.reduce((sum, key) => sum + (CEFR_HOURS_PER_LEVEL[key] || 200), 0);
+}
+
+const IELTS_HOURS_PER_HALF_BAND = {
+  reading: 25, writing: 35, speaking: 30, listening: 20,
+};
+
+function calculateIELTSHours(currentBand: number, targetBand: number): number {
+  const halfBands = Math.max(0, targetBand - currentBand) * 2;
+  const avg = (
+    IELTS_HOURS_PER_HALF_BAND.reading +
+    IELTS_HOURS_PER_HALF_BAND.writing +
+    IELTS_HOURS_PER_HALF_BAND.speaking +
+    IELTS_HOURS_PER_HALF_BAND.listening
+  ) / 4;
+  return Math.round(halfBands * avg * 1.1);
+}
+
+// ============================================
+// ACTIVITY EFFECTIVENESS MULTIPLIERS
+// ============================================
+
+const EFFECTIVENESS = {
+  speaking_club: 1.8,
+  mentor_session: 2.5,
+  self_study: 1.0,
+  test_practice: 1.6,
+  writing_practice: 1.4,
+};
+
+const SPEAKING_CLUB = {
+  days_per_week: 3,
+  minutes_per_session: 90,
+  weekly_minutes: 270,
+};
+
+// ============================================
+// DIFFICULTY THRESHOLDS (total daily mins)
+// ============================================
+//
+//  easy:        <  30 min/day
+//  moderate:   30–90 min/day
+//  challenging: 91–180 min/day
+//  extreme:    181–300 min/day  (allowed, but strongly warned)
+//  impossible:  > 300 min/day  (blocked — cannot create goal)
+
+const THRESHOLD = { easy: 30, moderate: 90, challenging: 180, extreme: 300 } as const;
 
 // ============================================
 // INTERFACES
 // ============================================
 
+export interface CurrentLevel {
+  cefr: CEFRLevel;
+  ielts?: number;
+}
+
+export interface TargetLevel {
+  cefr: CEFRLevel;
+  ielts?: number;
+}
+
+export type DifficultyLevel = 'easy' | 'moderate' | 'challenging' | 'extreme' | 'impossible';
+
 export interface StudyPlanResult {
-  // Total requirements
-  totalMinutesNeeded: number;
+  currentCEFR: CEFRLevel;
+  targetCEFR: CEFRLevel;
+  currentIELTS: number;
+  targetIELTS: number;
+  durationMonths: number;
+  levelGap: number;
+
   totalHoursNeeded: number;
-  
-  // Daily breakdown
+  totalMinutesNeeded: number;
+
   dailyMinutesRequired: number;
   weeklyHoursRequired: number;
-  
-  // Schedule recommendation
-  studyDaysPerWeek: number;
-  minutesPerSession: number;
-  
-  // Feasibility
-  isRealistic: boolean;
-  difficultyLevel: 'easy' | 'moderate' | 'challenging' | 'extreme';
+
+  isRealistic: boolean;   // false for extreme & impossible
+  canCreateGoal: boolean; // false ONLY for impossible
+  difficultyLevel: DifficultyLevel;
   recommendation: string;
-  
-  // Activity breakdown (how to distribute time)
+
   breakdown: {
     speakingClubs: {
       sessionsPerWeek: number;
       weeklyMinutes: number;
-      effectiveMinutes: number; // After multiplier
+      effectiveMinutes: number;
     };
     selfStudy: {
       daysPerWeek: number;
@@ -106,8 +171,7 @@ export interface StudyPlanResult {
       weeklyMinutes: number;
     };
   };
-  
-  // Speaking Club integration
+
   speakingClubImpact: {
     weeksNeeded: number;
     totalSessions: number;
@@ -115,256 +179,215 @@ export interface StudyPlanResult {
   };
 }
 
-export interface CurrentLevel {
-  ielts?: number;    // 4.0 - 9.0
-  toefl?: number;    // 0 - 120
-  cefr?: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
-}
-
 // ============================================
-// CALCULATION FUNCTIONS
+// MAIN CALCULATION FUNCTION
 // ============================================
 
-/**
- * Calculate realistic daily study time based on goal & timeline
- */
 export function calculateStudyPlan(
   objective: string,
   currentLevel: CurrentLevel,
-  targetLevel: string | number,
-  durationDays: number,
+  targetLevel: TargetLevel,
+  durationMonths: number,
   includesSpeakingClub: boolean = true
 ): StudyPlanResult {
-  
-  let totalMinutesNeeded = 0;
+
+  const currentIELTS   = currentLevel.ielts ?? CEFR_TO_IELTS[currentLevel.cefr];
+  const targetIELTS    = targetLevel.ielts  ?? CEFR_TO_IELTS[targetLevel.cefr];
+  const levelGap       = cefrGap(currentLevel.cefr, targetLevel.cefr);
   const objectiveLower = objective.toLowerCase();
-  
-  // === STEP 1: Determine total minutes needed ===
-  
-  if (objectiveLower.includes('ielts')) {
-    totalMinutesNeeded = calculateIELTSMinutes(
-      currentLevel.ielts || 5.0,
-      typeof targetLevel === 'number' ? targetLevel : parseFloat(targetLevel)
-    );
-  } 
-  else if (objectiveLower.includes('toefl')) {
-    totalMinutesNeeded = calculateTOEFLMinutes(
-      currentLevel.toefl || 60,
-      typeof targetLevel === 'number' ? targetLevel : parseInt(targetLevel)
-    );
-  } 
-  else if (objectiveLower.includes('conversation') || objectiveLower.includes('fluent')) {
-    totalMinutesNeeded = calculateConversationMinutes(currentLevel.cefr || 'A2');
-  } 
-  else if (objectiveLower.includes('job') || objectiveLower.includes('work') || objectiveLower.includes('business')) {
-    totalMinutesNeeded = SKILL_IMPROVEMENT_RATES.professional.basic;
-  } 
-  else if (objectiveLower.includes('scholarship')) {
-    // Scholarship = Test prep + Application work
-    totalMinutesNeeded = calculateIELTSMinutes(5.5, 7.0) + (40 * 60);
-  } 
-  else {
-    // Default: B1 level conversation
-    totalMinutesNeeded = SKILL_IMPROVEMENT_RATES.conversation.a2_to_b1;
-  }
-  
-  // === STEP 2: Calculate weekly available time ===
-  
-  const weeksAvailable = Math.ceil(durationDays / 7);
-  const weeklyMinutesNeeded = totalMinutesNeeded / weeksAvailable;
-  
-  // === STEP 3: Account for Speaking Club (if included) ===
-  
-  let speakingClubContribution = 0;
-  let remainingWeeklyMinutes = weeklyMinutesNeeded;
-  
-  if (includesSpeakingClub) {
-    const clubMinutesPerWeek = SPEAKING_CLUB_SCHEDULE.weekly_total;
-    speakingClubContribution = clubMinutesPerWeek * ACTIVITY_EFFECTIVENESS.speaking_club;
-    remainingWeeklyMinutes = Math.max(0, weeklyMinutesNeeded - speakingClubContribution);
-  }
-  
-  // === STEP 4: Calculate self-study requirements ===
-  
-  // Assume learner can study 5-6 days per week realistically
-  const selfStudyDays = 5;
-  const dailySelfStudyMinutes = Math.ceil(remainingWeeklyMinutes / selfStudyDays);
-  
-  // === STEP 5: Add mentor sessions (Pro feature boost) ===
-  
-  const mentorSessionsPerMonth = 2; // Pro users get 2 sessions/month
-  const mentorMinutesPerSession = 30;
-  const mentorWeeklyMinutes = (mentorSessionsPerMonth * mentorMinutesPerSession) / 4;
-  const mentorEffectiveMinutes = mentorWeeklyMinutes * ACTIVITY_EFFECTIVENESS.mentor_session;
-  
-  // === STEP 6: Assignments ===
-  
-  const assignmentsPerWeek = 2;
-  const minutesPerAssignment = 45; // ~45 mins per assignment
-  const assignmentWeeklyMinutes = assignmentsPerWeek * minutesPerAssignment;
-  const assignmentEffectiveMinutes = assignmentWeeklyMinutes * ACTIVITY_EFFECTIVENESS.writing_practice;
-  
-  // === STEP 7: Feasibility Check ===
-  
-  const totalDailyMinutes = dailySelfStudyMinutes + 
-    (SPEAKING_CLUB_SCHEDULE.weekly_total / 7); // Spread club across week for daily avg
-  
-  let isRealistic = true;
-  let difficultyLevel: 'easy' | 'moderate' | 'challenging' | 'extreme' = 'moderate';
-  let recommendation = '';
-  
-  if (totalDailyMinutes < 30) {
-    difficultyLevel = 'easy';
-    recommendation = '✅ Very manageable! This pace allows steady progress without overwhelming your schedule.';
-    isRealistic = true;
-  } else if (totalDailyMinutes <= 60) {
-    difficultyLevel = 'moderate';
-    recommendation = '👍 Realistic and effective. Combine Speaking Club with consistent daily practice for best results.';
-    isRealistic = true;
-  } else if (totalDailyMinutes <= 120) {
-    difficultyLevel = 'challenging';
-    recommendation = '⚠️ Ambitious but achievable. Requires strong commitment. Consider extending timeline if lifestyle permits.';
-    isRealistic = true;
+
+  // ── Total hours ────────────────────────────────────────────────────────
+
+  let totalHours: number;
+
+  if (objectiveLower.includes('ielts') || objectiveLower.includes('toefl')) {
+    totalHours = calculateIELTSHours(currentIELTS, targetIELTS);
+  } else if (objectiveLower.includes('scholarship')) {
+    totalHours = calculateIELTSHours(currentIELTS, Math.max(targetIELTS, 6.5)) + 40;
   } else {
-    difficultyLevel = 'extreme';
-    recommendation = '🚫 This pace is extremely demanding and may lead to burnout. We recommend extending your timeline by 50% for sustainable progress.';
-    isRealistic = false;
+    totalHours = totalHoursNeeded(currentLevel.cefr, targetLevel.cefr) || 120;
   }
-  
-  // === STEP 8: Build result object ===
-  
-  const totalSpeakingClubSessions = weeksAvailable * SPEAKING_CLUB_SCHEDULE.days_per_week;
-  const speakingClubPercentage = Math.round((speakingClubContribution / weeklyMinutesNeeded) * 100);
-  
+
+  const totalMinutes = totalHours * 60;
+
+  // ── Timeline ───────────────────────────────────────────────────────────
+
+  const weeksAvailable      = Math.ceil((durationMonths * 30) / 7);
+  const weeklyMinutesNeeded = totalMinutes / weeksAvailable;
+
+  // ── Speaking Club contribution ─────────────────────────────────────────
+
+  let speakingClubEffectivePerWeek = 0;
+  let remainingWeeklyMinutes       = weeklyMinutesNeeded;
+
+  if (includesSpeakingClub) {
+    speakingClubEffectivePerWeek = SPEAKING_CLUB.weekly_minutes * EFFECTIVENESS.speaking_club;
+    remainingWeeklyMinutes       = Math.max(0, weeklyMinutesNeeded - speakingClubEffectivePerWeek);
+  }
+
+  // ── Self-study per day ────────────────────────────────────────────────
+
+  const selfStudyDaysPerWeek  = 5;
+  const dailySelfStudyMinutes = Math.ceil(remainingWeeklyMinutes / selfStudyDaysPerWeek);
+
+  // Spread Speaking Club across 7 days to get true daily average
+  const speakingClubDailyAvg  = includesSpeakingClub ? SPEAKING_CLUB.weekly_minutes / 7 : 0;
+  const totalDailyMinutes      = dailySelfStudyMinutes + speakingClubDailyAvg;
+  const daily                  = Math.round(totalDailyMinutes); // for readability
+
+  // ── Mentor & assignments ──────────────────────────────────────────────
+
+  const mentorSessionsPerMonth  = 2;
+  const mentorMinutesPerSession = 30;
+  const mentorWeeklyMinutes     = (mentorSessionsPerMonth * mentorMinutesPerSession) / 4;
+  const mentorEffectiveWeekly   = mentorWeeklyMinutes * EFFECTIVENESS.mentor_session;
+
+  const assignmentsPerWeek      = 2;
+  const minutesPerAssignment    = 45;
+  const assignmentWeeklyMinutes = assignmentsPerWeek * minutesPerAssignment;
+
+  // ── Feasibility ───────────────────────────────────────────────────────
+  //
+  // Evaluated on `daily` = self-study + speaking club (combined realistic load)
+
+  let isRealistic: boolean;
+  let canCreateGoal: boolean;
+  let difficultyLevel: DifficultyLevel;
+  let recommendation: string;
+
+  if (daily < THRESHOLD.easy) {
+    // < 30 min/day
+    difficultyLevel = 'easy';
+    isRealistic     = true;
+    canCreateGoal   = true;
+    recommendation  =
+      `✅ Very manageable! At just ${daily} mins/day combined, you have plenty of breathing room. ` +
+      `Consider adding extra vocabulary or listening practice to accelerate your progress.`;
+
+  } else if (daily <= THRESHOLD.moderate) {
+    // 30–90 min/day
+    difficultyLevel = 'moderate';
+    isRealistic     = true;
+    canCreateGoal   = true;
+    recommendation  =
+      `👍 Realistic and sustainable. ${daily} mins/day — including Speaking Club sessions — ` +
+      `fits comfortably into most daily routines. Stay consistent and you'll get there!`;
+
+  } else if (daily <= THRESHOLD.challenging) {
+    // 91–180 min/day
+    difficultyLevel = 'challenging';
+    isRealistic     = true;
+    canCreateGoal   = true;
+    recommendation  =
+      `⚠️ Ambitious but achievable. ${daily} mins/day requires real commitment and a solid routine. ` +
+      `Use Speaking Club sessions to maximise your efficiency, and consider extending ` +
+      `your timeline if life gets busy.`;
+
+  } else if (daily <= THRESHOLD.extreme) {
+    // 181–300 min/day
+    difficultyLevel = 'extreme';
+    isRealistic     = false;
+    canCreateGoal   = true;
+    recommendation  =
+      `🚫 Very demanding — ${daily} mins/day (nearly 5 hours!) is close to the limit of ` +
+      `what's sustainable long-term. This pace risks serious burnout. ` +
+      `We strongly recommend extending your timeline by at least 50%, or targeting ` +
+      `one CEFR level at a time to reduce the load.`;
+
+  } else {
+    // > 300 min/day — IMPOSSIBLE
+    difficultyLevel = 'impossible';
+    isRealistic     = false;
+    canCreateGoal   = false;
+    recommendation  =
+      `🚫 ${daily} mins/day exceeds what's humanly sustainable (over 5 hours of focused ` +
+      `study every single day). This goal cannot be created with the current settings. ` +
+      `Please extend your timeline, reduce the level gap by targeting one CEFR level ` +
+      `at a time, or both.`;
+  }
+
+  // ── Speaking Club impact ──────────────────────────────────────────────
+
+  const totalSessions             = weeksAvailable * SPEAKING_CLUB.days_per_week;
+  const speakingClubContributionPct =
+    weeklyMinutesNeeded > 0
+      ? Math.min(99, Math.round((speakingClubEffectivePerWeek / weeklyMinutesNeeded) * 100))
+      : 0;
+
   return {
-    totalMinutesNeeded: Math.round(totalMinutesNeeded),
-    totalHoursNeeded: Math.round((totalMinutesNeeded / 60) * 10) / 10,
-    
-    dailyMinutesRequired: Math.round(totalDailyMinutes),
-    weeklyHoursRequired: Math.round((weeklyMinutesNeeded / 60) * 10) / 10,
-    
-    studyDaysPerWeek: selfStudyDays,
-    minutesPerSession: dailySelfStudyMinutes,
-    
+    currentCEFR:   currentLevel.cefr,
+    targetCEFR:    targetLevel.cefr,
+    currentIELTS:  Math.round(currentIELTS * 10) / 10,
+    targetIELTS:   Math.round(targetIELTS * 10) / 10,
+    durationMonths,
+    levelGap,
+
+    totalHoursNeeded:    Math.round(totalHours),
+    totalMinutesNeeded:  Math.round(totalMinutes),
+    dailyMinutesRequired: daily,
+    weeklyHoursRequired:  Math.round((weeklyMinutesNeeded / 60) * 10) / 10,
+
     isRealistic,
+    canCreateGoal,
     difficultyLevel,
     recommendation,
-    
+
     breakdown: {
       speakingClubs: {
-        sessionsPerWeek: SPEAKING_CLUB_SCHEDULE.days_per_week,
-        weeklyMinutes: SPEAKING_CLUB_SCHEDULE.weekly_total,
-        effectiveMinutes: Math.round(speakingClubContribution)
+        sessionsPerWeek:  SPEAKING_CLUB.days_per_week,
+        weeklyMinutes:    SPEAKING_CLUB.weekly_minutes,
+        effectiveMinutes: Math.round(speakingClubEffectivePerWeek),
       },
       selfStudy: {
-        daysPerWeek: selfStudyDays,
+        daysPerWeek:   selfStudyDaysPerWeek,
         minutesPerDay: dailySelfStudyMinutes,
-        weeklyMinutes: Math.round(dailySelfStudyMinutes * selfStudyDays)
+        weeklyMinutes: Math.round(dailySelfStudyMinutes * selfStudyDaysPerWeek),
       },
       mentorSessions: {
-        sessionsPerMonth: mentorSessionsPerMonth,
+        sessionsPerMonth:  mentorSessionsPerMonth,
         minutesPerSession: mentorMinutesPerSession,
-        monthlyMinutes: mentorSessionsPerMonth * mentorMinutesPerSession,
-        effectiveMinutes: Math.round(mentorEffectiveMinutes * 4) // Monthly
+        monthlyMinutes:    mentorSessionsPerMonth * mentorMinutesPerSession,
+        effectiveMinutes:  Math.round(mentorEffectiveWeekly * 4),
       },
       assignments: {
-        perWeek: assignmentsPerWeek,
-        minutesPerAssignment: minutesPerAssignment,
-        weeklyMinutes: assignmentWeeklyMinutes
-      }
+        perWeek:              assignmentsPerWeek,
+        minutesPerAssignment,
+        weeklyMinutes:        assignmentWeeklyMinutes,
+      },
     },
-    
+
     speakingClubImpact: {
-      weeksNeeded: weeksAvailable,
-      totalSessions: totalSpeakingClubSessions,
-      contributionPercentage: speakingClubPercentage
-    }
+      weeksNeeded:            weeksAvailable,
+      totalSessions,
+      contributionPercentage: speakingClubContributionPct,
+    },
   };
 }
 
-/**
- * Calculate minutes needed for IELTS improvement
- */
-function calculateIELTSMinutes(currentBand: number, targetBand: number): number {
-  const bandDifference = targetBand - currentBand;
-  const halfBandsNeeded = bandDifference * 2; // 0.5 band increments
-  
-  // Weighted average across all skills
-  const avgMinutesPerHalfBand = (
-    SKILL_IMPROVEMENT_RATES.ielts.reading +
-    SKILL_IMPROVEMENT_RATES.ielts.writing +
-    SKILL_IMPROVEMENT_RATES.ielts.speaking +
-    SKILL_IMPROVEMENT_RATES.ielts.listening
-  ) / 4;
-  
-  // Add 10% buffer for consolidation & practice tests
-  return Math.round(halfBandsNeeded * avgMinutesPerHalfBand * 1.1);
-}
+// ============================================
+// HELPERS
+// ============================================
 
-/**
- * Calculate minutes needed for TOEFL improvement
- */
-function calculateTOEFLMinutes(currentScore: number, targetScore: number): number {
-  const scoreDifference = targetScore - currentScore;
-  const fivePointIncrements = Math.ceil(scoreDifference / 5);
-  
-  // Weighted average
-  const avgMinutesPerIncrement = (
-    SKILL_IMPROVEMENT_RATES.toefl.reading +
-    SKILL_IMPROVEMENT_RATES.toefl.writing +
-    SKILL_IMPROVEMENT_RATES.toefl.speaking +
-    SKILL_IMPROVEMENT_RATES.toefl.listening
-  ) / 4;
-  
-  return Math.round(fivePointIncrements * avgMinutesPerIncrement * 1.1);
-}
-
-/**
- * Calculate minutes needed for conversation fluency
- */
-function calculateConversationMinutes(currentLevel: string): number {
-  const levelMap: { [key: string]: number } = {
-    'A1': SKILL_IMPROVEMENT_RATES.conversation.a1_to_a2,
-    'A2': SKILL_IMPROVEMENT_RATES.conversation.a2_to_b1,
-    'B1': SKILL_IMPROVEMENT_RATES.conversation.b1_to_b2,
-    'B2': SKILL_IMPROVEMENT_RATES.conversation.b2_to_c1,
-    'C1': SKILL_IMPROVEMENT_RATES.conversation.c1_to_c2
-  };
-  
-  return levelMap[currentLevel] || SKILL_IMPROVEMENT_RATES.conversation.a2_to_b1;
-}
-
-/**
- * Format minutes into human-readable time
- */
 export function formatMinutes(minutes: number): string {
   const hours = Math.floor(minutes / 60);
-  const mins = minutes % 60;
-  
-  if (hours === 0) return `${mins} minutes`;
-  if (mins === 0) return `${hours} hour${hours > 1 ? 's' : ''}`;
+  const mins  = minutes % 60;
+  if (hours === 0) return `${mins} min`;
+  if (mins  === 0) return `${hours}h`;
   return `${hours}h ${mins}m`;
 }
 
-/**
- * Get next Speaking Club schedule
- */
 export function getNextSpeakingClubDates(): Date[] {
-  const today = new Date();
-  const daysOfWeek = [1, 3, 5]; // Monday, Wednesday, Friday (0 = Sunday)
-  const next7Days: Date[] = [];
-  
-  for (let i = 0; i < 14; i++) {
+  const today      = new Date();
+  const daysOfWeek = [1, 3, 5];
+  const result: Date[] = [];
+
+  for (let i = 0; i < 14 && result.length < 6; i++) {
     const date = new Date(today);
     date.setDate(today.getDate() + i);
-    
     if (daysOfWeek.includes(date.getDay())) {
-      date.setHours(19, 0, 0, 0); // 7 PM
-      next7Days.push(date);
-      
-      if (next7Days.length >= 6) break; // Next 6 sessions
+      date.setHours(19, 0, 0, 0);
+      result.push(date);
     }
   }
-  
-  return next7Days;
+  return result;
 }

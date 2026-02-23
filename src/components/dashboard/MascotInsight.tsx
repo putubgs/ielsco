@@ -100,7 +100,7 @@ export default function MascotInsight({ analytics, goal, userName }: MascotInsig
           `Okay ${firstName}, real talk. Go drink water, close your laptop, and get horizontal. The IELTS will still be there in 6 hours.`
         ]),
         icon: <Moon size={18} />,
-        gradient: "from-[#1e293b]/95 to-[#0f172a]/95",
+        gradient: "from-[#2F4157] to-[#2F4157]/95",
         actionTip: "Seriously though, studies show 7-8 hours sleep improves test performance by 20%. That's worth more than this midnight grind."
       };
     }
@@ -121,7 +121,7 @@ export default function MascotInsight({ analytics, goal, userName }: MascotInsig
           `Real talk: ${daysSinceCreation} days of ghosting? Even my ex didn't ghost me this hard. One task. Today. That's all I ask.`
         ]),
         icon: <Ghost size={18} />,
-        gradient: "from-[#6b7280]/90 to-[#374151]/95",
+        gradient: "from-[#2F4157]/95 to-[#2F4157]/90",
         actionTip: "Baby steps: Just complete ONE self-track task today. Build momentum, not pressure."
       };
     }
@@ -142,7 +142,7 @@ export default function MascotInsight({ analytics, goal, userName }: MascotInsig
           `The streak is ${analytics.completion_streak}. The vibes are IMMACULATE. The dedication is UNMATCHED. ${firstName} is that person. Be like ${firstName}.`
         ]),
         icon: <Flame size={18} />,
-        gradient: "from-[#f59e0b]/90 to-[#ea580c]/90",
+        gradient: "from-[#2F4157]/90 to-[#2F4157]/80",
         actionTip: "You've unlocked: Legend Status 🏆 Keep the momentum but don't forget rest days are valid too!"
       };
     }
@@ -158,7 +158,7 @@ export default function MascotInsight({ analytics, goal, userName }: MascotInsig
           `50% in ${daysSinceCreation} days is crazy work. I'm impressed but also mildly concerned. Take a breath challenge (easy).`
         ]),
         icon: <Zap size={18} />,
-        gradient: "from-[#dc2626]/85 to-[#ea580c]/90",
+        gradient: "from-[#2F4157]/95 to-[#2F4157]/85",
         actionTip: "Pro tip: Slow and steady beats burnout. You're crushing it but pace yourself or you'll crash in week 2."
       };
     }
@@ -174,7 +174,7 @@ export default function MascotInsight({ analytics, goal, userName }: MascotInsig
           "You know that feeling when you realize the assignment is due tonight? Yeah. That's where we're headed. Let's NOT do that."
         ]),
         icon: <AlertTriangle size={18} />,
-        gradient: "from-[#dc2626]/90 to-[#991b1b]/90",
+        gradient: "from-[#2F4157] to-[#2F4157]/90",
         actionTip: `Reality check: You need ${Math.ceil((100 - goal.overall_progress) / daysUntilDeadline)}% progress per day. It's doable but you gotta LOCK IN.`
       };
     }
@@ -190,7 +190,7 @@ export default function MascotInsight({ analytics, goal, userName }: MascotInsig
           "If you can survive Monday morning, you can survive IELTS. That's the motivational quote of the day. You're welcome."
         ]),
         icon: <Coffee size={18} />,
-        gradient: "from-[#78716c]/90 to-[#57534e]/90",
+        gradient: "from-[#2F4157]/85 to-[#2F4157]/80",
         actionTip: "Start with your easiest task. Build momentum. Mondays don't have to be miserable."
       };
     }
@@ -206,7 +206,7 @@ export default function MascotInsight({ analytics, goal, userName }: MascotInsig
           "Weekend loading... but hey, knocking out one quick task now = less guilt later. Your call though."
         ]),
         icon: <Sparkles size={18} />,
-        gradient: "from-[#06b6d4]/85 to-[#0891b2]/90"
+        gradient: "from-[#2F4157]/90 to-[#2F4157]/85"
       };
     }
 
@@ -228,7 +228,7 @@ export default function MascotInsight({ analytics, goal, userName }: MascotInsig
             `The stats don't lie: ${analytics.average_progress_per_week}%/week velocity, ${analytics.completion_streak} day streak, ${analytics.days_active} active days. You're on DEMON TIME rn.`
           ]),
           icon: <TrendingUp size={18} />,
-          gradient: "from-[#10b981]/85 to-[#059669]/90",
+          gradient: "from-[#2F4157]/95 to-[#2F4157]/90",
           categoryFocus: strongestCategory?.name,
           actionTip: weakestCategory ? `Small note: Your ${weakestCategory.name} is at ${weakestCategory.percentage}%. Not urgent, but maybe give it some love this week?` : undefined
         };
@@ -249,7 +249,7 @@ export default function MascotInsight({ analytics, goal, userName }: MascotInsig
             `Okay so here's where we're at: ${goal.overall_progress}% done, ${daysUntilDeadline} days left. ${weakestCategory ? `Your ${weakestCategory.name} needs work (${weakestCategory.percentage}%).` : ''} Not ideal but I've seen people bounce back from worse. You in?`
           ]),
           icon: <TrendingDown size={18} />,
-          gradient: "from-[#f97316]/85 to-[#ea580c]/90",
+          gradient: "from-[#2F4157]/90 to-[#2F4157]/85",
           categoryFocus: weakestCategory?.name,
           actionTip: `Action plan: Focus ${weakestCategory?.name || 'your weakest'} category. Complete 2-3 tasks there this week. Small wins → momentum → caught up.`
         };
@@ -266,7 +266,7 @@ export default function MascotInsight({ analytics, goal, userName }: MascotInsig
             "Here's the tea: You're reliable with scheduled stuff but self-discipline tasks? Yeah... ${Math.round(selfTrackRate * 100)}% completion. Not judging, just pointing it out so we can fix it."
           ]),
           icon: <Brain size={18} />,
-          gradient: "from-[#8b5cf6]/80 to-[#7c3aed]/85",
+          gradient: "from-[#2F4157]/95 to-[#2F4157]/80",
           actionTip: "Try this: Set phone reminders for self-track tasks. Treat them like appointments. Fake it till you make it."
         };
       }
@@ -282,7 +282,7 @@ export default function MascotInsight({ analytics, goal, userName }: MascotInsig
             "Real pattern: High self-study completion but low mentor submission rate. Translation: You don't trust the process yet. Spoiler: The feedback is what levels you up."
           ]),
           icon: <MessageCircle size={18} />,
-          gradient: "from-[#a855f7]/80 to-[#9333ea]/85",
+          gradient: "from-[#2F4157]/90 to-[#2F4157]/85",
           actionTip: "Challenge: Submit ONE mentor task this week. The anticipation is worse than the actual feedback. Promise."
         };
       }
@@ -298,7 +298,7 @@ export default function MascotInsight({ analytics, goal, userName }: MascotInsig
             "Unironically? You're doing it right. Consistent small efforts > occasional big bursts. Your future self at the exam will thank you."
           ]),
           icon: <CheckCircle2 size={18} />,
-          gradient: "from-[#3b82f6]/85 to-[#2563eb]/90",
+          gradient: "from-[#2F4157] to-[#2F4157]/95",
           categoryFocus: strongestCategory?.name
         };
       }
@@ -323,7 +323,7 @@ export default function MascotInsight({ analytics, goal, userName }: MascotInsig
           icon: weakestCategory.name === 'writing' ? <FileText size={18} /> : 
                 weakestCategory.name === 'speaking' ? <Mic size={18} /> :
                 weakestCategory.name === 'reading' ? <BookOpen size={18} /> : <Headphones size={18} />,
-          gradient: "from-[#f59e0b]/85 to-[#d97706]/90",
+          gradient: "from-[#2F4157]/95 to-[#2F4157]/90",
           categoryFocus: weakestCategory.name,
           actionTip: `This week's mission: Complete 3 ${weakestCategory.name} tasks. That'll bump you from ${weakestCategory.percentage}% to ~${Math.min(100, weakestCategory.percentage + 20)}%. Doable.`
         };
@@ -340,7 +340,7 @@ export default function MascotInsight({ analytics, goal, userName }: MascotInsig
             "You're making progress. Not breaking records, not falling behind. Just... doing the work. And that's literally all it takes."
           ]),
           icon: <Target size={18} />,
-          gradient: "from-[#3b82f6]/85 to-[#1d4ed8]/90"
+          gradient: "from-[#2F4157]/90 to-[#2F4157]/85"
         };
       }
     }
@@ -408,7 +408,7 @@ export default function MascotInsight({ analytics, goal, userName }: MascotInsig
               {insight.actionTip && (
                 <div className="pt-4 ">
                   <div className="flex items-start gap-2">
-                    <Sparkles size={14} className="text-yellow-300 flex-shrink-0 mt-1" />
+                    <Sparkles size={14} className="text-[#E56668] flex-shrink-0 mt-1" />
                     <p className="text-white/80 text-xs md:text-sm italic leading-relaxed">
                       {insight.actionTip}
                     </p>
@@ -416,9 +416,9 @@ export default function MascotInsight({ analytics, goal, userName }: MascotInsig
                 </div>
               )}
 
-           
+            
                 {analytics.days_active > 0 && (
-                  <span className="flex items-center gap-1.5 hover:text-white/80 transition-colors">
+                  <span className="flex items-center gap-1.5 hover:text-white/80 transition-colors mt-4 text-xs text-white/60">
                     <Calendar size={11} /> {analytics.days_active} active days
                   </span>
                 )}

@@ -101,7 +101,7 @@ export default function MentoringDashboard() {
       try {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) {
-          router.push("/login");
+          router.push("/sign-in");
           return;
         }
 

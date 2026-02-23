@@ -1,4 +1,5 @@
 // IELS Goals System - Utility Functions
+// Updated: CEFR-aware, passes currentCEFR + targetCEFR to task generator
 
 import { supabase } from '@/data/supabase';
 import type {
@@ -14,52 +15,67 @@ import type {
   GoalProgressLog
 } from '@/types/goals';
 
+import { createBrowserClient } from "@supabase/ssr";
+import { generateTaskBreakdown } from './task-generator';
+import type { CEFRLevel } from './progress-calculator';
+import { CEFR_TO_IELTS } from './progress-calculator';
+
 // ============================================
-// UPDATED: createGoal with Task Generation
+// createGoal — now CEFR-aware
 // ============================================
-// Add this to your src/data/goals.ts file
-import { createBrowserClient } from "@supabase/ssr"; // 1. Fix: Tambahkan import ini
-import { generateTaskBreakdown } from './task-generator'; // 2. Fix: Sesuaikan nama import
 
 export async function createGoal(
   userId: string,
-  // Sesuaikan tipe input agar menerima parameter tambahan
   goalData: {
     destination: string;
     objective: string;
     target_deadline: string;
     template_id?: string;
-    timeline_months?: number; 
-    // Tambahan untuk logic generator
-    userTier?: 'explorer' | 'insider' | 'visionary'; 
-    currentLevel?: number;
-    targetLevel?: number;
+    timeline_months?: number;
+    userTier?: 'explorer' | 'insider' | 'visionary';
+    // NEW: CEFR levels (required for accurate task generation)
+    currentCEFR?: CEFRLevel;
+    targetCEFR?: CEFRLevel;
+    // Optional IELTS overrides (auto-derived from CEFR if not provided)
+    currentIELTS?: number;
+    targetIELTS?: number;
   }
 ): Promise<Goal | null> {
-const supabase = createBrowserClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key"
-);
+
+  const supabaseClient = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key"
+  );
+
+  // Resolve IELTS values from CEFR if not explicitly given
+  const currentCEFR: CEFRLevel = goalData.currentCEFR || 'B1';
+  const targetCEFR: CEFRLevel = goalData.targetCEFR || 'B2';
+  const currentIELTS = goalData.currentIELTS ?? CEFR_TO_IELTS[currentCEFR];
+  const targetIELTS = goalData.targetIELTS ?? CEFR_TO_IELTS[targetCEFR];
 
   try {
-    // 0. Arsipkan goal lama (jika ada logic one_active_goal)
-    await supabase
+    // 0. Archive previous active goal
+    await supabaseClient
       .from('goals')
       .update({ status: 'abandoned', updated_at: new Date().toISOString() })
       .eq('user_id', userId)
       .eq('status', 'active');
 
-    // 1. Create the goal
-    const { data: goal, error: goalError } = await supabase
+    // 1. Create the goal row
+    const { data: goal, error: goalError } = await supabaseClient
       .from("goals")
       .insert({
         user_id: userId,
         destination: goalData.destination,
         objective: goalData.objective,
         target_deadline: goalData.target_deadline,
-        // template_id: goalData.template_id, // Uncomment jika kolom ini ada di DB
         status: "active",
         overall_progress: 0,
+        // Store CEFR data for reference
+        current_cefr: currentCEFR,
+        target_cefr: targetCEFR,
+        current_ielts: currentIELTS,
+        target_ielts: targetIELTS,
         created_at: new Date().toISOString()
       })
       .select()
@@ -67,20 +83,19 @@ const supabase = createBrowserClient(
 
     if (goalError) throw goalError;
 
-    // 2. Generate tasks based on objective and timeline
-    // 3. Fix: Sesuaikan pemanggilan fungsi dengan parameter task-generator.ts
+    // 2. Generate tasks with full CEFR context
     const tasks = generateTaskBreakdown({
       goalId: goal.id,
       objective: goalData.objective,
-      durationMonths: goalData.timeline_months || 6, // Default 6 bulan
-      userTier: goalData.userTier || 'explorer',       // Default basic
-      currentLevel: goalData.currentLevel || 5.0,   // Default level (bisa disesuaikan)
-      targetLevel: goalData.targetLevel || 7.0      // Default target
+      durationMonths: goalData.timeline_months || 6,
+      userTier: goalData.userTier || 'explorer',
+      currentCEFR,
+      targetCEFR,
+      currentIELTS,
+      targetIELTS,
     });
 
-    // 3. Insert tasks into database
-    // Kita perlu mapping sedikit agar sesuai dengan struktur tabel 'goal_tasks' kamu
-    // (Menghapus properti 'week_number' atau 'materials' jika tabel DB belum support)
+    // 3. Insert tasks
     const dbTasks = tasks.map((t, index) => ({
       goal_id: goal.id,
       title: t.title,
@@ -90,13 +105,12 @@ const supabase = createBrowserClient(
       weight: t.weight,
       display_order: index,
       requires_verification: t.task_type === 'mentor_assessed',
-      // Pastikan field di bawah ini ada di tabel goal_tasks kamu, 
-      // atau hapus jika belum ada di database
+      estimated_minutes: t.estimated_minutes,
       created_at: new Date().toISOString()
     }));
 
     if (dbTasks.length > 0) {
-      const { error: tasksError } = await supabase
+      const { error: tasksError } = await supabaseClient
         .from("goal_tasks")
         .insert(dbTasks);
 
@@ -105,17 +119,6 @@ const supabase = createBrowserClient(
       }
     }
 
-    // 4. Create initial progress log (Opsional, jika tabel ada)
-    // Cek dulu apakah tabel goal_progress atau goal_progress_logs yang kamu pakai
-    /* await supabase.from("goal_progress_logs").insert({
-      goal_id: goal.id,
-      progress_before: 0,
-      progress_after: 0,
-      changed_by: 'system',
-      change_reason: 'Goal initialization'
-    });
-    */
-
     return goal;
   } catch (error) {
     console.error("Error in createGoal:", JSON.stringify(error, null, 2));
@@ -123,17 +126,15 @@ const supabase = createBrowserClient(
   }
 }
 
-/**
- * Get user's active goal with all tasks
- */
+// ============================================
+// READ OPERATIONS (unchanged)
+// ============================================
+
 export async function getActiveGoal(userId: string): Promise<GoalWithTasks | null> {
   try {
     const { data: goal, error } = await supabase
       .from('goals')
-      .select(`
-        *,
-        tasks:goal_tasks(*)
-      `)
+      .select(`*, tasks:goal_tasks(*)`)
       .eq('user_id', userId)
       .eq('status', 'active')
       .order('created_at', { ascending: false })
@@ -147,16 +148,10 @@ export async function getActiveGoal(userId: string): Promise<GoalWithTasks | nul
     return null;
   }
 }
-/**
- * Delete a goal and all related tasks
- */
+
 export async function deleteGoal(goalId: string): Promise<boolean> {
   try {
-    const { error } = await supabase
-      .from('goals')
-      .delete()
-      .eq('id', goalId);
-
+    const { error } = await supabase.from('goals').delete().eq('id', goalId);
     if (error) throw error;
     return true;
   } catch (error) {
@@ -164,15 +159,15 @@ export async function deleteGoal(goalId: string): Promise<boolean> {
     return false;
   }
 }
+
 export async function getUserGoals(
   userId: string,
   page: number = 1,
   pageSize: number = 10
 ): Promise<Goal[]> {
   try {
-    // FIX: Cegah query jika userId kosong/undefined
     if (!userId) {
-      console.warn('getUserGoals dibatalkan: User ID tidak ditemukan.');
+      console.warn('getUserGoals: userId is empty');
       return [];
     }
 
@@ -187,19 +182,17 @@ export async function getUserGoals(
       .range(from, to);
 
     if (error) throw error;
-    
     return data as Goal[];
   } catch (error) {
-    // Gunakan JSON.stringify agar error object {} terlihat isinya (misal: "relation does not exist")
     console.error('Error fetching goals:', JSON.stringify(error, null, 2));
     return [];
   }
 }
-/**
- * Get single goal with full details
- */
-// FIX: Ganti return type dari GoalWithTasks menjadi Intersection Type yang lengkap
-export async function getGoalById(goalId: string): Promise<(GoalWithTasks & { progress_logs: GoalProgressLog[], consultations: MentorConsultation[] }) | null> {
+
+export async function getGoalById(goalId: string): Promise<(GoalWithTasks & {
+  progress_logs: GoalProgressLog[];
+  consultations: MentorConsultation[];
+}) | null> {
   try {
     const { data, error } = await supabase
       .from('goals')
@@ -213,17 +206,13 @@ export async function getGoalById(goalId: string): Promise<(GoalWithTasks & { pr
       .single();
 
     if (error) throw error;
-    
-    // Cast ke 'any' dulu sebelum ke tipe kompleks agar aman
     return data as any;
   } catch (error) {
     console.error('Error fetching goal:', JSON.stringify(error, null, 2));
     return null;
   }
 }
-/**
- * Update goal status
- */
+
 export async function updateGoalStatus(
   goalId: string,
   status: 'active' | 'completed' | 'paused' | 'abandoned'
@@ -231,7 +220,7 @@ export async function updateGoalStatus(
   try {
     const { error } = await supabase
       .from('goals')
-      .update({ 
+      .update({
         status,
         completed_at: status === 'completed' ? new Date().toISOString() : null
       })
@@ -248,15 +237,12 @@ export async function updateGoalStatus(
 // ============================================
 // TASK OPERATIONS
 // ============================================
-/**
- * Toggle task completion (Updated & Fix Logging)
- */
+
 export async function toggleTaskCompletion(
   taskId: string,
   userId: string
 ): Promise<boolean> {
   try {
-    // 1. Ambil data task (Kita sederhanakan query-nya dulu)
     const { data: task, error: fetchError } = await supabase
       .from('goal_tasks')
       .select('id, goal_id, is_completed')
@@ -265,9 +251,8 @@ export async function toggleTaskCompletion(
 
     if (fetchError) throw fetchError;
 
-    // 2. Toggle Status (True <-> False)
     const newStatus = !task.is_completed;
-    
+
     const { error: updateError } = await supabase
       .from('goal_tasks')
       .update({
@@ -278,19 +263,14 @@ export async function toggleTaskCompletion(
 
     if (updateError) throw updateError;
 
-    // 3. Hitung Ulang Progress Goal
     await recalculateGoalProgress(task.goal_id);
-
     return true;
   } catch (error) {
-    // FIX LOGGING: Gunakan JSON.stringify agar error {} terlihat isinya
     console.error('Error toggling task:', JSON.stringify(error, null, 2));
     return false;
   }
 }
-/**
- * Submit task for mentor assessment
- */
+
 export async function submitTaskForReview(
   taskId: string,
   submissionUrl: string,
@@ -314,9 +294,6 @@ export async function submitTaskForReview(
   }
 }
 
-/**
- * Mentor verifies and scores a task
- */
 export async function mentorVerifyTask(
   taskId: string,
   mentorId: string,
@@ -340,9 +317,7 @@ export async function mentorVerifyTask(
 
     if (updateError) throw updateError;
 
-    // Recalculate progress
     await recalculateGoalProgress(task.goal_id);
-
     return true;
   } catch (error) {
     console.error('Error verifying task:', error);
@@ -350,9 +325,6 @@ export async function mentorVerifyTask(
   }
 }
 
-/**
- * Recalculate goal progress based on task completion
- */
 export async function recalculateGoalProgress(goalId: string): Promise<number> {
   try {
     const { data, error } = await supabase.rpc('calculate_goal_progress', {
@@ -362,15 +334,15 @@ export async function recalculateGoalProgress(goalId: string): Promise<number> {
     if (error) throw error;
     return data as number;
   } catch (error) {
-    // Update logging biar error terbaca
     console.error('Error recalculating progress:', JSON.stringify(error, null, 2));
     return 0;
   }
 }
 
-/**
- * Get goal analytics
- */
+// ============================================
+// ANALYTICS
+// ============================================
+
 export async function getGoalAnalytics(goalId: string): Promise<GoalAnalytics | null> {
   try {
     const goal = await getGoalById(goalId);
@@ -379,50 +351,44 @@ export async function getGoalAnalytics(goalId: string): Promise<GoalAnalytics | 
     const tasks = goal.tasks;
     const progressLogs = goal.progress_logs || [];
 
-    // --- FIX LOGIC DATE & VELOCITY ---
     const now = new Date();
     const createdAt = new Date(goal.created_at);
-    
-    // Hitung minggu berjalan (min 1 minggu untuk hindari pembagian 0)
-    const weeksElapsed = Math.max(1, Math.floor((now.getTime() - createdAt.getTime()) / (7 * 24 * 60 * 60 * 1000)));
-    
-    // Kecepatan progress per minggu
+    const weeksElapsed = Math.max(1, Math.floor(
+      (now.getTime() - createdAt.getTime()) / (7 * 24 * 60 * 60 * 1000)
+    ));
+
     const averageProgressPerWeek = goal.overall_progress / weeksElapsed;
 
-    // Default proyeksi selesai = Deadline asli
     let projectedCompletionDate = new Date(goal.target_deadline);
 
-    // Hanya hitung prediksi jika user punya progress (velocity > 0)
     if (averageProgressPerWeek > 0) {
       const remainingProgress = 100 - goal.overall_progress;
       const weeksRemaining = remainingProgress / averageProgressPerWeek;
-      
-      // Pastikan weeksRemaining adalah angka valid (bukan Infinity)
+
       if (isFinite(weeksRemaining)) {
         const projection = new Date();
         projection.setDate(projection.getDate() + Math.ceil(weeksRemaining * 7));
-        
-        // Pastikan hasil tanggal valid sebelum di-assign
+
         if (!isNaN(projection.getTime())) {
           projectedCompletionDate = projection;
         }
       }
     }
-    // ----------------------------------
 
     const isAheadOfSchedule = projectedCompletionDate <= new Date(goal.target_deadline);
 
-    // Kategori Breakdown
     const categoryProgress: any = {};
     const categories = [...new Set(tasks.map(t => t.category).filter(Boolean))];
-    
+
     categories.forEach(category => {
       const categoryTasks = tasks.filter(t => t.category === category);
       const completed = categoryTasks.filter(t => t.is_completed).length;
       categoryProgress[category!] = {
         completed,
         total: categoryTasks.length,
-        percentage: categoryTasks.length > 0 ? Math.round((completed / categoryTasks.length) * 100) : 0
+        percentage: categoryTasks.length > 0
+          ? Math.round((completed / categoryTasks.length) * 100)
+          : 0
       };
     });
 
@@ -437,7 +403,7 @@ export async function getGoalAnalytics(goalId: string): Promise<GoalAnalytics | 
     return {
       goal_id: goalId,
       average_progress_per_week: Math.round(averageProgressPerWeek * 10) / 10,
-      projected_completion_date: projectedCompletionDate.toISOString(), // Sekarang aman
+      projected_completion_date: projectedCompletionDate.toISOString(),
       is_ahead_of_schedule: isAheadOfSchedule,
       system_tasks_completed: tasks.filter(t => t.task_type === 'system' && t.is_completed).length,
       self_track_tasks_completed: tasks.filter(t => t.task_type === 'self_track' && t.is_completed).length,
@@ -452,46 +418,30 @@ export async function getGoalAnalytics(goalId: string): Promise<GoalAnalytics | 
     return null;
   }
 }
-/**
- * Calculate completion streak
- */
+
 function calculateCompletionStreak(tasks: GoalTask[]): number {
   const completedTasks = tasks
     .filter(t => t.is_completed && t.completed_at)
-    .sort((a, b) => 
+    .sort((a, b) =>
       new Date(b.completed_at!).getTime() - new Date(a.completed_at!).getTime()
     );
 
   if (completedTasks.length === 0) return 0;
 
   let streak = 1;
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
   for (let i = 0; i < completedTasks.length - 1; i++) {
-    const currentDate = new Date(completedTasks[i].completed_at!);
-    currentDate.setHours(0, 0, 0, 0);
-    
-    const nextDate = new Date(completedTasks[i + 1].completed_at!);
-    nextDate.setHours(0, 0, 0, 0);
-
-    const dayDiff = Math.floor(
-      (currentDate.getTime() - nextDate.getTime()) / (24 * 60 * 60 * 1000)
-    );
-
-    if (dayDiff === 1) {
-      streak++;
-    } else {
-      break;
-    }
+    const curr = new Date(completedTasks[i].completed_at!);
+    curr.setHours(0, 0, 0, 0);
+    const next = new Date(completedTasks[i + 1].completed_at!);
+    next.setHours(0, 0, 0, 0);
+    const diff = Math.floor((curr.getTime() - next.getTime()) / (24 * 60 * 60 * 1000));
+    if (diff === 1) streak++;
+    else break;
   }
 
   return streak;
 }
 
-/**
- * Get goal summary for dashboard widget
- */
 export async function getGoalSummary(userId: string): Promise<GoalSummary | null> {
   try {
     const goal = await getActiveGoal(userId);
@@ -499,13 +449,11 @@ export async function getGoalSummary(userId: string): Promise<GoalSummary | null
 
     const totalTasks = goal.tasks.length;
     const completedTasks = goal.tasks.filter(t => t.is_completed).length;
-    
-    // Next task = first incomplete task by display_order
+
     const nextTask = goal.tasks
       .filter(t => !t.is_completed)
       .sort((a, b) => a.display_order - b.display_order)[0];
 
-    // Days remaining
     const targetDate = new Date(goal.target_deadline);
     const today = new Date();
     const daysRemaining = Math.max(
@@ -513,14 +461,13 @@ export async function getGoalSummary(userId: string): Promise<GoalSummary | null
       Math.ceil((targetDate.getTime() - today.getTime()) / (24 * 60 * 60 * 1000))
     );
 
-    // Is on track? (progress should be proportional to time elapsed)
     const totalDays = Math.ceil(
       (targetDate.getTime() - new Date(goal.created_at).getTime()) /
-        (24 * 60 * 60 * 1000)
+      (24 * 60 * 60 * 1000)
     );
     const daysElapsed = totalDays - daysRemaining;
     const expectedProgress = (daysElapsed / totalDays) * 100;
-    const isOnTrack = goal.overall_progress >= expectedProgress * 0.9; // 90% of expected
+    const isOnTrack = goal.overall_progress >= expectedProgress * 0.9;
 
     return {
       goal,
@@ -540,9 +487,6 @@ export async function getGoalSummary(userId: string): Promise<GoalSummary | null
 // CONSULTATION OPERATIONS
 // ============================================
 
-/**
- * Book a consultation
- */
 export async function bookConsultation(
   userId: string,
   input: BookConsultationInput
@@ -569,9 +513,6 @@ export async function bookConsultation(
   }
 }
 
-/**
- * Get upcoming consultations for user
- */
 export async function getUpcomingConsultations(
   userId: string
 ): Promise<MentorConsultation[]> {
@@ -591,6 +532,7 @@ export async function getUpcomingConsultations(
     return [];
   }
 }
+
 export async function getGoalTemplates() {
   try {
     const { data, error } = await supabase
@@ -602,7 +544,6 @@ export async function getGoalTemplates() {
     if (error) throw error;
     return data;
   } catch (error) {
-    // FIX: Gunakan JSON.stringify agar error terbaca jelas
     console.error('Error fetching templates:', JSON.stringify(error, null, 2));
     return [];
   }
@@ -612,16 +553,11 @@ export async function getGoalTemplates() {
 // SYSTEM INTEGRATIONS
 // ============================================
 
-/**
- * Auto-complete tasks based on event attendance
- * Called when user attends an event
- */
 export async function syncEventAttendance(
   userId: string,
   eventId: string
 ): Promise<void> {
   try {
-    // Find tasks linked to this event for this user's active goal
     const { data: tasks, error } = await supabase
       .from('goal_tasks')
       .select('*, goal:goals!inner(user_id, status)')
@@ -641,10 +577,6 @@ export async function syncEventAttendance(
   }
 }
 
-/**
- * Auto-complete tasks based on test scores
- * Called when user completes a test
- */
 export async function syncTestCompletion(
   userId: string,
   testId: string,
@@ -662,7 +594,6 @@ export async function syncTestCompletion(
 
     for (const task of tasks || []) {
       if (!task.is_completed) {
-        // Check if score meets requirement
         if (!task.required_score || score >= task.required_score) {
           await toggleTaskCompletion(task.id, userId);
         }

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import NotificationDropdown from "@/components/dashboard/NotificationDropdown";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { createBrowserClient } from "@supabase/ssr";
@@ -247,10 +248,7 @@ return (
             </Link>
 
             {/* NOTIF */}
-            <button className="relative p-2.5 text-gray-300 hover:text-white hover:bg-white/10 rounded-full transition-all group">
-              <Bell size={22} className="group-hover:rotate-12 transition-transform" />
-              <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
-            </button>
+<NotificationDropdown />
           </div>
 
           {/* PROFILE DROPDOWN */}

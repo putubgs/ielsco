@@ -1,15 +1,19 @@
 // IELS Goals - Smart Task Breakdown Generator
-// Automatically generates tasks based on goal timeline and objective
+// CEFR-aware, generates tasks proportional to level gap & timeline
 
 import type { GoalTask, TaskType, TaskCategory } from '@/types/goals';
+import type { CEFRLevel } from './progress-calculator';
 
 export interface TaskBreakdownConfig {
   goalId: string;
   objective: string;
   durationMonths: number;
-  userTier: 'explorer' | 'insider' | 'visionary' ;
-  currentLevel: number; // IELTS equivalent
-  targetLevel: number;
+  userTier: 'explorer' | 'insider' | 'visionary';
+  currentCEFR: CEFRLevel;
+  targetCEFR: CEFRLevel;
+  // IELTS equivalents (auto-converted from CEFR)
+  currentIELTS: number;
+  targetIELTS: number;
 }
 
 export interface GeneratedTask {
@@ -19,549 +23,728 @@ export interface GeneratedTask {
   category: TaskCategory;
   weight: number;
   requires_pro: boolean;
-  week_number?: number; // When task should be done
+  week_number?: number;
   estimated_minutes: number;
   materials?: string[];
-  linked_event_type?: string; // "speaking_club", "workshop", etc.
+  linked_event_type?: string;
+}
+
+// CEFR level numeric index for gap calculations
+const CEFR_INDEX: Record<CEFRLevel, number> = {
+  A1: 0, A2: 1, B1: 2, B2: 3, C1: 4, C2: 5,
+};
+
+function getLevelGap(from: CEFRLevel, to: CEFRLevel): number {
+  return Math.max(0, CEFR_INDEX[to] - CEFR_INDEX[from]);
 }
 
 /**
- * Generate personalized task breakdown for goal duration
+ * Main entry point — routes to the right task set based on objective keyword
  */
 export function generateTaskBreakdown(config: TaskBreakdownConfig): GeneratedTask[] {
-  const { objective, durationMonths, userTier, currentLevel, targetLevel } = config;
-  
-  const tasks: GeneratedTask[] = [];
+  const { objective, durationMonths, userTier, currentCEFR, targetCEFR, currentIELTS, targetIELTS } = config;
   const objectiveLower = objective.toLowerCase();
-  
-  // === IELTS/TOEFL PATH ===
+
   if (objectiveLower.includes('ielts')) {
-    tasks.push(...generateIELTSTasks(durationMonths, currentLevel, targetLevel, userTier));
+    return generateIELTSTasks(durationMonths, currentIELTS, targetIELTS, userTier);
   }
-  // === SCHOLARSHIP PATH ===
-  else if (objectiveLower.includes('scholarship') || objectiveLower.includes('lpdp') || objectiveLower.includes('chevening')) {
-    tasks.push(...generateScholarshipTasks(durationMonths, userTier));
+  if (objectiveLower.includes('toefl')) {
+    return generateTOEFLTasks(durationMonths, currentIELTS, targetIELTS, userTier);
   }
-  // === BUSINESS/WORK PATH ===
-  else if (objectiveLower.includes('job') || objectiveLower.includes('work') || objectiveLower.includes('business')) {
-    tasks.push(...generateBusinessTasks(durationMonths, userTier));
+  if (
+    objectiveLower.includes('lpdp') ||
+    objectiveLower.includes('chevening') ||
+    objectiveLower.includes('fulbright') ||
+    objectiveLower.includes('scholarship')
+  ) {
+    return generateScholarshipTasks(durationMonths, userTier, currentIELTS);
   }
-  // === CONVERSATION PATH ===
-  else {
-    tasks.push(...generateConversationTasks(durationMonths, userTier));
+  if (
+    objectiveLower.includes('job') ||
+    objectiveLower.includes('work') ||
+    objectiveLower.includes('business') ||
+    objectiveLower.includes('remote') ||
+    objectiveLower.includes('tech') ||
+    objectiveLower.includes('healthcare') ||
+    objectiveLower.includes('professional')
+  ) {
+    return generateProfessionalTasks(durationMonths, userTier, currentCEFR, targetCEFR);
   }
-  
-  return tasks;
+  // Default: conversation / fluency
+  return generateConversationTasks(durationMonths, userTier, currentCEFR, targetCEFR);
 }
 
-/**
- * IELTS Task Breakdown (3-12 months)
- */
-function generateIELTSTasks(months: number, current: number, target: number, tier: 'explorer' | 'insider' | 'visionary' ): GeneratedTask[] {
+// ============================================
+// IELTS PATH
+// ============================================
+
+function generateIELTSTasks(
+  months: number,
+  currentBand: number,
+  targetBand: number,
+  tier: TaskBreakdownConfig['userTier']
+): GeneratedTask[] {
   const tasks: GeneratedTask[] = [];
-  const weeksAvailable = months * 4;
-  const bandGap = target - current;
-  
-  // === WEEK 1: DIAGNOSTIC & ONBOARDING ===
+  const weeks = months * 4;
+  const bandGap = Math.max(0, targetBand - currentBand);
+
+  // Scale task volume proportionally to band gap & duration
+  const intensity = Math.max(1, bandGap / 0.5); // each 0.5 band = 1 intensity unit
+
+  // Diagnostic (always, week 1)
   tasks.push({
-    title: "Complete IELTS Diagnostic Test",
-    description: "Take full-length diagnostic to determine your baseline in all 4 sections",
-    task_type: "system",
-    category: "test",
+    title: 'Complete IELTS Diagnostic Test',
+    description: 'Full-length diagnostic to determine your baseline across all 4 sections (Reading, Writing, Listening, Speaking)',
+    task_type: 'system',
+    category: 'test',
     weight: 8,
     requires_pro: false,
     week_number: 1,
     estimated_minutes: 180,
-    materials: ["diagnostic-test-2024.pdf"]
+    materials: ['diagnostic-test-2024.pdf'],
   });
-  
+
   tasks.push({
     title: "Read 'IELTS Success Strategy Guide'",
-    description: "Understand test format, scoring, and preparation approach",
-    task_type: "self_track",
-    category: "reading",
+    description: 'Understand test format, scoring bands, and the best preparation approach for your target band',
+    task_type: 'self_track',
+    category: 'reading',
     weight: 3,
     requires_pro: false,
     week_number: 1,
     estimated_minutes: 45,
-    materials: ["ielts-strategy-guide.pdf"]
+    materials: ['ielts-strategy-guide.pdf'],
   });
-  
-  // === SPEAKING CLUBS (PRO ONLY - Recurring every Mon/Wed/Fri) ===
-  const speakingClubSessions = Math.floor(weeksAvailable * 3); // 3 sessions per week
+
+  // Speaking Club — sessions scale with duration
+  const totalSpeakingClubSessions = Math.min(weeks * 3, 108); // max 3/week
   tasks.push({
-    title: `Attend ${Math.min(speakingClubSessions, 36)} Speaking Club Sessions`,
-    description: "Join Mon/Wed/Fri speaking practice (7 PM WIB). Pro members only.",
-    task_type: "system",
-    category: "speaking",
+    title: `Attend ${totalSpeakingClubSessions} Speaking Club Sessions`,
+    description: 'Join Mon/Wed/Fri speaking practice (7 PM WIB). Live feedback from peers and coaches.',
+    task_type: 'system',
+    category: 'speaking',
     weight: 15,
-    requires_pro: true, // 🔒 PRO ONLY
-    estimated_minutes: 90 * Math.min(speakingClubSessions, 36),
-    linked_event_type: "speaking_club"
+    requires_pro: true,
+    estimated_minutes: totalSpeakingClubSessions * 90,
+    linked_event_type: 'speaking_club',
   });
-  
-  // === MONTHLY BREAKDOWN ===
-  
-  // Month 1: Foundation
-  if (months >= 3) {
-    tasks.push({
-      title: "Complete 10 Reading Practice Passages",
-      description: "Academic passages with True/False/Not Given questions",
-      task_type: "self_track",
-      category: "reading",
-      weight: 6,
-      requires_pro: false,
-      week_number: 4,
-      estimated_minutes: 600, // 60 mins each
-      materials: ["reading-practice-set-1.pdf"]
-    });
-    
-    tasks.push({
-      title: "Write 8 Task 1 Essays (Graphs/Charts)",
-      description: "Practice describing visual data with correct structure",
-      task_type: "self_track",
-      category: "writing",
-      weight: 5,
-      requires_pro: false,
-      week_number: 4,
-      estimated_minutes: 320, // 40 mins each
-      materials: ["task1-templates.pdf", "sample-graphs.pdf"]
-    });
-    
-    tasks.push({
-      title: "Submit 2 Writing Essays for Mentor Review",
-      description: "Get professional feedback on structure, coherence, and vocabulary",
-      task_type: "mentor_assessed",
-      category: "writing",
-      weight: 10,
-      requires_pro: true, // 🔒 PRO ONLY
-      week_number: 4,
-      estimated_minutes: 120
-    });
-  }
-  
-  // Month 2: Skill Building
-  if (months >= 6) {
-    tasks.push({
-      title: "Complete 15 Listening Practice Tests",
-      description: "Section 1-4 practice with note completion and multiple choice",
-      task_type: "self_track",
-      category: "listening",
-      weight: 6,
-      requires_pro: false,
-      week_number: 8,
-      estimated_minutes: 450, // 30 mins each
-      materials: ["listening-practice-cambridge.zip"]
-    });
-    
-    tasks.push({
-      title: "Write 10 Task 2 Opinion Essays",
-      description: "Discuss, agree/disagree, two-part questions",
-      task_type: "self_track",
-      category: "writing",
-      weight: 7,
-      requires_pro: false,
-      week_number: 8,
-      estimated_minutes: 400,
-      materials: ["task2-question-bank.pdf"]
-    });
-    
-    tasks.push({
-      title: "Attend 4 IELTS Strategy Workshops",
-      description: "Live workshops covering Writing, Speaking, Reading techniques",
-      task_type: "system",
-      category: "event",
-      weight: 8,
-      requires_pro: false,
-      week_number: 8,
-      estimated_minutes: 480, // 2 hours each
-      linked_event_type: "workshop"
-    });
-  }
-  
-  // Month 3+: Intensive Practice
-  if (months >= 9) {
-    tasks.push({
-      title: "Pass 6 Weekly Practice Tests (Band 6.0+)",
-      description: "Full-length timed tests to track improvement",
-      task_type: "system",
-      category: "test",
-      weight: 12,
-      requires_pro: false,
-      week_number: 12,
-      estimated_minutes: 1080, // 180 mins each
-      materials: ["weekly-test-schedule.pdf"]
-    });
-    
-    tasks.push({
-      title: "Complete 4 Speaking Mock Interviews",
-      description: "Full Part 1-3 simulation with mentor feedback",
-      task_type: "mentor_assessed",
-      category: "speaking",
-      weight: 8,
-      requires_pro: true, // 🔒 PRO ONLY
-      week_number: 12,
-      estimated_minutes: 240 // 60 mins each (30 test + 30 feedback)
-    });
-  }
-  
-  // Final Month: Mock Exams
+
+  // Reading practice — more passages for bigger gap
+  const readingPassages = Math.round(10 * intensity * (months / 6));
   tasks.push({
-    title: `Achieve Band ${target - 0.5}+ in Full Mock Test`,
-    description: "Complete mock exam under real test conditions",
-    task_type: "system",
-    category: "test",
-    weight: 15,
+    title: `Complete ${readingPassages} Academic Reading Passages`,
+    description: 'True/False/Not Given, matching headings, sentence completion with timed practice',
+    task_type: 'self_track',
+    category: 'reading',
+    weight: 6,
     requires_pro: false,
-    week_number: weeksAvailable - 2,
-    estimated_minutes: 180
+    week_number: Math.round(weeks * 0.3),
+    estimated_minutes: readingPassages * 60,
+    materials: ['reading-practice-academic.pdf'],
   });
-  
+
+  // Writing Task 1
+  const task1Count = Math.round(6 * intensity * (months / 6));
   tasks.push({
-    title: "Review All Mistakes & Weak Areas",
-    description: "Analyze errors from all practice tests and essays",
-    task_type: "self_track",
-    category: "admin",
+    title: `Write ${task1Count} Task 1 Graph/Chart Essays`,
+    description: 'Practice describing visual data (bar charts, line graphs, pie charts, maps) with correct structure and vocabulary',
+    task_type: 'self_track',
+    category: 'writing',
     weight: 5,
     requires_pro: false,
-    week_number: weeksAvailable - 1,
-    estimated_minutes: 240
+    week_number: Math.round(weeks * 0.3),
+    estimated_minutes: task1Count * 40,
+    materials: ['task1-templates.pdf', 'sample-graphs.pdf'],
   });
-  
-  return tasks;
+
+  // Writing Task 2
+  const task2Count = Math.round(8 * intensity * (months / 6));
+  tasks.push({
+    title: `Write ${task2Count} Task 2 Opinion Essays`,
+    description: 'Discuss both views, agree/disagree, advantages/disadvantages, two-part questions',
+    task_type: 'self_track',
+    category: 'writing',
+    weight: 7,
+    requires_pro: false,
+    week_number: Math.round(weeks * 0.5),
+    estimated_minutes: task2Count * 40,
+    materials: ['task2-question-bank.pdf'],
+  });
+
+  // Mentor writing review (Pro)
+  const mentorEssays = Math.round(2 * Math.ceil(months / 3)); // 2 per quarter
+  tasks.push({
+    title: `Submit ${mentorEssays} Essays for Mentor Review`,
+    description: 'Get professional band-score feedback on structure, coherence, lexical resource, and grammatical range',
+    task_type: 'mentor_assessed',
+    category: 'writing',
+    weight: 10,
+    requires_pro: true,
+    week_number: Math.round(weeks * 0.5),
+    estimated_minutes: mentorEssays * 60,
+  });
+
+  // Listening practice
+  const listeningTests = Math.round(12 * intensity * (months / 6));
+  tasks.push({
+    title: `Complete ${listeningTests} Listening Practice Tests`,
+    description: 'Section 1–4 practice: note completion, multiple choice, matching, plan/map/diagram labelling',
+    task_type: 'self_track',
+    category: 'listening',
+    weight: 6,
+    requires_pro: false,
+    week_number: Math.round(weeks * 0.6),
+    estimated_minutes: listeningTests * 30,
+    materials: ['listening-cambridge-17.zip'],
+  });
+
+  // Workshops
+  const workshopCount = Math.max(2, Math.round(months / 2));
+  tasks.push({
+    title: `Attend ${workshopCount} IELTS Strategy Workshops`,
+    description: 'Live sessions covering Writing, Speaking, Reading & Listening techniques with IELS coaches',
+    task_type: 'system',
+    category: 'event',
+    weight: 8,
+    requires_pro: false,
+    week_number: Math.round(weeks * 0.6),
+    estimated_minutes: workshopCount * 120,
+    linked_event_type: 'workshop',
+  });
+
+  // Practice tests
+  const practiceTests = Math.max(3, Math.round(months * 0.75));
+  tasks.push({
+    title: `Pass ${practiceTests} Full Mock Tests (Band ${targetBand - 0.5}+)`,
+    description: 'Full-length timed tests under real exam conditions. Track band improvement over time.',
+    task_type: 'system',
+    category: 'test',
+    weight: 12,
+    requires_pro: false,
+    week_number: Math.round(weeks * 0.75),
+    estimated_minutes: practiceTests * 180,
+  });
+
+  // Speaking mock interviews (Pro)
+  const mockInterviews = Math.max(2, Math.round(months / 3));
+  tasks.push({
+    title: `Complete ${mockInterviews} Speaking Mock Interviews`,
+    description: 'Full Part 1–3 simulation with band-score feedback from an IELS speaking coach',
+    task_type: 'mentor_assessed',
+    category: 'speaking',
+    weight: 8,
+    requires_pro: true,
+    week_number: Math.round(weeks * 0.8),
+    estimated_minutes: mockInterviews * 60,
+  });
+
+  // Final review
+  tasks.push({
+    title: `Achieve Band ${targetBand - 0.5}+ in Final Mock Test`,
+    description: 'Final full mock under strict exam conditions to confirm readiness',
+    task_type: 'system',
+    category: 'test',
+    weight: 10,
+    requires_pro: false,
+    week_number: weeks - 2,
+    estimated_minutes: 180,
+  });
+
+  tasks.push({
+    title: 'Review All Mistakes & Weak Areas',
+    description: 'Analyse all errors from practice tests, essays, and speaking recordings. Create a personal error log.',
+    task_type: 'self_track',
+    category: 'admin',
+    weight: 5,
+    requires_pro: false,
+    week_number: weeks - 1,
+    estimated_minutes: 240,
+  });
+
+  return normalizeWeights(tasks);
 }
 
-/**
- * Scholarship Task Breakdown
- */
-function generateScholarshipTasks(months: number, tier: 'explorer' | 'insider' | 'visionary' ): GeneratedTask[] {
+// ============================================
+// TOEFL PATH
+// ============================================
+
+function generateTOEFLTasks(
+  months: number,
+  currentBand: number,
+  targetBand: number,
+  tier: TaskBreakdownConfig['userTier']
+): GeneratedTask[] {
   const tasks: GeneratedTask[] = [];
-  
-  // Test Prep (first 6 months)
+  const weeks = months * 4;
+
   tasks.push({
-    title: "Achieve IELTS 6.5+ or TOEFL 90+",
-    description: "Meet minimum English proficiency requirement",
-    task_type: "system",
-    category: "test",
+    title: 'Complete TOEFL iBT Diagnostic Test',
+    description: 'Full-length diagnostic to assess baseline in Reading, Listening, Speaking, and Writing',
+    task_type: 'system',
+    category: 'test',
+    weight: 8,
+    requires_pro: false,
+    week_number: 1,
+    estimated_minutes: 210,
+  });
+
+  const readingCount = Math.round(12 * (months / 6));
+  tasks.push({
+    title: `Complete ${readingCount} TOEFL Reading Passages`,
+    description: 'Academic texts with inference, vocabulary, and prose summary questions',
+    task_type: 'self_track',
+    category: 'reading',
+    weight: 7,
+    requires_pro: false,
+    week_number: Math.round(weeks * 0.4),
+    estimated_minutes: readingCount * 45,
+  });
+
+  const listeningCount = Math.round(15 * (months / 6));
+  tasks.push({
+    title: `Complete ${listeningCount} TOEFL Listening Exercises`,
+    description: 'Lectures and conversations with detail, function, attitude questions',
+    task_type: 'self_track',
+    category: 'listening',
+    weight: 7,
+    requires_pro: false,
+    week_number: Math.round(weeks * 0.4),
+    estimated_minutes: listeningCount * 25,
+  });
+
+  const speakingResponseCount = Math.round(20 * (months / 6));
+  tasks.push({
+    title: `Record ${speakingResponseCount} TOEFL Speaking Responses`,
+    description: 'Integrated and independent tasks timed to 45–60 seconds. Self-evaluate using rubric.',
+    task_type: 'self_track',
+    category: 'speaking',
+    weight: 8,
+    requires_pro: false,
+    week_number: Math.round(weeks * 0.5),
+    estimated_minutes: speakingResponseCount * 15,
+  });
+
+  const writingCount = Math.round(10 * (months / 6));
+  tasks.push({
+    title: `Write ${writingCount} TOEFL Writing Tasks`,
+    description: 'Integrated (reading + lecture) and Academic Discussion tasks with timed practice',
+    task_type: 'self_track',
+    category: 'writing',
+    weight: 8,
+    requires_pro: false,
+    week_number: Math.round(weeks * 0.6),
+    estimated_minutes: writingCount * 30,
+  });
+
+  const mockCount = Math.max(2, Math.round(months * 0.6));
+  tasks.push({
+    title: `Complete ${mockCount} Full TOEFL Mock Tests`,
+    description: 'Timed under exam conditions. Aim for your target score before test day.',
+    task_type: 'system',
+    category: 'test',
+    weight: 15,
+    requires_pro: false,
+    week_number: Math.round(weeks * 0.8),
+    estimated_minutes: mockCount * 210,
+  });
+
+  return normalizeWeights(tasks);
+}
+
+// ============================================
+// SCHOLARSHIP PATH (LPDP / Chevening / Fulbright)
+// ============================================
+
+function generateScholarshipTasks(
+  months: number,
+  tier: TaskBreakdownConfig['userTier'],
+  currentBand: number
+): GeneratedTask[] {
+  const tasks: GeneratedTask[] = [];
+  const weeks = months * 4;
+
+  // IELTS/TOEFL prep (most scholarships need 6.5+)
+  const targetBand = Math.max(6.5, currentBand + 1.0);
+  tasks.push({
+    title: `Achieve IELTS ${targetBand}+ (or TOEFL 90+)`,
+    description: 'Meet the minimum English proficiency requirement for most international scholarship programs',
+    task_type: 'system',
+    category: 'test',
     weight: 20,
     requires_pro: false,
-    week_number: 24,
-    estimated_minutes: 7200 // Substantial prep time
+    week_number: Math.round(weeks * 0.5),
+    estimated_minutes: 6000,
   });
-  
-  // Research Phase
-  tasks.push({
-    title: "Research 15 Target Universities",
-    description: "Create spreadsheet comparing programs, costs, requirements",
-    task_type: "self_track",
-    category: "research",
-    weight: 8,
-    requires_pro: false,
-    week_number: 8,
-    estimated_minutes: 600,
-    materials: ["university-comparison-template.xlsx"]
-  });
-  
-  // Application Documents
-  tasks.push({
-    title: "Draft Personal Statement (Version 1)",
-    description: "Write initial draft explaining motivation and goals",
-    task_type: "self_track",
-    category: "writing",
-    weight: 10,
-    requires_pro: false,
-    week_number: 16,
-    estimated_minutes: 480
-  });
-  
-  tasks.push({
-    title: "Submit Final Personal Statement for Expert Review",
-    description: "Get professional editing and feedback from scholarship mentor",
-    task_type: "mentor_assessed",
-    category: "writing",
-    weight: 15,
-    requires_pro: true, // 🔒 PRO ONLY
-    week_number: 24,
-    estimated_minutes: 240
-  });
-  
-  tasks.push({
-    title: "Secure 2 Recommendation Letters",
-    description: "Identify referees and request strong letters of support",
-    task_type: "self_track",
-    category: "admin",
-    weight: 8,
-    requires_pro: false,
-    week_number: 20,
-    estimated_minutes: 180
-  });
-  
-  // Interview Prep
-  tasks.push({
-    title: "Attend 5 Scholarship Preparation Workshops",
-    description: "Learn application strategies from past awardees",
-    task_type: "system",
-    category: "event",
-    weight: 12,
-    requires_pro: false,
-    week_number: 32,
-    estimated_minutes: 600,
-    linked_event_type: "workshop"
-  });
-  
-  tasks.push({
-    title: "Complete 3 Mock Interview Sessions",
-    description: "Practice answering scholarship panel questions with mentor",
-    task_type: "mentor_assessed",
-    category: "speaking",
-    weight: 12,
-    requires_pro: true, // 🔒 PRO ONLY
-    week_number: 40,
-    estimated_minutes: 270
-  });
-  
-  // Final Submission
-  tasks.push({
-    title: "Complete Full Application Package Review",
-    description: "Final check of all documents before submission",
-    task_type: "mentor_assessed",
-    category: "admin",
-    weight: 5,
-    requires_pro: true, // 🔒 PRO ONLY
-    week_number: months * 4 - 2,
-    estimated_minutes: 120
-  });
-  
-  return tasks;
-}
 
-/**
- * Business/Work English Task Breakdown
- */
-function generateBusinessTasks(months: number, tier: 'explorer' | 'insider' | 'visionary'): GeneratedTask[] {
-  const tasks: GeneratedTask[] = [];
-  
   tasks.push({
-    title: "Complete Business English Assessment",
-    description: "Baseline test for professional communication skills",
-    task_type: "system",
-    category: "test",
-    weight: 10,
-    requires_pro: false,
-    week_number: 1,
-    estimated_minutes: 90
-  });
-  
-  tasks.push({
-    title: "Join 12 Business English Speaking Clubs",
-    description: "Practice professional conversations and presentations (Pro only)",
-    task_type: "system",
-    category: "speaking",
-    weight: 18,
-    requires_pro: true, // 🔒 PRO ONLY
-    week_number: months * 4,
-    estimated_minutes: 1080,
-    linked_event_type: "speaking_club"
-  });
-  
-  tasks.push({
-    title: "Write 20 Professional Emails",
-    description: "Requests, complaints, proposals, follow-ups",
-    task_type: "self_track",
-    category: "writing",
-    weight: 12,
-    requires_pro: false,
-    week_number: 8,
-    estimated_minutes: 600,
-    materials: ["email-templates-business.pdf"]
-  });
-  
-  tasks.push({
-    title: "Complete 3 Mock Job Interviews in English",
-    description: "Technical + behavioral questions with mentor feedback",
-    task_type: "mentor_assessed",
-    category: "speaking",
-    weight: 15,
-    requires_pro: true, // 🔒 PRO ONLY
-    week_number: 12,
-    estimated_minutes: 270
-  });
-  
-  tasks.push({
-    title: "Submit CV & Cover Letter for Professional Review",
-    description: "Get expert feedback on English resume and application",
-    task_type: "mentor_assessed",
-    category: "writing",
-    weight: 10,
-    requires_pro: true, // 🔒 PRO ONLY
-    week_number: months * 4 - 4,
-    estimated_minutes: 120
-  });
-  
-  tasks.push({
-    title: "Read 8 Business Communication Guides",
-    description: "Learn industry-specific vocabulary and phrases",
-    task_type: "self_track",
-    category: "reading",
+    title: 'Research 15 Target Universities & Programs',
+    description: 'Compare programs, admission requirements, tuition costs, rankings, and scholarship compatibility',
+    task_type: 'self_track',
+    category: 'reading',
     weight: 8,
     requires_pro: false,
-    week_number: months * 4,
+    week_number: Math.round(weeks * 0.2),
+    estimated_minutes: 600,
+    materials: ['university-comparison-template.xlsx'],
+  });
+
+  tasks.push({
+    title: 'Draft Personal Statement (Version 1)',
+    description: 'Write your initial draft: motivation, career goals, why this scholarship, what you bring',
+    task_type: 'self_track',
+    category: 'writing',
+    weight: 8,
+    requires_pro: false,
+    week_number: Math.round(weeks * 0.35),
     estimated_minutes: 480,
-    materials: ["business-vocab-tech.pdf", "business-vocab-finance.pdf"]
   });
-  
+
   tasks.push({
-    title: "Attend 5 Professional English Workshops",
-    description: "Meetings, presentations, negotiations",
-    task_type: "system",
-    category: "event",
-    weight: 12,
+    title: 'Revise Personal Statement (Version 2)',
+    description: 'Incorporate peer feedback, sharpen your narrative, strengthen evidence',
+    task_type: 'self_track',
+    category: 'writing',
+    weight: 5,
     requires_pro: false,
-    week_number: months * 4,
-    estimated_minutes: 600,
-    linked_event_type: "workshop"
+    week_number: Math.round(weeks * 0.5),
+    estimated_minutes: 300,
   });
-  
+
   tasks.push({
-    title: "Practice 10 Presentation Deliveries",
-    description: "Record yourself presenting business topics",
-    task_type: "self_track",
-    category: "speaking",
+    title: 'Submit Final Personal Statement for Expert Review',
+    description: 'Professional editing and feedback from scholarship mentor on impact, clarity, and tone',
+    task_type: 'mentor_assessed',
+    category: 'writing',
+    weight: 15,
+    requires_pro: true,
+    week_number: Math.round(weeks * 0.65),
+    estimated_minutes: 240,
+  });
+
+  tasks.push({
+    title: 'Secure 2 Strong Recommendation Letters',
+    description: 'Identify the right referees (academic/professional), brief them on your goals, provide talking points',
+    task_type: 'self_track',
+    category: 'admin',
+    weight: 8,
+    requires_pro: false,
+    week_number: Math.round(weeks * 0.5),
+    estimated_minutes: 180,
+  });
+
+  tasks.push({
+    title: 'Prepare Complete Application Package',
+    description: 'CV, transcripts, statement, references, research proposal (if required), language certificate',
+    task_type: 'self_track',
+    category: 'admin',
+    weight: 7,
+    requires_pro: false,
+    week_number: Math.round(weeks * 0.7),
+    estimated_minutes: 360,
+  });
+
+  const workshopCount = Math.max(3, Math.round(months / 2));
+  tasks.push({
+    title: `Attend ${workshopCount} Scholarship Preparation Workshops`,
+    description: 'Strategy sessions led by past LPDP/Chevening/Fulbright awardees. Application tips, essay writing, interview prep.',
+    task_type: 'system',
+    category: 'event',
     weight: 10,
     requires_pro: false,
-    week_number: months * 4,
-    estimated_minutes: 600
+    week_number: Math.round(weeks * 0.75),
+    estimated_minutes: workshopCount * 120,
+    linked_event_type: 'workshop',
   });
-  
-  return tasks;
+
+  tasks.push({
+    title: 'Complete 3 Mock Scholarship Interviews',
+    description: 'Full panel interview simulation with hard questions on motivation, leadership, and career vision',
+    task_type: 'mentor_assessed',
+    category: 'speaking',
+    weight: 12,
+    requires_pro: true,
+    week_number: Math.round(weeks * 0.85),
+    estimated_minutes: 270,
+  });
+
+  tasks.push({
+    title: 'Final Application Package Review',
+    description: 'Last check of all documents for consistency, quality, and completeness before submission deadline',
+    task_type: 'mentor_assessed',
+    category: 'admin',
+    weight: 7,
+    requires_pro: true,
+    week_number: weeks - 1,
+    estimated_minutes: 120,
+  });
+
+  return normalizeWeights(tasks);
 }
 
-/**
- * Conversation Fluency Task Breakdown
- */
-function generateConversationTasks(months: number, tier: 'explorer' | 'insider' | 'visionary' ): GeneratedTask[] {
+// ============================================
+// PROFESSIONAL ENGLISH PATH
+// (Remote Job, Tech, Healthcare, Business)
+// ============================================
+
+function generateProfessionalTasks(
+  months: number,
+  tier: TaskBreakdownConfig['userTier'],
+  currentCEFR: CEFRLevel,
+  targetCEFR: CEFRLevel
+): GeneratedTask[] {
   const tasks: GeneratedTask[] = [];
-  
+  const weeks = months * 4;
+
   tasks.push({
-    title: "Complete Conversation Level Assessment",
-    description: "Determine current CEFR level (A1-C2)",
-    task_type: "system",
-    category: "test",
+    title: 'Complete Professional English Baseline Assessment',
+    description: 'Evaluate current business communication level: writing, speaking, vocabulary, and professional tone',
+    task_type: 'system',
+    category: 'test',
     weight: 8,
     requires_pro: false,
     week_number: 1,
-    estimated_minutes: 60
+    estimated_minutes: 90,
   });
-  
-  const clubSessions = months * 12; // 3 per week
+
+  const emailCount = Math.round(15 * (months / 4));
   tasks.push({
-    title: `Attend ${clubSessions} Speaking Club Sessions`,
-    description: "Mon/Wed/Fri conversation practice (Pro members priority)",
-    task_type: "system",
-    category: "speaking",
-    weight: 25,
-    requires_pro: true, // 🔒 PRO ONLY
-    week_number: months * 4,
-    estimated_minutes: clubSessions * 90,
-    linked_event_type: "speaking_club"
+    title: `Write ${emailCount} Professional Emails & Documents`,
+    description: 'Requests, proposals, complaints, follow-ups, meeting summaries. Covers formal register and tone.',
+    task_type: 'self_track',
+    category: 'writing',
+    weight: 12,
+    requires_pro: false,
+    week_number: Math.round(weeks * 0.4),
+    estimated_minutes: emailCount * 30,
+    materials: ['email-templates-business.pdf'],
   });
-  
+
+  const presentationCount = Math.round(8 * (months / 4));
   tasks.push({
-    title: "Complete 30 Daily Speaking Logs",
-    description: "Record yourself speaking for 5 minutes daily on random topics",
-    task_type: "self_track",
-    category: "speaking",
+    title: `Deliver ${presentationCount} Recorded Presentations`,
+    description: 'Self-record 5–10 minute presentations on professional topics. Review for fluency, pronunciation, structure.',
+    task_type: 'self_track',
+    category: 'speaking',
+    weight: 10,
+    requires_pro: false,
+    week_number: Math.round(weeks * 0.5),
+    estimated_minutes: presentationCount * 60,
+  });
+
+  const speakingClubSessions = Math.round(weeks * 2); // 2/week for professionals
+  tasks.push({
+    title: `Attend ${speakingClubSessions} Professional Speaking Club Sessions`,
+    description: 'Mon/Wed/Fri speaking practice focused on business topics, debates, and presentations (Pro members)',
+    task_type: 'system',
+    category: 'speaking',
     weight: 15,
-    requires_pro: false,
-    week_number: months * 4,
-    estimated_minutes: 150
+    requires_pro: true,
+    estimated_minutes: speakingClubSessions * 90,
+    linked_event_type: 'speaking_club',
   });
-  
+
   tasks.push({
-    title: "Watch 20 English Movies/Series with Journal",
-    description: "Write summary and new vocabulary after each episode",
-    task_type: "self_track",
-    category: "listening",
+    title: 'Complete 3 Mock Job Interviews in English',
+    description: 'Technical + behavioral interviews in English. Get band-scored feedback from IELS coaches.',
+    task_type: 'mentor_assessed',
+    category: 'speaking',
+    weight: 15,
+    requires_pro: true,
+    week_number: Math.round(weeks * 0.7),
+    estimated_minutes: 270,
+  });
+
+  tasks.push({
+    title: 'Submit English CV & Cover Letter for Review',
+    description: 'Expert feedback on English quality, formatting, impact, and ATS-optimisation',
+    task_type: 'mentor_assessed',
+    category: 'writing',
     weight: 10,
-    requires_pro: false,
-    week_number: months * 4,
-    estimated_minutes: 2400, // 120 mins each
-    materials: ["movie-learning-worksheet.pdf"]
+    requires_pro: true,
+    week_number: Math.round(weeks * 0.6),
+    estimated_minutes: 120,
   });
-  
+
+  const readingCount = Math.round(6 * (months / 4));
   tasks.push({
-    title: "Read 10 English Novels or Books",
-    description: "Graded readers or popular fiction for vocabulary building",
-    task_type: "self_track",
-    category: "reading",
-    weight: 10,
-    requires_pro: false,
-    week_number: months * 4,
-    estimated_minutes: 1200,
-    materials: ["recommended-reading-list.pdf"]
-  });
-  
-  tasks.push({
-    title: "Write 20 Daily Journal Entries in English",
-    description: "Practice writing naturally about daily experiences",
-    task_type: "self_track",
-    category: "writing",
+    title: `Read ${readingCount} Industry Articles & Business Guides`,
+    description: 'Tech, finance, healthcare, or general business articles. Build domain vocabulary and reading speed.',
+    task_type: 'self_track',
+    category: 'reading',
     weight: 8,
     requires_pro: false,
-    week_number: months * 4 / 2,
-    estimated_minutes: 300
+    week_number: Math.round(weeks * 0.8),
+    estimated_minutes: readingCount * 45,
+    materials: ['business-vocab-tech.pdf', 'business-vocab-finance.pdf'],
   });
-  
+
+  const workshopCount = Math.max(3, Math.round(months / 2));
   tasks.push({
-    title: "Complete 4 Fluency Assessment Check-ins",
-    description: "Quarterly speaking evaluations with mentor",
-    task_type: "mentor_assessed",
-    category: "speaking",
-    weight: 12,
-    requires_pro: true, // 🔒 PRO ONLY
-    week_number: months * 4,
-    estimated_minutes: 240
+    title: `Attend ${workshopCount} Professional English Workshops`,
+    description: 'Meetings, negotiations, presentations, remote communication strategies',
+    task_type: 'system',
+    category: 'event',
+    weight: 10,
+    requires_pro: false,
+    week_number: Math.round(weeks * 0.9),
+    estimated_minutes: workshopCount * 120,
+    linked_event_type: 'workshop',
   });
-  
+
   tasks.push({
-    title: "Attend 6 General English Workshops",
-    description: "Pronunciation, idioms, slang, cultural nuances",
-    task_type: "system",
-    category: "event",
+    title: 'Complete Final Professional English Assessment',
+    description: 'Re-take baseline assessment to measure improvement and confirm readiness',
+    task_type: 'system',
+    category: 'test',
     weight: 12,
     requires_pro: false,
-    week_number: months * 4,
-    estimated_minutes: 720,
-    linked_event_type: "workshop"
+    week_number: weeks - 1,
+    estimated_minutes: 90,
   });
-  
-  return tasks;
+
+  return normalizeWeights(tasks);
 }
 
-/**
- * Calculate total weight to ensure it sums to 100%
- */
-export function normalizeTaskWeights(tasks: GeneratedTask[]): GeneratedTask[] {
-  const totalWeight = tasks.reduce((sum, task) => sum + task.weight, 0);
-  
-  if (totalWeight === 100) return tasks;
-  
-  // Proportionally adjust weights to sum to 100
-  return tasks.map(task => ({
-    ...task,
-    weight: Math.round((task.weight / totalWeight) * 100)
+// ============================================
+// CONVERSATION / GENERAL FLUENCY PATH
+// ============================================
+
+function generateConversationTasks(
+  months: number,
+  tier: TaskBreakdownConfig['userTier'],
+  currentCEFR: CEFRLevel,
+  targetCEFR: CEFRLevel
+): GeneratedTask[] {
+  const tasks: GeneratedTask[] = [];
+  const weeks = months * 4;
+
+  tasks.push({
+    title: 'Complete CEFR Level Assessment',
+    description: 'Confirm your starting level (A1–C1) across speaking, writing, reading, and listening. Takes ~45 mins.',
+    task_type: 'system',
+    category: 'test',
+    weight: 6,
+    requires_pro: false,
+    week_number: 1,
+    estimated_minutes: 60,
+  });
+
+  const totalSpeakingClubSessions = Math.round(weeks * 3); // 3/week
+  tasks.push({
+    title: `Attend ${totalSpeakingClubSessions} Speaking Club Sessions`,
+    description: 'Mon/Wed/Fri conversation practice with peers and coaches (7 PM WIB). Pro members get priority access.',
+    task_type: 'system',
+    category: 'speaking',
+    weight: 25,
+    requires_pro: true,
+    estimated_minutes: totalSpeakingClubSessions * 90,
+    linked_event_type: 'speaking_club',
+  });
+
+  const speakingLogCount = Math.round(30 * (months / 6));
+  tasks.push({
+    title: `Record ${speakingLogCount} Daily Speaking Logs`,
+    description: 'Record yourself for 3–5 minutes on random topics. Listen back and note pronunciation or fluency issues.',
+    task_type: 'self_track',
+    category: 'speaking',
+    weight: 12,
+    requires_pro: false,
+    estimated_minutes: speakingLogCount * 10,
+  });
+
+  const movieCount = Math.round(12 * (months / 6));
+  tasks.push({
+    title: `Watch ${movieCount} English Movies/Series with Vocabulary Journal`,
+    description: 'After each episode, write a 5-sentence summary and list 5+ new words/phrases with definitions',
+    task_type: 'self_track',
+    category: 'listening',
+    weight: 10,
+    requires_pro: false,
+    estimated_minutes: movieCount * 120,
+    materials: ['movie-learning-worksheet.pdf'],
+  });
+
+  const journalCount = Math.round(20 * (months / 6));
+  tasks.push({
+    title: `Write ${journalCount} Journal Entries in English`,
+    description: 'Write naturally about your day, thoughts, or opinions. Aim for 150–200 words per entry.',
+    task_type: 'self_track',
+    category: 'writing',
+    weight: 8,
+    requires_pro: false,
+    week_number: Math.round(weeks / 2),
+    estimated_minutes: journalCount * 20,
+  });
+
+  const bookCount = Math.round(4 * (months / 6));
+  tasks.push({
+    title: `Read ${bookCount} English Books or Graded Readers`,
+    description: 'Graded readers matched to your CEFR level or popular fiction. Focus on reading speed and vocabulary.',
+    task_type: 'self_track',
+    category: 'reading',
+    weight: 8,
+    requires_pro: false,
+    estimated_minutes: bookCount * 300,
+    materials: ['recommended-reading-list.pdf'],
+  });
+
+  const fluencyCheckCount = Math.max(2, Math.round(months / 3));
+  tasks.push({
+    title: `Complete ${fluencyCheckCount} Fluency Assessment Check-ins`,
+    description: 'Quarterly evaluation with an IELS coach. Measure improvement and adjust your plan.',
+    task_type: 'mentor_assessed',
+    category: 'speaking',
+    weight: 12,
+    requires_pro: true,
+    estimated_minutes: fluencyCheckCount * 60,
+  });
+
+  const workshopCount = Math.max(3, Math.round(months / 2));
+  tasks.push({
+    title: `Attend ${workshopCount} English Fluency Workshops`,
+    description: 'Pronunciation, natural expressions, idioms, cultural nuances, and conversation strategies',
+    task_type: 'system',
+    category: 'event',
+    weight: 12,
+    requires_pro: false,
+    estimated_minutes: workshopCount * 120,
+    linked_event_type: 'workshop',
+  });
+
+  tasks.push({
+    title: 'Final CEFR Level Re-assessment',
+    description: `Confirm you've reached ${targetCEFR} or above. Celebrate and plan your next milestone!`,
+    task_type: 'system',
+    category: 'test',
+    weight: 7,
+    requires_pro: false,
+    week_number: weeks - 1,
+    estimated_minutes: 60,
+  });
+
+  return normalizeWeights(tasks);
+}
+
+// ============================================
+// HELPERS
+// ============================================
+
+function normalizeWeights(tasks: GeneratedTask[]): GeneratedTask[] {
+  const total = tasks.reduce((sum, t) => sum + t.weight, 0);
+  if (total === 100) return tasks;
+  return tasks.map(t => ({
+    ...t,
+    weight: Math.round((t.weight / total) * 100),
   }));
 }
 
-/**
- * Filter tasks based on user tier
- */
-export function filterTasksByTier(tasks: GeneratedTask[], tier: 'explorer' | 'insider' | 'visionary' ): {
-  accessible: GeneratedTask[];
-  locked: GeneratedTask[];
-} {
-  const accessible = tasks.filter(t => !t.requires_pro || tier === 'insider');
-  const locked = tier === 'explorer' ? tasks.filter(t => t.requires_pro) : [];
-  
-  return { accessible, locked };
+export function filterTasksByTier(
+  tasks: GeneratedTask[],
+  tier: TaskBreakdownConfig['userTier']
+): { accessible: GeneratedTask[]; locked: GeneratedTask[] } {
+  const isProUser = tier === 'insider' || tier === 'visionary';
+  return {
+    accessible: tasks.filter(t => !t.requires_pro || isProUser),
+    locked: isProUser ? [] : tasks.filter(t => t.requires_pro),
+  };
 }

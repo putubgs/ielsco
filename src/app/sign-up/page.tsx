@@ -1,14 +1,14 @@
 "use client";
 
-import AuthLayout from "@/components/auth/AuthLayout"; 
+import AuthLayout from "@/components/auth/AuthLayout";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { createBrowserClient } from "@supabase/ssr";
+import { supabase } from "@/data/supabase";
 import { useRouter } from "next/navigation";
-import Link from "next/link"; 
+import Link from "next/link";
 
 import {
   Form,
@@ -21,7 +21,7 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff, Mail, ArrowRight, ShieldCheck, Loader2, ArrowLeft, X } from "lucide-react"; 
+import { Eye, EyeOff, ShieldCheck, Loader2, ArrowLeft } from "lucide-react";
 import Popup from "@/components/ui/popup";
 
 const SignupSchema = z
@@ -43,18 +43,13 @@ const SignupSchema = z
 
 export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
-  const [isVerifying, setIsVerifying] = useState(false); 
+  const [isVerifying, setIsVerifying] = useState(false);
   const [otp, setOtp] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [popup, setPopup] = useState("");
-  const [userEmail, setUserEmail] = useState(""); 
+  const [userEmail, setUserEmail] = useState("");
   const router = useRouter();
-
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
 
   const form = useForm({
     resolver: zodResolver(SignupSchema),
@@ -66,29 +61,54 @@ export default function RegisterPage() {
     }
   });
 
-  const onSignupSubmit = async (values: z.infer<typeof SignupSchema>) => {
+  type SignupForm = z.infer<typeof SignupSchema>;
+
+  const onSubmit = async (values: SignupForm) => {
     setLoading(true);
     setUserEmail(values.email);
 
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { data: authData, error: authError } = await supabase.auth.signUp({
         email: values.email,
         password: values.password,
         options: {
-          data: { full_name: values.fullName },
+          data: {
+            full_name: values.fullName,
+          },
+          emailRedirectTo: `${window.location.origin}/auth/callback`
         }
       });
 
-      if (error) throw error;
+      if (authError) {
+        if (authError.message.includes("already registered")) {
+          setPopup("This email is already registered. Please sign in instead! 🔐");
+        } else {
+          setPopup(`Error: ${authError.message}`);
+        }
+        setLoading(false);
+        return;
+      }
 
-      if (data.user) {
-        setIsVerifying(true); 
-        setPopup("Success! 🎉 Please check your email for the 6-digit code.");
+      if (authData.user) {
+        if (authData.user.identities && authData.user.identities.length === 0) {
+          setPopup("This email is already registered. Please sign in instead! 🔐");
+          setLoading(false);
+          return;
+        }
+
+        if (!authData.session) {
+          // Email confirmation required - show OTP section
+          setIsVerifying(true);
+          setPopup("✅ Success! Please check your email for the 6-digit verification code.");
+        } else {
+          // Auto logged in
+          setPopup("Account created successfully! Redirecting... 🚀");
+          setTimeout(() => router.push("/dashboard"), 1500);
+        }
       }
     } catch (error: any) {
-      setPopup(error.message.includes("already registered") 
-        ? "This email is already registered. Please sign in instead! 🔐" 
-        : `Error: ${error.message}`);
+      console.error("Signup error:", error);
+      setPopup("Something went wrong. Please try again! 😔");
     } finally {
       setLoading(false);
     }
@@ -99,7 +119,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.verifyOtp({
+      const { data, error } = await supabase.auth.verifyOtp({
         email: userEmail,
         token: otp,
         type: "signup",
@@ -107,36 +127,67 @@ export default function RegisterPage() {
 
       if (error) throw error;
 
-      setPopup("Account verified! Redirecting to dashboard... 🚀");
-      setTimeout(() => router.push("/dashboard"), 2000);
+      if (data.session) {
+        setPopup("Account verified successfully! Redirecting... 🚀");
+        setTimeout(() => router.push("/dashboard"), 1500);
+      }
     } catch (error: any) {
-      setPopup(`Invalid code: ${error.message}`);
+      setPopup(`Invalid verification code: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: userEmail,
+      });
+
+      if (error) throw error;
+      setPopup("Verification code resent! Check your email. 📧");
+    } catch (error: any) {
+      setPopup(`Failed to resend code: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
 
   const handleGoogleSignUp = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/api/auth/callback?next=/dashboard`,
+    try {
+      const origin = window.location.origin;
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${origin}/auth/callback?next=/dashboard`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
+        }
+      });
+
+      if (error) {
+        setPopup(`Google sign-up error: ${error.message}`);
       }
-    });
+    } catch (error: any) {
+      console.error("Google signup error:", error);
+      setPopup("Google sign-up failed. Please try again! 😔");
+    }
   };
 
   return (
     <AuthLayout>
-
-
       {popup && <Popup message={popup} onClose={() => setPopup("")} />}
 
-      <div className="space-y-6 pt-4"> {/* pt-4 biar ga terlalu nempel sama X */}
-
+      <div className="space-y-6 pt-4">
         {!isVerifying ? (
           <div className="animate-in fade-in duration-500">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSignupSubmit)} className="space-y-5">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                
                 <FormField
                   control={form.control}
                   name="fullName"
@@ -172,7 +223,9 @@ export default function RegisterPage() {
                     <FormItem>
                       <FormLabel className="font-semibold text-[#294154]">Password</FormLabel>
                       <div className="relative">
-                        <Input type={showPass ? "text" : "password"} className="rounded-xl bg-[#F7F8FA]" {...field} />
+                        <FormControl>
+                          <Input type={showPass ? "text" : "password"} className="rounded-xl bg-[#F7F8FA]" {...field} />
+                        </FormControl>
                         <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-4 top-3 text-gray-400">
                           {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>
@@ -189,7 +242,9 @@ export default function RegisterPage() {
                     <FormItem>
                       <FormLabel className="font-semibold text-[#294154]">Confirm Password</FormLabel>
                       <div className="relative">
-                        <Input type={showConfirm ? "text" : "password"} className="rounded-xl bg-[#F7F8FA]" {...field} />
+                        <FormControl>
+                          <Input type={showConfirm ? "text" : "password"} className="rounded-xl bg-[#F7F8FA]" {...field} />
+                        </FormControl>
                         <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-4 top-3 text-gray-400">
                           {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>
@@ -199,8 +254,8 @@ export default function RegisterPage() {
                   )}
                 />
 
-                <Button disabled={loading} type="submit" className="w-full py-3 rounded-full bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] disabled:bg-[#C04C4E]">
-                  {loading ? "Creating Account…" : "Sign Up"}
+                <Button disabled={loading} type="submit" className="w-full py-3 rounded-full bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] disabled:bg-[#C04C4E] transition-all">
+                  {loading ? <Loader2 className="animate-spin" /> : "Sign Up"}
                 </Button>
               </form>
             </Form>
@@ -220,9 +275,9 @@ export default function RegisterPage() {
                 Continue with Google
               </button>
 
-              <p className="text-center text-gray-600 pt-2">
-                Already have an account?{" "}
-                <Link href="/sign-in" className="text-[#E56668] font-bold hover:underline">Sign in here</Link>
+              <p className="text-center text-gray-500 text-sm">
+                Already part of IELS?{" "}
+                <Link href="/sign-in" className="text-[#E56668] font-bold hover:underline">Sign in</Link>
               </p>
             </div>
           </div>
@@ -257,20 +312,25 @@ export default function RegisterPage() {
                 onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
               />
 
-              <Button disabled={loading || otp.length < 6} type="submit" className="w-full py-3 rounded-full bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] disabled:bg-[#C04C4E]">
+              <Button disabled={loading || otp.length < 6} type="submit" className="w-full py-3 rounded-full bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] disabled:bg-[#C04C4E] transition-all">
                 {loading ? <Loader2 className="animate-spin" /> : "Complete Sign Up"}
               </Button>
             </form>
 
             <p className="text-center text-sm text-gray-400">
-              Didn't receive code?{" "}
-              <button className="text-[#E56668] font-bold hover:underline">Resend</button>
+              Didn&apos;t receive the code?{" "}
+              <button 
+                onClick={handleResendOtp} 
+                disabled={loading}
+                className="text-[#E56668] font-bold hover:underline disabled:opacity-50"
+              >
+                Resend
+              </button>
             </p>
           </div>
         )}
 
-        {/* PRIVACY POLICY & TERMS FOOTER */}
-        <div className="pt-6 text-center text-[11px] text-gray-400 leading-relaxed space-y-1 border-t border-gray-100">
+        <div className="pt-6 text-center text-[10px] text-gray-400 leading-relaxed space-y-1 border-t border-gray-100">
           <p>
             By signing in to IELS, you agree to our{" "}
             <Link href="/terms-of-service" className="underline hover:text-gray-600 transition-colors">Terms</Link>{" "}

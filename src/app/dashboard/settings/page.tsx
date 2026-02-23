@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createBrowserClient } from "@supabase/ssr";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
@@ -92,40 +92,54 @@ export default function SettingsPage() {
 
   // Change password
   const handleChangePassword = async () => {
-    if (!newPassword || !confirmPassword) {
-      showMessage('error', 'Please fill in all password fields');
-      return;
-    }
+  if (!currentPassword) {
+    showMessage('error', 'Please enter your current password first');
+    return;
+  }
 
-    if (newPassword !== confirmPassword) {
-      showMessage('error', 'New passwords do not match');
-      return;
-    }
+  if (!newPassword || !confirmPassword) {
+    showMessage('error', 'Please fill in all password fields');
+    return;
+  }
 
-    if (newPassword.length < 6) {
-      showMessage('error', 'Password must be at least 6 characters');
-      return;
-    }
+  if (newPassword !== confirmPassword) {
+    showMessage('error', 'New passwords do not match');
+    return;
+  }
 
-    setSaving(true);
-    try {
-      const { error } = await supabase.auth.updateUser({
-        password: newPassword
-      });
+  if (newPassword.length < 6) {
+    showMessage('error', 'Password must be at least 6 characters');
+    return;
+  }
 
-      if (error) throw error;
+  setSaving(true);
+  try {
+    // Re-authenticate dulu dengan current password
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: userData?.email,
+      password: currentPassword,
+    });
 
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
-      
-      showMessage('success', 'Password changed successfully!');
-    } catch (error: any) {
-      showMessage('error', error.message || 'Failed to change password');
-    } finally {
+    if (signInError) {
+      showMessage('error', 'Current password is incorrect');
       setSaving(false);
+      return;
     }
-  };
+
+    // Baru update ke password baru
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) throw error;
+
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+    showMessage('success', 'Password changed successfully!');
+  } catch (error: any) {
+    showMessage('error', error.message || 'Failed to change password');
+  } finally {
+    setSaving(false);
+  }
+};
 
   // Request password reset email
   const handleForgotPassword = async () => {
@@ -360,6 +374,28 @@ export default function SettingsPage() {
                     </h3>
                     
                     <div className="space-y-4">
+                      {/* Current Password — tambah DI ATAS field "New Password" */}
+<div>
+  <label className="block text-sm font-bold text-[#2F4157] mb-2">
+    Current Password
+  </label>
+  <div className="relative">
+    <input
+      type={showCurrentPassword ? "text" : "password"}
+      value={currentPassword}
+      onChange={(e) => setCurrentPassword(e.target.value)}
+      className="w-full px-4 py-3 pr-12 border-2 border-gray-200 rounded-xl focus:border-[#E56668] focus:outline-none transition-colors font-medium"
+      placeholder="Enter your current password"
+    />
+    <button
+      type="button"
+      onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+    >
+      {showCurrentPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+    </button>
+  </div>
+</div>
                       {/* New Password */}
                       <div>
                         <label className="block text-sm font-bold text-[#2F4157] mb-2">
@@ -415,13 +451,12 @@ export default function SettingsPage() {
                             </>
                           )}
                         </button>
-                        <button
-                          onClick={handleForgotPassword}
-                          disabled={saving}
-                          className="px-6 py-3 bg-white border-2 border-gray-200 text-[#2F4157] rounded-xl font-bold hover:border-[#E56668] hover:text-[#E56668] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        <Link
+                          href="/sign-in/forgot"
+                          className="px-6 py-3 bg-white border-2 border-gray-200 text-[#2F4157] rounded-xl font-bold hover:border-[#E56668] hover:text-[#E56668] transition-all text-center"
                         >
-                          Reset via Email
-                        </button>
+                          Forgot Password?
+                        </Link>
                       </div>
                     </div>
                   </div>

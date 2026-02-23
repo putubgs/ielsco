@@ -1,3 +1,4 @@
+// sign-in/forgot/new-password/new-password-client.tsx
 "use client";
 
 import { useState } from "react";
@@ -35,13 +36,15 @@ export default function NewPasswordClient() {
     if (error) {
       setFeedback({ type: "error", msg: error.message });
       setLoading(false);
-    } else {
-      setFeedback({ type: "success", msg: "Password updated securely! Redirecting to dashboard..." });
-      
-      setTimeout(() => {
-        router.push("/dashboard"); 
-      }, 2000);
-    }
+} else {
+  setFeedback({ type: "success", msg: "Password updated! Redirecting to sign in..." });
+  
+  await supabase.auth.signOut(); // ← WAJIB! Clear recovery session
+  
+  setTimeout(() => {
+    router.push("/sign-in"); // ← ke sign-in, bukan dashboard
+  }, 2000);
+}
   }
 
   return (

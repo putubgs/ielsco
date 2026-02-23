@@ -38,24 +38,25 @@ export async function middleware(request: NextRequest) {
   )
 
   // 3. PENTING: getUser() akan memvalidasi token & me-refresh session cookie jika perlu.
-  // Tanpa ini, session akan dianggap hilang/expired saat navigasi.
   const { data: { user } } = await supabase.auth.getUser()
 
   // 4. ATURAN REDIRECT
+const isAuthRoute = request.nextUrl.pathname.startsWith('/sign-in') || 
+                    request.nextUrl.pathname.startsWith('/sign-up');
 
-  // Jika user SUDAH login tapi buka /sign-in atau /sign-up -> Redirect ke Dashboard
-  if (user && (request.nextUrl.pathname.startsWith('/sign-in') || request.nextUrl.pathname.startsWith('/sign-up'))) {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
-  }
+// Semua halaman dalam forgot password flow — bukan cuma new-password
+const isForgotPasswordFlow = request.nextUrl.pathname.startsWith('/sign-in/forgot');
 
-  // Jika user BELUM login tapi buka halaman yang dilindungi (selain auth page) -> Redirect ke Sign-In
-  // PENTING: Kita simpan URL tujuan di parameter '?next=' agar setelah login bisa balik lagi.
-  if (!user && request.nextUrl.pathname.startsWith('/dashboard')) {
-    const signInUrl = new URL('/sign-in', request.url)
-    // Simpan tujuan awal user (misal: /dashboard/gif)
-    signInUrl.searchParams.set('next', request.nextUrl.pathname)
-    return NextResponse.redirect(signInUrl)
+// Jika user SUDAH login tapi buka halaman Auth
+if (user && isAuthRoute) {
+  // Biarin seluruh forgot password flow lewat (forgot, verify, new-password)
+  if (isForgotPasswordFlow) {
+    return response;
   }
+  
+  // Selain itu, tendang ke Dashboard
+  return NextResponse.redirect(new URL('/dashboard', request.url))
+}
 
   return response
 }

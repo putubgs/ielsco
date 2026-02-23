@@ -1,3 +1,4 @@
+// sign-in/forgot/verify/page.tsx
 import { Suspense } from "react";
 import VerifyOtpForgotClient from "./verify-client";
 import { Loader2, Shield } from "lucide-react";

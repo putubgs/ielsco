@@ -1,3 +1,4 @@
+// sign-in/forgot/verify/verify-client/tsx
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
@@ -56,7 +57,8 @@ export default function VerifyOtpForgotClient() {
 
     // BERHASIL: Kita lempar ke halaman Set New Password
     // Bukan ke Dashboard!
-    router.push("/sign-in/forgot/new-password"); 
+    // Setelah verifyOtp berhasil:
+router.push("/sign-in/forgot/new-password?verified=true");
   }
 
   async function handleResendCode() {

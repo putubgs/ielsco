@@ -21,7 +21,6 @@ import Link from "next/link";
 import { getGoalById, toggleTaskCompletion, submitTaskForReview } from "@/data/goals";
 import { getPersonalizedAssignments, getPersonalizedMaterials } from "@/data/assignments-materials";
 import type { GoalWithTasks } from "@/types/goals";
-// ✅ FIX 1: Tambahkan import cn
 import { cn } from "@/lib/utils";
 
 // --- TIPE DATA BARU ---
@@ -97,16 +96,18 @@ export default function TasksPage() {
     initData();
   }, [goalId, router, supabase]);
 
-  const handleToggleTask = async (taskId: string) => {
-    if (!userData.id) return;
+  // ✅ FIX 1: Wajib me-return Promise<boolean> sesuai permintaan interface TaskList
+  const handleToggleTask = async (taskId: string): Promise<boolean> => {
+    if (!userData.id) return false;
     const success = await toggleTaskCompletion(taskId, userData.id);
     if (success && goalId) {
       const goalData = await getGoalById(goalId);
       if (goalData) setGoal(goalData);
     }
+    return success;
   };
 
-  const handleSubmitTask = async (taskId: string, url: string, notes?: string) => {
+  const handleSubmitTask = async (taskId: string, url: string, notes?: string): Promise<boolean> => {
     const success = await submitTaskForReview(taskId, url, notes);
     if (success && goalId) {
       const goalData = await getGoalById(goalId);
@@ -201,11 +202,16 @@ export default function TasksPage() {
           {activeTab === "tasks" ? (
             <TaskList
               tasks={goal.tasks}
-              // ✅ FIX 2: Mapping Visionary -> Insider untuk TaskList component
-              // Karena component TaskList belum support 'visionary', kita anggap dia 'insider'
               userTier={userData.tier === "visionary" ? "insider" : userData.tier}
               onToggleTask={handleToggleTask}
-              onSubmitTask={(taskId) => setSubmissionModalTask(taskId)}
+              
+              // ✅ FIX 2: Kasih fungsi eksekusi submit benerannya ke prop ini
+              onSubmitTask={handleSubmitTask} 
+              
+              // Kalau ada prop buat buka modal (tergantung dari definition TaskList lu), biasanya kayak gini:
+              // onOpenSubmitModal={(taskId) => setSubmissionModalTask(taskId)}
+              // atau:
+              onViewMaterials={(taskId) => setSubmissionModalTask(taskId)}
             />
           ) : (
             <div className="space-y-4">
@@ -287,7 +293,7 @@ export default function TasksPage() {
                         
                         {material.isLocked && (
                            <button className="flex items-center gap-1 px-4 py-2 bg-gray-200 text-gray-500 rounded-lg font-semibold text-sm cursor-not-allowed">
-                             Locked
+                              Locked
                            </button>
                         )}
                       </div>

@@ -673,7 +673,8 @@ const supabase = createBrowserClient(
               </div>
             )}
           </div>
-        </div>{/* --- 4. GIF SINGAPORE PROMO SECTION (UPDATED PALETTE) --- */}
+        </div>
+        {/* --- 4. GIF SINGAPORE PROMO SECTION (UPDATED PALETTE) --- */}
         {/* Gradient Linear -> #2F4055 #914D4D #304156 */}
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#2F4055] via-[#914D4D] to-[#304156] text-white shadow-2xl group ring-1 ring-white/10 font-geologica">
           

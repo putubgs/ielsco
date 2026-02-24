@@ -2,82 +2,77 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { createPortal } from "react-dom";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
-import { Target, Plus, AlertCircle, Activity } from "lucide-react";
+import { 
+  Target, Plus, AlertCircle, Activity, Lock, AlertTriangle, Trash2 
+} from "lucide-react";
 import { createBrowserClient } from "@supabase/ssr";
-import { getUserGoals, deleteGoal } from "@/data/goals"; 
+import { getUserGoals, deleteGoal } from "@/data/goals";
 import GoalCard from "@/components/goals/GoalCard";
 import GoalWizard from "@/components/goals/GoalWizard";
-import type { Goal } from "@/types/goals"; // Pastikan import ini benar
+import type { Goal } from "@/types/goals";
+
+type UserTier = "explorer" | "insider" | "visionary";
+
+const MAX_GOALS = 3;
 
 export default function GoalsPage() {
-  const router = useRouter();
+  const router  = useRouter();
   const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
+    process.env.NEXT_PUBLIC_SUPABASE_URL     || "https://placeholder.supabase.co",
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key"
   );
 
-  // State
-  const [goals, setGoals] = useState<any[]>([]); // Gunakan any[] sementara jika tipe Goal belum fix, atau Goal[] jika sudah
-  const [loading, setLoading] = useState(true);
-  const [showWizard, setShowWizard] = useState(false);
-  
-  // ⚠️ FIX: Update tipe state userTier agar sesuai dengan DashboardLayout
-  const [userData, setUserData] = useState({ 
-    id: "", 
-    name: "", 
-    tier: "explorer" as "explorer" | "insider" | "visionary", // Default ke explorer
-    avatar: "" 
+  const [goals,       setGoals]       = useState<Goal[]>([]);
+  const [loading,     setLoading]     = useState(true);
+  const [showWizard,  setShowWizard]  = useState(false);
+  const [userData,    setUserData]    = useState<{ id: string; name: string; tier: UserTier; avatar: string }>({
+    id: "", name: "", tier: "explorer", avatar: "",
   });
 
+  // ── Modal Delete State ──────────────────────────────────────────────────────
+  const [goalToDelete, setGoalToDelete] = useState<Goal | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+
+  // ── Derived ────────────────────────────────────────────────────────────────
+  const activeGoals    = goals.filter((g) => (g as any).status !== "completed");
+  const completedGoals = goals.filter((g) => (g as any).status === "completed");
+  const isGoalLimitHit = activeGoals.length >= MAX_GOALS;
+
+  // ── Fetch goals ────────────────────────────────────────────────────────────
   const fetchGoals = async (userId: string) => {
     const userGoals = await getUserGoals(userId);
-    setGoals(userGoals);
+    setGoals(userGoals as Goal[]);
   };
 
+  // ── Init ────────────────────────────────────────────────────────────────────
   useEffect(() => {
     const initData = async () => {
       setLoading(true);
 
-      // 1. Ambil User Login
       const { data: { user } } = await supabase.auth.getUser();
+      if (!user) { router.push("/sign-in"); return; }
 
-      if (!user) {
-        router.push("/sign-in");
-        return;
-      }
-
-      const avatarUrl = user.user_metadata?.avatar_url || "";
-
-      // 2. Ambil Profil Tambahan from DB
       const { data: dbUser } = await supabase
         .from("users")
-        .select(`*, memberships(tier)`)
+        .select("*, memberships(tier)")
         .eq("id", user.id)
         .single();
 
-      // ⚠️ FIX: Logic Mapping dari Database (basic/pro) ke UI (explorer/insider/visionary)
-      let uiTier: "explorer" | "insider" | "visionary" = "explorer";
-      
-      const dbTier = dbUser?.memberships?.[0]?.tier; // Misal di DB isinya 'pro' atau 'basic'
+      const dbTier = dbUser?.memberships?.[0]?.tier;
+      let uiTier: UserTier = "explorer";
+      if      (dbTier === "pro")                         uiTier = "insider";
+      else if (dbTier === "premium" || dbTier === "visionary") uiTier = "visionary";
 
-      if (dbTier === "pro") {
-        uiTier = "insider"; // Mapping: Pro -> Insider
-      } else if (dbTier === "premium" || dbTier === "visionary") {
-        uiTier = "visionary"; // Mapping: Premium -> Visionary
-      } else {
-        uiTier = "explorer"; // Default: Basic -> Explorer
-      }
-
-      // Set Data User
       setUserData({
-        id: user.id,
-        name: user.user_metadata?.full_name || "Learner",
-        tier: uiTier, // Gunakan hasil mapping
-        avatar: avatarUrl
+        id:     user.id,
+        name:   dbUser?.full_name || user.user_metadata?.full_name || "Learner",
+        tier:   uiTier,
+        avatar: dbUser?.avatar_url || user.user_metadata?.avatar_url || user.user_metadata?.picture || "",
       });
 
-      // 3. Fetch Goals
       await fetchGoals(user.id);
       setLoading(false);
     };
@@ -85,127 +80,294 @@ export default function GoalsPage() {
     initData();
   }, [router, supabase]);
 
-  // Handle Create
+  // ── Handlers ────────────────────────────────────────────────────────────────
   const handleGoalCreated = async () => {
     setShowWizard(false);
     setLoading(true);
-    if (userData.id) {
-      await fetchGoals(userData.id);
-    }
+    if (userData.id) await fetchGoals(userData.id);
     setLoading(false);
   };
 
-  // Handle Delete
-  const handleDeleteGoal = async (goalId: string) => {
-    if (confirm("Are you sure you want to delete this goal? This cannot be undone.")) {
-      setLoading(true);
-      const success = await deleteGoal(goalId);
-      if (success && userData.id) {
-        await fetchGoals(userData.id);
-      }
-      setLoading(false);
-    }
+  // Triggered when trash icon is clicked on the card
+  const confirmDelete = (goal: Goal) => {
+    setGoalToDelete(goal);
+    setDeleteError("");
   };
 
+  // Triggered when user clicks "Yes, Delete" inside the modal
+  const executeDeleteGoal = async () => {
+    if (!goalToDelete) return;
+    
+    setIsDeleting(true);
+    setDeleteError("");
+    
+    const ok = await deleteGoal(goalToDelete.id);
+    
+    if (ok) {
+      if (userData.id) await fetchGoals(userData.id);
+      setGoalToDelete(null); // Close modal
+    } else {
+      setDeleteError("Failed to delete goal. Please try again.");
+    }
+    
+    setIsDeleting(false);
+  };
+
+  // ── Render ──────────────────────────────────────────────────────────────────
   return (
-    <DashboardLayout 
-      userName={userData.name} 
-      userTier={userData.tier} // Sekarang tipenya sudah cocok ("explorer" | "insider" | "visionary")
+    <DashboardLayout
+      userName={userData.name}
+      userTier={userData.tier}
       userAvatar={userData.avatar}
     >
-      {/* ===== GOALS HERO SECTION (OPTIMIZED) ===== */}
-<div className="relative bg-[#2F4157] text-white overflow-hidden py-8 lg:py-12 px-4 sm:px-8 lg:px-12">
-  {/* Background Decoration */}
-  <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
-  <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#E56668]/5 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 pointer-events-none" />
+      {/* ── HERO ─────────────────────────────────────────────────────────── */}
+      <div className="relative bg-[#2F4157] text-white overflow-hidden py-8 lg:py-12 px-4 sm:px-8 lg:px-12">
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#E56668]/5 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 pointer-events-none" />
 
-  <div className="max-w-7xl mx-auto relative z-10">
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-      
-      {/* LEFT: Heading & Description (60%) */}
-      <div className="lg:col-span-7 flex flex-col items-center text-center md:items-start md:text-left space-y-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/10 text-[10px] font-black uppercase tracking-[0.2em] text-[#E56668]">
-          <Target size={14} />
-          <span>Commitment Space</span>
-        </div>
-        
-        <h1 className="text-3xl sm:text-4xl font-black font-geologica tracking-tighter leading-none">
-          My Learning <br className="hidden sm:block" /> Goals & Vision
-        </h1>
-        
-        <p className="text-gray-300 text-sm sm:text-base leading-relaxed max-w-xl mx-auto md:mx-0 font-medium opacity-80">
-          Set clear objectives, track real-time progress, and let consistency 
-          shape your academic journey.
-        </p>
-      </div>
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
 
-      {/* RIGHT: Quick Actions & Stats (40%) - Mengisi "Zero Space" di kanan */}
-      <div className="lg:col-span-5 flex flex-col items-center md:items-end gap-4 w-full">
-        <div className="w-full sm:max-w-xs space-y-3">
-          <button
-            onClick={() => setShowWizard(true)}
-            className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-2xl bg-[#E56668] text-white font-black uppercase tracking-widest text-xs shadow-xl shadow-red-900/20 transition-all hover:scale-[1.02] active:scale-95"
-          >
-            <Plus size={18} strokeWidth={3} />
-            Set a New Goal
-          </button>
-          
-          <div className="grid grid-cols-2 gap-3">
-             <div className="bg-white/5 backdrop-blur-md border border-white/10 p-4 rounded-2xl text-center">
-                <p className="text-[9px] font-black uppercase tracking-widest text-white/40 mb-1">Active</p>
-                <p className="text-xl font-black leading-none">02</p>
-             </div>
-             <div className="bg-white/5 backdrop-blur-md border border-white/10 p-4 rounded-2xl text-center">
-                <p className="text-[9px] font-black uppercase tracking-widest text-white/40 mb-1">Completed</p>
-                <p className="text-xl font-black leading-none text-green-400">14</p>
-             </div>
-          </div>
+            {/* Left: heading */}
+            <div className="lg:col-span-7 flex flex-col items-center text-center md:items-start md:text-left space-y-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/10 text-[10px] font-black uppercase tracking-[0.2em] text-[#E56668]">
+                <Target size={14} />
+                <span>Commitment Space</span>
+              </div>
 
-          <button className="w-full py-3 bg-white/5 border border-white/10 text-white font-black uppercase tracking-widest text-[10px] rounded-xl hover:bg-white/10 transition-all flex items-center justify-center gap-2">
-            <Activity size={14} />
-            View Analysis History
-          </button>
-        </div>
-      </div>
+              <h1 className="text-3xl lg:text-5xl font-black tracking-tight leading-tight">
+                My Learning <br className="hidden sm:block" /> Goals & Vision
+              </h1>
 
-    </div>
-  </div>
-</div>
-{/* ===== END HERO SECTION ===== */}
+              <p className="text-gray-300 text-sm sm:text-base leading-relaxed max-w-xl mx-auto md:mx-0 opacity-80">
+                Set clear objectives, track real-time progress, and let consistency
+                shape your academic or professional journey.
+              </p>
 
-      {/* ===== GOALS LIST SECTION ===== */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-8">
-        
-        {loading ? (
-          <div className="text-center py-20 text-gray-500">Loading your goals...</div>
-        ) : goals.length === 0 ? (
-          <div className="text-center py-16 bg-white rounded-3xl border border-dashed border-gray-300">
-            <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
-              <AlertCircle className="text-gray-400" />
+              {/* Goal limit indicator */}
+              <div className="flex items-center gap-3 pt-1">
+                <div className="flex gap-1.5">
+                  {[0, 1, 2].map((i) => (
+                    <div
+                      key={i}
+                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                        i < activeGoals.length ? "bg-[#E56668]" : "bg-white/20"
+                      }`}
+                    />
+                  ))}
+                </div>
+                <span className="text-xs text-white/50 font-medium">
+                  {activeGoals.length}/{MAX_GOALS} active goals
+                  {isGoalLimitHit && " — limit reached"}
+                </span>
+              </div>
             </div>
-            <h3 className="text-lg font-bold text-[#2F4157]">No Goals Yet</h3>
-            <p className="text-gray-500 mb-6">Start your journey by setting your first goal above.</p>
+
+            {/* Right: CTA + stats */}
+            <div className="lg:col-span-5 flex flex-col items-center md:items-end gap-4 w-full">
+              <div className="w-full sm:max-w-xs space-y-3">
+
+                {/* New goal button — locked when limit hit */}
+                <button
+                  onClick={() => { if (!isGoalLimitHit) setShowWizard(true); }}
+                  disabled={isGoalLimitHit}
+                  title={isGoalLimitHit ? "Delete an existing goal first (max 3 active)" : "Create a new goal"}
+                  className={`w-full flex items-center justify-center gap-3 px-6 py-4 rounded-2xl font-black uppercase tracking-widest text-xs shadow-xl transition-all ${
+                    isGoalLimitHit
+                      ? "bg-white/10 text-white/30 cursor-not-allowed border border-white/10"
+                      : "bg-[#E56668] text-white shadow-red-900/20 hover:scale-[1.02] active:scale-95"
+                  }`}
+                >
+                  {isGoalLimitHit ? (
+                    <>
+                      <Lock size={16} strokeWidth={3} />
+                      Max 3 Goals Reached
+                    </>
+                  ) : (
+                    <>
+                      <Plus size={18} strokeWidth={3} />
+                      Set a New Goal
+                    </>
+                  )}
+                </button>
+
+                {/* Limit tooltip when hit */}
+                {isGoalLimitHit && (
+                  <p className="text-center text-xs text-white/40 leading-relaxed">
+                    Complete or delete an active goal to unlock a new slot.
+                  </p>
+                )}
+
+                {/* Stats */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-white/5 backdrop-blur-md border border-white/10 p-4 rounded-2xl text-center">
+                    <p className="text-[9px] font-black uppercase tracking-widest text-white/40 mb-1">Active</p>
+                    <p className="text-xl font-black leading-none">
+                      {loading ? "—" : String(activeGoals.length).padStart(2, "0")}
+                    </p>
+                  </div>
+                  <div className="bg-white/5 backdrop-blur-md border border-white/10 p-4 rounded-2xl text-center">
+                    <p className="text-[9px] font-black uppercase tracking-widest text-white/40 mb-1">Completed</p>
+                    <p className="text-xl font-black leading-none text-green-400">
+                      {loading ? "—" : String(completedGoals.length).padStart(2, "0")}
+                    </p>
+                  </div>
+                </div>
+
+                <button className="w-full py-3 bg-white/5 border border-white/10 text-white font-black uppercase tracking-widest text-[10px] rounded-xl hover:bg-white/10 transition-all flex items-center justify-center gap-2">
+                  <Activity size={14} />
+                  View Analysis History
+                </button>
+              </div>
+            </div>
           </div>
-        ) : (
+        </div>
+      </div>
+
+      {/* ── GOALS LIST ───────────────────────────────────────────────────── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+
+        {loading ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {goals.map((goal) => (
-              <GoalCard 
-                key={goal.id} 
-                goal={goal} 
-                onDelete={() => handleDeleteGoal(goal.id)}
-              />
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-64 bg-gray-100 rounded-3xl animate-pulse" />
             ))}
+          </div>
+
+        ) : goals.length === 0 ? (
+          <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-gray-200">
+            <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+              <AlertCircle className="text-gray-400" size={28} />
+            </div>
+            <h3 className="text-lg font-bold text-[#2F4157] mb-2">No Goals Yet</h3>
+            <p className="text-gray-500 text-sm mb-6 max-w-xs mx-auto">
+              Start your journey by creating your first learning goal above.
+            </p>
+            <button
+              onClick={() => setShowWizard(true)}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#E56668] text-white rounded-xl font-bold text-sm hover:bg-[#C04C4E] transition-colors shadow-md"
+            >
+              <Plus size={16} strokeWidth={3} /> Create My First Goal
+            </button>
+          </div>
+
+        ) : (
+          <div className="space-y-8">
+
+            {/* Active goals */}
+            {activeGoals.length > 0 && (
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-sm font-black text-gray-500 uppercase tracking-widest">
+                    Active Goals ({activeGoals.length}/{MAX_GOALS})
+                  </h2>
+                  {isGoalLimitHit && (
+                    <span className="text-xs font-bold text-orange-500 bg-orange-50 px-3 py-1 rounded-full border border-orange-200">
+                      Limit reached — complete or delete to add more
+                    </span>
+                  )}
+                </div>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {activeGoals.map((goal) => (
+                    <GoalCard
+                      key={goal.id}
+                      goal={goal}
+                      onDelete={() => confirmDelete(goal)}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Completed goals */}
+            {completedGoals.length > 0 && (
+              <div>
+                <h2 className="text-sm font-black text-gray-400 uppercase tracking-widest mb-4">
+                  Completed Goals ({completedGoals.length})
+                </h2>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-70">
+                  {completedGoals.map((goal) => (
+                    <GoalCard
+                      key={goal.id}
+                      goal={goal}
+                      onDelete={() => confirmDelete(goal)}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
 
-      {/* Goal Creation Wizard */}
+      {/* ── WIZARD ───────────────────────────────────────────────────────── */}
       {showWizard && (
         <GoalWizard
           userId={userData.id}
           onClose={() => setShowWizard(false)}
           onSuccess={handleGoalCreated}
         />
+      )}
+
+      {/* ── DELETE CONFIRMATION MODAL ────────────────────────────────────── */}
+      {goalToDelete && typeof window !== "undefined" && createPortal(
+        <div 
+          className="fixed inset-0 bg-[#2F4157]/60 backdrop-blur-sm z-[99999] flex items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={() => !isDeleting && setGoalToDelete(null)}
+        >
+          <div 
+            className="bg-white rounded-3xl max-w-md w-full shadow-2xl p-6 sm:p-8 text-center animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-16 h-16 bg-red-50 border-4 border-red-100 rounded-full flex items-center justify-center mx-auto mb-5">
+              <AlertTriangle size={28} className="text-red-500" />
+            </div>
+            
+            <h3 className="text-2xl font-black text-[#2F4157] mb-2">
+              Delete this goal?
+            </h3>
+            
+            <p className="text-sm text-gray-500 mb-6 leading-relaxed">
+              Are you sure you want to permanently delete <strong>{goalToDelete.objective}</strong>? 
+              All your progress, completed tasks, and mentor feedback will be lost. 
+              <span className="block mt-1 font-semibold text-red-500">This action cannot be undone.</span>
+            </p>
+
+            {deleteError && (
+              <div className="mb-6 p-3 bg-red-50 text-red-600 text-sm font-medium rounded-xl border border-red-100">
+                {deleteError}
+              </div>
+            )}
+
+            <div className="flex flex-col-reverse sm:flex-row gap-3">
+              <button
+                onClick={() => setGoalToDelete(null)}
+                disabled={isDeleting}
+                className="flex-1 py-3 px-4 bg-gray-100 text-gray-700 rounded-xl font-bold hover:bg-gray-200 transition-all text-sm disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={executeDeleteGoal}
+                disabled={isDeleting}
+                className="flex-1 py-3 px-4 bg-red-500 text-white rounded-xl font-bold hover:bg-red-600 hover:shadow-lg transition-all text-sm flex items-center justify-center gap-2 disabled:bg-red-300 disabled:cursor-not-allowed"
+              >
+                {isDeleting ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Deleting...
+                  </>
+                ) : (
+                  <>
+                    <Trash2 size={16} />
+                    Yes, Delete
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
       )}
 
     </DashboardLayout>

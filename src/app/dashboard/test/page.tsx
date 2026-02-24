@@ -206,11 +206,11 @@ export default function IELSTestDashboard() {
           <span className="uppercase tracking-wider">Official Assessment Portal</span>
         </div>
         
-        <h1 className="text-3xl lg:text-5xl font-bold font-geologica mb-3 tracking-tight leading-tight">
+        <h1 className="text-3xl lg:text-5xl font-black tracking-tight leading-tight">
           Your {registration.test_type.toUpperCase()} Journey
         </h1>
         
-        <p className="text-gray-300 max-w-xl text-sm sm:text-lg leading-relaxed">
+        <p className="text-gray-300 max-w-xl text-sm sm:text-lg leading-relaxed mt-4">
           Track your progress, access premium materials, and achieve your target score.
         </p>
       </div>

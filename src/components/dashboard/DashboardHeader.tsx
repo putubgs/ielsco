@@ -133,7 +133,7 @@ return (
       <div className="flex items-center justify-between">
         
         {/* 1. LOGO (LEFT) */}
-        <div className="flex-shrink-0 flex items-center gap-3 lg:gap-5 z-50">
+        <div className="flex-shrink-0 flex items-center gap-3 lg:gap-5 z-40">
            <Link href="/dashboard" className="flex items-center font-geologica gap-3 lg:gap-[15px]">
               <Image 
                 src="/images/logos/iels_white.png" 
@@ -196,7 +196,7 @@ return (
                 {hasChildren && (
                   <div 
                     className={cn(
-                      "absolute left-1/2 -translate-x-1/2 pt-4 w-56 z-50 transition-all duration-200 origin-top",
+                      "absolute left-1/2 -translate-x-1/2 pt-4 w-56 z-40 transition-all duration-200 origin-top",
                       activeDropdown === item.name 
                         ? "opacity-100 translate-y-0 visible" 
                         : "opacity-0 -translate-y-2 invisible"
@@ -231,7 +231,7 @@ return (
         </nav>
 
         {/* 3. RIGHT ACTIONS */}
-        <div className="flex items-center gap-4 lg:gap-6 z-50">
+        <div className="flex items-center gap-4 lg:gap-6 z-40">
           <div className="flex items-center gap-2 border-r border-white/10 pr-4">
             {/* MARKETPLACE */}
             <Link href="/dashboard/shop" className="hidden sm:block">
@@ -285,7 +285,7 @@ return (
 
             {/* PROFILE MENU */}
             {isProfileOpen && (
-              <div className="absolute right-0 mt-4 w-72 bg-white rounded-2xl shadow-2xl py-2 border border-gray-100 transform transition-all origin-top-right z-50 animate-in fade-in zoom-in-95 duration-100">
+              <div className="absolute right-0 mt-4 w-72 bg-white rounded-2xl shadow-2xl py-2 border border-gray-100 transform transition-all origin-top-right z-540 animate-in fade-in zoom-in-95 duration-100">
                 <div className="px-5 py-4 border-b border-gray-100 bg-gray-50/50 rounded-t-2xl flex items-center gap-3">
                   <div className="h-10 w-10 rounded-full bg-[#2F4157] flex items-center justify-center text-white font-bold text-lg shrink-0">
                     {userName?.charAt(0)}

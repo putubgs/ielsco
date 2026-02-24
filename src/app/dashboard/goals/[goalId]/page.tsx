@@ -1,5 +1,6 @@
 "use client";
-
+// Pastiin udah import AlertTriangle dan Trash2 dari lucide-react
+import { createPortal } from "react-dom"; // Pastiin ini juga ada
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
@@ -38,7 +39,6 @@ import type { GoalWithTasks, GoalAnalytics as GoalAnalyticsType } from "@/types/
 
 type UserTier = "explorer" | "insider" | "visionary";
 
-// Fallback CEFR if not stored in DB yet
 const DEFAULT_CURRENT_CEFR: CEFRLevel = "B1";
 const DEFAULT_TARGET_CEFR: CEFRLevel = "B2";
 
@@ -65,7 +65,8 @@ export default function GoalDetailPage() {
   const [loading, setLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
   const [submissionModalTask, setSubmissionModalTask] = useState<string | null>(null);
-
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
   // ── Load user + goal ──────────────────────────────────────────────────────
   useEffect(() => {
     const initData = async () => {
@@ -123,14 +124,11 @@ export default function GoalDetailPage() {
       if (goalData) {
         setGoal(goalData as GoalWithTasks);
 
-        // ── Read CEFR from DB (saved when goal was created) ──────────────
-        // Falls back to sensible defaults if old goals predate CEFR storage
         const currentCEFR: CEFRLevel =
           (goalData as any).current_cefr ?? DEFAULT_CURRENT_CEFR;
         const targetCEFR: CEFRLevel =
           (goalData as any).target_cefr ?? DEFAULT_TARGET_CEFR;
 
-        // ── Days remaining (used to derive duration in months) ───────────
         const daysRemaining = Math.max(
           0,
           Math.ceil(
@@ -138,15 +136,14 @@ export default function GoalDetailPage() {
               (24 * 60 * 60 * 1000)
           )
         );
-        // Convert remaining days → approximate months for the calculator
         const monthsRemaining = Math.max(1, Math.round(daysRemaining / 30));
 
         const plan = calculateStudyPlan(
           goalData.objective,
-          { cefr: currentCEFR },   // ✅ correct shape — cefr is required
-          { cefr: targetCEFR },    // ✅ correct shape
+          { cefr: currentCEFR },
+          { cefr: targetCEFR },
           monthsRemaining,
-          true // include speaking club
+          true
         );
 
         setStudyPlan(plan);
@@ -161,36 +158,39 @@ export default function GoalDetailPage() {
   };
 
   // ── Handlers ──────────────────────────────────────────────────────────────
-  const handleToggleTask = async (taskId: string) => {
-    if (!userData.id) return;
-    const success = await toggleTaskCompletion(taskId, userData.id);
-    if (success && goalId) await loadGoalDetails(goalId);
-  };
 
-  const handleSubmitTask = async (taskId: string, url: string, notes?: string) => {
-    const success = await submitTaskForReview(taskId, url, notes);
+  // FIX: must return Promise<boolean> to match TaskListProps.onToggleTask
+  const handleToggleTask = async (taskId: string): Promise<boolean> => {
+    if (!userData.id) return false;
+    const success = await toggleTaskCompletion(taskId, userData.id);
     if (success && goalId) await loadGoalDetails(goalId);
     return success;
   };
 
-  const handleDeleteGoal = async () => {
-    if (
-      !window.confirm(
-        "Are you sure you want to delete this goal? This action cannot be undone."
-      )
-    )
-      return;
+const handleSubmitTask = async (
+  taskId: string,
+  submissionUrl: string,
+  notes?: string
+): Promise<boolean> => {
+  const success = await submitTaskForReview(taskId, submissionUrl, notes);
+  if (success && goalId) await loadGoalDetails(goalId);
+  return success;
+};
 
-    setIsDeleting(true);
-    const success = await deleteGoal(goalId);
+// --- FUNGSI DELETE BARU ---
+const executeDeleteGoal = async () => {
+  setIsDeleting(true);
+  setDeleteError("");
+  
+  const success = await deleteGoal(goalId);
 
-    if (success) {
-      router.push("/dashboard/goals");
-    } else {
-      alert("Failed to delete goal. Please try again.");
-      setIsDeleting(false);
-    }
-  };
+  if (success) {
+    router.push("/dashboard/goals");
+  } else {
+    setDeleteError("Failed to delete goal. Please try again or contact support.");
+    setIsDeleting(false);
+  }
+};
 
   // ── Loading skeleton ──────────────────────────────────────────────────────
   if (loading || !goal) {
@@ -236,7 +236,6 @@ export default function GoalDetailPage() {
 
         {/* ── HERO HEADER ─────────────────────────────────────────────────── */}
         <div className="relative bg-[#304156] text-white overflow-hidden pb-12">
-          {/* Background accents */}
           <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#E56668] opacity-10 blur-[120px] rounded-full translate-x-1/3 -translate-y-1/3" />
           <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-500 opacity-5 blur-[100px] rounded-full -translate-x-1/3 translate-y-1/3" />
 
@@ -267,7 +266,6 @@ export default function GoalDetailPage() {
                   {goal.objective}
                 </h1>
 
-                {/* CEFR journey badge (shown if stored) */}
                 {(goal as any).current_cefr && (goal as any).target_cefr && (
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 rounded-lg border border-white/10 text-sm font-semibold">
                     <span className="text-white/60">Level journey:</span>
@@ -305,10 +303,7 @@ export default function GoalDetailPage() {
               {/* Right: Circular progress */}
               <div className="flex-shrink-0 bg-white/5 p-6 rounded-3xl border border-white/10 backdrop-blur-sm flex flex-col items-center gap-4">
                 <div className="relative w-28 h-28">
-                  <svg
-                    className="w-full h-full -rotate-90"
-                    viewBox="0 0 36 36"
-                  >
+                  <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
                     <path
                       className="text-white/10"
                       d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
@@ -355,7 +350,8 @@ export default function GoalDetailPage() {
                 tasks={goal.tasks}
                 userTier={userData.tier === "visionary" ? "insider" : userData.tier}
                 onToggleTask={handleToggleTask}
-                onSubmitTask={(taskId) => setSubmissionModalTask(taskId)}
+                onSubmitTask={handleSubmitTask}
+                onViewMaterials={(taskId) => setSubmissionModalTask(taskId)}
               />
             </div>
 
@@ -375,7 +371,6 @@ export default function GoalDetailPage() {
                     </div>
 
                     <div className="space-y-6">
-                      {/* Self-study mins/day + total */}
                       <div className="grid grid-cols-2 gap-3">
                         <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
                           <p className="text-slate-400 text-[10px] uppercase tracking-wider font-bold mb-1">
@@ -399,7 +394,6 @@ export default function GoalDetailPage() {
                         </div>
                       </div>
 
-                      {/* CEFR context */}
                       <div className="bg-blue-50 rounded-xl p-3 border border-blue-100">
                         <p className="text-xs text-blue-700 font-semibold mb-1">Level Journey</p>
                         <p className="text-sm font-bold text-blue-900">
@@ -410,7 +404,6 @@ export default function GoalDetailPage() {
                         </p>
                       </div>
 
-                      {/* Difficulty badge */}
                       <div className="flex items-center justify-between">
                         <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">
                           Intensity
@@ -432,7 +425,6 @@ export default function GoalDetailPage() {
                         </span>
                       </div>
 
-                      {/* Recommendation */}
                       <div className="pt-4 border-t border-slate-100">
                         <div className="flex gap-3">
                           <AlertTriangle
@@ -506,19 +498,17 @@ export default function GoalDetailPage() {
                     )}
                   </Link>
 
-                  <button
-                    onClick={handleDeleteGoal}
+                      {/* DELETE BUTTON */}
+                  <button 
+                    onClick={() => setIsDeleteModalOpen(true)} // <-- UBAH DI SINI
                     disabled={isDeleting}
                     className="w-full flex items-center justify-between p-4 bg-white hover:bg-red-50 border border-slate-100 hover:border-red-100 rounded-xl transition-all text-left group mt-2"
                   >
                     <span className="text-sm font-bold text-slate-500 group-hover:text-red-600 flex items-center gap-3">
                       <div className="p-1.5 bg-slate-50 rounded-lg border border-slate-100 group-hover:bg-red-100 group-hover:border-red-200 transition-colors">
-                        <Trash2
-                          size={16}
-                          className="text-slate-400 group-hover:text-red-500"
-                        />
+                        <Trash2 size={16} className="text-slate-400 group-hover:text-red-500" />
                       </div>
-                      {isDeleting ? "Deleting..." : "Delete Goal"}
+                      Delete Goal
                     </span>
                   </button>
                 </div>
@@ -572,6 +562,67 @@ export default function GoalDetailPage() {
           onSubmit={handleSubmitTask}
         />
       )}
+
+      {/* === DELETE CONFIRMATION MODAL === */}
+{isDeleteModalOpen && typeof window !== "undefined" && createPortal(
+  <div 
+    className="fixed inset-0 bg-[#2F4157]/60 backdrop-blur-sm z-[99999] flex items-center justify-center p-4 animate-in fade-in duration-200"
+    onClick={() => !isDeleting && setIsDeleteModalOpen(false)}
+  >
+    <div 
+      className="bg-white rounded-3xl max-w-md w-full shadow-2xl p-6 sm:p-8 text-center animate-in zoom-in-95 duration-200"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className="w-16 h-16 bg-red-50 border-4 border-red-100 rounded-full flex items-center justify-center mx-auto mb-5">
+        <AlertTriangle size={28} className="text-red-500" />
+      </div>
+      
+      <h3 className="text-2xl font-black text-[#2F4157] mb-2">
+        Delete this goal?
+      </h3>
+      
+      <p className="text-sm text-gray-500 mb-6 leading-relaxed">
+        Are you sure you want to permanently delete <strong>{goal.objective}</strong>? 
+        All your progress, completed tasks, and mentor feedback will be lost. 
+        <span className="block mt-1 font-semibold text-red-500">This action cannot be undone.</span>
+      </p>
+
+      {deleteError && (
+        <div className="mb-6 p-3 bg-red-50 text-red-600 text-sm font-medium rounded-xl border border-red-100">
+          {deleteError}
+        </div>
+      )}
+
+      <div className="flex flex-col-reverse sm:flex-row gap-3">
+        <button
+          onClick={() => setIsDeleteModalOpen(false)}
+          disabled={isDeleting}
+          className="flex-1 py-3 px-4 bg-gray-100 text-gray-700 rounded-xl font-bold hover:bg-gray-200 transition-all text-sm disabled:opacity-50"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={executeDeleteGoal}
+          disabled={isDeleting}
+          className="flex-1 py-3 px-4 bg-red-500 text-white rounded-xl font-bold hover:bg-red-600 hover:shadow-lg transition-all text-sm flex items-center justify-center gap-2 disabled:bg-red-300 disabled:cursor-not-allowed"
+        >
+          {isDeleting ? (
+            <>
+              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              Deleting...
+            </>
+          ) : (
+            <>
+              <Trash2 size={16} />
+              Yes, Delete
+            </>
+          )}
+        </button>
+      </div>
+    </div>
+  </div>,
+  document.body
+)}
     </DashboardLayout>
   );
 }

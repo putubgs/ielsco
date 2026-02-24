@@ -27,7 +27,7 @@ const MASCOT_MOODS = {
   shocked: "/images/contents/mascot/shocked.svg",
   sleepy: "/images/contents/mascot/sleepy.svg",
   proud: "/images/contents/mascot/proud.svg",
-  thinking: "/images/contents/mascot/thinking.svg",
+  thinking: "/images/contents/mascot/coffee.svg",
   celebrating: "/images/contents/mascot/celebrating.svg",
   coffee: "/images/contents/mascot/coffee.svg"
 };

@@ -93,16 +93,15 @@ export default function LearningSpacePage() {
       <div className="w-full">
         {/* Badge: justify-center di mobile, md:justify-start di desktop */}
         <div className="flex items-center justify-center md:justify-start gap-2 text-[#E56668] font-bold text-sm tracking-wider uppercase mb-3">
-          <Sparkles size={16} />
-          My Learning Space
+          Hey, {userData.name.split(" ")[0]}! 👋
         </div>
         
-        <h1 className="text-3xl lg:text-4xl font-black font-geologica mb-3 tracking-tighter">
-          Hey, {userData.name.split(" ")[0]}! 👋
+        <h1 className="text-3xl lg:text-5xl font-black tracking-tight leading-tight">
+          My Learning Space
         </h1>
         
         {/* mx-auto di mobile agar max-w-xl tetap di tengah */}
-        <p className="text-gray-300 max-w-xl text-base sm:text-lg leading-relaxed mx-auto md:mx-0">
+        <p className="text-gray-300 max-w-xl text-base sm:text-lg leading-relaxed mx-auto md:mx-0 mt-4">
           Ready to continue your progress? You have <strong className="text-white">2 active activities</strong> waiting for you today.
         </p>
       </div>

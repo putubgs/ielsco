@@ -17,7 +17,7 @@ export default function NotFound() {
           <div className="absolute -top-16 right-10 text-blue-500 font-bold text-3xl animate-[ping_3s_ease-in-out_infinite]">Z</div>
 
           {/* Mascot Image (No bounce, just sitting there) */}
-          <div className="w-56 h-56 md:w-72 md:h-72 relative z-10">
+          <div className="w-53 h-53 md:w-72 md:h-72 relative z-10">
             <Image 
               src="/images/contents/mascot/sleepy.svg" 
               alt="Sleepy IELS Mascot"
@@ -46,10 +46,7 @@ export default function NotFound() {
           {/* Main Body Text */}
           <div className="text-[#64748B] text-base md:text-[17px] leading-relaxed space-y-4">
             <p>
-              The learning module you're searching for is currently unavailable or resting in our archives.
-            </p>
-            <p>
-              Head back to the{' '}
+              The learning module you're searching for is currently unavailable or resting in our archives. Head back to the{' '}
               <Link href="/" className="font-bold text-[#2F4157] hover:text-[#E56668] transition-colors underline decoration-2 underline-offset-4 decoration-[#E56668]/30 hover:decoration-[#E56668]">
                 Homepage
               </Link>

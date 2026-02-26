@@ -9,8 +9,6 @@ import {
   CheckCircle,
   ArrowLeft,
   Crown,
-  Video,
-  FileText,
   Users,
   Calendar,
   Download,
@@ -22,9 +20,9 @@ import {
   Target,
   Award,
   BookOpen,
-  Sparkles,
-  TrendingUp,
-  Clock
+  ArrowRight,
+  Clock,
+  Rocket
 } from "lucide-react";
 
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
@@ -42,6 +40,8 @@ type UserProfile = {
 type MentoringSession = {
   week: number;
   title: string;
+  desc: string;
+  output: string;
   date: string;
   status: 'upcoming' | 'completed' | 'locked';
   recording_url?: string;
@@ -62,37 +62,47 @@ export default function MentoringDashboard() {
   const [projectLink, setProjectLink] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  // Mentoring sessions data
+  // --- REAL CURRICULUM DATA ---
   const sessions: MentoringSession[] = [
     {
       week: 1,
-      title: "Kickoff & SDG Framework Deep Dive",
-      date: "Jan 20, 2026",
-      status: 'completed',
-      recording_url: "https://youtu.be/example1",
-      materials_url: "https://drive.google.com/example1"
+      title: "Session 01: Micro-Problem Identification",
+      desc: "Narrowing down broad education issues into a specific, data-backed problem statement focused on SDG 4.",
+      output: "Validated SDG 4 problem statement.",
+      date: "25 Mar 2026",
+      status: 'upcoming', // Set to upcoming logically before the date
     },
     {
       week: 2,
-      title: "Problem Definition & Target Audience",
-      date: "Jan 27, 2026",
-      status: 'completed',
-      recording_url: "https://youtu.be/example2",
-      materials_url: "https://drive.google.com/example2"
+      title: "Session 02: Building the MVP",
+      desc: "Designing a Minimum Viable Project. Learning how to build a creative yet feasible solution framework.",
+      output: "Initial project concept note.",
+      date: "29 Mar 2026",
+      status: 'locked',
     },
     {
       week: 3,
-      title: "Solution Design & Innovation Strategy",
-      date: "Feb 3, 2026",
-      status: 'completed',
-      recording_url: "https://youtu.be/example3",
-      materials_url: "https://drive.google.com/example3"
+      title: "Session 03: Operational Blueprint",
+      desc: "Mapping out the technical 'how-to' of your project. Creating a step-by-step workflow, timeline, and resource requirements.",
+      output: "Technical operational flowchart.",
+      date: "02 Apr 2026",
+      status: 'locked',
     },
     {
       week: 4,
-      title: "Project Presentation & Final Review",
-      date: "Feb 10, 2026",
-      status: 'upcoming',
+      title: "Session 04: Impact Logic & Measurement",
+      desc: "Learning the Theory of Change. Defining how your project creates real impact and how to measure success.",
+      output: "Impact M&E framework.",
+      date: "06 Apr 2026",
+      status: 'locked',
+    },
+    {
+      week: 5,
+      title: "Session 05: Stress-Testing & Final Refinement",
+      desc: "Final logic check and risk mitigation. Sharpening the technical project specs to ensure it's bulletproof.",
+      output: "Final project specification.",
+      date: "09 Apr 2026",
+      status: 'locked',
     }
   ];
 
@@ -132,7 +142,7 @@ export default function MentoringDashboard() {
         if (data && data.is_mentoring_participant) {
           setAuthorized(true);
           setUserData(data);
-          setProjectLink(data.mentoring_project_link || "");
+          setProjectLink(data.project_drive_link || ""); // Matches SQL table project_drive_link
         } else {
           setAuthorized(false);
         }
@@ -161,14 +171,14 @@ export default function MentoringDashboard() {
       const { error } = await supabase
         .from('gif_registrations')
         .update({
-          mentoring_project_link: projectLink,
-          mentoring_project_submitted_at: new Date().toISOString()
+          project_drive_link: projectLink,
+          phase2_submitted_at: new Date().toISOString()
         })
         .eq('id', userData?.id);
 
       if (!error) {
-        alert("✅ Project submitted successfully!");
-        setUserData((prev: any) => ({ ...prev, mentoring_project_link: projectLink }));
+        alert("Project submitted successfully!");
+        setUserData((prev: any) => ({ ...prev, project_drive_link: projectLink }));
       } else {
         alert("Error submitting. Please try again.");
       }
@@ -183,9 +193,8 @@ export default function MentoringDashboard() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="text-center">
-          {/* Loader with Muted Red */}
           <Loader2 className="w-12 h-12 animate-spin text-[#914D4D] mx-auto mb-4" />
-          <p className="text-sm text-gray-500">Verifying access...</p>
+          <p className="text-sm text-[#304156]/60 font-medium">Verifying access...</p>
         </div>
       </div>
     );
@@ -193,33 +202,31 @@ export default function MentoringDashboard() {
 
   if (!authorized) {
     return (
-      // Updated Layout Props
       <DashboardLayout
         userTier={userProfile?.tier} 
         userName={userProfile?.full_name} 
         userAvatar={userProfile?.avatar_url}
       >
         <div className="max-w-3xl mx-auto px-4 py-20 font-geologica">
-          <div className="bg-white rounded-3xl border-2 border-[#914D4D]/20 p-12 text-center shadow-xl">
+          <div className="bg-white rounded-3xl border border-[#914D4D]/20 p-12 text-center shadow-xl">
             <div className="bg-[#914D4D]/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
               <Lock className="w-10 h-10 text-[#914D4D]" />
             </div>
             <h1 className="text-3xl font-black text-[#304156] mb-4">Access Restricted</h1>
             <p className="text-[#304156]/80 mb-8 max-w-md mx-auto leading-relaxed">
               This dashboard is only accessible to registered mentoring participants. 
-              Please apply for the mentoring program first.
+              Please apply for the mentoring program first to unlock the Golden Ticket pathway.
             </p>
-            <div className="flex gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/dashboard/gif">
-                <Button className="rounded-xl bg-white text-[#304156] border border-[#304156]/20 hover:bg-[#304156]/5">
+                <Button className="w-full rounded-xl bg-white text-[#304156] border border-[#304156]/20 hover:bg-[#304156]/5">
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to Dashboard
                 </Button>
               </Link>
-              {/* Button Gradient */}
               <Button 
                 onClick={() => window.open("https://forms.gle/D4DMBFshr1JeydZC9", "_blank")}
-                className="bg-gradient-to-r from-[#2F4055] to-[#914D4D] hover:to-[#2F4055] text-white rounded-xl shadow-lg hover:shadow-xl transition-all"
+                className="w-full bg-[#914D4D] hover:bg-[#7a3e3e] text-white rounded-xl shadow-lg hover:shadow-xl transition-all"
               >
                 Apply for Mentoring
                 <ExternalLink className="w-4 h-4 ml-2" />
@@ -245,17 +252,15 @@ export default function MentoringDashboard() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <Link href="/dashboard/gif">
-            <Button className="rounded-xl bg-white text-[#304156] border border-[#304156]/20 hover:bg-[#304156]/5">
+            <Button className="rounded-xl bg-white text-[#304156] border border-[#304156]/20 hover:bg-[#304156]/5 shadow-sm">
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Dashboard
+              Back to GIF Dashboard
             </Button>
           </Link>
         </div>
 
-        {/* Hero Section - New Palette */}
-        {/* Gradient Linear -> #2F4055 #914D4D #304156 */}
+        {/* Hero Section */}
         <div className="relative overflow-hidden bg-gradient-to-br from-[#2F4055] via-[#914D4D] to-[#304156] rounded-3xl shadow-2xl">
-          {/* Background Effect */}
           <div className="absolute inset-0 opacity-30">
             <div className="absolute top-0 right-0 w-96 h-96 bg-[#914D4D] rounded-full blur-[120px]"></div>
             <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#304156] rounded-full blur-[120px]"></div>
@@ -263,67 +268,68 @@ export default function MentoringDashboard() {
 
           <div className="relative z-10 p-8 md:p-12">
             <div className="flex items-center gap-3 mb-4">
-              <div className="bg-gradient-to-r from-[#2F4055] to-[#914D4D] p-3 rounded-2xl shadow-lg border border-white/10">
-                <Crown className="w-8 h-8 text-white" />
+              <div className="bg-white/10 p-3 rounded-2xl shadow-lg border border-white/20 backdrop-blur-sm">
+                <Rocket className="w-8 h-8 text-white" />
               </div>
-              <span className="bg-[#304156] text-white px-4 py-1.5 rounded-full text-sm font-bold border border-white/10 shadow-sm">
+              <span className="bg-white/20 text-white px-4 py-1.5 rounded-full text-sm font-bold border border-white/10 shadow-sm backdrop-blur-md tracking-wider">
                 FAST TRACK PARTICIPANT
               </span>
             </div>
 
-            <h1 className="text-3xl md:text-4xl font-black text-white mb-3 drop-shadow-sm">
-              Project Prep Mentoring
+            <h1 className="text-3xl md:text-5xl font-black text-white mb-4 drop-shadow-sm leading-tight">
+              Project Mentoring Hub
             </h1>
-            <p className="text-white/90 text-lg max-w-2xl mb-8 leading-relaxed">
-              Welcome to your exclusive mentoring dashboard! Track your progress, access materials, 
-              and submit your final project.
+            <p className="text-white/90 text-lg max-w-2xl mb-10 leading-relaxed font-light">
+              Welcome to your exclusive mentoring space! Track your weekly curriculum, access session materials, 
+              and submit your final Golden Ticket project deck.
             </p>
 
-            {/* Progress Stats - Updated to White/Transparent */}
+            {/* Progress Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-colors">
-                <div className="text-3xl font-bold text-white mb-1">{completedSessions}</div>
-                <div className="text-xs text-white/70 uppercase tracking-wider font-semibold">Sessions Completed</div>
+              <div className="bg-[#304156]/40 backdrop-blur-md rounded-xl p-4 border border-white/10">
+                <div className="text-3xl font-black text-white mb-1">{completedSessions}</div>
+                <div className="text-xs text-white/70 uppercase tracking-wider font-semibold">Sessions Done</div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-colors">
-                <div className="text-3xl font-bold text-white mb-1">{Math.round(progressPercent)}%</div>
+              <div className="bg-[#304156]/40 backdrop-blur-md rounded-xl p-4 border border-white/10">
+                <div className="text-3xl font-black text-white mb-1">{Math.round(progressPercent)}%</div>
                 <div className="text-xs text-white/70 uppercase tracking-wider font-semibold">Progress</div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-colors">
-                <div className="text-3xl font-bold text-white mb-1">4</div>
+              <div className="bg-[#304156]/40 backdrop-blur-md rounded-xl p-4 border border-white/10">
+                <div className="text-3xl font-black text-white mb-1">5</div>
                 <div className="text-xs text-white/70 uppercase tracking-wider font-semibold">Total Weeks</div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:bg-white/20 transition-colors">
-                <div className="text-3xl font-bold text-[#914D4D] mb-1 drop-shadow-sm">✓</div>
-                <div className="text-xs text-white/70 uppercase tracking-wider font-semibold">Fast Track Status</div>
+              <div className="bg-[#914D4D]/40 backdrop-blur-md rounded-xl p-4 border border-[#914D4D]/50 shadow-inner">
+                <div className="text-3xl font-black text-white mb-1 drop-shadow-sm flex items-center gap-2">
+                  <CheckCircle className="w-6 h-6" /> Phase 3
+                </div>
+                <div className="text-xs text-white/90 uppercase tracking-wider font-semibold">Direct Access</div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Benefits Banner - Updated to NightFall Blue Theme */}
-        <div className="bg-[#304156]/5 rounded-2xl border-2 border-[#304156]/10 p-6">
+        {/* Benefits Banner */}
+        <div className="bg-white rounded-2xl border border-[#304156]/10 p-6 shadow-sm">
           <div className="flex items-start gap-4">
-            <div className="bg-[#304156] p-3 rounded-xl shadow-md">
-              <Award className="w-6 h-6 text-white" />
+            <div className="bg-[#304156]/5 p-3 rounded-xl">
+              <Award className="w-6 h-6 text-[#914D4D]" />
             </div>
             <div className="flex-1">
-              <h3 className="font-bold text-[#304156] mb-2 flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-[#914D4D]" />
-                Your Fast Track Benefits
+              <h3 className="font-bold text-[#304156] mb-3 flex items-center gap-2">
+                Your Mentoring Privileges
               </h3>
               <div className="grid md:grid-cols-3 gap-4 text-sm">
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-[#914D4D] mt-0.5 flex-shrink-0" />
-                  <span className="text-[#304156]/80">All requirements auto-completed</span>
+                  <span className="text-[#304156]/80 font-medium">Phase 1 & 2 Skipped (Pre-validated)</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-[#914D4D] mt-0.5 flex-shrink-0" />
-                  <span className="text-[#304156]/80">Priority application review</span>
+                  <span className="text-[#304156]/80 font-medium">Direct to Project Presentation</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-[#914D4D] mt-0.5 flex-shrink-0" />
-                  <span className="text-[#304156]/80">Direct founder feedback</span>
+                  <span className="text-[#304156]/80 font-medium">NUS-Standard Skillset & Frameworks</span>
                 </div>
               </div>
             </div>
@@ -331,122 +337,107 @@ export default function MentoringDashboard() {
         </div>
 
         {/* Sessions Timeline */}
-        <div className="bg-white rounded-2xl border border-[#304156]/10 p-8 shadow-sm">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-[#304156]">Mentoring Sessions</h2>
-            <span className="text-sm text-gray-500">
-              {completedSessions} of {sessions.length} completed
+        <div className="bg-white rounded-2xl border border-[#304156]/10 p-6 md:p-8 shadow-sm">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <div>
+              <h2 className="text-2xl font-bold text-[#304156] mb-1">Mentoring Curriculum</h2>
+              <p className="text-sm text-[#304156]/60">A structured journey to prepare you for international selection.</p>
+            </div>
+            <span className="text-sm font-bold bg-[#304156]/5 text-[#304156] px-4 py-2 rounded-lg border border-[#304156]/10">
+              {completedSessions} of {sessions.length} sessions completed
             </span>
           </div>
 
-          {/* Progress Bar - Updated Gradient */}
-          <div className="mb-8">
-            <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+          <div className="mb-10">
+            <div className="h-3 bg-[#304156]/5 rounded-full overflow-hidden border border-[#304156]/10">
               <motion.div 
                 initial={{ width: 0 }}
                 animate={{ width: `${progressPercent}%` }}
                 transition={{ duration: 1, ease: "easeOut" }}
-                className="h-full bg-gradient-to-r from-[#2F4055] to-[#914D4D]"
+                className="h-full bg-[#914D4D]"
               ></motion.div>
             </div>
           </div>
 
-          {/* Sessions List - Palette Colors */}
           <div className="space-y-4">
             {sessions.map((session, idx) => (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.1 }}
                 className={cn(
-                  "border-2 rounded-2xl p-6 transition-all",
+                  "border rounded-2xl p-5 md:p-6 transition-all",
                   session.status === 'completed' 
-                    ? "border-[#304156]/20 bg-[#304156]/5 hover:border-[#304156]/40" 
+                    ? "border-[#304156]/20 bg-[#304156]/5" 
                     : session.status === 'upcoming'
-                    ? "border-[#914D4D]/20 bg-[#914D4D]/5 hover:border-[#914D4D]/40"
-                    : "border-gray-200 bg-gray-50 opacity-60"
+                    ? "border-[#914D4D]/30 bg-white shadow-md relative overflow-hidden"
+                    : "border-gray-100 bg-gray-50/50 opacity-70"
                 )}
               >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex items-start gap-4 flex-1">
-                    {/* Week Badge */}
-                    <div className={cn(
-                      "w-16 h-16 rounded-xl flex flex-col items-center justify-center font-bold flex-shrink-0 shadow-sm",
-                      session.status === 'completed' 
-                        ? "bg-[#304156] text-white" 
-                        : session.status === 'upcoming'
-                        ? "bg-[#914D4D] text-white"
-                        : "bg-gray-300 text-gray-600"
-                    )}>
-                      <div className="text-xs">Week</div>
-                      <div className="text-xl">{session.week}</div>
+                {session.status === 'upcoming' && (
+                  <div className="absolute top-0 left-0 w-1 h-full bg-[#914D4D]"></div>
+                )}
+                
+                <div className="flex flex-col md:flex-row items-start gap-4 md:gap-6">
+                  {/* Date/Week Box */}
+                  <div className={cn(
+                    "w-full md:w-24 py-3 rounded-xl flex flex-col items-center justify-center font-bold flex-shrink-0 border",
+                    session.status === 'completed' 
+                      ? "bg-[#304156] text-white border-[#304156]" 
+                      : session.status === 'upcoming'
+                      ? "bg-white text-[#914D4D] border-[#914D4D]/30 shadow-sm"
+                      : "bg-gray-100 text-gray-400 border-gray-200"
+                  )}>
+                    <div className="text-xs uppercase tracking-wider opacity-80">Session</div>
+                    <div className="text-xl">0{session.week}</div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 w-full">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+                      <h3 className="text-lg font-bold text-[#304156]">{session.title}</h3>
+                      <div className="flex items-center gap-2 text-sm font-semibold">
+                        <Calendar className="w-4 h-4 text-[#304156]/60" />
+                        <span className="text-[#304156]/80">{session.date}</span>
+                      </div>
+                    </div>
+                    
+                    <p className="text-sm text-[#304156]/70 mb-4 leading-relaxed">
+                      {session.desc}
+                    </p>
+
+                    <div className="bg-white/50 rounded-lg p-3 border border-[#304156]/5 mb-4 text-sm">
+                      <span className="font-bold text-[#304156] mr-2">Target Output:</span>
+                      <span className="text-[#304156]/80">{session.output}</span>
                     </div>
 
-                    {/* Content */}
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className="text-lg font-bold text-[#304156]">{session.title}</h3>
-                        {session.status === 'completed' && (
-                          <span className="bg-[#304156] text-white px-2 py-0.5 rounded-full text-xs font-bold">
-                            <CheckCircle className="w-3 h-3 inline mr-1" />
-                            Completed
-                          </span>
+                    {session.status === 'completed' && (
+                      <div className="flex flex-wrap gap-3">
+                        {session.recording_url && (
+                          <Button onClick={() => window.open(session.recording_url, "_blank")} className="bg-[#304156] hover:bg-[#2F4055] text-white rounded-lg shadow-sm h-9 px-4 text-xs">
+                            <PlayCircle className="w-4 h-4 mr-2" /> Watch Recording
+                          </Button>
                         )}
-                        {session.status === 'upcoming' && (
-                          <span className="bg-[#914D4D] text-white px-2 py-0.5 rounded-full text-xs font-bold">
-                            <Clock className="w-3 h-3 inline mr-1" />
-                            Upcoming
-                          </span>
-                        )}
-                        {session.status === 'locked' && (
-                          <span className="bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full text-xs font-bold">
-                            <Lock className="w-3 h-3 inline mr-1" />
-                            Locked
-                          </span>
+                        {session.materials_url && (
+                          <Button onClick={() => window.open(session.materials_url, "_blank")} className="bg-white border border-[#304156]/20 text-[#304156] hover:bg-[#304156]/5 rounded-lg h-9 px-4 text-xs">
+                            <Download className="w-4 h-4 mr-2" /> Material Deck
+                          </Button>
                         )}
                       </div>
-                      
-                      <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
-                        <Calendar className="w-4 h-4" />
-                        <span>{session.date}</span>
+                    )}
+
+                    {session.status === 'upcoming' && (
+                      <div className="inline-flex items-center text-xs font-bold text-[#914D4D] bg-[#914D4D]/10 px-3 py-1.5 rounded-md">
+                        <Clock className="w-3.5 h-3.5 mr-1.5" /> Next Schedule
                       </div>
+                    )}
 
-                      {session.status === 'completed' && (
-                        <div className="flex gap-3">
-                          {session.recording_url && (
-                            <Button
-                              onClick={() => window.open(session.recording_url, "_blank")}
-                              className="bg-[#914D4D] hover:bg-[#7a3e3e] text-white rounded-lg shadow-sm"
-                            >
-                              <PlayCircle className="w-4 h-4 mr-2" />
-                              Watch Recording
-                            </Button>
-                          )}
-                          {session.materials_url && (
-                            <Button
-                              onClick={() => window.open(session.materials_url, "_blank")}
-                              className="rounded-lg bg-white text-[#304156] border border-[#304156]/20 hover:bg-[#304156]/5"
-                            >
-                              <Download className="w-4 h-4 mr-2" />
-                              Materials
-                            </Button>
-                          )}
-                        </div>
-                      )}
-
-                      {session.status === 'upcoming' && (
-                        <p className="text-sm text-[#914D4D] font-medium">
-                          Materials and recording will be available after the session.
-                        </p>
-                      )}
-
-                      {session.status === 'locked' && (
-                        <p className="text-sm text-gray-500">
-                          This session will unlock after previous sessions are completed.
-                        </p>
-                      )}
-                    </div>
+                    {session.status === 'locked' && (
+                      <div className="inline-flex items-center text-xs font-bold text-gray-500">
+                        <Lock className="w-3.5 h-3.5 mr-1.5" /> Unlocks after previous session
+                      </div>
+                    )}
                   </div>
                 </div>
               </motion.div>
@@ -454,127 +445,138 @@ export default function MentoringDashboard() {
           </div>
         </div>
 
-        {/* Project Submission Section - Updated Gradient */}
-        {/* Gradient Linear -> #2F4055 #914D4D #304156 */}
-        <div className="bg-gradient-to-br from-[#2F4055] via-[#914D4D] to-[#304156] rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-xl">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[#914D4D] rounded-full blur-[100px] opacity-50"></div>
+        {/* Project Submission Section */}
+        <div className="bg-white border border-[#914D4D]/20 rounded-3xl p-8 md:p-10 relative overflow-hidden shadow-xl">
+          {/* Subtle Background Accent */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#914D4D]/5 rounded-full blur-3xl pointer-events-none"></div>
           
-          <div className="relative z-10">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="bg-white/20 p-3 rounded-2xl">
-                <Target className="w-8 h-8" />
+          <div className="relative z-10 flex flex-col lg:flex-row gap-10">
+            
+            <div className="flex-1 space-y-6">
+              <div className="inline-flex items-center gap-2 bg-[#914D4D]/10 text-[#914D4D] px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase border border-[#914D4D]/20">
+                <Target className="w-3.5 h-3.5" /> The Final Gate
               </div>
+              
               <div>
-                <h2 className="text-2xl font-bold">Final Project Submission</h2>
-                <p className="text-white/80 text-sm">Submit your polished project proposal</p>
-              </div>
-            </div>
-
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 mb-6">
-              <h3 className="font-bold text-white mb-3">Submission Requirements</h3>
-              <ul className="space-y-2 text-sm text-white/90">
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                  <span>Complete project proposal deck (max 15 slides)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                  <span>Google Drive link with "Anyone with link can VIEW" access</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                  <span>SDG alignment clearly demonstrated</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                  <span>Incorporate feedback from mentoring sessions</span>
-                </li>
-              </ul>
-            </div>
-
-            {userData?.mentoring_project_link ? (
-              <div className="bg-white/10 border border-white/20 rounded-2xl p-6 text-center backdrop-blur-sm">
-                <CheckCircle className="w-12 h-12 mx-auto mb-3 text-[#914D4D]" />
-                <h3 className="font-bold text-lg mb-2">Project Submitted!</h3>
-                <p className="text-sm text-white/90 mb-4">
-                  Your project has been received and is under review by our team.
+                <h2 className="text-3xl font-black text-[#304156] mb-2">Final Project Deck Submission</h2>
+                <p className="text-[#304156]/70 text-base leading-relaxed">
+                  Submit your complete project deck and technical specs. This is your Golden Ticket application for the Global Impact Fellowship selection.
                 </p>
-                <Button
-                  onClick={() => window.open(projectLink, "_blank")}
-                  className="bg-white text-[#304156] hover:bg-gray-100"
-                >
-                  View Submission
-                  <ExternalLink className="w-4 h-4 ml-2" />
-                </Button>
               </div>
-            ) : (
-              <div className="space-y-4">
-                <input
-                  type="url"
-                  value={projectLink}
-                  onChange={(e) => setProjectLink(e.target.value)}
-                  placeholder="https://drive.google.com/..."
-                  className="w-full px-4 py-3 rounded-xl bg-white/20 border-2 border-white/30 text-white placeholder-white/50 focus:bg-white/30 focus:border-white outline-none transition"
-                />
-                <Button
-                  onClick={handleProjectSubmit}
-                  disabled={submitting}
-                  className="w-full py-6 rounded-xl font-bold text-lg bg-white text-[#304156] hover:bg-gray-100 shadow-lg"
-                >
-                  {submitting ? (
-                    <>
-                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                      Submitting...
-                    </>
-                  ) : (
-                    <>
-                      <Upload className="w-5 h-5 mr-2" />
-                      Submit Final Project
-                    </>
-                  )}
-                </Button>
+
+              <div className="bg-[#304156]/5 rounded-2xl p-5 border border-[#304156]/10">
+                <h3 className="font-bold text-[#304156] mb-3 text-sm uppercase tracking-wide">Checklist Requirements:</h3>
+                <ul className="space-y-3 text-sm text-[#304156]/80">
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#914D4D]" />
+                    <span>Validated SDG 4 problem statement & root cause analysis.</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#914D4D]" />
+                    <span>Complete project deck presentation (Maximum 15 slides).</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#914D4D]" />
+                    <span>Impact M&E framework & Technical operational flowchart included.</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#914D4D]" />
+                    <span>Valid Google Drive link with "Anyone with link can view" permission.</span>
+                  </li>
+                </ul>
               </div>
-            )}
+              
+              <div className="flex items-center gap-2 text-sm font-bold text-[#914D4D]">
+                <Calendar className="w-4 h-4" /> DEADLINE: 11 April 2026 (23:59 WIB)
+              </div>
+            </div>
+
+            <div className="w-full lg:w-[400px] flex flex-col justify-center">
+              {userData?.project_drive_link ? (
+                <div className="bg-[#304156]/5 border border-[#304156]/10 rounded-2xl p-8 text-center">
+                  <CheckCircle className="w-16 h-16 mx-auto mb-4 text-[#304156]" />
+                  <h3 className="font-black text-xl text-[#304156] mb-2">Golden Ticket Submitted!</h3>
+                  <p className="text-sm text-[#304156]/70 mb-6 leading-relaxed">
+                    Your final project deck is secured and currently under review by the judging panel.
+                  </p>
+                  <Button
+                    onClick={() => window.open(projectLink, "_blank")}
+                    className="w-full bg-white text-[#304156] border-2 border-[#304156]/20 hover:bg-[#304156]/5 shadow-sm py-5 rounded-xl font-bold"
+                  >
+                    View Your Document
+                    <ExternalLink className="w-4 h-4 ml-2" />
+                  </Button>
+                </div>
+              ) : (
+                <div className="bg-white border-2 border-gray-100 rounded-2xl p-6 shadow-sm">
+                  <label className="block text-sm font-bold text-[#304156] mb-2">Google Drive URL <span className="text-[#914D4D]">*</span></label>
+                  <input
+                    type="url"
+                    value={projectLink}
+                    onChange={(e) => setProjectLink(e.target.value)}
+                    placeholder="https://drive.google.com/..."
+                    className="w-full px-4 py-3.5 rounded-xl bg-gray-50 border border-gray-200 text-[#304156] focus:bg-white focus:border-[#914D4D] focus:ring-1 focus:ring-[#914D4D] outline-none transition mb-4 text-sm"
+                  />
+                  <Button
+                    onClick={handleProjectSubmit}
+                    disabled={submitting}
+                    className="w-full py-3 rounded-xl font-bold text-base bg-[#914D4D] text-white hover:bg-[#7a3e3e] shadow-md transition-all"
+                  >
+                    {submitting ? (
+                      <>
+                        <Loader2 className="w-5 h-5 mr-2 animate-spin" /> Submitting...
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="w-5 h-5 mr-2" /> Submit Project Deck
+                      </>
+                    )}
+                  </Button>
+                  <p className="text-xs text-center text-gray-500 mt-3 font-medium">
+                    Ensure link access is set to public.
+                  </p>
+                </div>
+              )}
+            </div>
+            
           </div>
         </div>
 
         {/* Community & Support */}
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Community */}
-          <div className="bg-white rounded-2xl border border-[#304156]/10 p-6">
+          <div className="bg-white rounded-2xl border border-[#304156]/10 p-6 flex flex-col h-full shadow-sm hover:shadow-md transition-shadow">
             <div className="flex items-center gap-3 mb-4">
-              <div className="bg-[#914D4D]/10 p-2 rounded-lg">
-                <Users className="w-5 h-5 text-[#914D4D]" />
+              <div className="bg-[#304156]/5 p-2.5 rounded-xl">
+                <Users className="w-5 h-5 text-[#304156]" />
               </div>
-              <h3 className="font-bold text-[#2F4157]">Mentoring Community</h3>
+              <h3 className="font-bold text-[#304156] text-lg">Mentoring Community</h3>
             </div>
-            <p className="text-sm text-gray-600 mb-4">
-              Connect with fellow participants, share insights, and collaborate on ideas.
+            <p className="text-sm text-[#304156]/70 mb-6 flex-1">
+              Connect with fellow Fast-Track participants. Share insights, request feedback, and collaborate on your journey to Singapore.
             </p>
             <Button 
-              onClick={() => window.open("https://chat.whatsapp.com/example", "_blank")}
-              className="w-full bg-[#914D4D] hover:bg-[#7a3e3e] text-white rounded-xl"
+              onClick={() => window.open("https://chat.whatsapp.com/LhBkjbLyTd9Hjsq23hg4gl", "_blank")}
+              className="w-full bg-white border border-[#304156]/20 text-[#304156] hover:bg-[#304156]/5 rounded-xl py-3 font-bold"
             >
               Join WhatsApp Group
               <ExternalLink className="w-4 h-4 ml-2" />
             </Button>
           </div>
 
-          {/* Support */}
-          <div className="bg-white rounded-2xl border border-[#304156]/10 p-6">
+          <div className="bg-white rounded-2xl border border-[#304156]/10 p-6 flex flex-col h-full shadow-sm hover:shadow-md transition-shadow">
             <div className="flex items-center gap-3 mb-4">
-              <div className="bg-[#304156]/10 p-2 rounded-lg">
-                <BookOpen className="w-5 h-5 text-[#304156]" />
+              <div className="bg-[#914D4D]/5 p-2.5 rounded-xl">
+                <BookOpen className="w-5 h-5 text-[#914D4D]" />
               </div>
-              <h3 className="font-bold text-[#2F4157]">Need Help?</h3>
+              <h3 className="font-bold text-[#304156] text-lg">Need Assistance?</h3>
             </div>
-            <p className="text-sm text-gray-600 mb-4">
-              Our mentoring coordinators are here to assist you with any questions.
+            <p className="text-sm text-[#304156]/70 mb-6 flex-1">
+              Having trouble with assignments, scheduling 1-on-1 consultations, or accessing materials? Our team is ready to help.
             </p>
             <Link href="https://wa.me/6288297253491" target="_blank">
-              <Button className="w-full bg-[#304156] hover:bg-[#2F4055] text-white rounded-xl">
-                Contact Coordinator
-                <ExternalLink className="w-4 h-4 ml-2" />
+              <Button className="w-full bg-[#304156] hover:bg-[#2F4055] text-white rounded-xl py-3 font-bold">
+                Contact Mentor
+                <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
           </div>

@@ -122,8 +122,8 @@ export default function SGTripMentoringPage() {
             />
           </div>
           
-          <h1 className="text-2xl lg:text-3xl font-semibold leading-tight mb-4 mt-4">
-            <span className="text-white drop-shadow-md">Project Prep Mentoring</span>
+          <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight tracking-tight">
+            <span className="text-white drop-shadow-md">Project Mentoring</span>
           </h1>
 
           {/* PRIVILEGE BADGE */}
@@ -133,9 +133,8 @@ export default function SGTripMentoringPage() {
           </div>
 
           <p className="mt-2 max-w-3xl mx-auto text-lg text-white/90 leading-relaxed">
-            An intensive 8-session mentoring program to prepare you for 
-            the Global Impact Fellowship in Singapore 2026. <br/>
-            <strong>Skip the essay screening and go straight to Project Presentation.</strong>
+            An intensive 5-session mentoring program to prepare you for 
+            the Global Impact Fellowship in Singapore 2026. <strong>Skip the essay screening and go straight to Project Presentation.</strong>
           </p>
 
           {/* COUNTDOWN (TOP) */}

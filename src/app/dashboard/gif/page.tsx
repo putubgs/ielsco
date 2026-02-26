@@ -92,8 +92,7 @@ export default function GIFDashboardPage() {
           tier: dbTier
         };
         setUserProfile(profile);
-
-        // 2. Fetch Registration Data
+// 2. Fetch Registration Data
         const { data, error } = await supabase
           .from('gif_registrations')
           .select('*')
@@ -101,7 +100,8 @@ export default function GIFDashboardPage() {
           .single();
 
         if (!data) {
-          const { data: newData } = await supabase
+          // BIKIN BARIS BARU KALAU BELUM ADA
+          const { data: newData, error: insertError } = await supabase
             .from('gif_registrations')
             .insert([{ 
                 user_id: user.id,
@@ -110,11 +110,18 @@ export default function GIFDashboardPage() {
                 avatar_url: profile.avatar_url,
                 phase1_status: 'open',
                 phase2_status: 'open',
-                lounge_status: 'open'
+                // HAPUS lounge_status: 'open', GANTI JADI INI:
+                is_lounge_member: false,
+                is_mentoring_participant: false
             }])
             .select()
             .single();
-          setRegData(newData);
+            
+          if (insertError) {
+             console.error("GAGAL INSERT KE SUPABASE:", insertError);
+          } else {
+             setRegData(newData);
+          }
         } else {
           setRegData(data);
         }

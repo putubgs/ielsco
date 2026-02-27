@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createBrowserClient } from "@supabase/ssr";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   CheckCircle,
   Lock,
@@ -20,13 +20,15 @@ import {
   Sparkles,
   ChevronDown,
   ChevronUp,
-  ExternalLink
+  ExternalLink,
+  X
 } from "lucide-react";
 
 // UI Components
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
 // --- TYPES ---
 type UserProfile = {
   full_name: string;
@@ -35,6 +37,12 @@ type UserProfile = {
   tier?: "explorer" | "insider" | "visionary";
 };
 
+type ModalConfig = {
+  isOpen: boolean;
+  title: string;
+  message: string;
+  type: "success" | "error" | "warning";
+};
 
 export default function EssayProjectPage() {
   const router = useRouter();
@@ -45,6 +53,7 @@ export default function EssayProjectPage() {
 
   const [loading, setLoading] = useState(true);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
   const [regData, setRegData] = useState<any>(null);
   
   // Form States
@@ -55,6 +64,22 @@ export default function EssayProjectPage() {
   // Accordion states
   const [essayGuideOpen, setEssayGuideOpen] = useState(true);
   const [projectGuideOpen, setProjectGuideOpen] = useState(false);
+
+  // Modal State
+  const [modal, setModal] = useState<ModalConfig>({
+    isOpen: false,
+    title: "",
+    message: "",
+    type: "info" as any,
+  });
+
+  const showModal = (title: string, message: string, type: "success" | "error" | "warning") => {
+    setModal({ isOpen: true, title, message, type });
+  };
+
+  const closeModal = () => {
+    setModal((prev) => ({ ...prev, isOpen: false }));
+  };
 
   // DEADLINE LOGIC: April 11, 2026
   const DEADLINE = new Date("2026-04-11T23:59:59");
@@ -69,6 +94,7 @@ export default function EssayProjectPage() {
           router.push("/sign-in");
           return;
         }
+        setUserId(user.id);
 
         // 1. Fetch User Profile & Tier (For Dashboard Layout)
         const { data: dbUser } = await supabase
@@ -110,44 +136,77 @@ export default function EssayProjectPage() {
 
   const handleSubmit = async () => {
     if (isPastDeadline) {
-        alert("The submission deadline (April 11th) has passed. Updates are no longer accepted.");
-        return;
+      showModal("Deadline Passed", "The submission deadline (April 11th) has passed. Updates are no longer accepted.", "warning");
+      return;
     }
 
     // Validation
     if (!driveLink.trim()) {
-      alert("Please enter your Google Drive link");
+      showModal("Missing Information", "Please enter your Google Drive link before submitting.", "warning");
       return;
     }
     if (!essay.trim()) {
-      alert("Please enter your motivation essay");
+      showModal("Missing Information", "Please enter your motivation essay summary.", "warning");
       return;
     }
     if (!driveLink.includes("drive.google.com") && !driveLink.includes("docs.google.com")) {
-      alert("Please enter a valid Google Drive or Google Docs link");
+      showModal("Invalid Link", "Please enter a valid Google Drive or Google Docs link.", "error");
+      return;
+    }
+
+    if (!userId) {
+      showModal("Session Error", "Your session seems to have expired. Please refresh the page or log in again.", "error");
       return;
     }
 
     setSubmitting(true);
     try {
-      const { error } = await supabase
-        .from('gif_registrations')
-        .update({
-          project_drive_link: driveLink,
-          essay_motivation: essay,
-          phase2_status: 'submitted',
-          phase2_submitted_at: new Date().toISOString()
-        })
-        .eq('id', regData?.id);
+      let error;
+
+      // FIX BUG: Handle case if user doesn't have a registration row yet
+      if (regData?.id) {
+        // Update existing record
+        const res = await supabase
+          .from('gif_registrations')
+          .update({
+            project_drive_link: driveLink,
+            essay_motivation: essay,
+            phase2_status: 'submitted',
+            phase2_submitted_at: new Date().toISOString()
+          })
+          .eq('id', regData.id);
+        error = res.error;
+      } else {
+        // Insert new record if missing
+        const res = await supabase
+          .from('gif_registrations')
+          .insert({
+            user_id: userId,
+            full_name: userProfile?.full_name,
+            email: userProfile?.email,
+            project_drive_link: driveLink,
+            essay_motivation: essay,
+            phase2_status: 'submitted',
+            phase2_submitted_at: new Date().toISOString()
+          })
+          .select()
+          .single();
+        error = res.error;
+        if (!error && res.data) {
+          setRegData(res.data);
+        }
+      }
 
       if (!error) {
         setRegData((prev: any) => ({ ...prev, phase2_status: 'submitted' }));
-        alert("✅ Project and essay updated successfully!");
+        showModal("Submission Successful!", "Your project deck and essay have been securely saved to our system.", "success");
       } else {
-        alert("Error submitting. Please try again.");
+        console.error(error);
+        showModal("Submission Failed", "An error occurred while saving your data. Please try again.", "error");
       }
     } catch (err) {
-      alert("Error submitting. Please try again.");
+      console.error(err);
+      showModal("Submission Failed", "An unexpected network error occurred. Please try again.", "error");
     } finally {
       setSubmitting(false);
     }
@@ -168,9 +227,59 @@ export default function EssayProjectPage() {
     <DashboardLayout 
       userTier={userProfile?.tier} 
       userName={userProfile?.full_name} 
-      userAvatar={userProfile?.avatar_url}>
-      <div className="max-w-5xl mx-auto pb-20 space-y-8 px-4 md:px-8 pt-6 font-geologica">
+      userAvatar={userProfile?.avatar_url}
+    >
+      <div className="max-w-5xl mx-auto pb-20 space-y-8 px-4 md:px-8 pt-6 font-geologica relative">
         
+        {/* IELS CUSTOM MODAL POP-UP */}
+        <AnimatePresence>
+          {modal.isOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#304156]/40 backdrop-blur-sm">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden border border-[#304156]/10"
+              >
+                <div className="p-6">
+                  <div className="flex justify-end">
+                    <button onClick={closeModal} className="text-gray-400 hover:text-gray-600 transition-colors">
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+                  
+                  <div className="text-center px-4 pb-4">
+                    <div className={cn(
+                      "w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5 shadow-inner",
+                      modal.type === 'success' ? "bg-green-100" : 
+                      modal.type === 'error' ? "bg-[#914D4D]/10" : "bg-yellow-100"
+                    )}>
+                      {modal.type === 'success' && <CheckCircle className="w-8 h-8 text-green-600" />}
+                      {modal.type === 'error' && <AlertCircle className="w-8 h-8 text-[#914D4D]" />}
+                      {modal.type === 'warning' && <Info className="w-8 h-8 text-yellow-600" />}
+                    </div>
+                    
+                    <h3 className="text-xl font-bold text-[#304156] mb-2">{modal.title}</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed mb-8">{modal.message}</p>
+                    
+                    <Button 
+                      onClick={closeModal} 
+                      className={cn(
+                        "w-full py-4 rounded-xl font-bold shadow-md hover:shadow-lg transition-all",
+                        modal.type === 'success' ? "bg-[#304156] hover:bg-[#2F4055] text-white" : 
+                        "bg-[#914D4D] hover:bg-[#7a3e3e] text-white"
+                      )}
+                    >
+                      Understood
+                    </Button>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+
         {/* Header */}
         <div className="flex items-center gap-4">
           <Link href="/dashboard/gif">
@@ -181,10 +290,8 @@ export default function EssayProjectPage() {
           </Link>
         </div>
 
-        {/* Hero Section - Updated Gradient */}
-        {/* Gradient Linear -> #2F4055 #914D4D #304156 */}
+        {/* Hero Section */}
         <div className="bg-gradient-to-br from-[#2F4055] via-[#914D4D] to-[#304156] rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-2xl">
-          {/* Subtle Background Blur */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#914D4D] rounded-full blur-[100px] opacity-50"></div>
           
           <div className="relative z-10">
@@ -234,7 +341,7 @@ export default function EssayProjectPage() {
           </div>
         )}
 
-        {/* ESSAY GUIDE SECTION - Theme: NightFall Blue */}
+        {/* ESSAY GUIDE SECTION */}
         <div className="bg-white rounded-2xl border border-[#304156]/20 overflow-hidden shadow-sm">
           <button
             onClick={() => setEssayGuideOpen(!essayGuideOpen)}
@@ -414,7 +521,7 @@ export default function EssayProjectPage() {
                 </div>
               </div>
 
-              {/* Writing Tips - Theme: Light Muted Red/Neutral */}
+              {/* Writing Tips */}
               <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
                 <h3 className="font-bold text-[#304156] mb-4 flex items-center gap-2">
                   <Lightbulb className="w-5 h-5 text-[#914D4D]" />
@@ -443,7 +550,7 @@ export default function EssayProjectPage() {
           )}
         </div>
 
-        {/* PROJECT PROPOSAL GUIDE SECTION - Theme: Muted Red */}
+        {/* PROJECT PROPOSAL GUIDE SECTION */}
         <div className="bg-white rounded-2xl border border-[#914D4D]/20 overflow-hidden shadow-sm">
           <button
             onClick={() => setProjectGuideOpen(!projectGuideOpen)}
@@ -516,46 +623,14 @@ export default function EssayProjectPage() {
                 
                 <div className="space-y-3">
                   {[
-                    {
-                      num: "1",
-                      title: "Cover Slide",
-                      content: "Project title, your name, team (if any), date. Make it visually compelling!"
-                    },
-                    {
-                      num: "2-3",
-                      title: "Problem Statement",
-                      content: "What social/environmental problem are you addressing? Use data and real-world examples. Connect to specific SDG(s)."
-                    },
-                    {
-                      num: "4-5",
-                      title: "Target Audience & Impact",
-                      content: "Who will benefit from your project? How many people? What specific change do you aim to create?"
-                    },
-                    {
-                      num: "6-8",
-                      title: "Solution/Innovation",
-                      content: "Your proposed solution. What makes it innovative? How does it work? Include visuals, diagrams, or prototypes if possible."
-                    },
-                    {
-                      num: "9-10",
-                      title: "Implementation Plan",
-                      content: "Timeline, key activities, resources needed. Be realistic but ambitious."
-                    },
-                    {
-                      num: "11-12",
-                      title: "Budget & Sustainability",
-                      content: "Estimated costs breakdown. How will the project sustain itself? Revenue model or funding strategy."
-                    },
-                    {
-                      num: "13-14",
-                      title: "Team & Metrics",
-                      content: "Your team's strengths and how you will measure success (KPIs)."
-                    },
-                    {
-                      num: "15",
-                      title: "Call to Action",
-                      content: "What support do you need? How can GIF help you scale your impact?"
-                    }
+                    { num: "1", title: "Cover Slide", content: "Project title, your name, team (if any), date. Make it visually compelling!" },
+                    { num: "2-3", title: "Problem Statement", content: "What social/environmental problem are you addressing? Use data and real-world examples. Connect to specific SDG(s)." },
+                    { num: "4-5", title: "Target Audience & Impact", content: "Who will benefit from your project? How many people? What specific change do you aim to create?" },
+                    { num: "6-8", title: "Solution/Innovation", content: "Your proposed solution. What makes it innovative? How does it work? Include visuals, diagrams, or prototypes if possible." },
+                    { num: "9-10", title: "Implementation Plan", content: "Timeline, key activities, resources needed. Be realistic but ambitious." },
+                    { num: "11-12", title: "Budget & Sustainability", content: "Estimated costs breakdown. How will the project sustain itself? Revenue model or funding strategy." },
+                    { num: "13-14", title: "Team & Metrics", content: "Your team's strengths and how you will measure success (KPIs)." },
+                    { num: "15", title: "Call to Action", content: "What support do you need? How can GIF help you scale your impact?" }
                   ].map((slide, idx) => (
                     <div key={idx} className="border border-gray-200 rounded-lg p-4 hover:border-[#914D4D] transition">
                       <div className="flex items-start gap-3">
@@ -573,7 +648,9 @@ export default function EssayProjectPage() {
               </div>
             </div>
           )}
-        </div>{/* SUBMISSION FORM - Updated Colors & Edit Logic */}
+        </div>
+
+        {/* SUBMISSION FORM */}
         <div className="bg-white rounded-2xl border-2 border-[#914D4D] p-8 shadow-xl">
           <div className="flex items-center gap-3 mb-6">
             <div className="bg-[#914D4D] p-3 rounded-xl">
@@ -619,8 +696,6 @@ export default function EssayProjectPage() {
                   </label>
                   <input
                     type="url"
-                    // LOGIC EDIT: Hanya disable jika SUDAH LEWAT deadline.
-                    // Jika user sudah submit tapi belum deadline, input TETAP AKTIF untuk edit.
                     disabled={isPastDeadline}
                     value={driveLink}
                     onChange={(e) => setDriveLink(e.target.value)}
@@ -664,7 +739,6 @@ export default function EssayProjectPage() {
                 <Button
                     onClick={handleSubmit}
                     disabled={submitting || isPastDeadline}
-                    // Updated py-3
                     className={cn(
                         "w-full py-3 rounded-xl font-bold text-lg text-white shadow-lg transition-all",
                         isPastDeadline 
@@ -697,7 +771,6 @@ export default function EssayProjectPage() {
 
                 {isSubmitted && (
                     <div className="mt-4 text-center">
-                        {/* FIX TS ERROR: Hapus variant="link", gunakan className manual */}
                         <Button
                             onClick={() => window.open(driveLink, "_blank")}
                             className="bg-transparent hover:bg-transparent text-[#304156] hover:text-[#914D4D] underline shadow-none p-0 h-auto font-normal"
@@ -709,12 +782,11 @@ export default function EssayProjectPage() {
               </div>
             </div>
           )}
-        </div>\
-        {/* Help Section - Updated Layout */}
+        </div>
+
+        {/* Help Section */}
         <div className="bg-[#304156]/5 rounded-2xl border border-[#304156]/20 p-6 font-geologica">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
-            
-            {/* Icon & Text Group */}
             <div className="flex items-start gap-4 flex-1">
               <div className="bg-[#304156]/10 p-3 rounded-xl flex-shrink-0">
                 <Info className="w-6 h-6 text-[#304156]" />
@@ -727,19 +799,17 @@ export default function EssayProjectPage() {
               </div>
             </div>
 
-            {/* Button Group */}
             <div className="w-full md:w-auto mt-4 md:mt-0">
               <Link href="https://wa.me/6288297253491" target="_blank" className="block w-full">
-                {/* Menggunakan py-3, w-full, dan rounded-xl agar sesuai style sebelumnya */}
                 <Button className="w-full md:w-auto min-w-[200px] py-3 px-6 rounded-xl font-bold bg-[#304156] hover:bg-[#2F4055] text-white shadow-md transition-all flex items-center justify-center gap-2">
                   Contact via WhatsApp
                   <ExternalLink className="w-4 h-4" />
                 </Button>
               </Link>
             </div>
-
           </div>
         </div>
+
       </div>
     </DashboardLayout>
   );

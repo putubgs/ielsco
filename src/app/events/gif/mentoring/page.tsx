@@ -117,7 +117,7 @@ export default function SGTripMentoringPage() {
               alt="Global Impact Fellowship in Singapore"
               width={270}
               height={72}
-              className="h-28 sm:h-28 w-auto object-contain brightness-0 invert opacity-100"
+              className="relative h-auto w-[240px] md:w-[400px] drop-shadow-xl"
               priority
             />
           </div>

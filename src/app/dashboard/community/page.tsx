@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { createBrowserClient } from "@supabase/ssr";
@@ -47,7 +47,8 @@ interface MembershipData {
   autoRenew: boolean;
 }
 
-export default function CommunityPage() {
+// 1. PISAHIN LOGIKA UTAMA KE DALAM KOMPONEN BARU
+function CommunityContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createBrowserClient(
@@ -87,7 +88,7 @@ export default function CommunityPage() {
     }
   }, [searchParams]);
 
-  // 1. Data Initialization & Auth
+  // Data Initialization & Auth
   useEffect(() => {
     const initData = async () => {
       setLoading(true);
@@ -146,7 +147,7 @@ export default function CommunityPage() {
     initData();
   }, [router, supabase]);
 
-  // 2. Count-up animation
+  // Count-up animation
   useEffect(() => {
     if (loading) return;
     const targets = { members: 6800, stories: 810, careers: 135, abroad: 35 };
@@ -172,7 +173,7 @@ export default function CommunityPage() {
     return () => clearInterval(timer);
   }, [loading]);
 
-  // 3. Check today's activity
+  // Check today's activity
   useEffect(() => {
     const weeklyActivities = [
       {
@@ -200,7 +201,7 @@ export default function CommunityPage() {
         desc: "A free-talk session to share your thoughts and critical thinking in English.",
         color: "bg-[#577E90]",
         icon: <Sparkles size={20} />,
-        requiresPremium: false, // FREE FOR ALL
+        requiresPremium: false,
       },
       {
         day: "Saturday",
@@ -251,7 +252,7 @@ export default function CommunityPage() {
       color: "bg-[#577E90]",
       icon: <Sparkles size={20} />,
       gCalLink: "https://calendar.google.com/calendar/render?action=TEMPLATE&text=IELS+Free+Talk",
-      requiresPremium: false, // FREE
+      requiresPremium: false,
     },
     {
       day: "Saturday",
@@ -275,7 +276,6 @@ export default function CommunityPage() {
     );
   }
 
-  // Helper Logic
   const isExplorer = userData.tier === "explorer";
   const hasPremiumAccess = userData.tier === "insider" || userData.tier === "visionary";
 
@@ -803,5 +803,18 @@ export default function CommunityPage() {
         {showPricingModal && <PricingModal onClose={() => setShowPricingModal(false)} />}
       </AnimatePresence>
     </DashboardLayout>
+  );
+}
+
+// 2. FUNGSI UTAMA YANG NGEBUNGKUS PAKE SUSPENSE
+export default function CommunityPage() {
+  return (
+    <Suspense fallback={
+      <div className="p-12 flex items-center justify-center min-h-screen bg-[#F6F3EF]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#CB2129]"></div>
+      </div>
+    }>
+      <CommunityContent />
+    </Suspense>
   );
 }

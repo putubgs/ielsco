@@ -6,6 +6,7 @@ import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import GoalDashboardWidget from "@/components/goals/GoalDashboardWidget";
 import PricingModal from '@/components/subscription/PricingModal';
 import { createBrowserClient } from "@supabase/ssr";
+import GIFPopup from "@/components/GIFPopup";
 import { eventsData } from "@/data/events"; // <--- IMPORT PENTING INI
 import {
   Calendar,
@@ -380,6 +381,7 @@ const supabase = createBrowserClient(
 
   return (
     // Pastikan userTier dikirim ke Layout
+        <>
     <DashboardLayout userTier={data.user.tier} userName={data.user.name} userAvatar={data.user.avatar}>
       
       <div className="p-4 lg:p-8 max-w-7xl mx-auto space-y-8">
@@ -743,12 +745,14 @@ const supabase = createBrowserClient(
           </div>
         </div>
       </div>
-
+      
+<GIFPopup/>
       {/* --- MODAL DI RENDER DI SINI (SEBELUM TUTUP LAYOUT) --- */}
       {showProModal && (
         <PricingModal onClose={() => setShowProModal(false)} />
       )}
-
     </DashboardLayout>
-  );
+<GIFPopup />
+    </>
+);
 }

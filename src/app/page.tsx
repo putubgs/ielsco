@@ -6,7 +6,7 @@ import Image from "next/image";
 import CountUp from "react-countup";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import OprecPopup from "@/components/careers/OprecPopup";
+import GIFPopup from "@/components/GIFPopup";
 
 
 export default function Home() {
@@ -541,7 +541,7 @@ export default function Home() {
 </div>
         </div>
       <Footer />
-<OprecPopup/>
+<GIFPopup />
     </>
   );
 }

@@ -47,7 +47,7 @@ export default function GIFInsightTalksPage() {
           
           <div className="flex items-center justify-center mb-6">
             <Image
-              src="/images/logos/events/gif.png"
+              src="/images/logos/events/gifsgp.png"
               alt="Global Impact Fellowship in Singapore"
               width={270}
               height={72}

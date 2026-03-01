@@ -247,3 +247,4 @@ const FeatureItem = ({
 };
 
 export default PricingModal;
+

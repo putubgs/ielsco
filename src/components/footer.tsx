@@ -91,7 +91,7 @@ export default function Footer() {
               { name: "IELS Events", url: "/events" },
               { name: "IELS English Test", url: "/test" },
               { name: "English Students Launchpad", url: "/events/launchpad" },
-              { name: "Singapore Global Insight Trip", url: "/events/sgit" },
+              { name: "Global Impact Fellowship", url: "/events/gif" },
             ].map((item) => (
               <Link
                 key={item.name}

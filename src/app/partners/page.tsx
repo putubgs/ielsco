@@ -188,7 +188,7 @@ export default function PartnersPage() {
 
         <p className="text-4xl font-extrabold text-[#E56668]">
           <CountUp
-            end={2800}
+            end={6800}
             duration={1.8}
             separator=","
             enableScrollSpy

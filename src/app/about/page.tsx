@@ -3,384 +3,700 @@
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import Image from "next/image";
-import {
-  Instagram,
-  Linkedin,
-  ExternalLink,
-  Globe2,
-  Target,
-  Users,
+import { useState, useEffect } from "react";
+import { 
+  Instagram, 
+  Linkedin, 
+  ExternalLink, 
+  Target, 
+  Globe, 
+  Users, 
+  Award, 
+  BookOpen,
   Compass,
   ArrowRight,
-  CheckCircle2,
-  XCircle,
+  Zap
 } from "lucide-react";
+import Link from "next/link";
 
 export default function About() {
-  const principals = [
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+ // 1. TAMBAHKAN STATE INI DI BAGIAN ATAS COMPONENT (Jika belum ada)
+  const [activeTeamTab, setActiveTeamTab] = useState<"directors" | "leaders">("directors");
+  const [activeDirectorDetail, setActiveDirectorDetail] = useState<number | null>(null);
+
+  // 2. TIMPA ARRAY PRINCIPALS LAMA DENGAN YANG INI (Sudah ada Type-nya biar ga Error TS)
+  type Principal = {
+    name: string;
+    role: string;
+    image: string;
+    instagram: string;
+    linkedin: string;
+    point1: string; // Poin 1 (bisa kamu isi Background/Bio)
+    point2: string; // Poin 2 (bisa kamu isi Experience/Achievement)
+  };
+
+  const principals: Principal[] = [
     {
-      name: "Arbadza Rido Adzariyat",
+      name: "Khairi Pandya",
+      role: "Advisor & Mentor",
+      image: "/images/people/directors/pandya.png",
+      instagram: "#",
+      linkedin: "#",
+      point1: "Currently serving as Sr. OD Specialist at STAR Capital, focusing on Organizational Development and Structure.",
+      point2: "Former Manager of Organization & Workforce Transformation at Deloitte, managing stakeholder relations and human capital initiatives for over 2 years.",
+    },
+    {
+      name: "Arbadza Rido",
       role: "Principal of Operations & Business",
-      image: "/images/contents/about/arba.png",
+      image: "/images/people/directors/arba.png",
       instagram: "https://instagram.com/arbadzarido",
       linkedin: "https://linkedin.com/in/arbadzarido",
+      point1: "Professional EFL & ESL Teacher with over 3 years of experience teaching across various countries in Southeast Asia.",
+      point2: "Former Project Manager at Pertamina Training & Consulting and Tech in Asia, leading cross-functional teams in high-impact corporate projects.",
     },
     {
       name: "Fadhila Qurotul Aini",
       role: "Principal of Growth & Finance",
-      image: "/images/contents/about/dhila.png",
+      image: "/images/people/directors/dhila.png",
       instagram: "https://www.instagram.com/fadhilaqa._/",
       linkedin: "https://linkedin.com/in/fadhilaqa/",
+      point1: "Successfully streamlined international outreach and digital operations to connect local talent with high-tier global aesthetic science networks.",
+      point2: "Former Marketing and Operations Intern at IFAAS (International Fellowship In Advanced Aesthetic Science), managing remote global projects for 7 months.",
     },
     {
       name: "Syifa Hana Nabila",
       role: "Principal of Talent",
-      image: "/images/contents/about/hana.png",
+      image: "/images/people/directors/hana.png",
       instagram: "https://www.instagram.com/ssyifahana/",
       linkedin: "https://www.linkedin.com/in/syifahana/",
+      point1: "Alumna of the University of Malaya (UM) short course program, focusing on global leadership and organizational behavior in a multicultural environment.",
+      point2: "Former Organization and Human Resources Intern at RSUPN Dr. Cipto Mangunkusumo for 3 months.",
     },
   ];
 
+  // 3. DATA LEADERS (Bisa diisi nama aslinya nanti)
+// 3. DATA LEADERS (Grouped by Division)
+  const leadersGroups = [
+    {
+      category: "Operations",
+      members: [
+        { role: "Project Manager", name: "Nafil Rizqi Taniza", image: "/images/people/leaders/nafil.png", instagram: "#", linkedin: "#" },
+        { role: "Product Manager", name: "Aldina Wisik Riani", image: "/images/people/leaders/aldina.png", instagram: "#", linkedin: "#" },
+        { role: "Community Manager", name: "Nia Kristin Sianturi", image: "/images/people/leaders/nia.png", instagram: "#", linkedin: "#" },
+        { role: "Vice Community Manager", name: "Ridho Septian", image: "/images/people/leaders/ridho.png", instagram: "#", linkedin: "#" }
+      ]
+    },
+    {
+      category: "Growth",
+      members: [
+        { role: "Strategic Marketing Manager", name: "Shallom Febe Marissa", image: "/images/people/leaders/shallom.png", instagram: "#", linkedin: "#" },
+        { role: "Content Marketing Manager", name: "Dzarratul Subagja", image: "/images/people/leaders/dzarratul.png", instagram: "#", linkedin: "#" },
+        { role: "Creative Manager", name: "Putri Maharani", image: "/images/people/leaders/putri.png", instagram: "#", linkedin: "#" },
+        { role: "Vice Creative Manager", name: "Zainufri Aziz", image: "/images/people/leaders/zainufri.png", instagram: "#", linkedin: "#" }
+      ]
+    },
+    {
+      category: "Business & Finance",
+      members: [
+        { role: "Finance Manager", name: "Shalwa Allisya Keysha", image: "/images/people/leaders/shalwa.png", instagram: "#", linkedin: "#" },
+        { role: "Business Manager", name: "Jihan Thufailah Putri", image: "/images/people/leaders/jihan.png", instagram: "#", linkedin: "#" }
+      ]
+    },
+    {
+      category: "Talent",
+      members: [
+        { role: "Talent Management Manager", name: "Annisa Azalia Maulana", image: "/images/people/leaders/annisa.png", instagram: "#", linkedin: "#" },
+        { role: "Talent Development Manager", name: "Amidah Tsaliswati", image: "/images/people/leaders/amidah.png", instagram: "#", linkedin: "#" },
+        { role: "Vice Talent Manager", name: "Marsha Pramata", image: "/images/people/leaders/marsha.png", instagram: "#", linkedin: "#" }
+      ]
+    }
+  ];
+
+  // =================================================================================
+  // SILAKAN COPY SECTION DI BAWAH INI UNTUK MENGGANTIKAN SECTION THE TEAM KAMU
+  // =================================================================================
+
+  const teamImages = [
+    "/images/contents/careers/iels_team_0.png",
+    "/images/contents/careers/iels_team_1.png",
+    "/images/contents/careers/iels_team_2.png",
+    "/images/contents/careers/iels_team_3.png",
+  ];
+
+
+  // Auto-carousel effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % teamImages.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [teamImages.length]);
+
   return (
-    <div className="bg-white min-h-screen text-[#2F4157] font-sans selection:bg-[#E56668] selection:text-white">
+    <div className="min-h-screen bg-white font-sans selection:bg-[#E56668] selection:text-white">
       <Header />
-
-      {/* =========================================
-          1️⃣ THE PROBLEM (HERO SECTION)
+      
+    {/* =========================================
+          1️⃣ HERO SECTION (WITH CAROUSEL) - SHORTER HEIGHT
       ========================================= */}
-      <section className="pt-32 pb-20 sm:pt-40 sm:pb-28 px-6 max-w-5xl mx-auto text-center">
-        <div className="flex justify-center mb-8">
-          <Image
-            src="/images/logos/iels_blue.png"
-            width={200}
-            height={200}
-            alt="IELS Logo"
-            className="w-[120px] sm:w-[160px] h-auto object-contain"
-          />
-        </div>
-
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mb-8">
-          Indonesia has millions of <br className="hidden sm:block" />
-          talented students. <br />
-          <span className="text-[#E56668]">But talent alone is not enough.</span>
-        </h1>
-
-        <div className="max-w-3xl mx-auto space-y-6 text-base sm:text-lg text-gray-600 leading-relaxed">
-          <p>
-            Many students have dreams to study abroad, work in global companies, win
-            scholarships, or build international careers — yet they lack access, structure,
-            and the right environment to turn those dreams into reality.
-          </p>
-          <p className="font-semibold text-xl sm:text-2xl text-[#2F4157] mt-8">
-            English is often seen as a subject. <br />
-            But in reality, <span className="text-[#E56668]">English is access.</span>
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-6 font-bold text-[#2F4157] text-lg mt-4">
-            <span className="flex items-center justify-center gap-2">
-              <Globe2 size={20} className="text-[#E56668]" /> Access to information.
-            </span>
-            <span className="flex items-center justify-center gap-2">
-              <Target size={20} className="text-[#E56668]" /> Access to opportunities.
-            </span>
-            <span className="flex items-center justify-center gap-2">
-              <Compass size={20} className="text-[#E56668]" /> Access to the world.
-            </span>
-          </div>
-          <p className="pt-6 font-medium">That gap is what IELS exists to solve.</p>
-        </div>
-      </section>
-
-      {/* =========================================
-          2️⃣ OUR BELIEF (NIGHTFALL BACKGROUND)
-      ========================================= */}
-      <section className="bg-[#2F4157] text-white py-20 sm:py-28 px-6 rounded-t-[40px] sm:rounded-t-[60px]">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="uppercase tracking-widest text-[#E56668] text-sm font-bold mb-3">
-              Our Belief
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold mb-6">
-              Ambitious students deserve more than classes.
-            </h2>
-            <p className="text-lg text-white/80">They deserve an ecosystem that pushes them forward.</p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { title: "Clarity", desc: "In their goals and life direction." },
-              { title: "Structure", desc: "A clear development path to follow." },
-              { title: "Mentorship", desc: "From people who have walked the journey." },
-              { title: "Community", desc: "An environment that pushes them forward." },
-            ].map((item, idx) => (
-              <div key={idx} className="bg-white/10 p-6 rounded-2xl border border-white/10 backdrop-blur-sm">
-                <div className="w-10 h-10 rounded-full bg-[#E56668] flex items-center justify-center font-bold text-lg mb-4">
-                  {idx + 1}
-                </div>
-                <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                <p className="text-white/70 text-sm">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-16 text-center max-w-2xl mx-auto border-t border-white/20 pt-10">
-            <p className="text-xl sm:text-2xl font-semibold leading-relaxed">
-              We believe English is not the final goal. <br />
-              <span className="text-[#E56668]">
-                It is the bridge toward global academic and professional opportunities.
-              </span>
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================
-          3️⃣ WHAT IS IELS?
-      ========================================= */}
-      <section className="py-20 sm:py-28 px-6 max-w-4xl mx-auto text-center">
-        <p className="uppercase tracking-widest text-gray-400 text-sm font-bold mb-3">
-          What Is IELS?
-        </p>
-        <h2 className="text-3xl sm:text-4xl font-extrabold mb-8 leading-tight">
-          A goal-driven English development ecosystem designed for ambitious Indonesian students.
-        </h2>
-        <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-          We combine structured English growth, mentorship, leadership exposure, and
-          opportunity preparation into one integrated journey.
-        </p>
-        <div className="bg-[#F7F8FA] p-6 sm:p-8 rounded-3xl border border-gray-100 inline-block mb-10">
-          <p className="font-bold text-xl sm:text-2xl">
-            This is not just about improving speaking skills. <br />
-            <span className="text-[#E56668]">This is about building students who are globally ready.</span>
-          </p>
-        </div>
-
-        {/* STRATEGIC PLAN CTA */}
-        <div>
-          <a
-            href="https://drive.google.com/file/d/1JgTczzvuf6nwpMMkLmMUGO0TrUkkJLXN/view?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="
-              inline-flex items-center justify-center gap-3
-              bg-[#E56668] text-white
-              px-8 py-4
-              rounded-2xl
-              font-bold text-base sm:text-lg
-              shadow-lg shadow-[#E56668]/30
-              transition-all duration-300
-              hover:bg-[#c94f51] hover:-translate-y-1 hover:shadow-xl
-              active:scale-95
-              w-full sm:w-auto
-            "
+      <div className="relative min-h-[75vh] flex items-center justify-center overflow-hidden">
+        {/* Animated Background */}
+        {teamImages.map((image, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              index === currentImageIndex ? "opacity-100 scale-100" : "opacity-0 scale-105"
+            }`}
           >
-            Read Our 1-Year Strategic Plan
-            <ExternalLink size={20} />
-          </a>
+            <Image
+              src={image}
+              alt={`IELS Team ${index + 1}`}
+              fill
+              className="object-cover"
+              priority={index === 0}
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#1A2534]/80 via-[#2F4157]/60 to-[#1A2534]/90"></div>
+          </div>
+        ))}
+
+        {/* Carousel indicators */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-10">
+          {teamImages.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentImageIndex(index)}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                index === currentImageIndex
+                  ? "bg-[#E56668] w-10"
+                  : "bg-white/40 hover:bg-white/70 w-2"
+              }`}
+              aria-label={`Go to image ${index + 1}`}
+            />
+          ))}
         </div>
-      </section>
-
-      {/* =========================================
-          4️⃣ HOW WE WORK (PATHWAY)
-      ========================================= */}
-      <section className="bg-[#F7F8FA] py-20 sm:py-28 px-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="uppercase tracking-widest text-[#E56668] text-sm font-bold mb-3">
-              How We Work
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold mb-4">
-              Growth at IELS is intentional, not random.
-            </h2>
-            <p className="text-gray-600">IELS is built around a structured growth pathway.</p>
+        
+        {/* Content */}
+        <div className="relative z-10 text-center px-6 sm:px-8 space-y-6 max-w-4xl mx-auto mt-16">
+          <div className="animate-fadeIn">
+            <Image
+              src="/images/logos/iels_white.png"
+              width={120} // Ukuran logo sedikit diperkecil
+              height={120}
+              alt="IELS Logo"
+              className="mx-auto mb-6 drop-shadow-2xl"
+            />
           </div>
-
-          {/* Timeline Flow */}
-          <div className="flex flex-col lg:flex-row items-center lg:items-stretch gap-4 sm:gap-6 justify-center">
-            {[
-              { step: "Clarity", text: "Define your global goals." },
-              { step: "Development", text: "Strengthen English & professional skills." },
-              { step: "Exposure", text: "Prepare for scholarships, remote work, etc." },
-              { step: "Opportunity", text: "Access real international opportunities." },
-              { step: "Alumni Impact", text: "Return as mentors and contributors." },
-            ].map((item, idx) => (
-              <div key={idx} className="flex flex-col lg:flex-row items-center gap-4 w-full lg:w-auto">
-                <div className="bg-white border border-gray-200 rounded-2xl p-6 text-center shadow-sm w-full lg:w-48 h-full flex flex-col justify-center">
-                  <h4 className="font-bold text-lg text-[#2F4157] mb-2">{item.step}</h4>
-                  <p className="text-sm text-gray-500">{item.text}</p>
-                </div>
-                {/* Arrow - hidden on last item */}
-                {idx !== 4 && (
-                  <ArrowRight className="hidden lg:block text-gray-300 shrink-0" size={24} />
-                )}
-                {/* Mobile down arrow */}
-                {idx !== 4 && (
-                  <div className="block lg:hidden w-px h-6 bg-gray-300"></div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================
-          5️⃣ WHO IS IELS FOR?
-      ========================================= */}
-      <section className="py-20 sm:py-28 px-6 max-w-5xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <p className="uppercase tracking-widest text-gray-400 text-sm font-bold mb-3">
-              Who Is IELS For?
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold mb-8 leading-tight">
-              For ambitious, growth-oriented students.
-            </h2>
-            <ul className="space-y-4">
-              {[
-                "Have big academic or career aspirations",
-                "Want global exposure",
-                "Are ready to commit to consistent development",
-                "Believe that English is a tool to unlock bigger opportunities",
-              ].map((text, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <CheckCircle2 className="text-[#E56668] shrink-0 mt-1" size={20} />
-                  <span className="text-gray-700 font-medium">{text}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="bg-[#2F4157] text-white p-8 sm:p-12 rounded-[32px] text-center shadow-xl">
-            <XCircle className="text-white/30 mx-auto mb-6" size={48} />
-            <h3 className="text-2xl font-bold mb-4">We are not for everyone.</h3>
-            <p className="text-white/80 text-lg">
-              If you are just looking for a casual English chat without a clear goal, 
-              we might not be the right fit. <br /><br />
-              <span className="font-bold text-white">And that’s intentional.</span>
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================
-          6️⃣ THE BIGGER VISION
-      ========================================= */}
-      <section className="bg-[#E56668] text-white py-20 sm:py-28 px-6 text-center">
-        <div className="max-w-4xl mx-auto">
-          <p className="uppercase tracking-widest text-white/80 text-sm font-bold mb-3">
-            The Bigger Vision
-          </p>
-          <h2 className="text-3xl sm:text-5xl font-extrabold mb-8 leading-tight">
-            Our vision is to build a generation of globally competitive Indonesian leaders.
-          </h2>
-          <p className="text-lg sm:text-xl text-white/90 mb-12 max-w-2xl mx-auto">
-            We aim to create thousands of alumni who study abroad, work in global
-            companies, lead international projects, and contribute back to Indonesia.
-          </p>
           
-          <div className="bg-[#c94f51] rounded-3xl p-8 sm:p-10 inline-block">
-            <h3 className="text-2xl sm:text-3xl font-bold leading-relaxed">
-              IELS is not just building English skills. <br />
-              We are building access. <br />
-              We are building exposure. <br />
-              We are building global readiness.
-            </h3>
+          <h1 className="font-extrabold text-4xl sm:text-5xl lg:text-6xl text-white leading-tight animate-fadeIn tracking-tight" style={{ animationDelay: "200ms" }}>
+            Beyond Language.<br />
+            We Build <span className="text-[#E56668]">Global Readiness.</span>
+          </h1>
+          
+          <p className="text-base sm:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed animate-fadeIn font-light" style={{ animationDelay: "400ms" }}>
+            IELS is an inclusive, goal-driven community designed to help ambitious Indonesian students unlock scholarships, remote work, and international opportunities.
+          </p>
+
+          <div className="pt-6 animate-fadeIn flex flex-col sm:flex-row justify-center gap-4" style={{ animationDelay: "600ms" }}>
+            <a
+              href="https://drive.google.com/file/d/1JgTczzvuf6nwpMMkLmMUGO0TrUkkJLXN/view?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex justify-center items-center gap-2 bg-[#E56668] text-white px-8 py-3.5 rounded-full font-bold hover:bg-[#c94f51] transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1 text-sm sm:text-base"
+            >
+              Read 1-Year Strategic Plan <ExternalLink size={18} />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* =========================================
+          2️⃣ THE MANIFESTO (THE PROBLEM) - SPLIT LAYOUT
+      ========================================= */}
+      <section className="px-6 sm:px-12 lg:px-[100px] py-13 lg:py-18 bg-white">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          
+          {/* Left Content: The Narrative */}
+          <div className="space-y-8">
+            <div className="inline-block bg-[#2F4157]/5 text-[#2F4157] px-5 py-2 rounded-full font-bold text-sm tracking-widest uppercase">
+              The Reality Check
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#2F4157] leading-tight">
+              Indonesia has millions of brilliant minds. <br />
+              <span className="text-[#E56668]">But talent alone cannot cross borders.</span>
+            </h2>
+            <div className="space-y-6 text-lg text-gray-600 leading-relaxed text-justify sm:text-left">
+              <p>
+                Many students dream of studying abroad, building global careers, or winning international competitions. Yet, they are held back not by a lack of intelligence, but by a lack of access, structure, and the right environment.
+              </p>
+              
+              {/* Highlight Block */}
+              <div className="border-l-4 border-[#E56668] pl-6 py-2 my-6 bg-[#F7F8FA] p-4 rounded-r-2xl">
+                <p className="font-semibold text-[#2F4157] text-lg">
+                  For too long, English has been taught just as a school subject to pass exams.
+                </p>
+                <p className="text-xl sm:text-2xl font-extrabold text-[#E56668] mt-3">
+                  At IELS, we believe English is not a subject. It is access.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Content: Visual Attachment */}
+          <div className="relative w-full h-[400px] sm:h-[450px] rounded-[32px] overflow-hidden shadow-2xl group">
+            <div className="absolute inset-0 bg-[#2F4157]/20 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
+            {/* Gunakan gambar general yang kamu punya yang vibes-nya "belajar/global" */}
+            <Image 
+              src="/images/contents/general/landing_page_1.png" 
+              alt="Indonesian students looking forward" 
+              fill 
+              className="object-cover transition-transform duration-700 group-hover:scale-105" 
+            />
+            
+            {/* Floating Quote Card */}
+            <div className="absolute bottom-6 left-6 right-6 z-20 bg-white/95 backdrop-blur-md p-6 rounded-2xl shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+              <p className="text-[#2F4157] font-bold text-lg leading-snug">
+                "We don't just teach you how to pass a test. We prepare you for the world."
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* =========================================
+          3️⃣ THE LAUNCHPAD (WHAT WE DO)
+      ========================================= */}
+      <section className="px-6 sm:px-12 lg:px-[100px] py-13 lg:py-18">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16 lg:mb-20">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#2F4157]">
+              Not Just a Course. <br />
+              <span className="text-[#E56668]">A Global Launchpad.</span>
+            </h2>
+            <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
+              We don't do generic learning. We provide a clear pathway from setting your goal to actually achieving it on the global stage.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            {/* Pillar 1 */}
+            <div className="bg-white p-8 rounded-[32px] shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+              <div className="w-14 h-14 bg-[#2F4157]/5 group-hover:bg-[#E56668] rounded-2xl flex items-center justify-center mb-6 transition-colors duration-300">
+                <Target className="text-[#2F4157] group-hover:text-white transition-colors" size={28} />
+              </div>
+              <h3 className="font-bold text-xl text-[#2F4157] mb-3">Clear Goals</h3>
+              <p className="text-gray-600 leading-relaxed text-sm">
+                Whether you want to win a scholarship or work remotely, we tailor your learning to real-world targets.
+              </p>
+            </div>
+
+            {/* Pillar 2 */}
+            <div className="bg-white p-8 rounded-[32px] shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+              <div className="w-14 h-14 bg-[#2F4157]/5 group-hover:bg-[#E56668] rounded-2xl flex items-center justify-center mb-6 transition-colors duration-300">
+                <Users className="text-[#2F4157] group-hover:text-white transition-colors" size={28} />
+              </div>
+              <h3 className="font-bold text-xl text-[#2F4157] mb-3">Active Community</h3>
+              <p className="text-gray-600 leading-relaxed text-sm">
+                Learning alone is boring. Join our daily speaking clubs and networking lounges to practice fearlessly.
+              </p>
+            </div>
+
+            {/* Pillar 3 */}
+            <div className="bg-white p-8 rounded-[32px] shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+              <div className="w-14 h-14 bg-[#2F4157]/5 group-hover:bg-[#E56668] rounded-2xl flex items-center justify-center mb-6 transition-colors duration-300">
+                <Globe className="text-[#2F4157] group-hover:text-white transition-colors" size={28} />
+              </div>
+              <h3 className="font-bold text-xl text-[#2F4157] mb-3">Global Access</h3>
+              <p className="text-gray-600 leading-relaxed text-sm">
+                We bring the world to you through international mentors, exclusive events, and direct career pipelines.
+              </p>
+            </div>
+
+            {/* Pillar 4 */}
+            <div className="bg-white p-8 rounded-[32px] shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+              <div className="w-14 h-14 bg-[#2F4157]/5 group-hover:bg-[#E56668] rounded-2xl flex items-center justify-center mb-6 transition-colors duration-300">
+                <Zap className="text-[#2F4157] group-hover:text-white transition-colors" size={28} />
+              </div>
+              <h3 className="font-bold text-xl text-[#2F4157] mb-3">Track Progress</h3>
+              <p className="text-gray-600 leading-relaxed text-sm">
+                With our dashboard and periodic tests, you never guess your level. You know exactly what to improve.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>{/* =========================================
+          4️⃣ OUR VALUES (THE DNA OF IELS) - BIG CARDS
+      ========================================= */}
+      <section className="px-6 sm:px-12 lg:px-[100px] py-13 lg:py-18 bg-[#1A2534] text-white relative overflow-hidden">
+        {/* Subtle Background Glow */}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#E56668]/20 blur-[150px] rounded-full pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#2F4157] blur-[100px] rounded-full pointer-events-none"></div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center max-w-3xl mx-auto mb-20 space-y-6">
+            <span className="text-[#E56668] font-bold tracking-widest uppercase text-sm">
+              Core Principles
+            </span>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
+              The DNA of IELS.
+            </h2>
+            <p className="text-lg text-white/70">
+              We are not just building another English course. We are building a movement driven by these three uncompromising principles.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Value 01 */}
+            <div className="relative group bg-white/5 border border-white/10 p-10 lg:p-12 rounded-[40px] hover:bg-white/10 hover:border-white/20 transition-all duration-500 overflow-hidden">
+              <div className="absolute -right-6 -top-6 text-[140px] font-black text-white/5 group-hover:text-white/10 transition-colors duration-500 leading-none pointer-events-none">
+                01
+              </div>
+              <div className="relative z-10">
+                <div className="w-16 h-16 rounded-2xl bg-[#E56668] flex items-center justify-center mb-8 shadow-lg shadow-[#E56668]/30 group-hover:scale-110 transition-transform duration-500">
+                  <BookOpen size={32} className="text-white" />
+                </div>
+                <h3 className="text-2xl font-bold mb-4">Accessibility <br/> with Purpose</h3>
+                <p className="text-white/70 leading-relaxed text-sm sm:text-base">
+                  Socio-economic background should never dictate global potential. We build high-quality, structured programs that remain radically affordable.
+                </p>
+              </div>
+            </div>
+
+            {/* Value 02 */}
+            <div className="relative group bg-white/5 border border-white/10 p-10 lg:p-12 rounded-[40px] hover:bg-white/10 hover:border-white/20 transition-all duration-500 overflow-hidden">
+              <div className="absolute -right-6 -top-6 text-[140px] font-black text-white/5 group-hover:text-white/10 transition-colors duration-500 leading-none pointer-events-none">
+                02
+              </div>
+              <div className="relative z-10">
+                <div className="w-16 h-16 rounded-2xl bg-[#E56668] flex items-center justify-center mb-8 shadow-lg shadow-[#E56668]/30 group-hover:scale-110 transition-transform duration-500">
+                  <Award size={32} className="text-white" />
+                </div>
+                <h3 className="text-2xl font-bold mb-4">Relentlessly <br/> Outcome-Driven</h3>
+                <p className="text-white/70 leading-relaxed text-sm sm:text-base">
+                  We don't celebrate mere participation; we celebrate tangible progress. Everything we design is engineered to move you closer to a global goal.
+                </p>
+              </div>
+            </div>
+
+            {/* Value 03 */}
+            <div className="relative group bg-white/5 border border-white/10 p-10 lg:p-12 rounded-[40px] hover:bg-white/10 hover:border-white/20 transition-all duration-500 overflow-hidden">
+              <div className="absolute -right-6 -top-6 text-[140px] font-black text-white/5 group-hover:text-white/10 transition-colors duration-500 leading-none pointer-events-none">
+                03
+              </div>
+              <div className="relative z-10">
+                <div className="w-16 h-16 rounded-2xl bg-[#E56668] flex items-center justify-center mb-8 shadow-lg shadow-[#E56668]/30 group-hover:scale-110 transition-transform duration-500">
+                  <Compass size={32} className="text-white" />
+                </div>
+                <h3 className="text-2xl font-bold mb-4">Community as <br/> a System</h3>
+                <p className="text-white/70 leading-relaxed text-sm sm:text-base">
+                  Growth accelerates when you are not alone. We cultivate a high-energy environment where learners push each other to evolve.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* =========================================
-          7️⃣ THE TEAM
+          5️⃣ VISION & IMPACT (MODERN BENTO GRID)
       ========================================= */}
-      <section className="py-20 sm:py-28 px-6 bg-white">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="uppercase tracking-widest text-gray-400 text-sm font-bold mb-3">
-              Organizational Team
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold mb-4">
-              Meet the Principals
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Behind every initiative of IELS is a strong and passionate team committed 
-              to building a platform that connects Indonesian students with global opportunities.
-            </p>
+      <section className="px-6 sm:px-12 lg:px-[100px] py-13 lg:py-18 bg-white relative">
+        <div className="max-w-7xl mx-auto">
+          
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8">
+            <div className="max-w-2xl space-y-4">
+              <span className="text-[#E56668] font-bold tracking-widest uppercase text-sm">
+                The Proof
+              </span>
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#2F4157] leading-tight tracking-tight">
+                Vision measured in <br className="hidden sm:block"/> 
+                <span className="text-[#E56668]">real human impact.</span>
+              </h2>
+            </div>
+            <div className="pb-2">
+              <Link 
+                href="/stories" 
+                className="group inline-flex items-center gap-3 bg-[#F7F8FA] border border-gray-200 text-[#2F4157] px-6 py-3 rounded-full font-bold hover:border-[#E56668] hover:text-[#E56668] transition-all duration-300 shadow-sm"
+              >
+                Read Success Stories 
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {principals.map((p) => (
-              <div
-                key={p.name}
-                className="
-                  group bg-[#F7F8FA] rounded-[32px] p-8
-                  flex flex-col items-center text-center
-                  border border-gray-100
-                  transition-all duration-300
-                  hover:-translate-y-2 hover:shadow-xl hover:shadow-[#2F4157]/5
-                "
-              >
-                {/* Avatar */}
-                <div className="relative mb-6">
-                  <div className="absolute inset-0 bg-[#E56668] rounded-full blur-lg opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                  <Image
-                    src={p.image}
-                    alt={p.name}
-                    width={144}
-                    height={144}
-                    className="
-                      w-36 h-36 rounded-full object-cover relative z-10
-                      transition-transform duration-300
-                      group-hover:scale-105 border-4 border-white shadow-sm
-                    "
-                  />
-                </div>
-
-                {/* Name */}
-                <h4 className="font-bold text-xl text-[#2F4157] mb-1">
-                  {p.name}
-                </h4>
-
-                {/* Role */}
-                <p className="text-sm text-[#E56668] font-semibold mb-6 uppercase tracking-wider">
-                  {p.role}
+          {/* Bento Grid layout */}
+          <div className="grid md:grid-cols-3 gap-6">
+            
+            {/* Giant Stat Box */}
+            <div className="md:col-span-2 bg-[#F7F8FA] rounded-[40px] p-10 lg:p-14 border border-gray-100 relative overflow-hidden group hover:border-[#E56668]/30 transition-colors duration-500">
+              <div className="relative z-10">
+                <p className="text-[64px] lg:text-[96px] font-black text-[#2F4157] leading-none mb-4 tracking-tighter">
+                  6,800+
                 </p>
+                <p className="text-2xl font-extrabold text-[#2F4157] mb-2">Active IELScouts</p>
+                <p className="text-gray-500 max-w-sm text-lg">
+                  A rapidly growing community of ambitious students from across Indonesia, practicing and growing together daily.
+                </p>
+              </div>
+              <div className="absolute -right-10 -bottom-10 opacity-5 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none">
+                <Users size={300} className="text-[#2F4157]" />
+              </div>
+            </div>
 
-                {/* Socials */}
-                <div className="flex gap-4 mt-auto">
-                  <a
-                    href={p.instagram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="
-                      p-3 rounded-2xl bg-white border border-gray-200
-                      text-gray-500 hover:text-white hover:bg-[#E56668] hover:border-[#E56668]
-                      transition-all duration-200 active:scale-95
-                    "
-                    aria-label="Instagram"
-                  >
-                    <Instagram size={20} />
-                  </a>
-
-                  <a
-                    href={p.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="
-                      p-3 rounded-2xl bg-white border border-gray-200
-                      text-gray-500 hover:text-white hover:bg-[#0A66C2] hover:border-[#0A66C2]
-                      transition-all duration-200 active:scale-95
-                    "
-                    aria-label="LinkedIn"
-                  >
-                    <Linkedin size={20} />
-                  </a>
+            {/* Accent Stat Box */}
+            <div className="bg-gradient-to-b from-[#E56668] to-[#c94f51] rounded-[40px] p-10 lg:p-12 text-white relative overflow-hidden shadow-2xl shadow-[#E56668]/20 group hover:-translate-y-2 transition-transform duration-500">
+              <div className="relative z-10 flex flex-col h-full justify-between">
+                <div>
+                  <p className="text-[64px] lg:text-[80px] font-black leading-none mb-4 tracking-tighter">
+                    810+
+                  </p>
+                  <p className="text-xl font-bold mb-3">Winning Stories</p>
+                  <p className="text-white/80">
+                    Scholarships, competitions, and global programs conquered by our members.
+                  </p>
+                </div>
+                <div className="mt-8 flex justify-end">
+                  <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-500">
+                    <Award size={32} className="text-white" />
+                  </div>
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* Full Width Bottom Stat Box */}
+            <div className="md:col-span-3 bg-[#2F4157] rounded-[40px] p-10 lg:p-14 text-white flex flex-col md:flex-row items-center justify-between gap-10 overflow-hidden relative group">
+              {/* Center Glow */}
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[#E56668]/20 blur-[100px] rounded-full pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-700"></div>
+              
+              <div className="relative z-10 max-w-2xl text-center md:text-left">
+                <p className="text-[64px] lg:text-[80px] font-black text-white leading-none mb-4 tracking-tighter">
+                  135+
+                </p>
+                <p className="text-2xl sm:text-3xl font-extrabold mb-3">Global Careers Launched</p>
+                <p className="text-white/70 text-lg">
+                  Members who have successfully landed remote jobs, international internships, and professional roles across borders.
+                </p>
+              </div>
+              
+              <div className="relative z-10 shrink-0">
+                <div className="w-32 h-32 rounded-full border border-white/20 flex items-center justify-center bg-white/5 backdrop-blur-md group-hover:bg-white/10 group-hover:scale-110 transition-all duration-500">
+                  <Globe size={56} className="text-[#E56668]" />
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
+{/* =========================================
+          6️⃣ THE TEAM (DIRECTORS & LEADERS)
+      ========================================= */}
+      <section className="px-6 sm:px-12 lg:px-[100px] py-13 lg:py-18 overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center space-y-4 mb-12">
+            <span className="text-[#E56668] font-bold tracking-widest uppercase text-sm">
+              The People Behind IELS
+            </span>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#2F4157] tracking-tight">
+              Meet The Builders
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              A dedicated team of educators, strategists, and creators committed to connecting Indonesian students with the world.
+            </p>
+          </div>
 
-      <Footer />
+          {/* Toggle Buttons */}
+          <div className="flex justify-center gap-4 mb-10">
+            <button
+              onClick={() => {
+                setActiveTeamTab("directors");
+                setActiveDirectorDetail(null);
+              }}
+              className={`px-8 py-3.5 rounded-full font-bold transition-all duration-300 ${
+                activeTeamTab === "directors"
+                  ? "bg-[#2F4157] text-white shadow-xl scale-105"
+                  : "bg-white text-gray-500 hover:bg-gray-100 hover:text-[#2F4157] shadow-sm border border-gray-200"
+              }`}
+            >
+              Directors
+            </button>
+            <button
+              onClick={() => {
+                setActiveTeamTab("leaders");
+                setActiveDirectorDetail(null);
+              }}
+              className={`px-8 py-3.5 rounded-full font-bold transition-all duration-300 ${
+                activeTeamTab === "leaders"
+                  ? "bg-[#2F4157] text-white shadow-xl scale-105"
+                  : "bg-white text-gray-500 hover:bg-gray-100 hover:text-[#2F4157] shadow-sm border border-gray-200"
+              }`}
+            >
+              Leaders
+            </button>
+          </div>
+
+          {/* DIRECTORS TAB */}
+          {activeTeamTab === "directors" && (
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 animate-fadeIn">
+              {principals.map((p, index) => {
+                const isShowingDetails = activeDirectorDetail === index;
+
+                return (
+                  <div 
+                    key={index} 
+                    className="relative w-full h-[460px] bg-white rounded-[40px] shadow-sm hover:shadow-xl border border-gray-100 overflow-hidden flex flex-col transition-all duration-300"
+                  >
+                    <div className="p-8 flex flex-col h-full relative">
+                      
+                    {/* --- FRONT VIEW (PROFILE) --- */}
+                      {!isShowingDetails ? (
+                        <div className="flex flex-col items-center justify-center text-center h-full animate-fadeIn">
+                          
+                          <div className="relative mb-5">
+                            <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-lg bg-gray-100 relative z-10 group-hover:scale-105 transition-transform duration-300">
+                              <Image
+                                src={p.image}
+                                alt={p.name}
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
+                          </div>
+                          
+                          <h4 className="font-extrabold text-xl text-[#2F4157] mb-1 leading-tight">
+                            {p.name}
+                          </h4>
+                          
+                          <p className="text-sm text-[#E56668] mb-5 font-bold uppercase tracking-wider">
+                            {p.role}
+                          </p>
+                          
+                          {/* Sosmed - langsung di bawah role tanpa mt-auto */}
+                          <div className="flex gap-4 mb-5">
+                            <a href={p.instagram} target="_blank" rel="noopener noreferrer" className="p-3 rounded-2xl bg-[#F7F8FA] text-gray-500 hover:text-white hover:bg-[#E56668] transition-all duration-300">
+                              <Instagram size={18} />
+                            </a>
+                            <a href={p.linkedin} target="_blank" rel="noopener noreferrer" className="p-3 rounded-2xl bg-[#F7F8FA] text-gray-500 hover:text-white hover:bg-[#0A66C2] transition-all duration-300">
+                              <Linkedin size={18} />
+                            </a>
+                          </div>
+                          
+                          {/* Tombol - langsung nempel di bawah sosmed */}
+                          <button 
+                            onClick={() => setActiveDirectorDetail(index)}
+                            className="w-full py-3 rounded-2xl bg-[#2F4157]/5 text-[#2F4157] font-bold text-sm hover:bg-[#2F4157] hover:text-white transition-colors duration-300"
+                          >
+                            View Profile
+                          </button>
+                          
+                        </div>
+                      ) : (
+                        /* --- BACK VIEW (DETAILS) --- */
+                        <div className="flex flex-col h-full animate-fadeIn text-left">
+                          <button 
+                            onClick={() => setActiveDirectorDetail(null)}
+                            className="text-[#E56668] font-bold text-sm mb-6 flex items-center hover:underline w-fit"
+                          >
+                            ← Back
+                          </button>
+                          
+                          <div className="overflow-y-auto pr-2 pb-4 scrollbar-hide">
+                            <h4 className="font-extrabold text-lg text-[#2F4157] mb-1">{p.name}</h4>
+                            <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-5 border-b border-gray-100 pb-3">{p.role}</p>
+                            
+                            <h5 className="font-bold text-sm text-[#2F4157] mb-2 flex items-center gap-2">
+                              <div className="w-1.5 h-1.5 rounded-full bg-[#E56668]"></div>
+                              Background
+                            </h5>
+                            <p className="text-sm text-gray-600 leading-relaxed mb-5">
+                              {p.point1}
+                            </p>
+                            
+                            <h5 className="font-bold text-sm text-[#2F4157] mb-2 flex items-center gap-2">
+                              <div className="w-1.5 h-1.5 rounded-full bg-[#E56668]"></div>
+                              Experience
+                            </h5>
+                            <p className="text-sm text-gray-600 leading-relaxed mb-5">
+                              {p.point2}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* LEADERS TAB */}
+          {activeTeamTab === "leaders" && (
+            <div className="animate-fadeIn space-y-12">
+              {leadersGroups.map((group, groupIndex) => (
+                <div key={groupIndex} className="w-full">
+                  
+                  {/* Category Title */}
+                  <h3 className="text-2xl font-extrabold text-[#1A2534] mb-6 pl-2 border-l-4 border-[#E56668]">
+                    {group.category}
+                  </h3>
+                  
+                  {/* Cards Container: Flex Horizontal Swipe on Mobile, Grid on Desktop */}
+                  <div className="flex overflow-x-auto gap-5 pb-6 pt-2 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-x-visible md:pb-0 md:pt-0">
+                    {group.members.map((leader, index) => (
+                      <div 
+                        key={index} 
+                        className="min-w-[280px] sm:min-w-[300px] md:min-w-0 snap-center bg-white p-6 rounded-[40px] border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col items-center text-center justify-center group h-full relative"
+                      >
+                        <div className="relative mb-4 mt-2">
+                          <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-white shadow-lg bg-gray-100 relative z-10 group-hover:scale-105 transition-transform duration-300">
+                            <Image
+                              src={leader.image}
+                              alt={leader.name}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        </div>
+                        
+                        <h4 className="font-extrabold text-[#2F4157] text-lg mb-1 leading-tight">
+                          {leader.name}
+                        </h4>
+                        <p className="text-xs text-[#E56668] font-bold uppercase tracking-wider mb-2 px-2 h-8 flex items-center justify-center">
+                          {leader.role}
+                        </p>
+                        
+                        <div className="flex gap-3 mt-4 mb-2">
+                          <a href={leader.instagram} target="_blank" rel="noopener noreferrer" className="p-3 rounded-2xl bg-[#F7F8FA] text-gray-500 hover:text-white hover:bg-[#E56668] transition-all duration-300">
+                            <Instagram size={18} />
+                          </a>
+                          <a href={leader.linkedin} target="_blank" rel="noopener noreferrer" className="p-3 rounded-2xl bg-[#F7F8FA] text-gray-500 hover:text-white hover:bg-[#0A66C2] transition-all duration-300">
+                            <Linkedin size={18} />
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+            <Footer />
+
+      <style jsx global>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          opacity: 0;
+        }
+      `}</style>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { createBrowserClient } from "@supabase/ssr";
 import {
@@ -9,7 +9,6 @@ import {
   Users,
   Award,
   Crown,
-  Lock,
   Sparkles,
   Heart,
   ExternalLink,
@@ -17,20 +16,40 @@ import {
   Plus,
   ArrowRight,
   Bell,
+  CheckCircle,
+  Clock,
+  Zap,
+  Calendar,
+  Gift,
+  Star,
+  Video,
+  BookOpen,
+  Target,
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import PricingModal from "@/components/subscription/PricingModal";
+import OnboardingModal from "@/components/community/OnboardingModal";
 import { memberStoriesData } from "@/data/member-stories";
 import { generateSlug } from "@/utils/slug";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
-// --- TIPE DATA ---
+// --- TYPES ---
 type UserTier = "explorer" | "insider" | "visionary";
+
+interface MembershipData {
+  tier: UserTier;
+  status: "active" | "expired" | "trial";
+  startDate: string;
+  endDate: string;
+  daysRemaining: number;
+  autoRenew: boolean;
+}
 
 export default function CommunityPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -46,14 +65,27 @@ export default function CommunityPage() {
     id: "", 
     name: "", 
     email: "", 
-    tier: "explorer", // Default
+    tier: "explorer",
     avatar: "" 
   });
 
+  const [membership, setMembership] = useState<MembershipData | null>(null);
   const [loading, setLoading] = useState(true);
   const [showStoryModal, setShowStoryModal] = useState(false);
   const [showPricingModal, setShowPricingModal] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const [counts, setCounts] = useState({ members: 0, stories: 0, careers: 0, abroad: 0 });
+  const [todayActivity, setTodayActivity] = useState<any>(null);
+
+  // Check for payment success
+  useEffect(() => {
+    const paymentSuccess = searchParams.get('payment');
+    const newMember = searchParams.get('new');
+    
+    if (paymentSuccess === 'success' && newMember === 'true') {
+      setShowOnboarding(true);
+    }
+  }, [searchParams]);
 
   // 1. Data Initialization & Auth
   useEffect(() => {
@@ -68,12 +100,13 @@ export default function CommunityPage() {
 
       const { data: dbUser } = await supabase
         .from("users")
-        .select(`*, memberships(tier)`)
+        .select(`*, memberships(*)`)
         .eq("id", user.id)
         .single();
 
-      // --- LOGIC MAPPING TIER BARU ---
-      const dbTier = dbUser?.memberships?.[0]?.tier;
+      // Map tier
+      const dbMembership = dbUser?.memberships?.[0];
+      const dbTier = dbMembership?.tier;
       let uiTier: UserTier = "explorer";
 
       if (dbTier === "pro") {
@@ -91,6 +124,23 @@ export default function CommunityPage() {
         tier: uiTier,
         avatar: user.user_metadata?.avatar_url || ""
       });
+
+      // Set membership data
+      if (dbMembership) {
+        const endDate = new Date(dbMembership.end_date);
+        const today = new Date();
+        const daysRemaining = Math.ceil((endDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+        setMembership({
+          tier: uiTier,
+          status: dbMembership.status,
+          startDate: dbMembership.start_date,
+          endDate: dbMembership.end_date,
+          daysRemaining: daysRemaining,
+          autoRenew: dbMembership.auto_renew || false,
+        });
+      }
+
       setLoading(false);
     };
     initData();
@@ -99,7 +149,7 @@ export default function CommunityPage() {
   // 2. Count-up animation
   useEffect(() => {
     if (loading) return;
-    const targets = { members: 2800, stories: 110, careers: 35, abroad: 13 };
+    const targets = { members: 6800, stories: 810, careers: 135, abroad: 35 };
     const duration = 2000;
     const steps = 60;
     const stepTime = duration / steps;
@@ -122,15 +172,66 @@ export default function CommunityPage() {
     return () => clearInterval(timer);
   }, [loading]);
 
+  // 3. Check today's activity
+  useEffect(() => {
+    const weeklyActivities = [
+      {
+        day: "Monday",
+        title: "Speaking Class",
+        time: "19:00 WIB",
+        desc: "Practice session with a dedicated mentor to improve fluency and pronunciation.",
+        color: "bg-[#577E90]",
+        icon: <Users size={20} />,
+        requiresPremium: true,
+      },
+      {
+        day: "Wednesday",
+        title: "Daily Conversation Club",
+        time: "20:00 WIB",
+        desc: "Master real-life English! Topic-based practice for daily natural speaking.",
+        color: "bg-[#304156]",
+        icon: <MessageCircle size={20} />,
+        requiresPremium: true,
+      },
+      {
+        day: "Friday",
+        title: "Open Thought Discussion",
+        time: "19:30 WIB",
+        desc: "A free-talk session to share your thoughts and critical thinking in English.",
+        color: "bg-[#577E90]",
+        icon: <Sparkles size={20} />,
+        requiresPremium: false, // FREE FOR ALL
+      },
+      {
+        day: "Saturday",
+        title: "Talk Room: Community Spotlight",
+        time: "14:00 WIB",
+        desc: "Empowering our members. Hear real stories and insights from fellow IELS students.",
+        color: "bg-[#304156]",
+        icon: <Award size={20} />,
+        requiresPremium: true,
+      }
+    ];
+
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const today = days[new Date().getDay()];
+    const activity = weeklyActivities.find(a => a.day === today);
+    
+    if (activity) {
+      setTodayActivity(activity);
+    }
+  }, []);
+
   const weeklyActivities = [
     {
       day: "Monday",
       title: "Speaking Class",
       time: "19:00 WIB",
       desc: "Practice session with a dedicated mentor to improve fluency and pronunciation.",
-      color: "bg-[#CB2129]",
+      color: "bg-[#577E90]",
       icon: <Users size={20} />,
-      gCalLink: "https://calendar.google.com/calendar/render?action=TEMPLATE&text=IELS+Speaking+Class"
+      gCalLink: "https://calendar.google.com/calendar/render?action=TEMPLATE&text=IELS+Speaking+Class",
+      requiresPremium: true,
     },
     {
       day: "Wednesday",
@@ -139,7 +240,8 @@ export default function CommunityPage() {
       desc: "Master real-life English! Topic-based practice for daily natural speaking.",
       color: "bg-[#304156]",
       icon: <MessageCircle size={20} />,
-      gCalLink: "https://calendar.google.com/calendar/render?action=TEMPLATE&text=IELS+Conversation+Club"
+      gCalLink: "https://calendar.google.com/calendar/render?action=TEMPLATE&text=IELS+Conversation+Club",
+      requiresPremium: true,
     },
     {
       day: "Friday",
@@ -148,16 +250,18 @@ export default function CommunityPage() {
       desc: "A free-talk session to share your thoughts and critical thinking in English.",
       color: "bg-[#577E90]",
       icon: <Sparkles size={20} />,
-      gCalLink: "https://calendar.google.com/calendar/render?action=TEMPLATE&text=IELS+Free+Talk"
+      gCalLink: "https://calendar.google.com/calendar/render?action=TEMPLATE&text=IELS+Free+Talk",
+      requiresPremium: false, // FREE
     },
     {
       day: "Saturday",
       title: "Talk Room: Community Spotlight",
       time: "14:00 WIB",
       desc: "Empowering our members. Hear real stories and insights from fellow IELS students.",
-      color: "bg-[#553223]", // Warna cokelat/krem biar beda
-      icon: <Award size={20} />, // Ganti icon jadi Award
-      gCalLink: "https://calendar.google.com/calendar/render?action=TEMPLATE&text=IELS+Talk+Room"
+      color: "bg-[#304156]",
+      icon: <Award size={20} />,
+      gCalLink: "https://calendar.google.com/calendar/render?action=TEMPLATE&text=IELS+Talk+Room",
+      requiresPremium: true,
     }
   ];
 
@@ -175,12 +279,35 @@ export default function CommunityPage() {
   const isExplorer = userData.tier === "explorer";
   const hasPremiumAccess = userData.tier === "insider" || userData.tier === "visionary";
 
+  const insiderBenefits = [
+    {
+      icon: <Video size={20} />,
+      title: "4 Weekly Live Sessions",
+      desc: "Mon, Wed, Fri, Sat - Unlimited access to all speaking practice sessions"
+    },
+    {
+      icon: <MessageCircle size={20} />,
+      title: "WhatsApp Inner Circle",
+      desc: "Priority mentoring, exclusive resources, and direct mentor access"
+    },
+    {
+      icon: <BookOpen size={20} />,
+      title: "Learning Resources Library",
+      desc: "Premium study materials, practice tests, and vocabulary guides"
+    },
+    {
+      icon: <Target size={20} />,
+      title: "Certificate of Participation",
+      desc: "Official certificate upon completion for your portfolio"
+    }
+  ];
+
   return (
     <DashboardLayout userTier={userData.tier} userName={userData.name} userAvatar={userData.avatar}>
-      <div className="min-h-screen bg-[#FAFAFA]">
+      <div className="min-h-screen bg-[#F6F3EF]">
         
         {/* Hero Section */}
-        <div className="bg-gradient-to-br from-[#2F4157] via-[#3a4f66] to-[#2F4157] text-white">
+        <div className="bg-gradient-to-br from-[#304156] via-[#3d4f66] to-[#304156] text-white">
           <div className="max-w-7xl mx-auto px-4 lg:px-8 py-16">
             <div className="text-center max-w-3xl mx-auto mb-12">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full text-sm font-semibold mb-6 border border-white/20">
@@ -235,78 +362,329 @@ export default function CommunityPage() {
 
         <div className="max-w-7xl mx-auto px-4 lg:px-12 py-12">
           
+          {/* ===== UPGRADE CTA FOR FREE USERS ===== */}
+          {isExplorer && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-12 bg-gradient-to-br from-[#304156] to-[#3d4f66] rounded-[32px] overflow-hidden shadow-sm"
+            >
+              <div className="p-8 md:p-10">
+                <div className="grid lg:grid-cols-2 gap-8 items-center">
+                  {/* Left: Headline */}
+                  <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#CB2129] rounded-full text-white text-xs font-bold mb-4">
+                      <Crown size={14} />
+                      UPGRADE TO INSIDER
+                    </div>
+                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
+                      Unlock Your Full Potential
+                    </h2>
+                    <p className="text-white/70 text-lg mb-8">
+                      Get unlimited access to all weekly sessions, priority mentoring, and exclusive resources to accelerate your English mastery.
+                    </p>
+
+                    <div className="flex flex-wrap gap-3 mb-6">
+                      <button
+                        onClick={() => setShowPricingModal(true)}
+                        className="px-8 py-4 bg-[#CB2129] text-white rounded-2xl font-bold hover:bg-[#a81b22] transition-all shadow-lg flex items-center gap-2"
+                      >
+                        See Insider Benefits
+                        <ArrowRight size={20} />
+                      </button>
+                    </div>
+
+                    <div className="inline-flex items-baseline gap-2 text-white">
+                      <span className="text-sm opacity-60">Starting from</span>
+                      <span className="text-3xl font-bold">Rp50k</span>
+                      <span className="text-sm opacity-60 line-through">Rp75K</span>
+                      <span className="text-xs bg-[#CB2129] px-2 py-1 rounded-full font-bold ml-2">First Three Months</span>
+                    </div>
+                  </div>
+
+                  {/* Right: Benefits Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {insiderBenefits.map((benefit, idx) => (
+                      <div 
+                        key={idx}
+                        className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-5"
+                      >
+                        <div className="w-10 h-10 bg-[#577E90] rounded-xl flex items-center justify-center text-white mb-3">
+                          {benefit.icon}
+                        </div>
+                        <h3 className="font-bold text-white mb-1 text-sm">{benefit.title}</h3>
+                        <p className="text-white/60 text-xs leading-relaxed">{benefit.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* ACTIVE MEMBERSHIP STATUS */}
+          {hasPremiumAccess && membership && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-12"
+            >
+              <div className={cn(
+                "rounded-[32px] p-6 md:p-8 shadow-sm relative overflow-hidden border",
+                membership.status === "active" && membership.daysRemaining > 7
+                  ? "bg-gradient-to-br from-[#304156] to-[#3d4f66] text-white border-[#304156]"
+                  : "bg-gradient-to-br from-[#CB2129] to-[#a81b22] text-white border-[#CB2129]"
+              )}>
+                <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -mr-24 -mt-24" />
+                
+                <div className="relative z-10 grid lg:grid-cols-3 gap-6 items-center">
+                  {/* Status Info */}
+                  <div className="lg:col-span-2">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="p-3 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20">
+                        {membership.status === "active" && membership.daysRemaining > 7 ? (
+                          <CheckCircle size={24} />
+                        ) : (
+                          <Clock size={24} />
+                        )}
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-bold capitalize">
+                          {userData.tier} Membership {membership.status === "active" && membership.daysRemaining > 7 ? "Active" : "Expiring Soon"}
+                        </h3>
+                        <p className="text-white/70 text-sm">
+                          {membership.daysRemaining > 7
+                            ? `Valid until ${new Date(membership.endDate).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}`
+                            : `Only ${membership.daysRemaining} days remaining`
+                          }
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20">
+                        <p className="text-white/60 text-xs uppercase tracking-wider font-bold mb-1">Days Remaining</p>
+                        <p className="text-3xl font-bold">{membership.daysRemaining}</p>
+                      </div>
+                      <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20">
+                        <p className="text-white/60 text-xs uppercase tracking-wider font-bold mb-1">Auto-Renew</p>
+                        <p className="text-3xl font-bold">{membership.autoRenew ? "ON" : "OFF"}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex flex-col gap-3">
+                    {membership.daysRemaining <= 7 && (
+                      <button
+                        onClick={() => setShowPricingModal(true)}
+                        className="w-full px-6 py-4 bg-white text-[#304156] rounded-2xl font-bold hover:bg-gray-100 transition-all shadow-lg flex items-center justify-center gap-2"
+                      >
+                        <Zap size={18} />
+                        Renew Now
+                      </button>
+                    )}
+                    <Link
+                      href="/dashboard/settings/membership"
+                      className="w-full text-center px-6 py-3 border-2 border-white/30 rounded-2xl font-semibold hover:bg-white/10 transition-all"
+                    >
+                      Manage Membership
+                    </Link>
+                    <a
+                      href="https://chat.whatsapp.com/YOUR_EXCLUSIVE_GROUP_LINK"
+                      target="_blank"
+                      className="w-full text-center px-6 py-3 bg-[#25D366] rounded-2xl font-bold hover:bg-[#1ea952] transition-all flex items-center justify-center gap-2"
+                    >
+                      <MessageCircle size={18} />
+                      Join WhatsApp Group
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* TODAY'S ACTIVITY REMINDER */}
+          {todayActivity && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="mb-12 bg-white border border-[#CDC6BC] rounded-[24px] p-6 shadow-sm"
+            >
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  <div className={cn("p-4 rounded-2xl text-white shadow-sm", todayActivity.color)}>
+                    <Calendar size={24} />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xs font-black uppercase text-[#CB2129] tracking-widest">TODAY'S SESSION</span>
+                      {!todayActivity.requiresPremium && (
+                        <span className="text-[10px] font-bold bg-[#577E90] text-white px-2 py-0.5 rounded-full">FREE</span>
+                      )}
+                    </div>
+                    <h3 className="text-xl font-bold text-[#304156]">{todayActivity.title}</h3>
+                    <p className="text-[#CB2129] font-bold text-sm">{todayActivity.time}</p>
+                  </div>
+                </div>
+                
+                {(!todayActivity.requiresPremium || hasPremiumAccess) ? (
+                  <a
+                    href="https://zoom.us/j/YOUR_MEETING_ID"
+                    target="_blank"
+                    className="px-8 py-3 bg-[#CB2129] text-white rounded-2xl font-bold hover:bg-[#a81b22] transition-all shadow-sm flex items-center gap-2 whitespace-nowrap"
+                  >
+                    <ExternalLink size={16} />
+                    Join Session
+                  </a>
+                ) : (
+                  <button
+                    onClick={() => setShowPricingModal(true)}
+                    className="px-8 py-3 bg-[#304156] text-white rounded-2xl font-bold hover:bg-[#253344] transition-all flex items-center gap-2 whitespace-nowrap"
+                  >
+                    Upgrade to Join
+                    <ArrowRight size={16} />
+                  </button>
+                )}
+              </div>
+            </motion.div>
+          )}
+
           {/* Main Layout Grid */}
-          <div className="flex flex-col lg:flex-row gap-12">
+          <div className="flex flex-col lg:flex-row gap-8">
             
             {/* Left Content: Activities & Channels */}
-            <div className="flex-1 space-y-16">
+            <div className="flex-1 space-y-8">
               
               {/* Weekly Segments Section */}
               <section>
-                <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl font-bold text-[#304156]">Weekly Activity Segments</h2>
-                  <div className="h-px flex-1 mx-6 bg-[#CDC6BC]/40 hidden md:block" />
+                  <div className="h-px flex-1 mx-6 bg-[#CDC6BC] hidden md:block" />
                 </div>
                 
                 <div className="grid sm:grid-cols-2 gap-4">
-                  {weeklyActivities.map((act, idx) => (
-                    <motion.div 
-                      whileHover={{ scale: 1.02 }}
-                      key={idx} 
-                      className="group relative bg-white border border-[#CDC6BC]/30 p-6 rounded-2xl hover:shadow-xl transition-all overflow-hidden"
-                    >
-                      <div className={cn("absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 rounded-full opacity-10 transition-transform group-hover:scale-150", act.color)} />
-                      <div className="flex items-start justify-between mb-4">
-                        <div className={cn("p-3 rounded-xl text-white shadow-lg", act.color)}>
-                          {act.icon}
-                        </div>
-                        <span className="text-xs font-bold text-[#577E90] bg-[#F6F3EF] px-2 py-1 rounded italic">{act.day}</span>
-                      </div>
-                      <h4 className="text-lg font-bold text-[#304156] mb-1">{act.title}</h4>
-                      <p className="text-[#CB2129] text-xs font-bold mb-3">{act.time}</p>
-                      <p className="text-gray-500 text-sm leading-relaxed mb-6">{act.desc}</p>
-                      
-                      <a 
-                        href={act.gCalLink} 
-                        target="_blank" 
-                        className="flex items-center gap-2 text-xs font-bold text-[#304156] hover:text-[#CB2129] transition-colors"
+                  {weeklyActivities.map((act, idx) => {
+                    const isLocked = act.requiresPremium && !hasPremiumAccess;
+                    
+                    return (
+                      <motion.div 
+                        whileHover={{ scale: isLocked ? 1 : 1.02 }}
+                        key={idx} 
+                        className={cn(
+                          "relative bg-white border border-[#CDC6BC] rounded-[24px] p-6 transition-all overflow-hidden",
+                          isLocked ? "opacity-60" : "hover:shadow-sm"
+                        )}
                       >
-                        <Bell size={14} />
-                        Add to Google Calendar
-                      </a>
-                    </motion.div>
-                  ))}
+                        {isLocked && (
+                          <div className="absolute inset-0 bg-[#F6F3EF]/80 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-[24px]">
+                            <div className="text-center">
+                              <div className="w-12 h-12 bg-[#304156] rounded-2xl flex items-center justify-center mx-auto mb-3">
+                                <Crown size={24} className="text-white" />
+                              </div>
+                              <p className="text-sm font-bold text-[#304156]">Insider Access Required</p>
+                            </div>
+                          </div>
+                        )}
+                        
+                        <div className="flex items-start justify-between mb-4">
+                          <div className={cn("p-3 rounded-2xl text-white shadow-sm", act.color)}>
+                            {act.icon}
+                          </div>
+                          <div className="flex flex-col items-end gap-1">
+                            <span className="text-xs font-bold text-[#577E90] bg-[#F6F3EF] px-3 py-1 rounded-full">{act.day}</span>
+                            {!act.requiresPremium && (
+                              <span className="text-[9px] font-bold text-white bg-[#577E90] px-2 py-0.5 rounded-full">FREE</span>
+                            )}
+                          </div>
+                        </div>
+                        <h4 className="text-lg font-bold text-[#304156] mb-1">{act.title}</h4>
+                        <p className="text-[#CB2129] text-xs font-bold mb-3">{act.time}</p>
+                        <p className="text-[#577E90] text-sm leading-relaxed mb-6">{act.desc}</p>
+                        
+                        {!isLocked && (
+                          <a 
+                            href={act.gCalLink} 
+                            target="_blank" 
+                            className="flex items-center gap-2 text-xs font-bold text-[#304156] hover:text-[#CB2129] transition-colors"
+                          >
+                            <Bell size={14} />
+                            Add to Calendar
+                          </a>
+                        )}
+                      </motion.div>
+                    );
+                  })}
                 </div>
               </section>
 
               {/* Channels Section */}
               <section className="grid md:grid-cols-2 gap-6">
-                <div className="p-8 bg-[#5865F2] rounded-3xl text-white shadow-xl relative overflow-hidden group">
+                <div className="p-8 bg-[#5865F2] rounded-[24px] text-white shadow-sm relative overflow-hidden group">
                   <MessageCircle className="absolute -bottom-6 -right-6 text-white/10 w-32 h-32 group-hover:scale-110 transition-transform" />
                   <h3 className="text-2xl font-bold mb-2">Discord Global Server</h3>
                   <p className="text-white/80 text-sm mb-6">Free for all members. Resource sharing and general discussions.</p>
-                  <a href="https://s.id/Lounge-DC" target="_blank" className="inline-flex items-center gap-2 bg-white text-[#5865F2] px-6 py-2.5 rounded-xl font-bold hover:bg-gray-100 transition-all">
+                  <a href="https://s.id/Lounge-DC" target="_blank" className="inline-flex items-center gap-2 bg-white text-[#5865F2] px-6 py-2.5 rounded-2xl font-bold hover:bg-gray-100 transition-all">
                     Open Discord <ExternalLink size={16} />
                   </a>
                 </div>
 
-                <div className="p-8 bg-[#25D366] rounded-3xl text-white shadow-xl relative overflow-hidden group">
-                  <Lock className="absolute -bottom-6 -right-6 text-white/10 w-32 h-32" />
+                <div className="p-8 bg-[#25D366] rounded-[24px] text-white shadow-sm relative overflow-hidden group">
+                  <MessageCircle className="absolute -bottom-6 -right-6 text-white/10 w-32 h-32" />
                   <h3 className="text-2xl font-bold mb-2">WhatsApp Inner Circle</h3>
-                  <p className="text-white/80 text-sm mb-6">Exclusive access for Insider & Visionary members. Priority mentoring and networking.</p>
-                  <button onClick={() => !hasPremiumAccess && setShowPricingModal(true)} className="inline-flex items-center gap-2 bg-white text-[#25D366] px-6 py-2.5 rounded-xl font-bold hover:bg-gray-100 transition-all">
-                    {hasPremiumAccess ? "Join Group" : "Unlock Access"} <Crown size={16} />
-                  </button>
+                  <p className="text-white/80 text-sm mb-6">Exclusive for Insider members. Priority mentoring and networking.</p>
+                  {hasPremiumAccess ? (
+                    <a 
+                      href="https://chat.whatsapp.com/YOUR_EXCLUSIVE_GROUP_LINK" 
+                      target="_blank"
+                      className="inline-flex items-center gap-2 bg-white text-[#25D366] px-6 py-2.5 rounded-2xl font-bold hover:bg-gray-100 transition-all"
+                    >
+                      Join Group <ExternalLink size={16} />
+                    </a>
+                  ) : (
+                    <button 
+                      onClick={() => setShowPricingModal(true)} 
+                      className="inline-flex items-center gap-2 bg-white text-[#25D366] px-6 py-2.5 rounded-2xl font-bold hover:bg-gray-100 transition-all"
+                    >
+                      See Benefits <ArrowRight size={16} />
+                    </button>
+                  )}
                 </div>
               </section>
             </div>
 
             {/* ===== RIGHT SIDEBAR ===== */}
-            <aside className="lg:w-1/3 space-y-8">
-              <div className="sticky top-24 space-y-8">
+            <aside className="lg:w-1/3 space-y-6">
+              <div className="sticky top-24 space-y-6">
                 
-                {/* 1. Member Spotlight Section */}
-                <div className="bg-[#F6F3EF] p-6 rounded-3xl border border-[#CDC6BC]/40 shadow-sm">
+                {/* Referral Program */}
+                {hasPremiumAccess && membership && membership.daysRemaining > 30 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-gradient-to-br from-[#577E90] to-[#304156] rounded-[24px] p-6 text-white shadow-sm relative overflow-hidden"
+                  >
+                    <Gift className="absolute -top-4 -right-4 text-white/10 w-24 h-24 rotate-12" />
+                    <div className="relative z-10">
+                      <h3 className="text-lg font-bold mb-2 flex items-center gap-2">
+                        <Star size={18} fill="white" />
+                        Refer & Earn Rewards
+                      </h3>
+                      <p className="text-white/90 text-sm leading-relaxed mb-4">
+                        Invite friends and get 1 month FREE for every 3 successful referrals!
+                      </p>
+                      <Link
+                        href="/dashboard/referrals"
+                        className="block w-full text-center py-3 bg-white text-[#304156] rounded-2xl font-bold hover:bg-gray-100 transition-all"
+                      >
+                        Get Referral Link
+                      </Link>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Member Spotlight Section */}
+                <div className="bg-white border border-[#CDC6BC] rounded-[24px] p-6 shadow-sm">
                   <Image
                     src="/images/contents/general/iels_insight.png"
                     alt="IELS Insight"
@@ -321,7 +699,7 @@ export default function CommunityPage() {
                   <div className="space-y-6">
                     {memberStoriesData.slice(0, 3).map((item, idx) => (
                       <div key={idx} className="flex gap-4 items-start group">
-                        <div className="relative w-[80px] h-[80px] rounded-2xl overflow-hidden flex-shrink-0 border-2 border-white shadow-sm">
+                        <div className="relative w-[80px] h-[80px] rounded-2xl overflow-hidden flex-shrink-0 border-2 border-[#CDC6BC] shadow-sm">
                           <Image
                             src={item.author.avatar}
                             alt={item.author.name}
@@ -352,14 +730,14 @@ export default function CommunityPage() {
                   <Link
                     href="https://ielsco.com/stories"
                     target="_blank"
-                    className="mt-8 flex items-center justify-center gap-2 w-full py-3 bg-[#304156] text-white rounded-xl font-bold text-xs hover:bg-[#253344] transition-all"
+                    className="mt-8 flex items-center justify-center gap-2 w-full py-3 bg-[#304156] text-white rounded-2xl font-bold text-xs hover:bg-[#253344] transition-all"
                   >
                     Explore All Stories
                   </Link>
                 </div>
 
-                {/* 2. Compact Share Your Story Section */}
-                <div className="bg-[#CB2129] rounded-3xl p-6 text-white shadow-xl relative overflow-hidden group">
+                {/* Share Your Story Section */}
+                <div className="bg-[#CB2129] rounded-[24px] p-6 text-white shadow-sm relative overflow-hidden group">
                   <Sparkles className="absolute -top-4 -right-4 text-white/20 w-20 h-20 rotate-12 group-hover:scale-110 transition-transform" />
                   
                   <div className="relative z-10">
@@ -368,12 +746,12 @@ export default function CommunityPage() {
                       Share Your Journey
                     </h3>
                     <p className="text-white/80 text-xs leading-relaxed mb-6">
-                      Did you ace your IELTS or get a scholarship? Inspire 2,800+ members by sharing your story!
+                      Did you ace your IELTS or get a scholarship? Inspire 6,800+ members!
                     </p>
 
                     <button
                       onClick={() => setShowStoryModal(true)}
-                      className="w-full py-3 bg-white text-[#CB2129] rounded-xl font-bold text-sm hover:bg-gray-100 transition-all shadow-lg flex items-center justify-center gap-2"
+                      className="w-full py-3 bg-white text-[#CB2129] rounded-2xl font-bold text-sm hover:bg-gray-100 transition-all shadow-sm flex items-center justify-center gap-2"
                     >
                       <Plus size={16} />
                       Submit Story
@@ -388,38 +766,42 @@ export default function CommunityPage() {
         </div>
       </div>
 
-      {/* Reusable Modals */}
-      {showStoryModal && (
-        <div className="fixed inset-0 bg-[#304156]/80 backdrop-blur-md z-[100] flex items-center justify-center p-4">
-          <motion.div 
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="bg-white rounded-[32px] max-w-xl w-full p-8 shadow-2xl relative"
-          >
-            <button onClick={() => setShowStoryModal(false)} className="absolute top-6 right-6 p-2 hover:bg-gray-100 rounded-full">
-              <X size={20} />
-            </button>
-            <h3 className="text-2xl font-bold text-[#304156] mb-2">Inspire the Community</h3>
-            <p className="text-gray-500 mb-8">Share your learning journey and get featured on IELS Insight.</p>
-            
-            <form className="space-y-4">
-               <div>
-                 <label className="text-xs font-black uppercase tracking-widest text-[#577E90] block mb-2">Story Title</label>
-                 <input type="text" placeholder="How I landed my first scholarship..." className="w-full bg-[#F6F3EF] border-none rounded-xl p-4 text-sm focus:ring-2 focus:ring-[#CB2129]" />
-               </div>
-               <div>
-                 <label className="text-xs font-black uppercase tracking-widest text-[#577E90] block mb-2">Description</label>
-                 <textarea rows={4} className="w-full bg-[#F6F3EF] border-none rounded-xl p-4 text-sm focus:ring-2 focus:ring-[#CB2129] resize-none" />
-               </div>
-               <button type="button" onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSdpfik-xAviTLsauSN_h4yVI-Af19ydbRC6-nM0QGDmuPEWIA/viewform')} className="w-full bg-[#CB2129] text-white py-4 rounded-xl font-bold shadow-lg shadow-red-900/20 hover:bg-[#A81B22] transition-all">
-                  Proceed to Official Form
-               </button>
-            </form>
-          </motion.div>
-        </div>
-      )}
+      {/* Modals */}
+      <AnimatePresence>
+        {showStoryModal && (
+          <div className="fixed inset-0 bg-[#304156]/80 backdrop-blur-md z-[100] flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-[32px] max-w-xl w-full p-8 shadow-sm relative"
+            >
+              <button onClick={() => setShowStoryModal(false)} className="absolute top-6 right-6 p-2 hover:bg-[#F6F3EF] rounded-full transition-colors">
+                <X size={20} />
+              </button>
+              <h3 className="text-2xl font-bold text-[#304156] mb-2">Inspire the Community</h3>
+              <p className="text-[#577E90] mb-8">Share your learning journey and get featured on IELS Insight.</p>
+              
+              <form className="space-y-4">
+                 <div>
+                   <label className="text-xs font-black uppercase tracking-widest text-[#577E90] block mb-2">Story Title</label>
+                   <input type="text" placeholder="How I landed my first scholarship..." className="w-full bg-[#F6F3EF] border border-[#CDC6BC] rounded-2xl p-4 text-sm focus:ring-2 focus:ring-[#CB2129] focus:border-transparent outline-none" />
+                 </div>
+                 <div>
+                   <label className="text-xs font-black uppercase tracking-widest text-[#577E90] block mb-2">Description</label>
+                   <textarea rows={4} className="w-full bg-[#F6F3EF] border border-[#CDC6BC] rounded-2xl p-4 text-sm focus:ring-2 focus:ring-[#CB2129] focus:border-transparent outline-none resize-none" />
+                 </div>
+                 <button type="button" onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSdpfik-xAviTLsauSN_h4yVI-Af19ydbRC6-nM0QGDmuPEWIA/viewform')} className="w-full bg-[#CB2129] text-white py-4 rounded-2xl font-bold shadow-sm hover:bg-[#a81b22] transition-all">
+                    Proceed to Official Form
+                 </button>
+              </form>
+            </motion.div>
+          </div>
+        )}
 
-      {showPricingModal && <PricingModal onClose={() => setShowPricingModal(false)} />}
+        {showOnboarding && <OnboardingModal onClose={() => setShowOnboarding(false)} userTier={userData.tier} />}
+        {showPricingModal && <PricingModal onClose={() => setShowPricingModal(false)} />}
+      </AnimatePresence>
     </DashboardLayout>
   );
 }

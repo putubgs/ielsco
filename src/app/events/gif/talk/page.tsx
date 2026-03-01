@@ -8,11 +8,9 @@ import {
   Calendar, 
   Clock, 
   Target, 
-  CheckCircle2,
   Video,
   PlayCircle,
   AlertCircle,
-  Globe,
   Mic,
   ArrowRight,
   Linkedin
@@ -47,21 +45,21 @@ export default function GIFInsightTalksPage() {
         
         <div className="max-w-5xl mx-auto px-6 relative z-10 text-center">
           
-         <div className="flex items-center justify-center">
-                    <Image
-                      src="/images/logos/events/gif.png"
-                      alt="Global Impact Fellowship in Singapore"
-                      width={270}
-                      height={72}
-                      className="h-28 sm:h-28 w-auto object-contain brightness-0 invert opacity-100"
-                      priority
-                    />
-                  </div>
+          <div className="flex items-center justify-center mb-6">
+            <Image
+              src="/images/logos/events/gif.png"
+              alt="Global Impact Fellowship in Singapore"
+              width={270}
+              height={72}
+              className="h-28 sm:h-28 w-auto object-contain brightness-0 invert opacity-100"
+              priority
+            />
+          </div>
           
           <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight tracking-tight">
             Insight Talks
           </h1>
-          <p className="mt-2 max-w-3xl mx-auto text-lg text-white/90 leading-relaxed">
+          <p className="mt-2 max-w-3xl mx-auto text-lg text-white/90 leading-relaxed font-light">
             Still having doubts about the fellowship? Unsure how to build a winning project? 
             Before you fly to Singapore, you need a solid foundation. 
             Join our exclusive sessions to align your mindset and strategy.
@@ -104,7 +102,7 @@ export default function GIFInsightTalksPage() {
             <div className="md:col-span-5 relative group">
               <div className="aspect-[3/4] rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 relative shadow-md">
                 <Image 
-                  src="/images/contents/events/gif/talk1-poster.jpg" 
+                  src="/images/contents/events/giftalk1.png" 
                   alt="Insight Talk 1 Poster" 
                   fill 
                   className="object-cover"
@@ -129,61 +127,56 @@ export default function GIFInsightTalksPage() {
 
               <h3 className="text-3xl font-extrabold text-[#304156] mb-3 leading-tight">
                 Insight Talk 1: <br />
-                Beyond Travel & Global Readiness
+                Understanding GIF & Global Readiness
               </h3>
               
-              <p className="text-gray-600 mb-6 text-sm leading-relaxed">
-                Exchange is not about tourism; it’s about taking responsibility. We will dissect the GIF structure, clarify the selection funnel, and shift your mindset to prepare you for international exposure in Singapore.
+              <p className="text-gray-600 mb-8 text-sm leading-relaxed">
+                Exchange is not about tourism; it’s about taking responsibility. Join this interactive session to dissect the Global Impact Fellowship structure, clarify the selection funnel, and shift your mindset to prepare for international exposure. Check the poster for the detailed topics we will explore!
               </p>
 
-              <div className="space-y-2 mb-8">
-                <div className="flex items-start gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-[#914D4D] shrink-0" />
-                  <p className="text-sm text-[#304156] font-medium">Inside look at the GIF Selection Funnel & Evaluator Expectations.</p>
-                </div>
-                <div className="flex items-start gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-[#914D4D] shrink-0" />
-                  <p className="text-sm text-[#304156] font-medium">Why Singapore? Understanding the global learning ecosystem.</p>
+              {/* Highlight Speakers (No Photos) */}
+              <div className="mb-8">
+                <p className="text-xs uppercase tracking-widest text-gray-400 font-bold mb-3">Featured Speakers</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Speaker 1 */}
+                  <div className="bg-gray-50 border-l-4 border-[#914D4D] p-4 rounded-r-xl hover:bg-gray-100 transition-colors">
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="font-bold text-[#304156] text-sm md:text-base">Arbadza Rido Adzariyat</p>
+                      <Link href="https://linkedin.com/in/arbadzarido" target="_blank">
+                        <Linkedin className="w-4 h-4 text-[#0077b5] hover:opacity-80 transition-opacity" />
+                      </Link>
+                    </div>
+                    <p className="text-xs text-gray-500 font-medium leading-relaxed">
+                      Founder & Operations Principal of IELS
+                    </p>
+                  </div>
+                  {/* Speaker 2 */}
+                  <div className="bg-gray-50 border-l-4 border-[#304156] p-4 rounded-r-xl hover:bg-gray-100 transition-colors">
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="font-bold text-[#304156] text-sm md:text-base">Fadhila Qurotul Aini</p>
+                      <Link href="https://linkedin.com/in/fadhilaqa" target="_blank">
+                        <Linkedin className="w-4 h-4 text-[#0077b5] hover:opacity-80 transition-opacity" />
+                      </Link>
+                    </div>
+                    <p className="text-xs text-gray-500 font-medium leading-relaxed">
+                      Co-Founder & Growth Principal of IELS
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              {/* Speakers & Action */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pt-6 border-t border-gray-100">
-                <div className="flex flex-col gap-3">
-                  <p className="text-xs uppercase tracking-widest text-gray-400 font-bold">Connect with Speakers</p>
-                  <div className="flex items-center gap-4">
-                    {/* Arba LinkedIn */}
-                    <Link href="https://linkedin.com/in/arbadza" target="_blank" className="flex items-center gap-2 group">
-                      <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden relative border-2 border-transparent group-hover:border-[#0077b5] transition-colors">
-                         <Image src="/images/contents/about/teams/arba.jpg" alt="Arba" fill className="object-cover" />
-                      </div>
-                      <div className="text-sm leading-tight">
-                        <p className="font-bold text-[#304156] group-hover:text-[#0077b5] transition-colors flex items-center gap-1">Arbadza <Linkedin className="w-3 h-3 text-[#0077b5]"/></p>
-                      </div>
-                    </Link>
-                    {/* Fadhila LinkedIn */}
-                    <Link href="https://linkedin.com/in/fadhila" target="_blank" className="flex items-center gap-2 group">
-                      <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden relative border-2 border-transparent group-hover:border-[#0077b5] transition-colors">
-                         <Image src="/images/contents/about/teams/fadhila.jpg" alt="Fadhila" fill className="object-cover" />
-                      </div>
-                      <div className="text-sm leading-tight">
-                        <p className="font-bold text-[#304156] group-hover:text-[#0077b5] transition-colors flex items-center gap-1">Fadhila <Linkedin className="w-3 h-3 text-[#0077b5]"/></p>
-                      </div>
-                    </Link>
-                  </div>
-                </div>
-
-                {/* DYNAMIC BUTTON LOGIC FOR TALK 1 */}
+              {/* DYNAMIC BUTTON LOGIC FOR TALK 1 */}
+              <div className="pt-2">
                 {isTalk1Past ? (
-                  <Button asChild  className="gap-2 font-bold text-[#304156] py-2 px-5  border-gray-300 w-full sm:w-auto hover:bg-gray-50">
+                  <Button asChild className="gap-2 font-bold text-[#304156] py-3 px-6 h-auto border border-gray-300 bg-white w-full sm:w-auto hover:bg-gray-50 shadow-sm rounded-full">
                     <Link href="/dashboard/gif/recordings/talk-1" target="_blank">
-                      <PlayCircle className="w-4 h-4" /> Watch Recording
+                      <PlayCircle className="w-5 h-5" /> Watch Recording
                     </Link>
                   </Button>
                 ) : (
-                  <Button asChild className="gap-2 bg-[#914D4D] hover:bg-[#7a3e3e] py-2 px-5 text-white font-bold shadow-lg w-full sm:w-auto transition-transform hover:-translate-y-1">
-                    <Link href="https://calendar.google.com/calendar/r/eventedit" target="_blank">
-                      <AlertCircle className="w-4 h-4" /> Set Reminder
+                  <Button asChild className="gap-2 bg-[#914D4D] hover:bg-[#7a3e3e] py-3 px-6 h-auto text-white font-bold shadow-[0_8px_20px_rgba(145,77,77,0.25)] w-full sm:w-auto transition-all hover:-translate-y-1 rounded-full">
+                    <Link href="https://calendar.google.com/calendar/event?action=TEMPLATE&tmeid=NThkaWVsZXZ2aXJ2MmxsdTc5aGpnNTNoamcgaWVscy5jb21tdW5pdHlAbQ&tmsrc=iels.community%40gmail.com" target="_blank">
+                      <AlertCircle className="w-5 h-5" /> Set Reminder
                     </Link>
                   </Button>
                 )}
@@ -200,7 +193,7 @@ export default function GIFInsightTalksPage() {
             <div className="md:col-span-5 relative group">
               <div className="aspect-[3/4] rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 relative shadow-md">
                 <Image 
-                  src="/images/contents/events/gif/talk2-poster.jpg" 
+                  src="/images/contents/events/giftalk2.png" 
                   alt="Insight Talk 2 Poster" 
                   fill 
                   className="object-cover"
@@ -225,61 +218,56 @@ export default function GIFInsightTalksPage() {
 
               <h3 className="text-3xl font-extrabold text-[#304156] mb-3 leading-tight">
                 Insight Talk 2: <br />
-                From Local Challenges to Global Impact
+                Build a Project That Solves a Real Problem
               </h3>
               
-              <p className="text-gray-600 mb-6 text-sm leading-relaxed">
-                A collaborative workshop with AIESEC. Learn how to transform broad education issues in Indonesia into structured, feasible, and scalable project ideas aligned with SDG 4.
+              <p className="text-gray-600 mb-8 text-sm leading-relaxed">
+                An exclusive collaborative workshop with AIESEC. Learn how to transform broad education gaps into structured, feasible, and scalable project ideas aligned with SDG 4 and international volunteership values.
               </p>
 
-              <div className="space-y-2 mb-8">
-                <div className="flex items-start gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-[#914D4D] shrink-0" />
-                  <p className="text-sm text-[#304156] font-medium">How to map problems and validate project ideas.</p>
-                </div>
-                <div className="flex items-start gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-[#914D4D] shrink-0" />
-                  <p className="text-sm text-[#304156] font-medium">Integrating AIESEC Volunteers & Leadership frameworks.</p>
+              {/* Highlight Speakers (No Photos) */}
+              <div className="mb-8">
+                <p className="text-xs uppercase tracking-widest text-gray-400 font-bold mb-3">Featured Speakers</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Speaker 1 */}
+                  <div className="bg-gray-50 border-l-4 border-[#914D4D] p-4 rounded-r-xl hover:bg-gray-100 transition-colors">
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="font-bold text-[#304156] text-sm md:text-base">Syifa Hana Nabila</p>
+                      <Link href="https://linkedin.com/in/syifahana" target="_blank">
+                        <Linkedin className="w-4 h-4 text-[#0077b5] hover:opacity-80 transition-opacity" />
+                      </Link>
+                    </div>
+                    <p className="text-xs text-gray-500 font-medium leading-relaxed">
+                      Talent Principal of IELS
+                    </p>
+                  </div>
+                  {/* Speaker 2 (AIESEC) */}
+                  <div className="bg-[#037Ef3]/5 border-l-4 border-[#037Ef3] p-4 rounded-r-xl hover:bg-[#037Ef3]/10 transition-colors">
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="font-bold text-[#304156] text-sm md:text-base">Garcia Aprilia Noya</p>
+                      <Link href="https://linkedin.com/in/garcia-aprilia-noya-241288213" target="_blank">
+                        <Linkedin className="w-4 h-4 text-[#0077b5] hover:opacity-80 transition-opacity" />
+                      </Link>
+                    </div>
+                    <p className="text-xs text-[#304156]/70 font-medium leading-relaxed">
+                      Chief Product Officer of Incoming Volunteer at AIESEC in Surabaya
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              {/* Speakers & Action */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pt-6 border-t border-gray-100">
-                <div className="flex flex-col gap-3">
-                  <p className="text-xs uppercase tracking-widest text-gray-400 font-bold">Connect with Speakers</p>
-                  <div className="flex items-center gap-4">
-                    {/* Syifa LinkedIn */}
-                    <Link href="https://linkedin.com/in/syifa-hana" target="_blank" className="flex items-center gap-2 group">
-                      <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden relative border-2 border-transparent group-hover:border-[#0077b5] transition-colors">
-                         <Image src="/images/contents/about/teams/syifa.jpg" alt="Syifa Hana" fill className="object-cover" />
-                      </div>
-                      <div className="text-sm leading-tight">
-                        <p className="font-bold text-[#304156] group-hover:text-[#0077b5] transition-colors flex items-center gap-1">Syifa <Linkedin className="w-3 h-3 text-[#0077b5]"/></p>
-                      </div>
-                    </Link>
-                    {/* AIESEC (No LinkedIn needed, just logo) */}
-                    <div className="flex items-center gap-2">
-                      <div className="w-10 h-10 rounded-full bg-[#037Ef3] overflow-hidden relative flex items-center justify-center">
-                         <Globe className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="text-sm leading-tight">
-                        <p className="font-bold text-[#304156]">AIESEC Rep.</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* DYNAMIC BUTTON LOGIC FOR TALK 2 */}
+              {/* DYNAMIC BUTTON LOGIC FOR TALK 2 */}
+              <div className="pt-2">
                 {isTalk2Past ? (
-                  <Button asChild className="gap-2 font-bold text-[#304156]  py-2 px-5 border-gray-300 w-full sm:w-auto hover:bg-gray-50">
+                  <Button asChild className="gap-2 font-bold text-[#304156] py-3 px-6 h-auto border border-gray-300 bg-white w-full sm:w-auto hover:bg-gray-50 shadow-sm rounded-full">
                     <Link href="/dashboard/gif/recordings/talk-2" target="_blank">
-                      <PlayCircle className="w-4 h-4" /> Watch Recording
+                      <PlayCircle className="w-5 h-5" /> Watch Recording
                     </Link>
                   </Button>
                 ) : (
-                  <Button asChild className="gap-2 bg-[#914D4D] hover:bg-[#7a3e3e]  py-2 px-5  text-white font-bold shadow-lg w-full sm:w-auto transition-transform hover:-translate-y-1">
-                    <Link href="https://calendar.google.com/calendar/r/eventedit" target="_blank">
-                      <AlertCircle className="w-4 h-4" /> Set Reminder
+                  <Button asChild className="gap-2 bg-[#914D4D] hover:bg-[#7a3e3e] py-3 px-6 h-auto text-white font-bold shadow-[0_8px_20px_rgba(145,77,77,0.25)] w-full sm:w-auto transition-all hover:-translate-y-1 rounded-full">
+                    <Link href="https://calendar.google.com/calendar/event?action=TEMPLATE&tmeid=NGVhcnJmN212bHYyc2VnNDBhb2dta2FtM2ggaWVscy5jb21tdW5pdHlAbQ&tmsrc=iels.community%40gmail.com" target="_blank">
+                      <AlertCircle className="w-5 h-5" /> Set Reminder
                     </Link>
                   </Button>
                 )}

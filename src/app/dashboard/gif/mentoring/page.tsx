@@ -219,14 +219,14 @@ export default function MentoringDashboard() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/dashboard/gif">
-                <Button className="w-full rounded-xl bg-white text-[#304156] border border-[#304156]/20 hover:bg-[#304156]/5">
+                <Button className="w-full rounded-xl bg-white py-3 text-[#304156] border border-[#304156]/20 hover:bg-[#304156]/5">
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to Dashboard
                 </Button>
               </Link>
               <Button 
                 onClick={() => window.open("https://forms.gle/D4DMBFshr1JeydZC9", "_blank")}
-                className="w-full bg-[#914D4D] hover:bg-[#7a3e3e] text-white rounded-xl shadow-lg hover:shadow-xl transition-all"
+                className="w-full bg-[#914D4D] hover:bg-[#7a3e3e] py-3 text-white rounded-xl shadow-lg hover:shadow-xl transition-all"
               >
                 Apply for Mentoring
                 <ExternalLink className="w-4 h-4 ml-2" />

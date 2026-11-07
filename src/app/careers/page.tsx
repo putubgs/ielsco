@@ -1,542 +1,347 @@
-"use client";
-
-import Header from "@/components/header";
-import Footer from "@/components/footer";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { ArrowRight, Banknote, Briefcase, CalendarDays, Clock, Globe2, Instagram, Languages, Laptop, Mail, Plane, Users } from "lucide-react";
+import Footer from "@/components/footer";
+import { Photo } from "@/components/site/Photo";
+import { InquiryForm } from "@/components/site/InquiryForm";
+import { Faq } from "@/components/site/Faq";
+import { ApplicationForm } from "@/components/careers/ApplicationForm";
+import { body, btnPrimary, btnSecondary, card, cardLink, container, eyebrow, h1, h2, h3, lead, pill, section, siteRoot, textLink } from "@/components/site/ui";
+import { cn } from "@/lib/utils";
+import { pageMetadata } from "@/lib/seo";
+import { LEADS, ROLE_COUNT, divisions, divisionsLedBy, type LeadKey } from "@/data/careers/divisions";
+import { RECRUITMENT, recruitmentPhase } from "@/data/careers/recruitment";
 
-import { divisions } from "@/data/careers/divisions";
-import Timeline from "@/components/careers/Timeline";
-import DivisionCard from "@/components/careers/DivisionCard";
-import { Button } from "@/components/ui/button";
-import CareersFAQ from "@/components/careers/CareersFAQ";
+export const metadata: Metadata = pageMetadata({
+  title: "Careers at IELSco & Elco AI: Open Recruitment 2027",
+  description: "Join the volunteer team behind IELSco and Elco AI. Remote, 10–12 hours a week, for 1st to 3rd-year university students. Applications open 9–29 November 2026.",
+  path: "/careers",
+});
 
-const DEADLINE = new Date("2026-02-05T23:59:59+07:00");
+// The page is static; re-render every 10 minutes so the open/closed state follows the application window. The database
+// enforces the window itself (public.career_applications_open()).
+export const revalidate = 600;
 
-/* ===== COUNTDOWN (FIXED) ===== */
-function CountdownTimer() {
-  const [timeLeft, setTimeLeft] = useState<number | null>(null);
-
-  useEffect(() => {
-    setTimeLeft(DEADLINE.getTime() - new Date().getTime());
-
-    const timer = setInterval(() => {
-      setTimeLeft(DEADLINE.getTime() - new Date().getTime());
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  if (timeLeft === null) {
-    return null; // Atau bisa return <div>Loading...</div>
-  }
-
-  if (timeLeft <= 0) {
-    return (
-      <span className="text-[#E56668] font-bold text-sm">
-        Recruitment Closed
-      </span>
-    );
-  }
-
-  const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
-  const seconds = Math.floor((timeLeft / 1000) % 60);
-
-  return (
-    <div className="flex gap-3 justify-center">
-      {[
-        ["Days", days],
-        ["Hours", hours],
-        ["Min", minutes],
-        ["Sec", seconds],
-      ].map(([label, value]) => (
-        <div
-          key={label}
-          className="bg-white/20 rounded-xl px-4 py-2 text-center"
-        >
-          {/* Suppress hydration warning jika masih ada selisih kecil */}
-          <div className="text-xl font-extrabold" suppressHydrationWarning>
-            {value}
-          </div>
-          <p className="text-[10px] uppercase tracking-wide text-white">
-            {label}
-          </p>
-        </div>
-      ))}
-    </div>
-  );
-}
-const benefits = [
+const BENEFITS = [
   {
-    icon: "🚀",
-    title: "Real Project Experience",
-    proof: "Live programs, not simulations",
-    points: [
-      "English Global Festival",
-      "Global Insight Trips",
-      "Institutional & school partnerships",
-      "Community & product execution",
-    ],
+    icon: Languages, title: "English development",
+    points: ["Our guarantee: we help every member improve their English toward at least B2 (CEFR) level.", "Build fluent, confident spoken English in an English-speaking working environment.", "Practise English in real professional situations: meetings, partner emails, presentations."],
   },
   {
-    icon: "🌍",
-    title: "Global Exposure & Network",
-    proof: "Cross-country collaboration",
-    points: [
-      "Global universities & mentors",
-      "International student interaction",
-      "Cross-division collaboration",
-    ],
+    icon: Briefcase, title: "Global career development",
+    points: ["Professional experience working with international teams.", "Career development resources, mentoring and guidance.", "Privileged access to global opportunities facilitated by IELSco, connected with 100+ companies across Asia-Pacific and global universities."],
   },
   {
-    icon: "📈",
-    title: "Measurable Skill Growth",
-    proof: "Clear output & evaluation",
-    points: [
-      "Weekly responsibilities",
-      "Defined deliverables",
-      "Performance review & feedback",
-    ],
+    icon: Plane, title: "International exposure",
+    points: ["The chance to take part in the Global Impact Fellowship (GIF): GIF to Thailand in Summer 2027 and GIF to China in Winter 2027.", "Participation may be fully funded, subject to program eligibility and selection."],
   },
   {
-    icon: "🧠",
-    title: "Leadership & Ownership",
-    proof: "Startup-level responsibility",
-    points: [
-      "Systemic thinking",
-      "Professional communication",
-      "Decision-making ownership",
-    ],
-  },
-  {
-    icon: "📂",
-    title: "Strong Portfolio Material",
-    proof: "Proof of work, not titles",
-    points: [
-      "Projects & reports",
-      "Campaigns & content",
-      "Operational systems",
-    ],
-  },
-  {
-    icon: "🏅",
-    title: "Long-Term Growth Path",
-    proof: "Merit-based progression",
-    points: [
-      "Manager & Principal track",
-      "Lead major IELS programs",
-      "External representation",
-    ],
+    icon: Banknote, title: "Performance-based incentives",
+    points: ["Performance-based allowance and profit-sharing opportunities.", "Referral incentives and sponsorship-related incentives.", "Paid UGC and content creation work for members who take part in content production."],
   },
 ];
-  
 
+// IELS Circle meetups (the community moments on circle.ielsco.com), toned with scripts/tone-photos.py.
+const MOMENTS = [
+  { src: "/images/site/community-in-person.webp", place: "Surabaya", alt: "A large group of IELSco members at Hello Sydney! IELSco × Western Sydney University in Surabaya" },
+  { src: "/images/site/circle-bangkok.webp", place: "Bangkok", alt: "IELSco members taking a group selfie at an IELSco Hangout in Bangkok" },
+  { src: "/images/site/circle-kuala-lumpur.webp", place: "Kuala Lumpur", alt: "IELSco members at an IELSco Hangout in Kuala Lumpur" },
+  { src: "/images/site/circle-phnom-penh.webp", place: "Phnom Penh", alt: "Students and the IELSco team at IELSco Goes to School in Phnom Penh" },
+  { src: "/images/site/circle-ho-chi-minh.webp", place: "Ho Chi Minh City", alt: "IELSco members holding certificates at an IELSco Hangout in Ho Chi Minh City" },
+];
+
+const ELIGIBILITY = [
+  "You are a university student currently in your 1st, 2nd or 3rd year.",
+  "You are willing to learn, grow and take responsibility for your work.",
+  "You are interested in international exposure, professional development and English communication.",
+  "You can contribute about 10–12 hours a week.",
+  "No long list of past experience needed, and no minimum English score: the program is designed to help you improve.",
+];
 
 export default function CareersPage() {
-  /* ===== CAROUSEL STATE ===== */
-  const images = [
-    "/images/contents/careers/iels_team_0.png",
-    "/images/contents/careers/iels_team_1.png",
-    "/images/contents/careers/iels_team_2.png",
-    "/images/contents/careers/iels_team_3.png",
- 
+  const phase = recruitmentPhase();
+  const ig = RECRUITMENT.instagram;
+  const campaignPost = ig.campaignPostUrl ?? ig.ielsco.url;
+  const TASKS: { t: string; link?: { href: string; label: string } }[] = [
+    { t: "Follow the official IELSco Instagram account.", link: { href: ig.ielsco.url, label: ig.ielsco.handle } },
+    { t: "Follow the official Elco AI Instagram account.", link: { href: ig.elco.url, label: ig.elco.handle } },
+    { t: "Comment on the recruitment campaign post and mention at least one friend.", link: { href: campaignPost, label: ig.campaignPostUrl ? "Open the post" : `Find it on ${ig.ielsco.handle}` } },
+    { t: "Share the recruitment campaign post to your Instagram Story." },
+    { t: "Use Instagram's repost feature to repost the recruitment campaign post." },
   ];
 
-  const [currentImage, setCurrentImage] = useState(0);
-  const [pressed, setPressed] = useState<number | null>(null);
-  const nextSlide = () => {
-    setCurrentImage((prev) =>
-      prev === images.length - 1 ? 0 : prev + 1
-    );
-  };
-
-  const prevSlide = () => {
-    setCurrentImage((prev) =>
-      prev === 0 ? images.length - 1 : prev - 1
-    );
-  };
-
   return (
-    <>
-      <Header />
-
-      <div className="min-h-screen bg-[#2F4157] text-white">
-        {/* ===== HERO ===== */}
-        <section className="text-center py-10 px-4">
-{/* HEADER TITLE - CONSISTENT LAYOUT (Mobile & Desktop Same Style) */}
-      <div className="flex flex-row items-center justify-center gap-4 sm:gap-6 mb-8 px-2">
-        
-        {/* BAGIAN KIRI: Emoji & Badge */}
-        <div className="relative shrink-0">
-          {/* Emoji Besar */}
-          <span className="text-7xl sm:text-9xl leading-none drop-shadow-sm">
-            💼
-          </span>
-
-          {/* Badge Batch 3 (Stempel Nempel di Bawah Kanan Emoji) */}
-          <div
-            className="
-              absolute
-              -bottom-0 -right-1      /* Posisi menimpa sedikit di kanan bawah */
-               
-              rotate-[-12deg]         /* Miring ke kiri */
-              bg-[#E56668] text-white
-              text-[10px] sm:text-sm font-bold tracking-wider uppercase
-              px-2 py-1 sm:px-4 sm:py-1.5
-              rounded-md sm:rounded-lg
-              shadow-md
-              border-2 border-white   /* Outline putih biar rapi */
-              z-10
-              whitespace-nowrap
-            "
-          >
-            Batch #3
-          </div>
-        </div>
-
-        {/* BAGIAN KANAN: Teks Judul (Rata Kiri) */}
-        <h1 className="text-3xl sm:text-5xl font-extrabold text-white leading-tight text-left">
-          IELS Open <br /> Recruitment
-        </h1>
-      </div>
-          <p className="max-w-2xl mx-auto text-base text-gray-200">
-            We&apos;re a student-led English learning community empowering youths for global
-            opportunities. Explore open positions and be part of our journey.
-          </p>
-          <br/>
-          <p className="max-w-2xl mx-auto font-bold text-gray-200">
-          📆 Program Period: 9 months (April – December 2026)</p>
-
-  {/* ===== CAROUSEL ===== */}
-<div className="relative mt-8 flex justify-center">
-  <div className="relative w-[800px] h-[400px] overflow-hidden rounded-2xl shadow-md">
-    {images.map((src, index) => (
-      <div
-        key={index}
-        className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-          currentImage === index ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        {/* Apply grayscale filter to the image.
-            Use 'grayscale' class from Tailwind.
-        */}
-        <Image
-          src={src}
-          alt={`IELS Image ${index + 1}`}
-          fill
-          className="object-cover grayscale" // Tambahkan 'grayscale' di sini
-        />
-        
-        {/* Optional: Dark overlay to match the mood if needed */}
-        {/* <div className="absolute inset-0 bg-black/20 mix-blend-multiply" /> */}
-      </div>
-    ))}
-
-              {/* ARROWS */}
-              <button
-                onClick={prevSlide}
-                className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/60 rounded-full w-6 h-6 flex items-center justify-center shadow-md hover:bg-white transition"
-              >
-                <span className="text-2xl text-gray-800">‹</span>
-              </button>
-
-              <button
-                onClick={nextSlide}
-                className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/60 rounded-full w-6 h-6 flex items-center justify-center shadow-md hover:bg-white transition"
-              >
-                <span className="text-2xl text-gray-800">›</span>
-              </button>
+    <div className={cn(siteRoot, "min-h-screen overflow-x-hidden bg-white text-[#1A2534]")} data-testid="careers-page">
+      <section className="bg-white pb-[56px] pt-[40px] md:pb-[88px] md:pt-[64px]" aria-labelledby="hero">
+        <div className={cn(container, "grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16")}>
+          <div>
+            <p className={eyebrow}>{RECRUITMENT.cohortName}</p>
+            <h1 id="hero" className={cn(h1, "mt-4")}>Build your English and your career with IELSco &amp; Elco AI</h1>
+            <p className={cn(lead, "mt-6 max-w-[580px]")}>
+              We&apos;re recruiting university students to join the remote volunteer team behind IELSco and Elco AI. Run real
+              programs, grow our communities and products, and work in English every week.
+            </p>
+            <div className="mt-6" data-testid="recruitment-status">
+              {phase === "open" && <span className={cn(pill, "border-[#2D7A58]/30 text-[#2D7A58]")}>Applications open until {RECRUITMENT.closesLabel}, 23:59 WIB</span>}
+              {phase === "upcoming" && <span className={cn(pill, "border-[#577E90]/30 text-[#577E90]")}>Applications open {RECRUITMENT.opensLabel} – {RECRUITMENT.closesLabel}</span>}
+              {phase === "closed" && <span className={pill}>Applications for the 2027 cohort closed on {RECRUITMENT.closesLabel}</span>}
+            </div>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a href="#apply" className={btnPrimary} data-testid="careers-cta">{phase === "open" ? "Apply now" : phase === "upcoming" ? "How to apply" : "Register interest"} <ArrowRight size={18} aria-hidden="true" /></a>
+              <a href="#divisions" className={btnSecondary}>See divisions and roles</a>
             </div>
           </div>
+          <Photo photo="teamPortrait" priority caption="Members of the IELSco team." />
+        </div>
+      </section>
 
-          {/* DOTS */}
-          <div className="flex justify-center mt-4 gap-2">
-            {images.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentImage(index)}
-                className={`w-2 h-2 rounded-full ${
-                  currentImage === index
-                    ? "bg-white"
-                    : "bg-gray-400"
-                }`}
-              />
-            ))}
+      <section className={cn(section, "border-t border-[#E6E9EE]")} aria-labelledby="who">
+        <div className={container}>
+          <div className="max-w-[720px]">
+            <p className={eyebrow}>Who we are</p>
+            <h2 id="who" className={cn(h2, "mt-3")}>One team, two organisations</h2>
+            <p className={cn(lead, "mt-4")}>
+              This recruitment builds a shared volunteer team for IELSco and Elco AI: a small cohort that runs our programs,
+              tells our stories and helps more young people reach global opportunities, while building the skills to reach them too.
+            </p>
           </div>
+          <div className="mt-10 grid gap-5 md:grid-cols-2">
+            <div className={cn(card, "p-7")}>
+              <p className="text-[14px] font-semibold text-[#577E90]">PT English Space Berkah Indonesia</p>
+              <h3 className={cn(h3, "mt-2")}>IELSco</h3>
+              <p className={cn(body, "mt-2")}>An inclusive English community that helps Southeast Asian youth reach scholarships, exchanges, internships and work abroad, through the IELS Circle, events and programs such as the Global Impact Fellowship.</p>
+              <Link href="/about" className={cn(textLink, "mt-4 text-[15px]")}>About IELSco <ArrowRight size={16} aria-hidden="true" /></Link>
+            </div>
+            <div className={cn(card, "p-7")}>
+              <p className="text-[14px] font-semibold text-[#577E90]">PT Elco Edukasi Berkah Indonesia</p>
+              <h3 className={cn(h3, "mt-2")}>Elco AI</h3>
+              <p className={cn(body, "mt-2")}>An AI-powered English learning platform, operated by a subsidiary of PT English Space Berkah Indonesia: personalized practice, live voice calls, interactive lessons and AI-powered feedback.</p>
+              <a href="https://www.elcoai.com/about" target="_blank" rel="noopener noreferrer" className={cn(textLink, "mt-4 text-[15px]")}>About Elco AI <ArrowRight size={16} aria-hidden="true" /></a>
+            </div>
+          </div>
+        </div>
+      </section>
 
-              {/* COUNTDOWN (TOP) */}
-    <div className="mt-10">
-      <p className="text-sm uppercase tracking-widest text-white/70 mb-3">
-      </p>
-      <CountdownTimer />
-    </div>
-      
-</section>
+      <section className={cn(section, "border-t border-[#E6E9EE]")} aria-labelledby="facts">
+        <div className={container}>
+          <p className={eyebrow}>The program</p>
+          <h2 id="facts" className={cn(h2, "mt-3")}>Nine months, fully remote</h2>
+          <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {RECRUITMENT.structure.map(([t, d], i) => {
+              const Icon = [CalendarDays, Users, Laptop, Clock][i];
+              return (
+                <li key={t} className={cn(card, "p-7")}>
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#EEF2F7] text-[#2F4157]"><Icon size={20} aria-hidden="true" /></span>
+                  <p className="mt-5 text-[22px] font-extrabold text-[#1A2534]">{t}</p>
+                  <p className={cn(body, "mt-1 text-[15px]")}>{d}</p>
+                </li>
+              );
+            })}
+          </ul>
+          <p className={cn(body, "mt-6")}>{RECRUITMENT.extras}</p>
+        </div>
+      </section>
 
-    <section className="bg-white py-24 px-4">
-      <div className="max-w-6xl mx-auto">
-
-        {/* HEADER */}
-        <div className="text-center mb-20">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-[#2F4157] mb-4">
-            What You&apos;ll Gain from IELS
-          </h2>
-          <p className="text-gray-600 max-w-3xl mx-auto">
-            IELS is <b>not a paid internship</b>.  
-            What you gain instead is ownership, exposure, and proof of growth —
-            the kind that actually compounds.
+      <section className={cn(section, "border-t border-[#E6E9EE]")} aria-labelledby="benefits">
+        <div className={container}>
+          <div className="max-w-[720px]">
+            <p className={eyebrow}>What you gain</p>
+            <h2 id="benefits" className={cn(h2, "mt-3")}>A career development and learning program</h2>
+            <p className={cn(lead, "mt-4")}>This is not salaried employment and there is no fixed monthly salary. Here is what you get instead.</p>
+          </div>
+          <ul className="mt-10 grid gap-5 md:grid-cols-2">
+            {BENEFITS.map((b) => (
+              <li key={b.title} className={cn(card, "p-7")}>
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#EEF2F7] text-[#2F4157]"><b.icon size={20} aria-hidden="true" /></span>
+                <h3 className={cn(h3, "mt-5")}>{b.title}</h3>
+                <ul className="mt-3 list-disc space-y-2 pl-5 text-[16px] leading-[1.6] text-[#2F4157]/80">{b.points.map((p) => <li key={p}>{p}</li>)}</ul>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-6 rounded-[16px] border border-[#E6E9EE] bg-[#F7F8FA] px-5 py-4 text-[15px] leading-relaxed text-[#2F4157]/85" data-testid="incentives-note">
+            <strong className="text-[#1A2534]">Please note:</strong> financial incentives are not guaranteed income. Whether and how much you
+            receive depends on your individual performance and participation, the budgets available and the program terms that apply.
+            GIF funding depends on program eligibility and selection.
           </p>
         </div>
+      </section>
 
-        {/* GRID */}
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {benefits.map((b, i) => {
-            const isActive = pressed === i;
+      <section className={cn(section, "border-t border-[#E6E9EE]")} aria-labelledby="life-h">
+        <div className={container}>
+          <div className="max-w-[640px]">
+            <p className={eyebrow}>Life at IELSco</p>
+            <h2 id="life-h" className={cn(h2, "mt-3")}>Online every week, together across Southeast Asia</h2>
+            <p className={cn(lead, "mt-4")}>The team runs IELS Circle meetups, campus visits and programs with members from Indonesia to Vietnam. You&apos;ll be part of the next ones.</p>
+          </div>
+          <ul className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-4" data-testid="careers-gallery">
+            {MOMENTS.map((m, i) => (
+              <li key={m.src} className={cn("relative overflow-hidden rounded-[20px] border border-[#E6E9EE] bg-[#F1F4F8]", i === 0 ? "col-span-2 aspect-[16/9] md:row-span-2 md:aspect-auto" : "aspect-square")}>
+                <Image src={m.src} alt={m.alt} fill sizes={i === 0 ? "(min-width: 768px) 580px, 100vw" : "(min-width: 768px) 290px, 50vw"} className="object-cover" />
+                <span className="absolute bottom-3 left-3 rounded-full bg-white/95 px-3 py-1 text-[13px] font-semibold text-[#1A2534]">{m.place}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
 
-            return (
-              <div
-                key={i}
-                onPointerDown={() => setPressed(i)}
-                onPointerUp={() => setTimeout(() => setPressed(null), 120)}
-                onPointerLeave={() => setPressed(null)}
-                className={`
-                  relative rounded-3xl border bg-[#FAFAFA] p-7
-                  transition-all duration-300
-                  ${
-                    isActive
-                      ? "border-[#E56668] shadow-2xl -translate-y-1"
-                      : "border-gray-200 hover:border-[#E56668]/60 hover:-translate-y-1 hover:shadow-xl"
-                  }
-                `}
-              >
-                {/* RED ACCENT BAR */}
-                <div
-                  className={`
-                    absolute left-0 top-6 bottom-6 w-1 rounded-full
-                    transition-all duration-300
-                    ${isActive ? "bg-[#E56668]" : "bg-transparent group-hover:bg-[#E56668]"}
-                  `}
-                />
-
-                <div className="pl-4 flex flex-col gap-4">
-
-                  {/* HEADER */}
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">{b.icon}</span>
-                    <h3
-                      className={`
-                        text-xl font-bold transition
-                        ${
-                          isActive
-                            ? "text-[#E56668]"
-                            : "text-[#2F4157] group-hover:text-[#E56668]"
-                        }
-                      `}
-                    >
-                      {b.title}
-                    </h3>
+      <section id="divisions" className={cn(section, "border-t border-[#E6E9EE]")} aria-labelledby="div-h">
+        <div className={container}>
+          <div className="max-w-[680px]">
+            <p className={eyebrow}>Divisions</p>
+            <h2 id="div-h" className={cn(h2, "mt-3")}>Seven divisions, {ROLE_COUNT} roles</h2>
+            <p className={cn(lead, "mt-4")}>Each division is led by one of our co-founders. Choose one division when you apply; each division page explains what the roles do and what we look for.</p>
+          </div>
+          <div className="mt-12 space-y-14">
+            {(["arbadza", "farrel"] as LeadKey[]).map((key) => {
+              const l = LEADS[key];
+              const ds = divisionsLedBy(key);
+              return (
+                <div key={key} data-testid={`lead-${key}`}>
+                  <div className="flex flex-col gap-5 border-b border-[#E6E9EE] pb-6 sm:flex-row sm:items-center">
+                    <div className="relative h-[88px] w-[88px] shrink-0 overflow-hidden rounded-[16px] bg-[#F1F4F8]">
+                      <Image src={l.image} alt={l.name} fill sizes="88px" className="object-cover" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[14px] font-semibold uppercase tracking-[0.12em] text-[#577E90]">Led by our {l.title.replace("Co-Founder & ", "")}</p>
+                      <h3 className={cn(h3, "mt-1")}>{l.name}, {l.title}</h3>
+                      <p className={cn(body, "mt-1 text-[15px]")}>{ds.map((d) => d.title).join(", ").replace(/, ([^,]*)$/, " and $1")}</p>
+                      <a href={`mailto:${l.email}`} className={cn(textLink, "mt-2 text-[15px]")}><Mail size={16} aria-hidden="true" />{l.email}</a>
+                    </div>
                   </div>
-
-                  {/* PROOF LINE */}
-                  <p className="text-sm font-semibold text-[#E56668]">
-                    {b.proof}
-                  </p>
-
-                  {/* DETAILS */}
-                  <ul className="text-sm text-gray-600 space-y-2">
-                    {b.points.map((p, idx) => (
-                      <li key={idx}>• {p}</li>
+                  <ul className={cn("mt-6 grid gap-5 sm:grid-cols-2", ds.length > 3 ? "lg:grid-cols-4" : "lg:grid-cols-3")}>
+                    {ds.map((d) => (
+                      <li key={d.slug}>
+                        <Link href={`/careers/${d.slug}`} className={cn(cardLink, "flex h-full flex-col p-6")} data-testid={`division-${d.slug}`}>
+                          <h4 className="text-[19px] font-bold text-[#1A2534]">{d.title}</h4>
+                          <p className={cn(body, "mt-2 text-[15px]")}>{d.description}</p>
+                          <ul className="mt-4 flex flex-1 flex-wrap content-start gap-2">{d.roles.map((r) => <li key={r.id} className={cn(pill, "font-medium")}>{r.title}</li>)}</ul>
+                          <span className="mt-5 inline-flex items-center gap-1.5 text-[15px] font-semibold text-[#2F4157]">See roles <ArrowRight size={16} aria-hidden="true" /></span>
+                        </Link>
+                      </li>
                     ))}
                   </ul>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-        
-
-        {/* ===== TIMELINE ===== */}
-        <Timeline />
-
-        {/* ===== DIVISIONS ===== */}
-        <section id="division" className="py-20 px-4 bg-white">
-          <div className="max-w-6xl mx-auto text-center mb-14">
-            <h2 className="text-3xl font-extrabold text-[#2F4157] mb-4">
-              Explore Divisions
-            </h2>
-            <p className="text-gray-600">
-              Choose where you want to grow and create impact.
+      <section className={cn(section, "border-t border-[#E6E9EE]")} aria-labelledby="who-can">
+        <div className={cn(container, "grid gap-12 lg:grid-cols-[1.2fr_1fr] lg:gap-16")}>
+          <div>
+            <p className={eyebrow}>Requirements</p>
+            <h2 id="who-can" className={cn(h2, "mt-3")}>Who can apply</h2>
+            <ul className="mt-8 space-y-4">
+              {ELIGIBILITY.map((e) => <li key={e} className="border-l-2 border-[#E56668] pl-5 text-[17px] leading-relaxed text-[#1A2534]">{e}</li>)}
+            </ul>
+            <p className={cn(body, "mt-6")}>You also need to complete the five Instagram campaign tasks below before you apply.</p>
+          </div>
+          <div className={cn(card, "self-start p-7")} data-testid="final-year-note">
+            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#EEF2F7] text-[#2F4157]"><Globe2 size={20} aria-hidden="true" /></span>
+            <h3 className={cn(h3, "mt-5")}>Final-year student or fresh graduate?</h3>
+            <p className={cn(body, "mt-2")}>
+              This volunteer recruitment is aimed at 1st to 3rd-year students. From January 2027, IELSco plans to start sharing
+              international employment opportunities, and you&apos;re welcome to talk to us now about international careers.
             </p>
+            <ul className="mt-4 space-y-2">
+              {RECRUITMENT.internationalContacts.map((m) => (
+                <li key={m}><a href={`mailto:${m}?subject=${encodeURIComponent("International career opportunities")}`} className={cn(textLink, "text-[15px]")}><Mail size={16} aria-hidden="true" />{m}</a></li>
+              ))}
+            </ul>
           </div>
+        </div>
+      </section>
 
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
-            {divisions.map((division) => (
-              <DivisionCard
-                key={division.slug}
-                slug={division.slug}
-                title={division.title}
-                image={division.image}
-                description={division.description}
-              />
+      <section className={cn(section, "border-t border-[#E6E9EE]")} aria-labelledby="timeline">
+        <div className={cn(container, "grid gap-12 lg:grid-cols-[1fr_1.3fr] lg:gap-16")}>
+          <div>
+            <p className={eyebrow}>Timeline</p>
+            <h2 id="timeline" className={cn(h2, "mt-3")}>From application to your first cycle</h2>
+            <p className={cn(lead, "mt-4")}>All dates are 2026 unless marked otherwise. There is a holiday break from 21 December to 3 January.</p>
+          </div>
+          <ol className="relative space-y-6 border-l border-[#E6E9EE] pl-7" data-testid="recruitment-timeline">
+            {RECRUITMENT.timeline.map(([date, t, d]) => (
+              <li key={t} className="relative">
+                <span className="absolute -left-[33px] top-1.5 h-3 w-3 rounded-full border-2 border-white bg-[#2F4157] ring-1 ring-[#2F4157]" aria-hidden="true" />
+                <p className="text-[14px] font-semibold text-[#577E90]">{date}</p>
+                <p className="text-[17px] font-bold text-[#1A2534]">{t}</p>
+                <p className={cn(body, "mt-1 text-[15px]")}>{d}</p>
+              </li>
             ))}
+          </ol>
+        </div>
+      </section>
+
+      <section id="apply" className={cn(section, "scroll-mt-24 border-t border-[#E6E9EE]")} aria-labelledby="apply-h">
+        <div className={cn(container, "grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-16")}>
+          <div>
+            <p className={eyebrow}>How to apply</p>
+            <h2 id="apply-h" className={cn(h2, "mt-3")}>Two steps</h2>
+            <h3 className={cn(h3, "mt-8")}>1. Complete the campaign tasks</h3>
+            <p className={cn(body, "mt-2 text-[15px]")}>All five are required. You don&apos;t need to send screenshots: our recruitment team checks them on Instagram using the profile you give us.</p>
+            <ol className="mt-5 space-y-4" data-testid="campaign-tasks">
+              {TASKS.map((task, i) => (
+                <li key={task.t} className="flex gap-4">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#2F4157] text-[14px] font-bold text-white">{i + 1}</span>
+                  <div className="pt-1">
+                    <p className="text-[16px] text-[#1A2534]">{task.t}</p>
+                    {task.link && <a href={task.link.href} target="_blank" rel="noopener noreferrer" className={cn(textLink, "mt-1 text-[15px]")}><Instagram size={16} aria-hidden="true" />{task.link.label}</a>}
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <h3 className={cn(h3, "mt-10")}>2. Fill in the application form</h3>
+            <p className={cn(body, "mt-2 text-[15px]")}>About 10 minutes. Have your CV ready as a PDF, and your portfolio as a PDF or a link.</p>
           </div>
-        </section>
-        <CareersFAQ/>
-
- {/* ===== STRATEGIC PLAN CTA (Refactored) ===== */}
-      <section className="relative bg-[#2f4157] py-20 overflow-hidden">
-        
-        {/* SUBTLE BACKGROUND GLOW */}
-        <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-[#E56668]/20 rounded-full blur-[140px] pointer-events-none" />
-        <div className="absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-white/10 rounded-full blur-[140px] pointer-events-none" />
-
-        <div className="relative max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-
-            {/* LEFT SIDE: VISUAL MOCKUP (Strategic Plan Cover) */}
-            <div className="relative w-full flex items-center justify-center lg:justify-end order-1 lg:order-1">
-              
-              {/* DECORATIVE ELEMENTS BEHIND */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#E56668]/30 to-transparent rounded-full blur-3xl opacity-40 scale-90" />
-              
-              {/* THE CARD / COVER */}
-              <div 
-                className="
-                  relative
-                  w-[80%] sm:w-[60%] lg:w-[80%]
-                  aspect-[16/9]
-                  rounded-2xl
-                  border-4 border-white/10
-                  shadow-[0_20px_50px_rgba(0,0,0,0.5)]
-                  overflow-hidden
-                  transform rotate-[-2deg] hover:rotate-0 transition-transform duration-500
-                  z-10
-                  bg-[#1a2634]
-                "
-              >
-                {/* GANTI SRC INI DENGAN PATH GAMBAR COVER DECK KAMU */}
-                <Image
-                  src="/images/contents/careers/strategic-plan.png" // Placeholder sementara, ganti dengan cover asli
-                  alt="IELS 1-Year Strategic Plan Cover"
-                  fill
-                  className="object-cover opacity-90 hover:opacity-100 transition-opacity"
-                />
-                
-                {/* Overlay text jika belum ada gambar cover asli (Opsional) */}
-                <div className="absolute inset-0 flex items-center justify-center bg-black/40 pointer-events-none">
-                   <p className="text-white font-bold text-xl sm:text-2xl opacity-80 uppercase tracking-widest border-2 border-white px-4 py-2">
-                      Strategic Plan 2026
-                   </p>
+          <div className={cn(card, "p-6 sm:p-8")}>
+            {phase === "open" && <ApplicationForm />}
+            {phase === "upcoming" && (
+              <div data-testid="apply-upcoming">
+                <p className="text-[20px] font-bold text-[#1A2534]">The form opens on {RECRUITMENT.opensLabel}</p>
+                <p className={cn(body, "mt-2")}>Applications run until {RECRUITMENT.closesLabel}, 23:59 WIB. Leave your email and we&apos;ll remind you the day it opens.</p>
+                <div className="mt-6">
+                  <InquiryForm kind="careers" fields={["organization", "topic"]}
+                    labels={{ organization: "University (optional)", topic: "Division you're most interested in" }}
+                    topics={[...divisions.map((d) => ({ value: d.slug, label: d.title })), { value: "unsure", label: "Not sure yet" }]}
+                    submitLabel="Remind me" successTitle="We'll remind you" successText={`We'll email you when applications open on ${RECRUITMENT.opensLabel}.`} />
                 </div>
               </div>
-              
-              {/* Floating Badge (Opsional) */}
-              <div className="absolute -bottom-6 -right-4 sm:right-10 bg-white text-[#2F4157] px-4 py-2 rounded-lg font-bold shadow-xl rotate-[5deg] z-20">
-                 💡 Read our vision
+            )}
+            {phase === "closed" && (
+              <div data-testid="apply-closed">
+                <p className="text-[20px] font-bold text-[#1A2534]">Applications for 2027 are closed</p>
+                <p className={cn(body, "mt-2")}>We&apos;ll email you when the next intake opens. This isn&apos;t an application.</p>
+                <div className="mt-6">
+                  <InquiryForm kind="careers" fields={["organization", "topic", "message"]}
+                    labels={{ organization: "University (optional)", topic: "Division you're most interested in", message: "Anything you'd like us to know (optional)" }}
+                    topics={[...divisions.map((d) => ({ value: d.slug, label: d.title })), { value: "unsure", label: "Not sure yet" }]}
+                    submitLabel="Keep me posted" successTitle="You're on our list" successText="We'll email you when the next intake opens." />
+                </div>
               </div>
-            </div>
-
-            {/* RIGHT SIDE: CONTENT & ACTION */}
-            <div className="text-white text-center lg:text-left order-2 lg:order-2">
-              
-              <div className="inline-block px-3 py-1 bg-[#E56668]/20 text-[#E56668] rounded-full text-xs font-bold tracking-widest uppercase mb-4 border border-[#E56668]/30">
-                Transparent & Visionary
-              </div>
-
-              <h2 className="text-3xl sm:text-4xl font-extrabold leading-tight mb-6">
-                Ready to Grow with IELS? <br/>
-                <span className="text-[#E56668]">Understand Our Direction.</span>
-              </h2>
-
-              <p className="text-white/80 leading-relaxed text-sm mb-8 max-w-xl mx-auto lg:mx-0">
-                Before you apply, we want you to know exactly where we are heading.
-                Read our <b>1-Year Strategic Plan</b> to see our big goals, 
-                how we operate, and where <i>you</i> fit into the picture.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                {/* PRIMARY CTA: READ STRATEGIC PLAN */}
-                <Button 
-                  asChild
-                  className="
-    bg-[#E56668] text-white
-    font-semibold
-    px-6 py-3
-    rounded-full
-    hover:bg-[#C04C4E]
-    transition-all duration-300
-    active:scale-[0.97]
-    shadow-lg hover:shadow-xl
-
-    w-full sm:w-auto
-    max-w-full
-                  "
-                >
-                  <a
-                    href="https://drive.google.com/file/d/1JgTczzvuf6nwpMMkLmMUGO0TrUkkJLXN/view?usp=sharing" // Masukkan Link Canva di sini
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    📄 Read Strategic Plan
-                  </a>
-                </Button>
-
-                {/* SECONDARY CTA: EXPLORE DIVISIONS */}
-                <Button 
-                  asChild
-                  className="
-   bg-white text-[#2F4157]
-    font-semibold
-    px-6 py-3
-    rounded-full
-    hover:bg-white/90
-    transition-all duration-300
-    active:scale-[0.97]
-    shadow-lg hover:shadow-xl
-
-    w-full sm:w-auto
-    max-w-full
-                  "
-                >
-                  <a href="#division">
-                    Explore Divisions
-                  </a>
-                </Button>
-              </div>
-
-              <p className="mt-6 text-sm text-white/50 italic">
-                *We recommend reading the plan before choosing a division.
-              </p>
-
-            </div>
-
+            )}
           </div>
         </div>
-     
-    {/* CONTACT */}
-        <div className="py-10 text-center pb-4">
-          <p>
-            Questions? Reach us at{" "}
-            <a
-              href="mailto:careers@ielsco.com"
-              className="underline text-white font-semibold"
-            >
-              careers@ielsco.com
-            </a>
-          </p>
+      </section>
+
+      <section className={cn(section, "border-t border-[#E6E9EE]")} aria-labelledby="faq">
+        <div className={cn(container, "grid gap-12 lg:grid-cols-[1fr_1.5fr] lg:gap-16")}>
+          <div>
+            <h2 id="faq" className={h2}>Questions</h2>
+            <p className={cn(body, "mt-4")}>Anything else? <a className="font-semibold underline" href="mailto:careers@ielsco.com">careers@ielsco.com</a></p>
+          </div>
+          <Faq items={[
+            { q: "Is this a paid job?", a: "No. It's a volunteer career development and learning program with no fixed monthly salary. Members can earn performance-based allowances, profit-sharing, referral and sponsorship incentives, and paid UGC work, depending on performance, participation, available budgets and program terms." },
+            { q: "Do I need perfect English?", a: "No, and there's no minimum score. You'll work in English every week, and the program is designed to help you improve toward at least B2." },
+            { q: "Can I apply to more than one division?", a: "Choose the one division you want most, and optionally a role. If you'd also consider another division, say so in your motivation." },
+            { q: "Do I need to send screenshots of the Instagram tasks?", a: "No. Our recruitment team checks them on Instagram using the profile link in your application, so keep your account public until results are out." },
+            { q: "What happens after I apply?", a: "On 30 November everyone with a complete application gets the group-session schedule by email. Sessions run 1–4 December and decisions are sent on 9 December." },
+            { q: "Can I apply if I'm in my final year or have graduated?", a: "This recruitment is for 1st to 3rd-year students. Final-year students and fresh graduates can email arbadza@ielsco.com or careers@ielsco.com about international career opportunities, which IELSco plans to start sharing in January 2027." },
+          ]} />
         </div>
-        </section>
-
-
-
-        <Footer />
-      </div>
-    </>
+      </section>
+      <Footer />
+    </div>
   );
 }

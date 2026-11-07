@@ -10,6 +10,7 @@
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
+    "allowImportingTsExtensions": true,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
@@ -17,8 +18,6 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    /* ✅ ADDITIONS BELOW */
-    "baseUrl": ".", // Allow absolute paths like "@/utils/email"
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
     "paths": {
@@ -38,7 +37,9 @@
     ".next/types/**/*.ts",
     "backend/modules",
     "backend/lib",
-    ".next/dev/types/**/*.ts"
+    ".next/dev/types/**/*.ts",
+    ".next-local/types/**/*.ts",
+    ".next-local/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

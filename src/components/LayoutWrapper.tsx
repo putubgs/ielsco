@@ -1,3 +1,4 @@
+  // LayoutWrapper.tsx
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -8,9 +9,17 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   
   // 1. Definisikan list path yang harus bener-bener bersih (Tanpa Padding Atas)
   const noPaddingPaths = [
+    "/school/dashboard",
+    "/quiz",
+    "/school/sign-in",
+    "/planner",
     "/dashboard",
+    "/os",
     "/privacy-policy",
     "/terms-of-service",
+    "/cafe",
+     "/welcome/start",
+  "/welcome/result",
     "/sign-in",
     "/sign-up",
     "/api/auth"
@@ -26,7 +35,9 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
       */}
       <Header />
       
-      <main className={shouldRemovePadding ? "pt-0" : "pt-30"}>
+      {/* One global header for every public page (it hides itself on dashboards/auth, see header.tsx).
+          Pages must not render their own <Header />. */}
+      <main className={shouldRemovePadding ? "pt-0" : "pt-24"}>
         {children}
       </main>
     </>

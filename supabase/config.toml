@@ -1,0 +1,8 @@
+
+# No Edge Functions are declared here.
+#
+# The Supabase GitHub integration ("Deploy to production" on `main`) deploys every Edge Function declared in this
+# file. The legacy Mayar payment webhook (`mayar-webhook`) was retired with IELSco subscriptions in 2026-10: its source
+# was removed from the repository and it is intentionally NOT declared, so a deploy never redeploys or changes it.
+# The copy still deployed in production runs without JWT verification and must be switched off manually; see
+# docs/MAYAR-RETIREMENT.md. Elco AI is a separate app; its future payments (Midtrans) do not live here.

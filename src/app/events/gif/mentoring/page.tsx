@@ -1,5 +1,6 @@
 "use client";
 
+import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,37 +18,37 @@ type CurriculumItem = {
 
 const curriculum: CurriculumItem[] = [
   {
-    date: "5 April 2026",
+    date: "25 Mar 2026",
     title: "Session 01: Micro-Problem Identification",
     desc: "Narrowing down broad education issues into a specific, data-backed problem statement focused on SDG 4 (Quality Education).",
     output: "Validated SDG 4 problem statement.",
   },
   {
-    date: "12 April 2026",
+    date: "29 Mar 2026",
     title: "Session 02: Building the MVP - Solution Architecture",
     desc: "Designing a Minimum Viable Project. Learning how to build a creative yet feasible solution framework for absolute beginners.",
     output: "Initial project concept note.",
   },
   {
-    date: "19 Apr 2026",
+    date: "02 Apr 2026",
     title: "Session 03: Operational Blueprint",
     desc: "Mapping out the technical 'how-to' of your project. Creating a step-by-step workflow, timeline, and resource requirements.",
     output: "Technical operational flowchart.",
   },
   {
-    date: "26 Apr 2026",
+    date: "06 Apr 2026",
     title: "Session 04: Impact Logic & Measurement",
     desc: "Learning the Theory of Change. Defining how your project creates real impact and how to measure success using clear indicators.",
     output: "Impact M&E framework.",
   },
   {
-    date: "03 May 2026",
+    date: "09 Apr 2026",
     title: "Session 05: Stress-Testing & Final Refinement",
     desc: "Final logic check and risk mitigation. Sharpening the technical project specs to ensure it's bulletproof for final selection.",
     output: "Final project specification.",
   },
   {
-    date: "04 May 2026",
+    date: "11 Apr 2026",
     title: "DEADLINE: Final Project Deck Submission",
     desc: "The final gate. Submitting your complete project deck and technical specs for the Global Impact Fellowship selection.",
     output: "Submitted Golden Ticket application.",
@@ -55,7 +56,7 @@ const curriculum: CurriculumItem[] = [
 ];
 
 
-const DEADLINE = new Date("2026-03-28T11:59:59+07:00");
+const DEADLINE = new Date("2026-03-23T23:59:59+07:00");
 
 function CountdownTimer() {
   const [timeLeft, setTimeLeft] = useState<number>(
@@ -96,7 +97,8 @@ function CountdownTimer() {
 
 export default function SGTripMentoringPage() {
   return (
-    <div className="min-h-screen bg-white text-[#304156] font-geologica">
+    <main className="min-h-screen bg-white text-[#304156] font-geologica">
+      <Header />
 
       {/* ================= HERO ================= */}
       <section className="relative overflow-hidden">
@@ -110,16 +112,14 @@ export default function SGTripMentoringPage() {
         <div className="relative max-w-6xl mx-auto px-6 pt-8 pb-12 lg:pt-18 lg:pb-18 text-white text-center">
           
           <div className="flex items-center justify-center">
-            <div className="relative rounded-2xl bg-white px-5 py-3 shadow-xl md:px-7 md:py-4">
-              <Image
-                src="/images/logos/events/gif.png"
-                alt="Global Impact Fellowship in Singapore"
-                width={238}
-                height={87}
-                className="h-auto w-[200px] md:w-[320px]"
-                priority
-              />
-            </div>
+            <Image
+              src="/images/logos/events/gifsgp.png"
+              alt="Global Impact Fellowship in Singapore"
+              width={270}
+              height={72}
+              className="relative h-auto w-[240px] md:w-[400px] drop-shadow-xl"
+              priority
+            />
           </div>
           
           <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight tracking-tight">
@@ -448,68 +448,72 @@ export default function SGTripMentoringPage() {
               </div>
             </div>
 
-{/* COLUMN 2: PRICING CARD (RIGHT) - FLOATING & TILTED */}
-      <div className="order-1 lg:order-2 flex justify-center lg:justify-end relative">
-        
-        {/* Decorative Elements behind card */}
-        <div className="absolute inset-0 bg-white/10 rounded-[2rem] blur-xl opacity-20 transform rotate-6 scale-95"></div>
+            {/* COLUMN 2: PRICING CARD (RIGHT) - FLOATING & TILTED */}
+            <div className="order-1 lg:order-2 flex justify-center lg:justify-end relative">
+              
+              {/* Decorative Elements behind card */}
+              <div className="absolute inset-0 bg-white/10 rounded-[2rem] blur-xl opacity-20 transform rotate-6 scale-95"></div>
 
-        {/* THE CARD */}
-        <div className="bg-white text-[#304156] rounded-[2rem] p-8 md:p-10 shadow-2xl relative transform transition-all duration-500 hover:scale-[1.02] hover:-rotate-1 border-4 border-white/10 w-full max-w-md">
-          
-          {/* Badge */}
-          <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-[#304156] text-white text-sm font-bold px-6 py-2 rounded-full shadow-lg border-2 border-white/20 whitespace-nowrap">
-            Registration Open
-          </div>
+              {/* THE CARD */}
+              <div className="bg-white text-[#304156] rounded-[2rem] p-8 md:p-10 shadow-2xl relative transform transition-all duration-500 hover:scale-[1.02] hover:-rotate-1 border-4 border-white/10 w-full max-w-md">
+                
+                {/* Badge */}
+                <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-[#304156] text-white text-sm font-bold px-6 py-2 rounded-full shadow-lg border-2 border-white/20 whitespace-nowrap">
+                  Most Popular Choice
+                </div>
 
-          <div className="text-center mt-4">
-            <p className="uppercase text-xs tracking-[0.2em] text-gray-400 mb-6 font-bold">Total Investment</p>
-            
-            {/* Price Block */}
-            <div className="flex flex-col items-center justify-center mb-8">
-              <div className="flex items-baseline gap-1">
-                <span className="text-xl font-bold text-[#914D4D] -translate-y-4">IDR</span>
-                <span className="text-7xl font-extrabold text-[#304156] tracking-tighter">500k</span>
+                <div className="text-center mt-4">
+                  <p className="uppercase text-xs tracking-[0.2em] text-gray-400 mb-6 font-bold">Total Investment</p>
+                  
+                  {/* Price Block */}
+                  <div className="flex flex-col items-center justify-center mb-8">
+                    <span className="text-gray-400 text-xl font-medium line-through decoration-[#914D4D] decoration-2 mb-2">
+                      IDR 500,000
+                    </span>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-xl font-bold text-[#914D4D] -translate-y-4">IDR</span>
+                      <span className="text-7xl font-extrabold text-[#304156] tracking-tighter">400k</span>
+                    </div>
+                    <span className="text-xs text-green-700 font-bold bg-green-100 px-3 py-1 rounded-full mt-2">
+                      Save IDR 100k Today
+                    </span>
+                  </div>
+
+                  {/* Features List */}
+                  <ul className="text-left space-y-4 mb-8 border-t border-gray-100 pt-6">
+                    <li className="flex items-start gap-3 text-sm text-gray-600">
+                      <CheckCircle className="w-5 h-5 text-[#914D4D] shrink-0" />
+                      <span><strong>8 Founder-led</strong> mentoring sessions</span>
+                    </li>
+                    <li className="flex items-start gap-3 text-sm text-gray-600">
+                      <CheckCircle className="w-5 h-5 text-[#914D4D] shrink-0" />
+                      <span><strong>Fast-Track Ticket</strong> (Skip Phase 1 & 2)</span>
+                    </li>
+                    <li className="flex items-start gap-3 text-sm text-gray-600">
+                      <CheckCircle className="w-5 h-5 text-[#914D4D] shrink-0" />
+                      <span>Lifetime <strong>Incubation Access</strong></span>
+                    </li>
+                  </ul>
+
+                  {/* Main CTA */}
+                  <Button asChild className="w-full bg-[#914D4D] text-white font-bold py-3 h-auto text-xl rounded-full hover:bg-[#7a3e3e] shadow-[0_10px_20px_rgba(145,77,77,0.3)] hover:shadow-[0_15px_30px_rgba(145,77,77,0.5)] transition-all transform hover:-translate-y-1">
+                    <Link href="https://forms.gle/D4DMBFshr1JeydZC9" target="_blank">
+                      Claim Early Bird Now
+                    </Link>
+                  </Button>
+                  
+                  <p className="text-xs text-gray-400 mt-4">
+                    *Offer valid until Feb 28, 2026
+                  </p>
+                </div>
               </div>
-              <span className="text-xs text-[#304156] font-bold bg-gray-100 px-3 py-1 rounded-full mt-2">
-                Standard Professional Rate
-              </span>
             </div>
 
-            {/* Features List */}
-            <ul className="text-left space-y-4 mb-8 border-t border-gray-100 pt-6">
-              <li className="flex items-start gap-3 text-sm text-gray-600">
-                <CheckCircle className="w-5 h-5 text-[#914D4D] shrink-0" />
-                <span><strong>5 Intensive</strong> mentoring sessions</span>
-              </li>
-              <li className="flex items-start gap-3 text-sm text-gray-600">
-                <CheckCircle className="w-5 h-5 text-[#914D4D] shrink-0" />
-                <span><strong>Fast-Track Ticket</strong> (Skip Phase 1 & 2)</span>
-              </li>
-              <li className="flex items-start gap-3 text-sm text-gray-600">
-                <CheckCircle className="w-5 h-5 text-[#914D4D] shrink-0" />
-                <span><strong>Direct Interview</strong> with NUS Partners</span>
-              </li>
-            </ul>
-
-            {/* Main CTA */}
-            <Button asChild className="w-full bg-[#914D4D] text-white font-bold py-3 h-auto text-xl rounded-full hover:bg-[#7a3e3e] shadow-[0_10px_20px_rgba(145,77,77,0.3)] hover:shadow-[0_15px_30px_rgba(145,77,77,0.5)] transition-all transform hover:-translate-y-1">
-              <Link href="https://ielsco.com/events/gif/mentoring">
-                Secure Your Spot Now
-              </Link>
-            </Button>
-            
-            <p className="text-xs text-red-500 mt-4 font-bold animate-pulse">
-              ⚠️ Limited slots available for May batch
-            </p>
-          </div>
-        </div>
-      </div>
           </div>
         </div>
       </section>
 
       <Footer />
-    </div>
+    </main>
   );
 }

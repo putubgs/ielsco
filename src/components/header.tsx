@@ -2,306 +2,332 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { createBrowserClient } from "@supabase/ssr";
-import type { User } from "@supabase/supabase-js";
-import { ChevronDown, LayoutDashboard, LogOut, Menu, UserCircle, X } from "lucide-react";
-import { btnPrimary, btnSecondary, focusRing } from "@/components/site/ui";
-import { cn } from "@/lib/utils";
-
-// Public-site header (Opportunities, Community, Programs, Resources, For Schools, Membership). Hidden on dashboards and auth pages, which have their own
-// chrome. Domain-aware: on circle.ielsco.com / school.ielsco.com, main-site links point back to ielsco.com.
-
-function createClient() {
-  return createBrowserClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
-}
-
-const HIDDEN_PATHS = [
-  "/school/dashboard", "/os", "/quiz", "/school/sign-in", "/dashboard", "/cafe", "/planner", "/privacy-policy",
-  "/terms-of-service", "/welcome/start", "/welcome/result", "/sign-in", "/sign-up", "/api/auth",
-];
-
-type NavChild = { name: string; path: string; note?: string };
-type NavItem = { name: string; path: string; active: boolean; children?: NavChild[] };
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { 
+  Home, 
+  Info, 
+  BookOpen, 
+  Grid, 
+  LogIn, 
+  Menu, 
+  X, 
+  ChevronDown,
+  Coffee,
+  GraduationCap,
+  FileCheck,
+  Calendar,
+  School,
+  Library,
+  Sparkles
+} from "lucide-react";
 
 export default function Header() {
-  const pathname = usePathname();
-  const router = useRouter();
+    const pathname = usePathname();
+  // Di dalam komponen Header kamu
+const hiddenPaths = [
+  "/dashboard",
+  "/events/gif",
+  "/privacy-policy",
+  "/terms-of-service",
+  "/sign-in",
+  "/sign-up", // Tambahkan ini!
+  "/api/auth"
+];
 
-  const [user, setUser] = useState<User | null>(null);
-  const [userName, setUserName] = useState<string | null>(null);
-  const [userAvatar, setUserAvatar] = useState<string | null>(null);
-  const [authLoading, setAuthLoading] = useState(true);
+// Cek apakah pathname saat ini diawali oleh salah satu list di atas
+const isHidden = hiddenPaths.some((path) => pathname?.startsWith(path));
 
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const [profileOpen, setProfileOpen] = useState(false);
-  const profileRef = useRef<HTMLDivElement>(null);
-  const menuButtonRef = useRef<HTMLButtonElement>(null);
+if (isHidden) {
+  return null;
+}
+  
 
-  // Host detection runs on the client only, so server and first client render agree.
-  // prod: the real ielsco.com domains. Elsewhere (localhost, Vercel previews) Circle lives at /circle on the same origin.
-  const [host, setHost] = useState({ school: false, circle: false, local: false, prod: true, main: "https://ielsco.com" });
-  useEffect(() => {
-    const h = window.location.hostname;
-    const local = h.includes("localhost") || h === "127.0.0.1";
-    setHost({ school: h.includes("school."), circle: h.includes("circle."), local, prod: h.endsWith("ielsco.com"), main: local ? window.location.origin : "https://ielsco.com" });
-  }, [pathname]);
 
-  useEffect(() => {
-    const supabase = createClient();
-    async function fetchProfile(userId: string) {
-      const { data: userData } = await supabase.from("users").select("full_name, avatar_url").eq("id", userId).single();
-      if (userData) {
-        setUserName(userData.full_name ?? null);
-        setUserAvatar(userData.avatar_url ?? null);
-      }
-    }
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) { setUser(user); fetchProfile(user.id); }
-      setAuthLoading(false);
-    });
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      const u = session?.user ?? null;
-      setUser(u);
-      if (u) fetchProfile(u.id);
-      else { setUserName(null); setUserAvatar(null); }
-    });
-    return () => subscription.unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    function onClick(e: MouseEvent) {
-      if (profileRef.current && !profileRef.current.contains(e.target as Node)) setProfileOpen(false);
-    }
-    function onKey(e: KeyboardEvent) {
-      if (e.key !== "Escape") return;
-      setOpenDropdown(null);
-      setProfileOpen(false);
-      setMobileOpen((open) => { if (open) menuButtonRef.current?.focus(); return false; });
-    }
-    document.addEventListener("mousedown", onClick);
-    document.addEventListener("keydown", onKey);
-    return () => { document.removeEventListener("mousedown", onClick); document.removeEventListener("keydown", onKey); };
-  }, []);
-
-  // Close menus on navigation; lock page scroll while the mobile menu is open.
-  useEffect(() => { setMobileOpen(false); setOpenDropdown(null); }, [pathname]);
-  useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
-  }, [mobileOpen]);
-
-  async function handleSignOut() {
-    await createClient().auth.signOut();
-    setProfileOpen(false);
-    router.push("/");
-    router.refresh();
+  // --- LOGIKA PENYEMBUNYIAN ---
+  if (pathname?.startsWith("/dashboard")) {
+    return null;
   }
+  // Sembunyiin header utama kalau lagi di halaman GIF (karena udah pake GIFHeader)
+  if (pathname?.startsWith("/events/gif")) {
+    return null;
+  }
+  if (pathname?.startsWith("/privacy-policy")) {
+    return null;
+  }
+  if (pathname?.startsWith("/terms-of-service")) {
+    return null;
+  }
+    if (pathname?.startsWith("/sign-in")) {
+    return null;
+  }
+  // ---------------------------
 
-  if (HIDDEN_PATHS.some((p) => pathname?.startsWith(p))) return null;
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
-  const offMain = host.school || host.circle;
-  const main = (path: string) => (offMain ? `${host.main}${path}` : path);
-  const circleBase = host.circle ? "" : host.prod ? "https://circle.ielsco.com" : "/circle";
-  const signInHref = host.circle ? `${host.main}/sign-in` : host.local && pathname?.startsWith("/school") ? "/school/sign-in" : "/sign-in";
-  const onCircle = host.circle || !!pathname?.startsWith("/circle");
-
-  // Main navigation answers: what can I find (Opportunities, Resources), who do I meet (Circle: Member Stories, Agenda),
-  // what can I join (Programs, Membership), and the institutional path (For Schools). IELSco Stories (/stories) stays
-  // live but is no longer a top-level item; the footer links to it.
-  // About, Partners and Careers live in the footer.
-  const navItems: NavItem[] = [
-    { name: "Opportunities", path: main("/opportunities"), active: !offMain && !!pathname?.startsWith("/opportunities") },
+  const navItems = [
+    { name: "Home", path: "/", icon: Home },
+    { name: "About", path: "/about", icon: Info },
+    { name: "Stories", path: "/stories", icon: BookOpen },
     {
-      name: "Circle",
-      path: circleBase || "/",
-      active: onCircle,
+      name: "Products",
+      path: "/products",
+      icon: Grid,
       children: [
-        { name: "Member Stories", path: `${circleBase}/stories` },
-        { name: "Agenda", path: `${circleBase}/agenda` },
+        { name: "IELS Lounge", path: "/iels-lounge", icon: Coffee },
+        { name: "IELS Courses", path: "/products/courses", icon: GraduationCap },
+        { name: "IELS English Test", path: "/test", icon: FileCheck },
+        { name: "IELS Events", path: "/events", icon: Calendar },
+        { name: "IELS for Schools", path: "/products/schools", icon: School },
+        { name: "E-books & Recordings", path: "/products/resources", icon: Library },
       ],
     },
     {
-      name: "Programs",
-      path: main("/products"),
-      active: !offMain && (!!pathname?.startsWith("/products") && !pathname?.startsWith("/products/resources") || !!pathname?.startsWith("/events")),
-      children: [
-        { name: "All programs", path: main("/products") },
-        { name: "Private tutoring", path: main("/products/courses") },
-        { name: "Events", path: main("/events") },
-        { name: "Global Impact Fellowship", path: main("/events/gif") },
-      ],
+      name: "Sign in!",
+      path: "/sign-in",
+      isStart: true,
+      icon: LogIn
     },
-    { name: "Resources", path: main("/products/resources"), active: !offMain && !!pathname?.startsWith("/products/resources") },
-    { name: "For Schools", path: main("/school"), active: host.school || (!offMain && pathname === "/school") },
-    { name: "Membership", path: main("/membership"), active: !offMain && !!pathname?.startsWith("/membership") },
   ];
 
-  const linkBase = cn("rounded-full px-3.5 py-2 text-[15px] font-semibold transition-colors", focusRing);
-  const linkState = (active: boolean) => (active ? "bg-[#2F4157] text-white" : "text-[#2F4157]/80 hover:bg-[#F1F4F8] hover:text-[#2F4157]");
-
-  const Avatar = ({ size = 36 }: { size?: number }) =>
-    userAvatar ? (
-      // eslint-disable-next-line @next/next/no-img-element -- avatar URLs come from several hosts
-      <img src={userAvatar} alt="" width={size} height={size} className="rounded-full object-cover" style={{ width: size, height: size }} />
-    ) : (
-      <span className="flex items-center justify-center rounded-full bg-[#2F4157] text-[14px] font-bold text-white" style={{ width: size, height: size }}>
-        {userName?.charAt(0)?.toUpperCase() ?? <UserCircle size={size * 0.6} aria-hidden="true" />}
-      </span>
-    );
-
-  const Account = ({ mobile = false }: { mobile?: boolean }) => {
-    if (authLoading) return <span className="h-9 w-24 animate-pulse rounded-full bg-[#F1F4F8]" aria-hidden="true" />;
-    if (!user) {
-      return (
-        <div className={cn("flex items-center gap-2", mobile && "flex-col items-stretch")}>
-          <Link href={signInHref} className={cn(mobile ? btnSecondary : "rounded-full px-3 py-2 text-[15px] font-semibold text-[#2F4157] hover:bg-[#F1F4F8]", focusRing)} data-testid="header-sign-in">
-            Sign in
-          </Link>
-          <Link href={main("/sign-up")} className={cn(btnPrimary, "min-h-[42px] px-5", mobile && "w-full")} data-testid="header-join">
-            Join free
-          </Link>
-        </div>
-      );
-    }
-    if (mobile) {
-      return (
-        <div className="space-y-2">
-          <div className="flex items-center gap-3 rounded-2xl border border-[#E6E9EE] p-3">
-            <Avatar size={40} />
-            <div className="min-w-0">
-              <p className="truncate text-[15px] font-bold text-[#1A2534]">{userName}</p>
-            </div>
-          </div>
-          <Link href={main("/dashboard")} className={cn(btnPrimary, "w-full")}>
-            <LayoutDashboard size={18} aria-hidden="true" /> Go to dashboard
-          </Link>
-          <button type="button" onClick={handleSignOut} className={cn("flex w-full items-center justify-center gap-2 rounded-full px-4 py-3 text-[15px] font-semibold text-[#C94F51] hover:bg-[#FDF1F1]", focusRing)}>
-            <LogOut size={18} aria-hidden="true" /> Sign out
-          </button>
-        </div>
-      );
-    }
-    return (
-      <div className="relative" ref={profileRef}>
-        <button
-          type="button"
-          onClick={() => setProfileOpen(!profileOpen)}
-          aria-expanded={profileOpen}
-          aria-haspopup="menu"
-          className={cn("flex items-center gap-2 rounded-full border border-[#E6E9EE] py-1 pl-1 pr-3 hover:border-[#C9D1DC]", focusRing)}
-        >
-          <Avatar />
-          <span className="hidden text-[15px] font-semibold text-[#2F4157] lg:inline">{userName?.split(" ")[0] ?? "Account"}</span>
-          <ChevronDown size={16} className={cn("text-[#2F4157]/60 transition-transform", profileOpen && "rotate-180")} aria-hidden="true" />
-        </button>
-        {profileOpen && (
-          <div role="menu" className="absolute right-0 mt-2 w-64 rounded-2xl border border-[#E6E9EE] bg-white p-2 shadow-[0_16px_40px_rgba(26,37,52,0.12)]">
-            <div className="border-b border-[#E6E9EE] px-3 pb-3 pt-2">
-              <p className="truncate text-[15px] font-bold text-[#1A2534]">{userName}</p>
-            </div>
-            <Link role="menuitem" href={main("/dashboard")} onClick={() => setProfileOpen(false)} className={cn("mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] font-medium text-[#2F4157] hover:bg-[#F1F4F8]", focusRing)}>
-              <LayoutDashboard size={18} aria-hidden="true" /> Go to dashboard
-            </Link>
-            <button role="menuitem" type="button" onClick={handleSignOut} className={cn("flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] font-semibold text-[#C94F51] hover:bg-[#FDF1F1]", focusRing)}>
-              <LogOut size={18} aria-hidden="true" /> Sign out
-            </button>
-          </div>
-        )}
-      </div>
-    );
-  };
+  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-[#E6E9EE] bg-white font-sans" data-testid="site-header">
-      <div className="mx-auto flex h-[72px] w-full max-w-[1180px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <Link href={main("/")} className={cn("flex shrink-0 items-center rounded-lg", focusRing)} aria-label="IELSco home">
-          <Image src="/images/logos/iels_horizontal_navy.png" width={1564} height={409} sizes="140px" priority className="h-[30px] w-auto lg:h-[34px]" alt="IELS" />
-        </Link>
+    <div className="fixed top-0 left-0 right-0 w-full bg-[#2F4157] flex items-center justify-between py-6 lg:py-10 px-4 sm:px-8 lg:px-[100px] z-50 shadow-md">
+      {/* Logo */}
+      <Link
+        href="/"
+        className="flex items-center font-geologica gap-3 lg:gap-[19px]"
+        onClick={closeMobileMenu}
+      >
+        <Image
+          src="/images/logos/iels_white.png"
+          width={60}
+          height={60}
+          className="lg:w-[75px]"
+          alt="IELS Logo White"
+        />
+        <div className="flex flex-col text-white text-[14px] lg:text-[16px]">
+          <p>Inclusive English</p>
+          <p className="-mt-1">Learning Space</p>
+        </div>
+      </Link>
 
-        <nav aria-label="Main" className="hidden items-center gap-0.5 lg:flex">
-          {navItems.map((item) =>
-            item.children ? (
-              <div key={item.name} className="relative" onMouseEnter={() => setOpenDropdown(item.name)} onMouseLeave={() => setOpenDropdown(null)}>
-                <div className={cn("flex items-center rounded-full transition-colors", linkState(item.active))}>
-                  <Link href={item.path} aria-current={item.active ? "page" : undefined} className={cn("rounded-full py-2 pl-3.5 pr-1 text-[15px] font-semibold", focusRing)}>
-                    {item.name}
-                  </Link>
-                  <button
-                    type="button"
-                    aria-label={`${item.name} pages`}
-                    aria-expanded={openDropdown === item.name}
-                    onClick={() => setOpenDropdown(openDropdown === item.name ? null : item.name)}
-                    className={cn("rounded-full py-2 pl-1 pr-3", focusRing)}
-                  >
-                    <ChevronDown size={16} className={cn("transition-transform", openDropdown === item.name && "rotate-180")} aria-hidden="true" />
-                  </button>
-                </div>
-                {openDropdown === item.name && (
-                  <div className="absolute left-0 top-full pt-2">
-                    <ul className="w-64 rounded-2xl border border-[#E6E9EE] bg-white p-2 shadow-[0_16px_40px_rgba(26,37,52,0.12)]">
-                      {item.children.map((c) => (
-                        <li key={c.path}>
-                          <Link href={c.path} onClick={() => setOpenDropdown(null)} className={cn("block rounded-xl px-3 py-2.5 text-[15px] font-medium text-[#2F4157] hover:bg-[#F1F4F8]", focusRing)}>
-                            {c.name}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <Link key={item.name} href={item.path} aria-current={item.active ? "page" : undefined} className={cn(linkBase, linkState(item.active))}>
+      {/* ---------------- TABLET & DESKTOP NAV ---------------- */}
+      <div className="hidden md:flex items-center text-white gap-2">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+
+          // 1. Handle "Sign in!" (Start Button)
+          if (item.isStart) {
+            return (
+              <Link
+                key={item.name}
+                href={item.path}
+                className="ml-2 inline-flex items-center justify-center gap-2 rounded-full px-6 py-2.5 bg-[#E56668] text-white font-semibold hover:bg-[#C04C4E] transition transform hover:scale-[1.02] shadow-lg shadow-red-900/20"
+              >
+                <Icon size={18} />
                 {item.name}
               </Link>
-            ),
-          )}
-          <div className="ml-3"><Account /></div>
-        </nav>
+            );
+          }
 
-        <button
-          ref={menuButtonRef}
-          type="button"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-expanded={mobileOpen}
-          aria-controls="site-mobile-menu"
-          aria-label={mobileOpen ? "Close menu" : "Open menu"}
-          className={cn("flex h-11 w-11 items-center justify-center rounded-full text-[#2F4157] hover:bg-[#F1F4F8] lg:hidden", focusRing)}
-        >
-          {mobileOpen ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
-        </button>
-      </div>
+          // 2. Handle Dropdown (Products)
+          if (item.children) {
+            const isOpen = openDropdown === item.name;
+            const isActive = pathname?.startsWith(item.path) || pathname?.startsWith("/test") || pathname?.startsWith("/iels-lounge");
 
-      {mobileOpen && (
-        <div id="site-mobile-menu" className="fixed inset-x-0 bottom-0 top-[72px] overflow-y-auto border-t border-[#E6E9EE] bg-white lg:hidden" style={{ paddingBottom: "max(24px, env(safe-area-inset-bottom))" }}>
-          <nav aria-label="Main" className="mx-auto max-w-[560px] px-4 py-4">
-            <ul className="space-y-1">
-              {navItems.map((item) => (
-                <li key={item.name}>
-                  <Link href={item.path} aria-current={item.active ? "page" : undefined} className={cn("block rounded-2xl px-4 py-3.5 text-[17px] font-semibold", linkState(item.active), focusRing)}>
+            return (
+              <div 
+                key={item.name} 
+                className="relative group"
+                onMouseLeave={() => setOpenDropdown(null)}
+              >
+                <div
+                  className={`flex items-center rounded-full transition-all cursor-pointer ${
+                    isActive ? "bg-white text-[#2F4157] font-medium" : "hover:bg-white/10 text-white/90 hover:text-white"
+                  }`}
+                >
+                  {/* Nama Menu Utama */}
+                  <Link href={item.path} className="flex items-center gap-2 pl-5 py-2.5 pr-1">
+                    <Icon size={18} />
                     {item.name}
                   </Link>
-                  {item.children && (
-                    <ul className="mb-2 ml-4 mt-1 border-l border-[#E6E9EE] pl-3">
-                      {item.children.filter((c) => c.path !== item.path).map((c) => (
-                        <li key={c.path}>
-                          <Link href={c.path} className={cn("block rounded-xl px-3 py-2.5 text-[15px] font-medium text-[#2F4157]/80 hover:bg-[#F1F4F8]", focusRing)}>
-                            {c.name}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-6 border-t border-[#E6E9EE] pt-6"><Account mobile /></div>
-          </nav>
+
+                  {/* Tombol Panah */}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setOpenDropdown(isOpen ? null : item.name);
+                    }}
+                    className="pr-4 py-2 flex items-center justify-center"
+                  >
+                    <ChevronDown
+                      size={16}
+                      className={`transition-transform duration-200 ${isOpen ? "rotate-180" : "group-hover:rotate-180"}`}
+                    />
+                  </button>
+                </div>
+
+                {/* Menu Dropdown */}
+                <div
+                  className={`absolute left-0 mt-2 w-64 rounded-2xl bg-white text-[#2F4157] shadow-xl z-[60] transition-all duration-200 border border-gray-100 overflow-hidden
+                    ${isOpen ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible lg:group-hover:opacity-100 lg:group-hover:translate-y-0 lg:group-hover:visible"}
+                  `}
+                >
+                  <div className="py-2">
+                    {item.children.map((child) => {
+                      const ChildIcon = child.icon;
+                      return (
+                        <Link
+                          key={child.path}
+                          href={child.path}
+                          className="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-colors text-sm font-medium text-gray-600 hover:text-[#E56668]"
+                          onClick={() => setOpenDropdown(null)}
+                        >
+                          <ChildIcon size={18} className="text-gray-400" />
+                          {child.name}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          // 3. Normal Link
+          const isActive = pathname === item.path;
+          return (
+            <Link
+              key={item.path}
+              href={item.path}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-full transition-colors font-medium ${
+                isActive 
+                  ? "bg-white text-[#2F4157]" 
+                  : "text-white/90 hover:text-white hover:bg-white/10"
+              }`}
+            >
+              <Icon size={18} />
+              {item.name}
+            </Link>
+          );
+        })}
+      </div>
+
+      {/* Mobile hamburger */}
+      <button
+        onClick={toggleMobileMenu}
+        className="md:hidden flex flex-col items-center justify-center w-10 h-10 text-white"
+        aria-label="Toggle menu"
+      >
+        {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+      </button>
+
+      {/* Mobile overlay */}
+      {isMobileMenuOpen && <div className="md:hidden fixed inset-0 bg-black/60 z-40 backdrop-blur-sm" onClick={closeMobileMenu} />}
+
+      {/* MOBILE MENU */}
+      <div className={`md:hidden fixed top-0 right-0 h-full w-[80%] max-w-sm bg-[#2F4157] z-50 transition-transform duration-300 shadow-2xl ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
+        
+        {/* Mobile Header */}
+        <div className="p-6 border-b border-white/10 flex justify-between items-center">
+           <span className="text-white font-geologica font-bold text-lg">Menu</span>
+           <button onClick={closeMobileMenu} className="text-white/70 hover:text-white">
+             <X size={24} />
+           </button>
         </div>
-      )}
-    </header>
+
+        <nav className="p-6 space-y-2 overflow-y-auto h-[calc(100vh-80px)]">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+
+            // Special mobile Start
+            if (item.isStart) {
+              return (
+                <div key={item.name} className="pt-4 mt-4 border-t border-white/10">
+                  <Link
+                    href={item.path}
+                    onClick={closeMobileMenu}
+                    className="flex items-center justify-center gap-2 w-full text-center px-4 py-3 rounded-xl bg-[#E56668] text-white font-bold hover:bg-[#C04C4E] transition-all shadow-lg"
+                  >
+                    <Icon size={20} />
+                    {item.name}
+                  </Link>
+                </div>
+              );
+            }
+
+            // Dropdown Items (Mobile)
+            if (item.children) {
+              const isOpen = openDropdown === item.name;
+              const isActive = pathname?.startsWith("/products");
+              
+              return (
+                <div key={item.name} className="overflow-hidden">
+                  <div className={`rounded-xl transition-colors ${isActive ? "bg-white/10" : ""}`}>
+                    <div className="flex items-center justify-between pr-2">
+                      <Link
+                        href={item.path}
+                        onClick={closeMobileMenu}
+                        className="flex-1 flex items-center gap-3 px-4 py-3 text-white font-medium"
+                      >
+                        <Icon size={20} className={isActive ? "text-[#E56668]" : "text-gray-300"} />
+                        {item.name}
+                      </Link>
+                      <button
+                        onClick={() => setOpenDropdown(isOpen ? null : item.name)}
+                        className="p-3 text-white/70"
+                      >
+                        <ChevronDown size={18} className={`transition-transform ${isOpen ? "rotate-180" : ""}`} />
+                      </button>
+                    </div>
+
+                    {/* Mobile Submenu */}
+                    <div className={`space-y-1 pl-4 pr-2 overflow-hidden transition-all duration-300 ${isOpen ? "max-h-96 pb-2" : "max-h-0"}`}>
+                      {item.children.map((child) => {
+                        const ChildIcon = child.icon;
+                        return (
+                          <Link
+                            key={child.path}
+                            href={child.path}
+                            onClick={closeMobileMenu}
+                            className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-white/80 hover:bg-white/10 hover:text-white transition-colors"
+                          >
+                            <ChildIcon size={16} />
+                            {child.name}
+                          </Link>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
+            // Normal Link (Mobile)
+            const isActive = pathname === item.path;
+            return (
+              <Link
+                key={item.path}
+                href={item.path}
+                onClick={closeMobileMenu}
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors font-medium ${
+                  isActive 
+                    ? "bg-white text-[#2F4157]" 
+                    : "text-white hover:bg-white/10"
+                }`}
+              >
+                <Icon size={20} className={isActive ? "text-[#E56668]" : "text-gray-300"} />
+                {item.name}
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
+    </div>
   );
 }

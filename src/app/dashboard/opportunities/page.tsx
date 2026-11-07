@@ -1,145 +1,449 @@
 "use client";
 
-import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { ArrowRight, ExternalLink, Trash2 } from "lucide-react";
-import { DashboardPage, type DashboardCtx } from "@/components/dashboard/DashboardPage";
-import { EmptyState, LoadingState, PageHeader } from "@/components/dashboard/PageStates";
-import { btnPrimary, btnSecondary, cardGloss, focusRing, inputClass, tag } from "@/components/dashboard/ui";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import PricingModal from "@/components/subscription/PricingModal";
+import { createBrowserClient } from "@supabase/ssr";
+import {
+  Target,
+  Briefcase,
+  GraduationCap,
+  Users,
+  ExternalLink,
+  Clock,
+  MapPin,
+  Crown,
+  Lock,
+  Filter,
+  Search,
+  ArrowRight,
+  Sparkles
+} from "lucide-react";
 import { cn } from "@/lib/utils";
-import { dateWib } from "@/lib/format";
-import { track } from "@/lib/analytics";
-import { CATEGORY_LABEL, deadlineState, type Category } from "@/lib/opportunities";
-import { FREE_TRACKER_LIMIT } from "@/data/membership";
-import { invalidateMyRecords } from "@/components/dashboard/useMyRecords";
-import { ElcoPractice } from "@/components/elco/ElcoCallout";
-import { OPPORTUNITY_ELCO_CONTEXT } from "@/lib/elco";
 
-// Opportunity Tracker (Interested → Applying → Applied, then the result): the member's saved opportunities (public.opportunity_tracker, owner-only RLS) with a status,
-// their own deadline and notes. The free limit is enforced by a database trigger; this page only shows the count.
-type Row = { opportunity_id: string; status: string; personal_deadline: string | null; notes: string | null; updated_at: string };
-type Opp = { id: string; slug: string; title: string; organizer: string; category: Category; deadline: string | null; official_url: string };
-
-const STATUSES: [string, string][] = [
-  ["saved", "Interested"], ["preparing", "Applying"], ["applied", "Applied"], ["accepted", "Accepted"], ["not_selected", "Not selected"], ["withdrawn", "Withdrawn"],
+// --- MOCK DATA FOR OPPORTUNITIES (Content Placeholder) ---
+const MOCK_OPPORTUNITIES = [
+  {
+    id: "1",
+    title: "Chevening Scholarship 2026",
+    type: "scholarship" as const,
+    organization: "UK Government",
+    description:
+      "Fully funded master's scholarship to study in the UK for students from around the world with leadership potential.",
+    deadline: "2026-03-15",
+    location: "United Kingdom",
+    requirements: "IELTS 6.5+, Bachelor's degree, 2 years work experience",
+    link: "https://chevening.org",
+    featured: true
+  },
+  {
+    id: "2",
+    title: "Google STEP Internship",
+    type: "internship" as const,
+    organization: "Google",
+    description:
+      "Software engineering internship program for first and second-year university students interested in tech.",
+    deadline: "2026-02-28",
+    location: "Remote/Multiple locations",
+    requirements: "Computer Science major, Programming skills",
+    link: "https://careers.google.com",
+    featured: true
+  },
+  {
+    id: "3",
+    title: "IELS Community Lead Position",
+    type: "leadership" as const,
+    organization: "IELS",
+    description:
+      "Lead a team of volunteers to organize events, manage community engagement, and support learners.",
+    deadline: "2026-02-20",
+    location: "Remote",
+    requirements: "6+ months IELS membership, Event attendance 80%+",
+    link: "#",
+    featured: false
+  },
+  {
+    id: "4",
+    title: "Fulbright Scholarship",
+    type: "scholarship" as const,
+    organization: "US Embassy",
+    description:
+      "Graduate study scholarship to pursue master's or PhD programs in the United States.",
+    deadline: "2026-04-30",
+    location: "United States",
+    requirements: "TOEFL 90+, Bachelor's degree with GPA 3.0+",
+    link: "https://fulbright.org",
+    featured: false
+  },
+  {
+    id: "5",
+    title: "Microsoft Internship Program",
+    type: "internship" as const,
+    organization: "Microsoft",
+    description:
+      "12-week internship working on real projects with mentorship from senior engineers.",
+    deadline: "2026-03-10",
+    location: "Seattle, USA / Remote",
+    requirements: "CS/Engineering major, Strong coding skills",
+    link: "https://careers.microsoft.com",
+    featured: false
+  },
+  {
+    id: "6",
+    title: "LPDP Scholarship",
+    type: "scholarship" as const,
+    organization: "Indonesian Government",
+    description:
+      "Full scholarship for Indonesian students to pursue master's or doctoral degrees abroad.",
+    deadline: "2026-05-15",
+    location: "Worldwide",
+    requirements: "Indonesian citizen, IELTS 6.5+, GPA 3.0+",
+    link: "https://lpdp.kemenkeu.go.id",
+    featured: false
+  }
 ];
 
-function Tracker({ supabase, user }: DashboardCtx) {
-  const [rows, setRows] = useState<Row[] | null>(null);
-  const [opps, setOpps] = useState<Record<string, Opp>>({});
-  const [isMember, setIsMember] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+// --- TYPE DEFINITIONS ---
+type UserTier = "explorer" | "insider" | "visionary";
 
-  const load = useCallback(async () => {
-    const [{ data, error: e }, m] = await Promise.all([
-      supabase.from("opportunity_tracker").select("opportunity_id, status, personal_deadline, notes, updated_at").eq("user_id", user.id).order("updated_at", { ascending: false }),
-      supabase.rpc("is_active_member"),
-    ]);
-    if (e) { setError("Couldn't load your tracker. Please try again."); setRows([]); return; }
-    setIsMember(m.data === true);
-    const list = (data as Row[]) ?? [];
-    setRows(list);
-    if (list.length) {
-      const { data: o } = await supabase.from("opportunities").select("id, slug, title, organizer, category, deadline, official_url").in("id", list.map((r) => r.opportunity_id));
-      setOpps(Object.fromEntries(((o as Opp[]) ?? []).map((x) => [x.id, x])));
-    }
-  }, [supabase, user.id]);
-  useEffect(() => { load(); }, [load]);
-
-  const update = async (id: string, patch: Partial<Row>) => {
-    setRows((rs) => rs?.map((r) => (r.opportunity_id === id ? { ...r, ...patch } : r)) ?? null);
-    const { error: e } = await supabase.from("opportunity_tracker").update({ ...patch, updated_at: new Date().toISOString() }).eq("user_id", user.id).eq("opportunity_id", id);
-    if (e) setError("Couldn't save that change. Please try again.");
-    else if (patch.status) track("opportunity_status_changed", { status: patch.status });
-    invalidateMyRecords();
-  };
-  const remove = async (id: string) => {
-    setRows((rs) => rs?.filter((r) => r.opportunity_id !== id) ?? null);
-    await supabase.from("opportunity_tracker").delete().eq("user_id", user.id).eq("opportunity_id", id);
-    invalidateMyRecords();
-  };
-
-  const dueSoon = useMemo(() => (rows ?? []).filter((r) => {
-    const d = r.personal_deadline ?? opps[r.opportunity_id]?.deadline ?? null;
-    return ["saved", "preparing"].includes(r.status) && deadlineState(d) === "soon";
-  }), [rows, opps]);
-
-  const [filter, setFilter] = useState<string | null>(null);
-  if (rows === null) return <LoadingState />;
-  const shown = filter ? rows.filter((r) => r.status === filter) : rows;
-  // Practice suggestion for what the member is working on now (the first opportunity they're applying to).
-  const active = rows.find((r) => r.status === "preparing") ?? rows.find((r) => r.status === "saved");
-  const practice = active && opps[active.opportunity_id] ? OPPORTUNITY_ELCO_CONTEXT[opps[active.opportunity_id].category] : undefined;
-  return (
-    <div className="mx-auto max-w-4xl px-4 py-10 md:px-6 md:py-14" data-testid="opportunity-tracker">
-      <PageHeader title="My opportunity tracker" description="What you're interested in, what you're applying to and what you've sent, with your own deadlines.">
-        <Link href="/dashboard/discover/opportunities" className={btnSecondary}>Browse opportunities <ArrowRight size={16} aria-hidden="true" /></Link>
-      </PageHeader>
-      {rows.length > 0 && (
-        <div className="mb-6 flex flex-wrap gap-2" role="group" aria-label="Filter by status" data-testid="tracker-status-filter">
-          {[[null, "All", rows.length] as const, ...STATUSES.slice(0, 3).map(([v, l]) => [v, l, rows.filter((r) => r.status === v).length] as const)].map(([v, l, n]) => (
-            <button key={l} type="button" aria-pressed={filter === v} onClick={() => setFilter(v)}
-              className={cn("rounded-full border px-4 py-2 text-[14px] font-semibold", focusRing, filter === v ? "border-[#2F4157] bg-[#2F4157] text-white" : "border-[#E3E7ED] bg-white text-[#2F4157] hover:border-[#577E90]")}>
-              {l} <span className="opacity-70">{n}</span>
-            </button>
-          ))}
-        </div>
-      )}
-      <p className="mb-6 text-base text-[#2F4157]/70" data-testid="tracker-count">
-        {isMember ? `${rows.length} tracked (members: no limit).` : `${rows.length} of ${FREE_TRACKER_LIMIT} on a free account.`}
-        {!isMember && rows.length >= FREE_TRACKER_LIMIT - 2 && <> <Link href="/dashboard/membership" className="font-semibold text-[#577E90] underline">Members track without a limit.</Link></>}
-      </p>
-      {error && <p className="mb-6 rounded-xl bg-[#FDF1F1] px-4 py-3 text-base text-[#A23B3D]" role="alert">{error}</p>}
-      {dueSoon.length > 0 && (
-        <div className="mb-6 rounded-2xl border border-[#F2D7A6] bg-[#FFF8EB] p-4 text-base text-[#7A5310]" data-testid="tracker-due-soon">
-          <strong>Due within 3 weeks:</strong> {dueSoon.map((r) => opps[r.opportunity_id]?.title).filter(Boolean).join(", ")}
-        </div>
-      )}
-      {rows.length === 0 ? (
-        <EmptyState title="Nothing saved yet" body="Save opportunities from the board to track your applications and deadlines here."
-          action={<Link href="/dashboard/discover/opportunities" className={btnPrimary}>Browse opportunities</Link>} />
-      ) : (
-        <ul className="space-y-4">
-          {shown.map((r) => {
-            const o = opps[r.opportunity_id];
-            const d = r.personal_deadline ?? o?.deadline ?? null;
-            return (
-              <li key={r.opportunity_id} className={cn(cardGloss, "p-5")} data-testid={`tracked-${o?.slug ?? r.opportunity_id}`}>
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="min-w-0">
-                    {o && <span className="text-sm font-semibold text-[#577E90]">{CATEGORY_LABEL[o.category]}</span>}
-                    <p className="text-lg font-bold text-[#1A2534]">{o ? <Link href={`/opportunities/${o.slug}`} className={cn("rounded hover:underline", focusRing)}>{o.title}</Link> : "Opportunity no longer listed"}</p>
-                    {o && <p className="text-sm text-[#2F4157]/65">{o.organizer}</p>}
-                    {d && <span className={cn(tag, "mt-2", deadlineState(d) === "soon" && "bg-[#FFF3E0] text-[#8A5A00]")}>{r.personal_deadline ? "My deadline" : "Deadline"}: {dateWib(d)}</span>}
-                  </div>
-                  <div className="flex shrink-0 items-center gap-2">
-                    {o && <a href={o.official_url} target="_blank" rel="noopener noreferrer" className={cn(btnSecondary, "px-3 py-2 text-sm")} aria-label={`Official page for ${o.title}`}><ExternalLink size={16} aria-hidden="true" /></a>}
-                    <button type="button" onClick={() => remove(r.opportunity_id)} className={cn(btnSecondary, "px-3 py-2 text-sm")} aria-label="Remove from tracker"><Trash2 size={16} aria-hidden="true" /></button>
-                  </div>
-                </div>
-                <div className="mt-4 grid gap-3 sm:grid-cols-[180px_180px_1fr]">
-                  <label className="block text-sm font-semibold text-[#2F4157]">Status
-                    <select value={r.status} onChange={(e) => update(r.opportunity_id, { status: e.target.value })} className={cn(inputClass, "mt-1 py-2 text-base")}>
-                      {STATUSES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-                    </select>
-                  </label>
-                  <label className="block text-sm font-semibold text-[#2F4157]">My deadline
-                    <input type="date" value={r.personal_deadline ?? ""} onChange={(e) => update(r.opportunity_id, { personal_deadline: e.target.value || null })} className={cn(inputClass, "mt-1 py-2 text-base")} />
-                  </label>
-                  <label className="block text-sm font-semibold text-[#2F4157]">Notes
-                    <input defaultValue={r.notes ?? ""} maxLength={2000} placeholder="Documents to prepare, contacts…" onBlur={(e) => e.target.value !== (r.notes ?? "") && update(r.opportunity_id, { notes: e.target.value })} className={cn(inputClass, "mt-1 py-2 text-base")} />
-                  </label>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      )}
-      {practice && <ElcoPractice context={practice} refId="tracker" className="mt-8" />}
-    </div>
+export default function OpportunitiesPage() {
+  const router = useRouter();
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
-}
 
-export default function OpportunitiesTrackerPage() {
-  return <DashboardPage>{(ctx) => <Tracker {...ctx} />}</DashboardPage>;
+  // State
+  const [userData, setUserData] = useState<{
+    id: string;
+    name: string;
+    tier: UserTier;
+    avatar: string;
+  }>({ 
+    id: "", 
+    name: "", 
+    tier: "explorer", 
+    avatar: "" 
+  });
+  
+  const [loading, setLoading] = useState(true);
+  const [showPricingModal, setShowPricingModal] = useState(false);
+  const [filter, setFilter] = useState<"all" | "scholarship" | "internship" | "leadership">("all");
+  const [opportunities] = useState(MOCK_OPPORTUNITIES);
+
+  // 1. Fetch Real User Data
+  useEffect(() => {
+    const initData = async () => {
+      setLoading(true);
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        router.push("/sign-in");
+        return;
+      }
+
+      const { data: dbUser } = await supabase
+        .from("users")
+        .select(`*, memberships(tier)`)
+        .eq("id", user.id)
+        .single();
+
+      // Mapping logic
+      const dbTier = dbUser?.memberships?.[0]?.tier;
+      let uiTier: UserTier = "explorer";
+
+      if (dbTier === "pro") {
+        uiTier = "insider";
+      } else if (dbTier === "premium" || dbTier === "visionary") {
+        uiTier = "visionary";
+      } else {
+        uiTier = "explorer";
+      }
+
+      setUserData({
+        id: user.id,
+        name: user.user_metadata?.full_name || "Member",
+        tier: uiTier,
+        avatar: user.user_metadata?.avatar_url || ""
+      });
+      setLoading(false);
+    };
+    initData();
+  }, [router, supabase]);
+
+  // Logic: Siapa yang bisa lihat? Insider & Visionary
+  const hasAccess = userData.tier === "insider" || userData.tier === "visionary";
+
+  const filteredOpportunities = filter === "all"
+    ? opportunities
+    : opportunities.filter((o) => o.type === filter);
+
+  // Helper Functions for UI
+  const getTypeIcon = (type: string) => {
+    switch (type) {
+      case "scholarship": return GraduationCap;
+      case "internship": return Briefcase;
+      case "leadership": return Users;
+      default: return Target;
+    }
+  };
+
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case "scholarship": return "bg-blue-100 text-blue-600";
+      case "internship": return "bg-green-100 text-green-600";
+      case "leadership": return "bg-purple-100 text-purple-600";
+      default: return "bg-gray-100 text-gray-600";
+    }
+  };
+
+  const getDaysUntilDeadline = (deadline: string) => {
+    const now = new Date();
+    const deadlineDate = new Date(deadline);
+    const diffTime = deadlineDate.getTime() - now.getTime();
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  };
+
+  if (loading) {
+    return (
+      <DashboardLayout userTier="explorer" userName="Loading..." userAvatar="">
+        <div className="p-8 flex justify-center items-center h-[60vh]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#E56668]"></div>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  return (
+    <DashboardLayout
+      userTier={userData.tier}
+      userName={userData.name}
+      userAvatar={userData.avatar}
+    >
+      <div className="min-h-screen bg-[#F7F8FA]">
+        <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8">
+          
+          {/* === LOCKED STATE (EXPLORER) === */}
+          {!hasAccess ? (
+            <div className="relative rounded-3xl overflow-hidden bg-[#2F4157] text-white p-8 lg:p-16 text-center shadow-2xl">
+              {/* Background Glow */}
+              <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#E56668] blur-[100px] opacity-20 rounded-full"></div>
+              
+              <div className="relative z-10 max-w-3xl mx-auto">
+                <div className="w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center mx-auto mb-8 border border-white/10 shadow-lg">
+                  <Lock className="text-white" size={40} />
+                </div>
+                
+                <h1 className="text-3xl lg:text-5xl font-bold mb-6">
+                  Unlock Exclusive Opportunities
+                </h1>
+                
+                <p className="text-white/80 text-lg lg:text-xl mb-10 leading-relaxed">
+                  Get access to a curated list of scholarships, internships, and leadership roles verified by IELS. 
+                  Don't miss out on your next big break.
+                </p>
+
+                {/* Sneak Peek Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 text-left">
+                   <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/10">
+                      <div className="flex items-center gap-3 mb-2 text-[#E56668]">
+                         <GraduationCap size={24} />
+                         <span className="font-bold text-2xl text-white">6+</span>
+                      </div>
+                      <p className="text-sm text-white/70">Scholarships Available</p>
+                   </div>
+                   <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/10">
+                      <div className="flex items-center gap-3 mb-2 text-green-400">
+                         <Briefcase size={24} />
+                         <span className="font-bold text-2xl text-white">4+</span>
+                      </div>
+                      <p className="text-sm text-white/70">Global Internships</p>
+                   </div>
+                   <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/10">
+                      <div className="flex items-center gap-3 mb-2 text-purple-400">
+                         <Users size={24} />
+                         <span className="font-bold text-2xl text-white">Active</span>
+                      </div>
+                      <p className="text-sm text-white/70">Leadership Roles</p>
+                   </div>
+                </div>
+
+                <button 
+                  onClick={() => setShowPricingModal(true)}
+                  className="px-8 py-4 bg-white text-[#2F4157] rounded-full font-bold text-lg hover:scale-105 transition-transform inline-flex items-center gap-2 shadow-lg hover:shadow-xl"
+                >
+                  <Crown size={20} className="text-[#E56668]" />
+                  Upgrade to Insider Access
+                </button>
+              </div>
+            </div>
+          ) : (
+            
+            /* === UNLOCKED STATE (INSIDER / VISIONARY) === */
+            <>
+              {/* Header */}
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+                <div>
+                  <h1 className="text-3xl font-bold text-[#2F4157] mb-2 flex items-center gap-3">
+                    Opportunities Board <Sparkles className="text-yellow-400" fill="currentColor" />
+                  </h1>
+                  <p className="text-gray-600 max-w-xl">
+                    Curated exclusively for our premium members. Find your next scholarship, internship, or leadership role here.
+                  </p>
+                </div>
+                
+                {/* Search / Filter Placeholder (Visual only for now) */}
+                <div className="relative">
+                   <input 
+                     type="text" 
+                     placeholder="Search opportunities..." 
+                     className="pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#E56668] w-full md:w-64"
+                   />
+                   <Search className="absolute left-3 top-3 text-gray-400" size={16} />
+                </div>
+              </div>
+
+              {/* Stats Summary */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                 {[
+                   { label: "Scholarships", icon: GraduationCap, color: "text-blue-600", bg: "bg-blue-50", count: opportunities.filter(o => o.type === "scholarship").length },
+                   { label: "Internships", icon: Briefcase, color: "text-green-600", bg: "bg-green-50", count: opportunities.filter(o => o.type === "internship").length },
+                   { label: "Leadership", icon: Users, color: "text-purple-600", bg: "bg-purple-50", count: opportunities.filter(o => o.type === "leadership").length },
+                   { label: "Total Active", icon: Target, color: "text-[#E56668]", bg: "bg-red-50", count: opportunities.length },
+                 ].map((stat, idx) => (
+                   <div key={idx} className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
+                      <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center", stat.bg)}>
+                        <stat.icon size={22} className={stat.color} />
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold text-[#2F4157]">{stat.count}</p>
+                        <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">{stat.label}</p>
+                      </div>
+                   </div>
+                 ))}
+              </div>
+
+              {/* Filter Tabs */}
+              <div className="flex flex-wrap gap-2 pt-4">
+                {["all", "scholarship", "internship", "leadership"].map((t) => (
+                  <button
+                    key={t}
+                    onClick={() => setFilter(t as any)}
+                    className={cn(
+                      "px-5 py-2.5 rounded-full text-sm font-bold capitalize transition-all",
+                      filter === t 
+                        ? "bg-[#2F4157] text-white shadow-md" 
+                        : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
+                    )}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
+
+              {/* Grid Content */}
+              <div className="grid lg:grid-cols-2 gap-6">
+                {filteredOpportunities.map((opportunity) => {
+                  const Icon = getTypeIcon(opportunity.type);
+                  const iconStyle = getTypeColor(opportunity.type);
+                  const daysLeft = getDaysUntilDeadline(opportunity.deadline);
+                  const isUrgent = daysLeft <= 14;
+
+                  return (
+                    <div
+                      key={opportunity.id}
+                      className={cn(
+                        "group bg-white rounded-2xl border transition-all duration-300 hover:shadow-lg flex flex-col relative overflow-hidden",
+                        opportunity.featured ? "border-[#E56668]/30" : "border-gray-100"
+                      )}
+                    >
+                      {opportunity.featured && (
+                         <div className="absolute top-0 right-0 bg-[#E56668] text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider z-10">
+                           Featured
+                         </div>
+                      )}
+
+                      <div className="p-6 flex-1">
+                        <div className="flex items-start gap-4 mb-4">
+                           <div className={cn("w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0", iconStyle)}>
+                              <Icon size={24} />
+                           </div>
+                           <div>
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className={cn("text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded border bg-opacity-10 border-opacity-20", iconStyle.replace('bg-', 'border-').replace('text-', 'border-'))}>
+                                  {opportunity.type}
+                                </span>
+                              </div>
+                              <h3 className="font-bold text-[#2F4157] text-lg leading-tight group-hover:text-[#E56668] transition-colors">
+                                {opportunity.title}
+                              </h3>
+                              <p className="text-sm text-gray-500 font-medium">{opportunity.organization}</p>
+                           </div>
+                        </div>
+
+                        <p className="text-gray-600 text-sm mb-6 line-clamp-2 leading-relaxed">
+                          {opportunity.description}
+                        </p>
+
+                        <div className="space-y-3 mb-6">
+                           <div className="flex items-center gap-3 text-sm text-gray-600">
+                              <MapPin size={16} className="text-gray-400" />
+                              {opportunity.location}
+                           </div>
+                           <div className="flex items-center gap-3 text-sm text-gray-600">
+                              <Clock size={16} className={isUrgent ? "text-red-500" : "text-gray-400"} />
+                              <span>
+                                Deadline: {new Date(opportunity.deadline).toLocaleDateString()} 
+                                {isUrgent && <span className="text-red-500 font-bold ml-1">({daysLeft} days left)</span>}
+                              </span>
+                           </div>
+                        </div>
+                        
+                        <div className="bg-gray-50 rounded-xl p-3 text-xs text-gray-600 border border-gray-100">
+                           <span className="font-bold text-gray-700 block mb-1">Requirements:</span>
+                           {opportunity.requirements}
+                        </div>
+                      </div>
+
+                      <div className="p-4 border-t border-gray-100 bg-gray-50/50 flex gap-3">
+                        <a
+                           href={opportunity.link}
+                           target="_blank"
+                           rel="noopener noreferrer" 
+                           className="flex-1 py-2.5 bg-[#2F4157] text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-[#1e2b3a] transition-all"
+                        >
+                           Apply Now <ExternalLink size={14} />
+                        </a>
+                        <button className="px-4 py-2.5 bg-white border border-gray-200 text-gray-600 rounded-xl text-sm font-bold hover:bg-gray-50 transition-all">
+                           Save
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {filteredOpportunities.length === 0 && (
+                <div className="bg-white rounded-2xl p-16 border border-gray-100 text-center shadow-sm">
+                  <div className="w-24 h-24 rounded-full bg-gray-50 flex items-center justify-center mx-auto mb-6">
+                    <Search className="text-gray-300" size={40} />
+                  </div>
+                  <h3 className="text-xl font-bold text-[#2F4157] mb-2">No opportunities found</h3>
+                  <p className="text-gray-500">Try adjusting your filters to see more results.</p>
+                  <button onClick={() => setFilter("all")} className="mt-6 text-[#E56668] font-bold text-sm hover:underline">
+                    Clear all filters
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Pricing Modal for Upgrades */}
+      {showPricingModal && <PricingModal onClose={() => setShowPricingModal(false)} />}
+    </DashboardLayout>
+  );
 }

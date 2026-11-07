@@ -1,105 +1,272 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight, ArrowUpRight, BookOpen, CalendarDays, Compass, GraduationCap, Library, School, Sparkles, Users, UserPlus } from "lucide-react";
+"use client";
+
+import Header from "@/components/header";
 import Footer from "@/components/footer";
-import { Photo } from "@/components/site/Photo";
-import { body, btnPrimary, btnSecondary, cardLink, container, eyebrow, h1, h2, lead, section, siteRoot } from "@/components/site/ui";
-import { cn } from "@/lib/utils";
-import { pageMetadata } from "@/lib/seo";
-import { elcoHref } from "@/lib/elco";
-import { TutoringPanel } from "@/components/tutoring/TutoringPanel";
-import { TUTOR_PRICE_LABEL } from "@/components/tutoring/links";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
-export const metadata: Metadata = pageMetadata({
-  title: "Programs at IELSco: Elco AI, private English tutor, IELS Circle and fellowships",
-  description: "Learn and practise English with Elco AI, add a private English tutor at Rp90,000 per session, join the IELS Circle English learning community, explore opportunities and the Global Impact Fellowship.",
-  path: "/products",
-});
+export default function ProductsPage() {
+  const [pressed, setPressed] = useState<string | null>(null);
 
-type Item = { icon: typeof Compass; name: string; text: string; href: string; cost: string; external?: boolean };
-const GROUPS: { title: string; intro: string; items: Item[] }[] = [
-  {
-    title: "Find opportunities", intro: "Know what exists and what it takes.",
-    items: [
-      { icon: Compass, name: "Opportunity board", text: "Scholarships, fellowships and programs with official links and honest verification labels.", href: "/opportunities", cost: "Free" },
-      { icon: Library, name: "Free resources", text: "Checked guides for scholarships, CVs, essays, interviews and studying abroad.", href: "/products/resources", cost: "Free" },
-      { icon: BookOpen, name: "Member stories", text: "Members who studied, interned or volunteered abroad, in their own words.", href: "/circle/stories", cost: "Free" },
-    ],
-  },
-  {
-    title: "Practise and connect", intro: "People to practise with and learn from.",
-    items: [
-      { icon: Users, name: "IELS Circle", text: "Our English learning community: open online speaking sessions every Wednesday 19:00 and Saturday 13:00 WIB.", href: "https://circle.ielsco.com", cost: "Free", external: true },
-      { icon: CalendarDays, name: "Events", text: "Info sessions, workshops and talks, often with partner organizations.", href: "/events", cost: "Mostly free" },
-      { icon: UserPlus, name: "Elco member benefits", text: "No separate IELSco membership: Elco Starter and Pro plans carry IELS Circle speaking club access to your IELSco account.", href: "/membership", cost: "With an Elco plan" },
-    ],
-  },
-  {
-    title: "Go deeper", intro: "Human support and programs with a clear outcome.",
-    items: [
-      { icon: GraduationCap, name: "Private tutoring", text: "One-to-one sessions with an IELSco tutor, on top of learning with Elco AI. Request a session when you need one.", href: "/products/courses", cost: TUTOR_PRICE_LABEL },
-      { icon: Sparkles, name: "Global Impact Fellowship", text: "Leadership and project incubation for youth across Southeast Asia, held at NUS.", href: "/events/gif", cost: "Self-funded" },
-      { icon: School, name: "IELS for Schools", text: "Sessions and workshops planned with your school.", href: "/school", cost: "Quoted per school" },
-    ],
-  },
-];
+  const products = [
+    {
+      name: "IELS Lounge",
+      desc: "A structured English learning community for daily practice, mentorship, and global networking.",
+      emoji: "💬",
+      href: "/iels-lounge",
+    },
+    {
+      name: "IELS Courses",
+      desc: "Guided English courses focused on real-world communication, tests, and professional growth.",
+      emoji: "🎓",
+      href: "/products/courses",
+    },
+    {
+      name: "IELS English Test",
+      desc: "IELTS, TOEFL, and TOEIC mock tests with AI scoring and educator feedback.",
+      emoji: "🧠",
+      href: "/test",
+    },
+    {
+      name: "IELS for Schools",
+      desc: "One-year structured English programs for schools & universities with measurable outcomes.",
+      emoji: "🏫",
+      href: "/products/schools",
+    },
+    {
+      name: "Resources & Recordings",
+      desc: "Premium e-books, recorded sessions, and digital resources for independent learning.",
+      emoji: "📚",
+      href: "/products/resources",
+    },
+  ];
 
-function ItemLink({ item, children }: { item: Item; children: React.ReactNode }) {
-  const cls = cn(cardLink, "flex h-full flex-col p-7");
-  return item.external
-    ? <a href={item.href} target="_blank" rel="noopener noreferrer" className={cls}>{children}</a>
-    : <Link href={item.href} className={cls}>{children}</Link>;
-}
+  const events = [
+    {
+      title: "English Global Festival",
+      desc: "IELS flagship annual event connecting English learners, educators, and global partners.",
+    },
+    {
+      title: "Step Up!",
+      desc: "Skill-boosting program focused on academic & professional English readiness.",
+    },
+    {
+      title: "IELS Insight Series",
+      desc: "Regular discussions with mentors, universities, and global professionals.",
+    },
+    {
+      title: "Singapore Global Insight Trip",
+      desc: "International exposure program with universities & institutions in Singapore.",
+    },
+  ];
 
-export default function ProgramsPage() {
   return (
-    <div className={cn(siteRoot, "min-h-screen overflow-x-hidden bg-white text-[#1A2534]")} data-testid="programs-page">
-      <section className="bg-white pb-[56px] pt-[40px] md:pb-[72px] md:pt-[64px]" aria-labelledby="hero">
-        <div className={cn(container, "grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16")}>
-          <div>
-            <p className={eyebrow}>Programs</p>
-            <h1 id="hero" className={cn(h1, "mt-4")}>Learn English with Elco AI. Grow with IELSco.</h1>
-            <p className={cn(lead, "mt-6 max-w-[560px]")}>Elco AI is where you learn, practise and prepare for tests. IELSco adds people: private tutors, the IELS Circle community, opportunities and fellowships. Costs are stated up front.</p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link href="/sign-up" className={btnPrimary}>Create a free account <ArrowRight size={18} aria-hidden="true" /></Link>
-              <a href={elcoHref("programs-hero")} target="_blank" rel="noopener noreferrer" className={btnSecondary}>Access Elco AI <ArrowUpRight size={18} aria-hidden="true" /></a>
-            </div>
-          </div>
-          <Photo photo="onlineSession" ratio="wide" priority position="center 30%" />
-        </div>
-      </section>
+    <div>
+      <Header />
 
-      <section className={cn(section, "border-t border-[#E6E9EE]")} aria-labelledby="learn">
-        <div className={container}>
-          <h2 id="learn" className={h2}>Two ways to learn English</h2>
-          <p className={cn(lead, "mt-2 max-w-[720px]")}>Use Elco AI every day. Add a human tutor when you want one-to-one feedback.</p>
-          <TutoringPanel refId="programs" className="mt-8" />
-        </div>
-      </section>
+      <main className="min-h-screen bg-gradient-to-b from-white to-[#f7f9f8] text-[#294154]">
 
-      {GROUPS.map((g) => (
-        <section key={g.title} className={cn(section, "border-t border-[#E6E9EE]")} aria-label={g.title}>
-          <div className={container}>
-            <h2 className={h2}>{g.title}</h2>
-            <p className={cn(lead, "mt-2")}>{g.intro}</p>
-            <ul className="mt-8 grid gap-5 md:grid-cols-3">
-              {g.items.map((i) => (
-                <li key={i.name}>
-                  <ItemLink item={i}>
-                    <span className="flex items-center justify-between">
-                      <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#EEF2F7] text-[#2F4157]"><i.icon size={20} aria-hidden="true" /></span>
-                      <span className="text-[13px] font-semibold text-[#577E90]">{i.cost}</span>
-                    </span>
-                    <span className="mt-5 text-[19px] font-bold text-[#1A2534]">{i.name}</span>
-                    <span className={cn(body, "mt-2 flex-1 text-[15px]")}>{i.text}</span>
-                    <ArrowRight size={17} className="mt-5 text-[#2F4157]" aria-hidden="true" />
-                  </ItemLink>
-                </li>
-              ))}
-            </ul>
-          </div>
+        {/* ================= HERO ================= */}
+        <section className="max-w-6xl mx-auto px-6 pt-24 pb-20 text-center">
+          <h1 className="text-4xl sm:text-5xl font-extrabold mb-6">
+            The IELS Learning Ecosystem 🌍
+          </h1>
+          <p className="text-gray-600 text-lg max-w-3xl mx-auto">
+            IELS is not just a course or a community.  
+            It is a connected ecosystem designed to help learners grow, perform,
+            and access global opportunities.
+          </p>
         </section>
-      ))}
+
+   {/* ================= PRODUCTS ================= */}
+<section className="max-w-6xl mx-auto px-6 pb-24">
+  <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+    {products.map((p) => {
+      const isActive = pressed === p.name;
+
+      return (
+        <div
+          key={p.name}
+          onPointerDown={() => setPressed(p.name)}
+          onPointerUp={() => setTimeout(() => setPressed(null), 120)}
+          onPointerLeave={() => setPressed(null)}
+          className={`
+            relative group rounded-3xl border bg-white p-8
+            flex flex-col h-full /* Membuat card menjadi kontainer flex vertikal */
+            transition-all duration-300
+            ${
+              isActive
+                ? "border-[#E56668] shadow-2xl -translate-y-1"
+                : "border-[#294154]/10 hover:border-[#E56668]/60 hover:-translate-y-1 hover:shadow-xl"
+            }
+          `}
+        >
+          {/* Accent Line */}
+          <div
+            className={`
+              absolute left-0 top-8 bottom-8 w-1.5 rounded-r-full
+              transition-all duration-300
+              ${isActive ? "bg-[#E56668]" : "bg-transparent group-hover:bg-[#E56668]"}
+            `}
+          />
+
+          {/* Content Area */}
+          <div className="flex flex-col flex-grow">
+            <div className="text-4xl mb-4">{p.emoji}</div>
+            <h3 className="text-xl font-bold mb-3 text-[#294154]">{p.name}</h3>
+            <p className="text-gray-600 text-sm leading-relaxed mb-8">
+              {p.desc}
+            </p>
+          </div>
+
+          {/* Footer Area — Tombol diletakkan di sini dengan mt-auto agar sejajar */}
+          <div className="mt-auto pt-1">
+            <Button
+              asChild
+              className="
+                w-full bg-[#E56668] text-white 
+                rounded-full font-semibold py-3
+                hover:bg-[#C04C4E] transition-all duration-300
+                active:scale-[0.97] shadow-md hover:shadow-lg
+              "
+            >
+              <Link href={p.href}>
+                Explore {p.name}
+              </Link>
+            </Button>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</section>
+
+{/* ================= FLAGSHIP EVENTS (EDITORIAL) ================= */}
+<section className="relative py-15 px-6 overflow-hidden bg-white">
+
+  {/* SUBTLE BACKGROUND SHAPE */}
+  <div className="absolute -top-32 -right-32 w-[420px] h-[420px] bg-[#E56668]/10 rounded-full blur-[140px]" />
+
+  <div className="relative max-w-6xl mx-auto grid gap-14 lg:grid-cols-2 items-center">
+
+    {/* LEFT — EVENT DOCUMENTATION IMAGE */}
+    <div
+      className="
+        group relative h-[360px] sm:h-[420px] w-full
+        overflow-hidden rounded-3xl
+        shadow-2xl
+        transition-all duration-500
+        hover:-translate-y-1
+      "
+    >
+      <img
+        src="/images/contents/careers/iels_team_0.png"
+        alt="IELS Flagship Event Experience"
+        className="
+          absolute inset-0 w-full h-full object-cover
+          transition-transform duration-700
+          group-hover:scale-105
+        "
+      />
+
+      {/* EDITORIAL OVERLAY */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-[#2F4157]/60 via-[#2F4157]/20 to-transparent" />
+
+      {/* LABEL */}
+      <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur px-4 py-2 rounded-full text-sm font-semibold text-[#2F4157] shadow">
+        Real IELS Moments
+      </div>
+    </div>
+
+    {/* RIGHT — CONTENT */}
+    <div className="flex flex-col gap-8">
+
+      {/* HEADER */}
+      <div>
+        <p className="uppercase tracking-widest text-sm text-[#E56668] font-semibold mb-3">
+          IELS Experiences
+        </p>
+
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-[#2F4157] mb-5 leading-tight">
+          Where Learning Turns Into <br className="hidden sm:block" />
+          <span className="text-[#E56668]">Real Exposure</span>
+        </h2>
+
+        <p className="text-gray-600 max-w-xl leading-relaxed">
+          IELS flagship events are <b>not seminars or passive webinars</b>.
+          They are curated exposure platforms where learners
+          <b> collaborate, present ideas, get challenged</b>,
+          and connect directly with global institutions and partners.
+        </p>
+      </div>
+
+      {/* EVENT LIST */}
+      <ul className="space-y-4">
+        {[
+          {
+            name: "English Global Festival",
+            desc: "National-scale showcase of English, ideas, and youth collaboration.",
+          },
+          {
+            name: "Step Up!",
+            desc: "Career acceleration programs for students ready to move beyond campus.",
+          },
+          {
+            name: "IELS Insight Series",
+            desc: "Focused discussions with practitioners, mentors, and global partners.",
+          },
+          {
+            name: "Singapore Global Insight Trip",
+            desc: "Flagship international exposure connecting global insight with local impact.",
+          },
+        ].map((event) => (
+          <li
+            key={event.name}
+            className="
+              group flex gap-4
+              transition-all duration-300
+            "
+          >
+            <span className="mt-2 w-2 h-2 rounded-full bg-[#E56668] flex-shrink-0" />
+            <div>
+              <p className="font-semibold text-[#2F4157] group-hover:text-[#E56668] transition">
+                {event.name}
+              </p>
+              <p className="text-sm text-gray-500 leading-relaxed">
+                {event.desc}
+              </p>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      {/* CTA */}
+      <div className="pt-4">
+        <Button
+          asChild
+          className="
+            bg-[#E56668] text-white
+            px-8 py-3 rounded-full
+            font-semibold
+            hover:bg-[#C04C4E]
+            transition-all duration-300
+            active:scale-[0.97]
+            shadow-lg hover:shadow-xl
+            w-full sm:w-auto
+          "
+        >
+          <Link href="/events">
+            See What&apos;s Running Now
+          </Link>
+        </Button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+      </main>
 
       <Footer />
     </div>

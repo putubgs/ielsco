@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createBrowserClient } from "@supabase/ssr";
-import { motion, AnimatePresence } from "framer-motion"; // <-- Tambahin AnimatePresence
+import { motion } from "framer-motion";
 import {
   CheckCircle,
   ArrowLeft,
@@ -12,8 +12,6 @@ import {
   Users,
   Calendar,
   Download,
-  AlertCircle,
-  X,          
   ExternalLink,
   Loader2,
   PlayCircle,
@@ -24,10 +22,7 @@ import {
   BookOpen,
   ArrowRight,
   Clock,
-  Rocket,
-  ChevronDown,
-  ChevronUp,
-  Info
+  Rocket
 } from "lucide-react";
 
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
@@ -47,7 +42,7 @@ type MentoringSession = {
   title: string;
   desc: string;
   output: string;
-  displayDate: string;
+  date: string;
   status: 'upcoming' | 'completed' | 'locked';
   recording_url?: string;
   materials_url?: string;
@@ -66,116 +61,50 @@ export default function MentoringDashboard() {
   const [userData, setUserData] = useState<any>(null);
   const [projectLink, setProjectLink] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [projectGuideOpen, setProjectGuideOpen] = useState(false);
-  // --- MODAL STATE ---
-  type ModalConfig = {
-    isOpen: boolean;
-    title: string;
-    message: string;
-    type: "success" | "error" | "warning" | "info";
-  };
 
-  const [modal, setModal] = useState<ModalConfig>({
-    isOpen: false,
-    title: "",
-    message: "",
-    type: "info",
-  });
-
-  const showModal = (title: string, message: string, type: "success" | "error" | "warning" | "info") => {
-    setModal({ isOpen: true, title, message, type });
-  };
-
-  const closeModal = () => {
-    setModal((prev) => ({ ...prev, isOpen: false }));
-  };
-
-  // --- REAL CURRICULUM DATA (Base) ---
-  const rawSessions = [
+  // --- REAL CURRICULUM DATA ---
+  const sessions: MentoringSession[] = [
     {
       week: 1,
       title: "Session 01: Micro-Problem Identification",
       desc: "Narrowing down broad education issues into a specific, data-backed problem statement focused on SDG 4.",
       output: "Validated SDG 4 problem statement.",
-      dateString: "2026-04-05T23:59:59", // Batas akhir hari untuk hitung completed
-      displayDate: "05 Apr 2026",
+      date: "25 Mar 2026",
+      status: 'upcoming', // Set to upcoming logically before the date
     },
     {
       week: 2,
       title: "Session 02: Building the MVP",
       desc: "Designing a Minimum Viable Project. Learning how to build a creative yet feasible solution framework.",
       output: "Initial project concept note.",
-      dateString: "2026-04-12T23:59:59",
-      displayDate: "12 Apr 2026",
+      date: "29 Mar 2026",
+      status: 'locked',
     },
     {
       week: 3,
       title: "Session 03: Operational Blueprint",
       desc: "Mapping out the technical 'how-to' of your project. Creating a step-by-step workflow, timeline, and resource requirements.",
       output: "Technical operational flowchart.",
-      dateString: "2026-04-19T23:59:59",
-      displayDate: "19 Apr 2026",
+      date: "02 Apr 2026",
+      status: 'locked',
     },
     {
       week: 4,
       title: "Session 04: Impact Logic & Measurement",
       desc: "Learning the Theory of Change. Defining how your project creates real impact and how to measure success.",
       output: "Impact M&E framework.",
-      dateString: "2026-04-26T23:59:59",
-      displayDate: "26 Apr 2026",
+      date: "06 Apr 2026",
+      status: 'locked',
     },
     {
       week: 5,
       title: "Session 05: Stress-Testing & Final Refinement",
       desc: "Final logic check and risk mitigation. Sharpening the technical project specs to ensure it's bulletproof.",
       output: "Final project specification.",
-      dateString: "2026-05-03T23:59:59",
-      displayDate: "03 May 2026",
+      date: "09 Apr 2026",
+      status: 'locked',
     }
   ];
-
-  // Dynamic status logic
-  const sessions: MentoringSession[] = useMemo(() => {
-    const now = new Date();
-    
-    return rawSessions.map((session, index, arr) => {
-      const sessionDate = new Date(session.dateString);
-      const isCompleted = now > sessionDate;
-      
-      let status: 'completed' | 'upcoming' | 'locked' = 'locked';
-      
-      if (isCompleted) {
-        status = 'completed';
-      } else {
-        // Jika sesi sebelumnya sudah lewat (completed) atau ini sesi pertama, maka upcoming
-        if (index === 0) {
-          status = 'upcoming';
-        } else {
-          const prevSessionDate = new Date(arr[index - 1].dateString);
-          if (now > prevSessionDate) {
-            status = 'upcoming';
-          } else {
-            status = 'locked';
-          }
-        }
-      }
-
-      // Beri link default ke GDrive kalau statusnya completed
-      const recording_url = status === 'completed' ? "https://drive.google.com/drive/folders/1SIc6tGryDeCBBucCMZpo0b1CftW3osUT?usp=drive_link" : undefined;
-      const materials_url = status === 'completed' ? "https://drive.google.com/drive/folders/1H9hrLhZdZKNbkjpMhUU3Ed5Qd_Ww0nnq?usp=sharing" : undefined;
-
-      return {
-        week: session.week,
-        title: session.title,
-        desc: session.desc,
-        output: session.output,
-        displayDate: session.displayDate,
-        status,
-        recording_url,
-        materials_url
-      };
-    });
-  }, []);
 
   useEffect(() => {
     const init = async () => {
@@ -186,37 +115,21 @@ export default function MentoringDashboard() {
           return;
         }
 
-        // 1. Ambil data Membership langsung (Source of Truth Tier)
-        const { data: dbMembership } = await supabase
-          .from("memberships")
-          .select("*")
-          .eq("user_id", user.id)
-          .maybeSingle();
-
-        // 2. Ambil data Profile (Nama & Avatar)
+        // 1. Fetch User Profile & Tier
         const { data: dbUser } = await supabase
-          .from("users")
-          .select("full_name, avatar_url")
-          .eq("id", user.id)
-          .maybeSingle();
+          .from('users')
+          .select('*, memberships(tier)')
+          .eq('id', user.id)
+          .single();
 
-        // 3. Mapping Tier (Insider/Visionary)
-        const dbTier = dbMembership?.tier;
-        let uiTier: "explorer" | "insider" | "visionary" = "explorer";
-
-        if (dbTier === "pro") {
-          uiTier = "insider";
-        } else if (dbTier === "premium" || dbTier === "visionary") {
-          uiTier = "visionary";
-        }
-
+        const dbTier = dbUser?.memberships?.[0]?.tier || "explorer";
         const avatarUrl = dbUser?.avatar_url || user.user_metadata?.avatar_url || user.user_metadata?.picture;
 
         setUserProfile({
           full_name: dbUser?.full_name || user.user_metadata?.full_name || "Learner",
           email: user.email || "",
           avatar_url: avatarUrl,
-          tier: uiTier
+          tier: dbTier
         });
 
         // 2. Check Mentoring Registration
@@ -243,9 +156,13 @@ export default function MentoringDashboard() {
     init();
   }, [router, supabase]);
 
-const handleProjectSubmit = async () => {
+  const handleProjectSubmit = async () => {
     if (!projectLink.trim()) {
-      showModal("Link Required", "Please enter your project link.", "warning");
+      alert("Please enter your project link");
+      return;
+    }
+    if (!projectLink.includes("drive.google.com") && !projectLink.includes("docs.google.com")) {
+      alert("Please enter a valid Google Drive link");
       return;
     }
 
@@ -260,17 +177,18 @@ const handleProjectSubmit = async () => {
         .eq('id', userData?.id);
 
       if (!error) {
-        showModal("Submission Successful!", "Project submitted successfully! You can update this link anytime before the final deadline.", "success");
+        alert("Project submitted successfully!");
         setUserData((prev: any) => ({ ...prev, project_drive_link: projectLink }));
       } else {
-        showModal("Submission Failed", "Error submitting. Please try again.", "error");
+        alert("Error submitting. Please try again.");
       }
     } catch (err) {
-      showModal("Submission Failed", "An unexpected error occurred. Please try again.", "error");
+      alert("Error submitting. Please try again.");
     } finally {
       setSubmitting(false);
     }
   };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
@@ -330,54 +248,6 @@ const handleProjectSubmit = async () => {
       userAvatar={userProfile?.avatar_url}
     >
       <div className="max-w-6xl mx-auto pb-20 space-y-8 px-4 md:px-8 pt-6 font-geologica">
-        {/* IELS CUSTOM MODAL POP-UP */}
-        <AnimatePresence>
-          {modal.isOpen && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#304156]/40 backdrop-blur-sm">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden border border-[#304156]/10"
-              >
-                <div className="p-6">
-                  <div className="flex justify-end">
-                    <button onClick={closeModal} className="text-gray-400 hover:text-gray-600 transition-colors">
-                      <X className="w-5 h-5" />
-                    </button>
-                  </div>
-                  
-                  <div className="text-center px-4 pb-4">
-                    <div className={cn(
-                      "w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5 shadow-inner",
-                      modal.type === 'success' ? "bg-green-100" : 
-                      modal.type === 'error' ? "bg-[#914D4D]/10" : "bg-yellow-100"
-                    )}>
-                      {modal.type === 'success' && <CheckCircle className="w-8 h-8 text-green-600" />}
-                      {modal.type === 'error' && <AlertCircle className="w-8 h-8 text-[#914D4D]" />}
-                      {modal.type === 'warning' && <Info className="w-8 h-8 text-yellow-600" />}
-                    </div>
-                    
-                    <h3 className="text-xl font-bold text-[#304156] mb-2">{modal.title}</h3>
-                    <p className="text-gray-600 text-sm leading-relaxed mb-8">{modal.message}</p>
-                    
-                    <Button 
-                      onClick={closeModal} 
-                      className={cn(
-                        "w-full py-4 rounded-xl font-bold shadow-md hover:shadow-lg transition-all",
-                        modal.type === 'success' ? "bg-[#304156] hover:bg-[#2F4055] text-white" : 
-                        "bg-[#914D4D] hover:bg-[#7a3e3e] text-white"
-                      )}
-                    >
-                      Understood
-                    </Button>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-          )}
-        </AnimatePresence>
         
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -529,7 +399,7 @@ const handleProjectSubmit = async () => {
                       <h3 className="text-lg font-bold text-[#304156]">{session.title}</h3>
                       <div className="flex items-center gap-2 text-sm font-semibold">
                         <Calendar className="w-4 h-4 text-[#304156]/60" />
-                        <span className="text-[#304156]/80">{session.displayDate}</span>
+                        <span className="text-[#304156]/80">{session.date}</span>
                       </div>
                     </div>
                     
@@ -575,109 +445,7 @@ const handleProjectSubmit = async () => {
           </div>
         </div>
 
-     {/* === PROJECT PROPOSAL GUIDE SECTION === */}
-        <div className="bg-white rounded-2xl border border-[#914D4D]/20 overflow-hidden shadow-sm">
-          <button
-            onClick={() => setProjectGuideOpen(!projectGuideOpen)}
-            className="w-full px-6 py-5 flex items-center justify-between hover:bg-gray-50 transition"
-          >
-            <div className="flex items-center gap-3">
-              <div className="bg-[#914D4D]/10 p-2 rounded-lg">
-                <Target className="w-5 h-5 text-[#914D4D]" />
-              </div>
-              <div className="text-left">
-                <h2 className="text-xl font-bold text-[#304156]">Project Proposal Framework</h2>
-                <p className="text-sm text-gray-500">Step-by-step Design Thinking guide for your individual SDG project</p>
-              </div>
-            </div>
-            {projectGuideOpen ? <ChevronUp className="w-5 h-5 text-[#914D4D]" /> : <ChevronDown className="w-5 h-5 text-[#914D4D]" />}
-          </button>
-
-          {projectGuideOpen && (
-            <div className="px-6 pb-6 space-y-6">
-              <div className="h-px bg-gray-200"></div>
-
-              {/* Format Requirements */}
-              <div className="bg-[#914D4D]/5 rounded-xl p-6 border border-[#914D4D]/20">
-                <h3 className="font-bold text-[#914D4D] mb-4 flex items-center gap-2">
-                  <Info className="w-5 h-5" />
-                  Presentation Format Requirements
-                </h3>
-                <div className="grid md:grid-cols-2 gap-4 text-sm">
-                  <div className="space-y-2">
-                    <div className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-[#304156] mt-0.5 flex-shrink-0" />
-                      <div>
-                        <span className="font-semibold text-[#914D4D]">Format:</span>
-                        <span className="text-[#304156]"> PowerPoint, Google Slides, or Canva</span>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-[#304156] mt-0.5 flex-shrink-0" />
-                      <div>
-                        <span className="font-semibold text-[#914D4D]">Length:</span>
-                        <span className="text-[#304156]"> Maximum 10 slides</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-[#304156] mt-0.5 flex-shrink-0" />
-                      <div>
-                        <span className="font-semibold text-[#914D4D]">Submission:</span>
-                        <span className="text-[#304156]"> Canva Link (Review) or Google Drive (Final PDF)</span>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-[#304156] mt-0.5 flex-shrink-0" />
-                      <div>
-                        <span className="font-semibold text-[#914D4D]">Focus:</span>
-                        <span className="text-[#304156]"> Must align with SDG 4 (Quality Education)</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Slide-by-Slide Framework */}
-              <div>
-                <h3 className="font-bold text-[#304156] mb-4 flex items-center gap-2">
-                  <Target className="w-5 h-5 text-[#914D4D]" />
-                  Recommended Slide Structure (Design Thinking)
-                </h3>
-                
-                <div className="space-y-3">
-                  {[
-                    { num: "1", title: "Cover Slide", content: "Project title, your full name, origin/university. Make it visually compelling!" },
-                    { num: "2", title: "Empathize: The Core Issue", content: "What specific SDG 4 problem in Indonesia are you addressing? Use a brief story, observation, or persona to show empathy." },
-                    { num: "3", title: "Define: Data & Scope", content: "Back up your observation with hard data. Narrow down the problem to a specific target audience or region." },
-                    { num: "4", title: "Ideate: The Big Concept", content: "Introduce your proposed solution. What is the core idea? Be clear and concise." },
-                    { num: "5", title: "Ideate: Innovation Factor", content: "Why is your solution different or better than existing ones? Highlight the unique value proposition." },
-                    { num: "6", title: "Prototype: Visualizing the Solution", content: "Show, don't just tell. Include a flowchart, wireframe, or diagram of how your project will work in reality." },
-                    { num: "7", title: "Prototype: Key Activities", content: "What are the 3-4 main steps required to launch this project offline/online?" },
-                    { num: "8", title: "Test/Impact: Measuring Success", content: "If executed, what are your KPIs? How will you know if the project actually improved the beneficiaries' lives?" },
-                    { num: "9", title: "Sustainability Vision", content: "How will this project survive long-term without relying heavily on continuous funding?" },
-                    { num: "10", title: "Call to Action / Closing", content: "Why are you the right person to lead this idea? Close with a strong statement on how GIF will help you execute it." }
-                  ].map((slide, idx) => (
-                    <div key={idx} className="border border-gray-200 rounded-lg p-4 hover:border-[#914D4D] transition">
-                      <div className="flex items-start gap-3">
-                        <div className="bg-[#304156] text-white px-3 py-1 rounded-lg font-bold text-sm flex-shrink-0 w-20 text-center">
-                          Slide {slide.num}
-                        </div>
-                        <div className="flex-1">
-                          <h4 className="font-bold text-[#304156] mb-1">{slide.title}</h4>
-                          <p className="text-sm text-gray-600">{slide.content}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-
-       {/* Project Submission Section */}
+        {/* Project Submission Section */}
         <div className="bg-white border border-[#914D4D]/20 rounded-3xl p-8 md:p-10 relative overflow-hidden shadow-xl">
           {/* Subtle Background Accent */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#914D4D]/5 rounded-full blur-3xl pointer-events-none"></div>
@@ -690,83 +458,63 @@ const handleProjectSubmit = async () => {
               </div>
               
               <div>
-                <h2 className="text-3xl font-black text-[#304156] mb-2">Project Deck Submission</h2>
+                <h2 className="text-3xl font-black text-[#304156] mb-2">Final Project Deck Submission</h2>
                 <p className="text-[#304156]/70 text-base leading-relaxed">
-                  Submit your project deck for mentoring review, and update it to your final document before the ultimate deadline.
+                  Submit your complete project deck and technical specs. This is your Golden Ticket application for the Global Impact Fellowship selection.
                 </p>
               </div>
 
               <div className="bg-[#304156]/5 rounded-2xl p-5 border border-[#304156]/10">
-                <h3 className="font-bold text-[#304156] mb-3 text-sm uppercase tracking-wide">Submission Timeline:</h3>
+                <h3 className="font-bold text-[#304156] mb-3 text-sm uppercase tracking-wide">Checklist Requirements:</h3>
                 <ul className="space-y-3 text-sm text-[#304156]/80">
                   <li className="flex items-start gap-3">
-                    <Clock className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#914D4D]" />
-                    <span><strong>Phase 1 (Review):</strong> Submit your draft link by <strong className="text-[#304156]">7 May 2026</strong> for progress tracking and feedback.</span>
+                    <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#914D4D]" />
+                    <span>Validated SDG 4 problem statement & root cause analysis.</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#914D4D]" />
-                    <span><strong>Phase 2 (Final):</strong> Update this form with your final link by <strong className="text-[#304156]">10 May 2026</strong>.</span>
+                    <span>Complete project deck presentation (Maximum 15 slides).</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#914D4D]" />
+                    <span>Impact M&E framework & Technical operational flowchart included.</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#914D4D]" />
+                    <span>Valid Google Drive link with "Anyone with link can view" permission.</span>
                   </li>
                 </ul>
               </div>
               
-              <div className="flex flex-col gap-2 text-sm font-bold text-[#914D4D]">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" /> REVIEW DEADLINE: 7 May 2026
-                </div>
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" /> FINAL DEADLINE: 10 May 2026 (23:59 WIB)
-                </div>
+              <div className="flex items-center gap-2 text-sm font-bold text-[#914D4D]">
+                <Calendar className="w-4 h-4" /> DEADLINE: 11 April 2026 (23:59 WIB)
               </div>
             </div>
 
             <div className="w-full lg:w-[400px] flex flex-col justify-center">
               {userData?.project_drive_link ? (
-                <div className="bg-[#304156]/5 border border-[#304156]/10 rounded-2xl p-6 shadow-sm">
-                  <div className="text-center mb-4">
-                    <CheckCircle className="w-12 h-12 mx-auto mb-3 text-[#304156]" />
-                    <h3 className="font-black text-xl text-[#304156]">Link Saved!</h3>
-                    <p className="text-xs text-[#304156]/70 mt-1">You can update your link until the final deadline.</p>
-                  </div>
-                  
-                  <label className="block text-sm font-bold text-[#304156] mb-2">Update URL <span className="text-[#914D4D]">*</span></label>
-                  <input
-                    type="url"
-                    value={projectLink}
-                    onChange={(e) => setProjectLink(e.target.value)}
-                    placeholder="Paste any link here..."
-                    className="w-full px-4 py-3.5 rounded-xl bg-white border border-gray-200 text-[#304156] focus:border-[#914D4D] focus:ring-1 focus:ring-[#914D4D] outline-none transition mb-4 text-sm"
-                  />
-                  
-                  <div className="flex gap-2">
-                    <Button
-                      onClick={() => window.open(userData.project_drive_link, "_blank")}
-                      className="w-1/3 bg-white text-[#304156] border border-[#304156]/20 hover:bg-[#304156]/5 py-3 rounded-xl font-bold shadow-sm"
-                      title="View current link"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      onClick={handleProjectSubmit}
-                      disabled={submitting || projectLink === userData.project_drive_link}
-                      className="w-2/3 py-3 rounded-xl font-bold text-base bg-[#914D4D] text-white hover:bg-[#7a3e3e] shadow-md transition-all"
-                    >
-                      {submitting ? (
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                      ) : (
-                        "Update Link"
-                      )}
-                    </Button>
-                  </div>
+                <div className="bg-[#304156]/5 border border-[#304156]/10 rounded-2xl p-8 text-center">
+                  <CheckCircle className="w-16 h-16 mx-auto mb-4 text-[#304156]" />
+                  <h3 className="font-black text-xl text-[#304156] mb-2">Golden Ticket Submitted!</h3>
+                  <p className="text-sm text-[#304156]/70 mb-6 leading-relaxed">
+                    Your final project deck is secured and currently under review by the judging panel.
+                  </p>
+                  <Button
+                    onClick={() => window.open(projectLink, "_blank")}
+                    className="w-full bg-white text-[#304156] border-2 border-[#304156]/20 hover:bg-[#304156]/5 shadow-sm py-5 rounded-xl font-bold"
+                  >
+                    View Your Document
+                    <ExternalLink className="w-4 h-4 ml-2" />
+                  </Button>
                 </div>
               ) : (
                 <div className="bg-white border-2 border-gray-100 rounded-2xl p-6 shadow-sm">
-                  <label className="block text-sm font-bold text-[#304156] mb-2">Project URL <span className="text-[#914D4D]">*</span></label>
+                  <label className="block text-sm font-bold text-[#304156] mb-2">Google Drive URL <span className="text-[#914D4D]">*</span></label>
                   <input
                     type="url"
                     value={projectLink}
                     onChange={(e) => setProjectLink(e.target.value)}
-                    placeholder="Paste any link here..."
+                    placeholder="https://drive.google.com/..."
                     className="w-full px-4 py-3.5 rounded-xl bg-gray-50 border border-gray-200 text-[#304156] focus:bg-white focus:border-[#914D4D] focus:ring-1 focus:ring-[#914D4D] outline-none transition mb-4 text-sm"
                   />
                   <Button
@@ -780,12 +528,12 @@ const handleProjectSubmit = async () => {
                       </>
                     ) : (
                       <>
-                        <Upload className="w-5 h-5 mr-2" /> Submit Link
+                        <Upload className="w-5 h-5 mr-2" /> Submit Project Deck
                       </>
                     )}
                   </Button>
                   <p className="text-xs text-center text-gray-500 mt-3 font-medium">
-                    Ensure link access is set to public so mentors can view it.
+                    Ensure link access is set to public.
                   </p>
                 </div>
               )}

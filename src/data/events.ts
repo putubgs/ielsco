@@ -7,8 +7,6 @@ export interface EventData {
   startDate: string;
   registrationTimeDeadline: string;
   registrationDateDeadline: string;
-  // Optional WhatsApp group shown to registered members after one-click registration (dashboard).
-  whatsappGroup?: string;
   seo: {
     meta_title: string;
     meta_description: string;
@@ -647,111 +645,5 @@ export const eventsData: EventData[] = [
     meta_keywords:
       "English Student Launchpad, English major career, TEFL TESL workshop, remote English jobs, international English careers, English portfolio, English webinar, global opportunities",
   },
-},
-{
-  id: "11",
-  title: "Hello Sydney! Discover Your Global Horizon — IELS x Western Sydney University Indonesia",
-  poster: "/images/contents/events/wsui-iels.png",
-  description: `<div>
-  <div><strong>📅 Event Date: November 28, 2025</strong></div>
-  <div>⏰ Offline Event</div>
-  <div>&nbsp;</div>
-  <div><strong><em>Global Pathways through English and Education</em> is a special collaboration between WSUI and IELS, designed to help youth explore how English can unlock global education and career opportunities.</strong></div>
-  <div>&nbsp;</div>
-  <div>This session brings real insights from speakers with international experience, giving you a closer look at studying abroad — especially in Australia — without having to go too far.</div>
-  <div>&nbsp;</div>
-  <div><strong>🎯 What You Will Experience:</strong></div>
-  <ul>
-    <li>✅ Insights into global education pathways and studying abroad opportunities</li>
-    <li>✅ Understanding how English can expand your academic and career options</li>
-    <li>✅ Real stories and perspectives from speakers with international experience</li>
-    <li>✅ Opportunity to connect with like-minded youth with global ambitions</li>
-  </ul>
-  <div>&nbsp;</div>
-  <div><strong>📍 Venue:</strong> Western Sydney University Indonesia, Surabaya</div>
-  <div>&nbsp;</div>
-  <div><strong>Why Join:</strong></div>
-  <div>This event is perfect for students who are curious about studying abroad and want to understand how English can become a bridge to global opportunities. You’ll gain practical insights, fresh perspectives, and meaningful connections to support your journey.</div>
-</div>
-<div>&nbsp;</div>
-<a href="https://www.instagram.com/p/DRRn20SAZBV/" target="_blank"
-   style="
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 20px;
-    background-color: #E56668;
-    color: #ffffff;
-    text-decoration: none;
-    border-radius: 999px;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.2s ease;
-  "
-  onmouseover="this.style.backgroundColor='#C04C4E'"
-  onmouseout="this.style.backgroundColor='#E56668'"
-  onmousedown="this.style.transform='scale(0.97)'"
-  onmouseup="this.style.transform='scale(1)'"
->
-  Read More
-</a>`,
-  registrationLink: "https://bit.ly/WSUIXIELSREGIST",
-  startDate: "2025-11-28",
-  registrationTimeDeadline: "23:59",
-  registrationDateDeadline: "2025-11-26",
-  seo: {
-    meta_title: "Global Pathways through English and Education — WSUI x IELS",
-    meta_description:
-      "Join Global Pathways through English and Education by WSUI x IELS (28 Nov 2025). Discover how English can unlock global study opportunities, especially in Australia.",
-    meta_keywords:
-      "study abroad Australia, English for global education, WSUI IELS event, studying abroad seminar, international education pathways, Surabaya event",
-  },
-},
-  
-{
-  id: "12",
-  title: "GIF: Study at NUS Info Session — Explore NUS, Discover What's Next",
-  poster: "/images/contents/events/nusinfo.png",
-  description: `<div>
-  <div><strong>📅 Event Date: Sunday, 1 November 2026</strong></div>
-  <div><strong>⏰ Time: 12:45 – 14:45 GMT+7 (Western Indonesia Time)</strong></div>
-  <div><strong>💻 Format: Online Info Session</strong></div>
-  <div>&nbsp;</div>
-  <div><strong><em>GIF: Study at NUS Info Session</em> — Explore NUS, discover Singapore's education landscape, and learn about global opportunities.</strong></div>
-  <div>&nbsp;</div>
-  <div>Curious about studying at the National University of Singapore (NUS) and exploring opportunities beyond your home country? Join this online info session to hear perspectives on NUS, Singapore's entrepreneurship and innovation ecosystem, and how English can help connect young people with global opportunities.</div>
-  <div>&nbsp;</div>
-  <div><strong>🎤 Session Speakers:</strong></div>
-  <ul>
-    <li><strong>Benjamin Tey</strong> — Senior Manager, Outreach – International, NUS SCALE</li>
-    <li><strong>Claire Cheong</strong> — Former Head, International &amp; Impact Programmes, NUS Enterprise</li>
-    <li><strong>Arbadza Rido</strong> — Founder of IELSco; Project Officer, Global Impact Fellowship</li>
-  </ul>
-  <div>&nbsp;</div>
-  <div><strong>💡 What You'll Explore:</strong></div>
-  <ul>
-    <li>Discover NUS and explore what's next in your learning journey</li>
-    <li>Learn about Singapore's entrepreneurship and innovation ecosystem</li>
-    <li>Explore how English can connect you with education and global opportunities</li>
-    <li>Gain perspectives to help you consider your next steps</li>
-  </ul>
-  <div>&nbsp;</div>
-  <div><strong>🌏 Who Should Join?</strong></div>
-  <div>Students and young people who are curious about studying abroad, Singapore's education landscape, entrepreneurship, or international opportunities. Whether you're actively planning your next step or just starting to explore, you're welcome to join.</div>
-  <div>&nbsp;</div>
-  <div><strong>Registration is free. Complete the form to reserve your place.</strong></div>
-</div>`,
-  registrationLink: "https://forms.gle/TjGqyLKq9LWx94bq7",
-  startDate: "2026-11-01",
-  registrationTimeDeadline: "12:45",
-  registrationDateDeadline: "2026-11-01",
-  seo: {
-    meta_title: "GIF: Study at NUS Info Session — Singapore Education & Global Opportunities",
-    meta_description:
-      "Join the free online GIF: Study at NUS Info Session on 1 November 2026. Explore NUS, Singapore's entrepreneurship and innovation ecosystem, and global education opportunities.",
-    meta_keywords:
-      "Study at NUS, NUS info session, Singapore education, study abroad, Global Impact Fellowship, GIF, NUS SCALE, entrepreneurship, innovation ecosystem, global opportunities, IELSco",
-  },
 }
 ];
-

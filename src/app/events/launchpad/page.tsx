@@ -1,5 +1,6 @@
 "use client";
 
+import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Link from "next/link";
 import Image from "next/image";
@@ -101,7 +102,8 @@ export default function EnglishStudentLaunchpadPage() {
   const [pressed, setPressed] = useState<number | null>(null);
 
   return (
-    <div className="bg-white text-[#2F4157]">
+    <main className="bg-white text-[#2F4157]">
+<Header />
       {/* ================= HERO ================= */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/contents/careers/iels_team_0.png')] bg-cover bg-center" />
@@ -530,6 +532,6 @@ export default function EnglishStudentLaunchpadPage() {
   </div>
 </section>
       <Footer />
-    </div>
+    </main>
   );
 }

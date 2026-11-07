@@ -46,16 +46,14 @@ export default function GIFInsightTalksPage() {
         <div className="max-w-5xl mx-auto px-6 relative z-10 text-center">
           
           <div className="flex items-center justify-center mb-6">
-            <div className="relative rounded-2xl bg-white px-5 py-3 shadow-xl md:px-7 md:py-4">
-              <Image
-                src="/images/logos/events/gif.png"
-                alt="Global Impact Fellowship in Singapore"
-                width={238}
-                height={87}
-                className="h-auto w-[200px] md:w-[320px]"
-                priority
-              />
-            </div>
+            <Image
+              src="/images/logos/events/gifsgp.png"
+              alt="Global Impact Fellowship in Singapore"
+              width={270}
+              height={72}
+              className="relative h-auto w-[240px] md:w-[400px] drop-shadow-xl"
+              priority
+            />
           </div>
           
           <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight tracking-tight">
@@ -171,7 +169,7 @@ export default function GIFInsightTalksPage() {
               <div className="pt-2">
                 {isTalk1Past ? (
                   <Button asChild className="gap-2 font-bold text-[#304156] py-3 px-6 h-auto border border-gray-300 bg-white w-full sm:w-auto hover:bg-gray-50 shadow-sm rounded-full">
-                    <Link href="https://drive.google.com/file/d/1Cny3ztVHtm0WFozjbg8A4NWFzlW1pkZW/view?usp=sharing" target="_blank">
+                    <Link href="/dashboard/gif/recordings/talk-1" target="_blank">
                       <PlayCircle className="w-5 h-5" /> Watch Recording
                     </Link>
                   </Button>
@@ -262,7 +260,7 @@ export default function GIFInsightTalksPage() {
               <div className="pt-2">
                 {isTalk2Past ? (
                   <Button asChild className="gap-2 font-bold text-[#304156] py-3 px-6 h-auto border border-gray-300 bg-white w-full sm:w-auto hover:bg-gray-50 shadow-sm rounded-full">
-                    <Link href="https://drive.google.com/file/d/1ivb871hSRk_9ZqnAzoPrYZOJ4Z-hscty/view?usp=sharing" target="_blank">
+                    <Link href="/dashboard/gif/recordings/talk-2" target="_blank">
                       <PlayCircle className="w-5 h-5" /> Watch Recording
                     </Link>
                   </Button>
@@ -283,7 +281,7 @@ export default function GIFInsightTalksPage() {
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 mix-blend-overlay pointer-events-none" />
           
           <div className="relative z-10 max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold mb-4">Join our WhatsApp Group Community!</h2>
+            <h2 className="text-3xl font-bold mb-4">Ready to Join the Sessions?</h2>
             <p className="text-white/80 leading-relaxed text-lg mb-8">
               No need to hustle filling out long registration forms. Just create an account, open the dashboard, and join our official WhatsApp group to get all the access links directly.
             </p>
